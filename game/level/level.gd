@@ -22,6 +22,11 @@ var predictor: PathPredictor
 var predicted_path: PredictedPath
 var checkpoint_cell: Vector2i
 
+var exploration: Exploration
+var lighting: LightingState
+var slow_mo: SlowMo
+var hud: Hud
+
 var _ambient: CanvasModulate
 var _enemies: Array[Enemy] = []
 
@@ -52,7 +57,18 @@ func _ready() -> void:
 	_spawn_people_and_finds()
 	_add_steward_path()
 	_add_atmosphere()
-	add_child(Hud.new())
+	exploration = Exploration.new()
+	exploration.setup(grid)
+	add_child(exploration)
+	lighting = LightingState.new()
+	add_child(lighting)
+	lighting.setup(self, _ambient)
+	slow_mo = SlowMo.new()
+	add_child(slow_mo)
+	slow_mo.setup(self)
+	hud = Hud.new()
+	add_child(hud)
+	Steward.voice_changed.connect(_on_voice_changed)
 	add_child(PauseMenu.new())
 	add_child(LevelHints.new())
 	GameState.set_location("level:" + level_id)
@@ -62,8 +78,29 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if get_tree().paused:
 		return
-	GameState.add_play_time(delta)
+	# Level play only (DECISIONS #11): menus, pause and the Ark don't count toward voice_on_ratio.
+	var real_delta := delta / maxf(Engine.time_scale, 0.01)
+	GameState.add_play_time(real_delta)
+	GameState.add_voice_time(real_delta, Steward.voice_on)
+	exploration.observe(player.cell())
 	_update_checkpoint()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed(&"voice_toggle") and not get_tree().paused:
+		Steward.toggle_voice()
+		get_viewport().set_input_as_handled()
+
+
+func _on_voice_changed(on: bool) -> void:
+	if on:
+		Narrator.speak_text("steward_voice_restored", "There you are. I kept your place.")
+
+
+func _exit_tree() -> void:
+	if Steward.voice_changed.is_connected(_on_voice_changed):
+		Steward.voice_changed.disconnect(_on_voice_changed)
+	Engine.time_scale = 1.0
 
 
 func living_enemies() -> Array[Enemy]:

@@ -89,6 +89,7 @@ func _enter(next: State) -> void:
 	_state_time = 0.0
 	if next == State.WINDUP:
 		attack_windup.emit(self, windup_seconds())
+		Steward.report_windup(self, windup_seconds())
 
 
 func windup_seconds() -> float:

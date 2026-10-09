@@ -13,6 +13,8 @@ const WHO_TEO := &"teo"
 var voice_on_seconds: float = 0.0
 var voice_off_seconds: float = 0.0
 var voice_toggle_count: int = 0
+## The voice switch as the player last left it.
+var voice_on: bool = true
 
 # --- Cores, survivors, logs ------------------------------------------------------------------------
 var power_core_ids: Array[String] = []
@@ -84,6 +86,7 @@ func to_dict() -> Dictionary:
 		"voice_on_seconds": voice_on_seconds,
 		"voice_off_seconds": voice_off_seconds,
 		"voice_toggle_count": voice_toggle_count,
+		"voice_on": voice_on,
 		"power_core_ids": power_core_ids.duplicate(),
 		"truth_core_ids": truth_core_ids.duplicate(),
 		"survivor_ids": survivor_ids.duplicate(),
@@ -115,6 +118,8 @@ static func from_dict(d: Dictionary) -> RunState:
 	s.voice_on_seconds = maxf(0.0, _float(d.get("voice_on_seconds", 0.0)))
 	s.voice_off_seconds = maxf(0.0, _float(d.get("voice_off_seconds", 0.0)))
 	s.voice_toggle_count = maxi(0, _int(d.get("voice_toggle_count", 0)))
+	var voice: Variant = d.get("voice_on", true)
+	s.voice_on = voice if voice is bool else true
 	s.power_core_ids = _strings(d.get("power_core_ids", []))
 	s.truth_core_ids = _strings(d.get("truth_core_ids", []))
 	s.survivor_ids = _strings(d.get("survivor_ids", []))
