@@ -8,12 +8,14 @@ const FADE_SECONDS := 0.25
 const SCENES: Dictionary[StringName, String] = {
 	&"title": "res://ui/title/title.tscn",
 	&"ring_gallery": "res://ui/common/ring_gallery.tscn",
+	&"loadout": "res://ui/loadout/loadout.tscn",
 	&"level_vellum": "res://game/level/vellum_street.tscn",
 }
 
 ## Where a saved RunState.location resumes.
 const LOCATIONS: Dictionary[String, StringName] = {
-	"level:vellum": &"level_vellum",
+	# Weapons are picked before each level, so a run saved in the level resumes at the loadout.
+	"level:vellum": &"loadout",
 }
 
 var current_key: StringName = &""

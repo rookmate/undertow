@@ -85,7 +85,7 @@ func _ready() -> void:
 
 func _start_new_game() -> void:
 	GameState.new_run()
-	SceneRouter.goto(&"level_vellum")
+	SceneRouter.goto(&"loadout")
 
 
 func _continue_game() -> void:

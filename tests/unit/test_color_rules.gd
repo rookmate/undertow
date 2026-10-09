@@ -12,6 +12,10 @@ const STEWARD_ALLOWED: Dictionary[String, String] = {
 	"res://game/level/lamp_post.gd": "Lattice lamps are the Steward's hardware",
 	"res://game/level/building_cell.gd": "the gilt on the ironwork is the Steward's overlay",
 	"res://game/player/operator_body.gd": "the earpiece glows when the Steward is on",
+	"res://game/weapons/weapon_glow.gd": "a Steward-tuned tool glows gold (manual tools glow ivory)",
+	"res://ui/hud/hud_view.gd": "the TUNED tag marks a weapon the Steward is running",
+	"res://ui/loadout/loadout.gd": "the Steward's line on the loadout screen (its narration)",
+	"res://game/enemies/custodian.gd": "a Custodian's lamp dome is Steward hardware",
 }
 
 const SCAN_ROOTS: Array[String] = ["res://autoload", "res://core", "res://game", "res://ui", "res://data"]

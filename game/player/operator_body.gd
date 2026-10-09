@@ -8,7 +8,14 @@ const HEIGHT := 172.0
 ## Drawn at 160 px and scaled up to HEIGHT: about 1.3 tile widths, as in image 10.
 const DRAW_SCALE := HEIGHT / 160.0
 
+## Lying on the ground after Integrity runs out.
+var downed: bool = false:
+	set(value):
+		downed = value
+		queue_redraw()
+
 var _facing_screen: Vector2 = Vector2(0.5, -0.5)
+var _flash: float = 0.0
 var _walk_phase: float = 0.0
 var _moving: bool = false
 var _roll: float = -1.0
@@ -26,14 +33,21 @@ func update_pose(facing_ground: Vector2, velocity: Vector2, dodge: Dodge, delta:
 	if _moving:
 		_walk_phase += delta * 11.0
 	_roll = dodge.progress() if dodge.is_rolling() else -1.0
+	_flash = maxf(0.0, _flash - delta)
 	queue_redraw()
+
+
+func flash() -> void:
+	_flash = 0.15
 
 
 func _draw() -> void:
 	draw_colored_polygon(_ellipse(Vector2.ZERO, 30.0, 13.0), Color(Palette.NEAR_BLACK, 0.45))
 	var side := 1.0 if _facing_screen.x >= 0.0 else -1.0
 	var back := _facing_screen.y < -0.25
-	if _roll >= 0.0:
+	if downed:
+		draw_set_transform(Vector2(-60, -8), -PI * 0.5 * side, Vector2(side, 1.0) * DRAW_SCALE * 0.9)
+	elif _roll >= 0.0:
 		var squash := sin(_roll * PI)
 		draw_set_transform(Vector2(0, -6.0 * squash), _facing_screen.x * squash * 0.5, Vector2(side * (1.0 + 0.15 * squash), 1.0 - 0.32 * squash) * DRAW_SCALE)
 	else:
@@ -76,6 +90,8 @@ func _draw() -> void:
 		draw_circle(ear, 4.5, Palette.STEWARD_GOLD_HOT, true, -1.0, true)
 	else:
 		draw_circle(ear, 4.5, Palette.IRON_DARK, true, -1.0, true)
+	if _flash > 0.0:
+		draw_rect(Rect2(-36, -152, 72, 152), Color(Palette.IVORY, _flash * 2.0))
 	draw_set_transform(Vector2.ZERO)
 
 
