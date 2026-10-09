@@ -337,4 +337,10 @@ The final full-gate result, actual shutdown leak absence, Steam Deck/controllers
   (`AUTOPILOT FAIL: scenario_ready`). This was verified by breaking a route temporarily, and the unit
   test requires every scenario to be ready.
 
+- **Found while recording the progress video:** that check first measured wall-clock time. Movie Maker
+  renders slower than real time, so it failed there (2.25 s wall clock, against 1.02 s for both voice
+  and text), although voice and text were in step on the movie's own clock. It now measures against the
+  autopilot's unscaled run clock (`Autopilot.run_seconds()`): real time live, movie time when recording.
+  It passes both ways (live: 1.01 s run, voice 0.98 s, text 1.00 s; recorded: 1.03 s, 1.04 s, 1.04 s).
+
 Milestone closed: all 13 findings fixed and confirmed by sol_analyst; the gate passes (see PROGRESS.md).
