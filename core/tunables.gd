@@ -23,3 +23,6 @@ const CORES_CARRIED_PER_LEVEL := 2
 # --- Trust -------------------------------------------------------------------------------------------------
 const TRUST_MIN := -10
 const TRUST_MAX := 10
+
+## Workshop upgrades per weapon mode.
+const UPGRADE_LEVELS := 2

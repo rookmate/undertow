@@ -29,6 +29,7 @@ const STEWARD_ALLOWED: Dictionary[String, String] = {
 	"res://game/props/ark_figure.gd": "Teo's tablet is the Steward's device, amber in his glasses",
 	"res://ui/archive/archive_screen.gd": "the Steward's present-day comment (its narration)",
 	"res://ui/archive/archive_dot.gd": "the Steward's own records are marked in its gold",
+	"res://ui/ark/city_map.gd": "the Loop's route lights are the Steward's",
 }
 
 const SCAN_ROOTS: Array[String] = ["res://autoload", "res://core", "res://game", "res://ui", "res://data"]

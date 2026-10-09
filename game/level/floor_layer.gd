@@ -4,10 +4,12 @@ extends Node2D
 ## paper-strewn floor, stairs and canal water. Placeholder shapes in the palette, at image 10's scale.
 
 var grid: LevelGrid
+var look: DistrictLook = DistrictLook.new()
 
 
-func setup(level_grid: LevelGrid) -> void:
+func setup(level_grid: LevelGrid, district_look: DistrictLook) -> void:
 	grid = level_grid
+	look = district_look
 	z_index = -20
 	queue_redraw()
 
@@ -21,11 +23,11 @@ func _draw() -> void:
 			LevelGrid.Floor.COBBLE:
 				_cobble(cell)
 			LevelGrid.Floor.PAVEMENT, LevelGrid.Floor.RAILING:
-				_flagstones(cell, Palette.PAVEMENT, 2)
+				_flagstones(cell, look.pavement, 2)
 			LevelGrid.Floor.LOW_WALL:
-				_flagstones(cell, Palette.STONE_OLD, 1)
+				_flagstones(cell, look.stone, 1)
 			LevelGrid.Floor.OLD_QUAY:
-				_flagstones(cell, Palette.STONE_OLD, 2)
+				_flagstones(cell, look.stone, 2)
 			LevelGrid.Floor.STACKS:
 				_stacks_floor(cell)
 			LevelGrid.Floor.STAIRS:
@@ -33,7 +35,7 @@ func _draw() -> void:
 			LevelGrid.Floor.WATER:
 				_water(cell)
 			LevelGrid.Floor.CONCRETE:
-				_flagstones(cell, Palette.STONE_OLD.lightened(0.12), 1)
+				_flagstones(cell, look.stone.lightened(0.12), 1)
 			LevelGrid.Floor.FOUNDATION:
 				_foundation(cell)
 
@@ -57,15 +59,15 @@ func _sub_diamond(cell: Vector2i, u0: float, v0: float, step: float, inset: floa
 
 
 func _cobble(cell: Vector2i) -> void:
-	draw_colored_polygon(Iso.cell_diamond(cell), Palette.COBBLE_A.darkened(0.35))
+	draw_colored_polygon(Iso.cell_diamond(cell), look.ground_a.darkened(0.35))
 	var rng := _rng(cell)
 	const N := 4
 	var step := 1.0 / N
 	for i: int in N:
 		for j: int in N:
-			var base := Palette.COBBLE_A.lerp(Palette.COBBLE_B, rng.randf())
+			var base := look.ground_a.lerp(look.ground_b, rng.randf())
 			if rng.randf() < 0.18:
-				base = base.lerp(Palette.COBBLE_WET, 0.6)
+				base = base.lerp(look.ground_wet, 0.6)
 			draw_colored_polygon(_sub_diamond(cell, i * step, j * step, step, 0.03), base)
 
 
@@ -75,12 +77,12 @@ func _flagstones(cell: Vector2i, tone: Color, n: int) -> void:
 	var step := 1.0 / n
 	for i: int in n:
 		for j: int in n:
-			var c := tone.lerp(Palette.COBBLE_WET, rng.randf() * 0.35)
+			var c := tone.lerp(look.ground_wet, rng.randf() * 0.35)
 			draw_colored_polygon(_sub_diamond(cell, i * step, j * step, step, 0.02), c)
 
 
 func _stacks_floor(cell: Vector2i) -> void:
-	_flagstones(cell, Palette.STONE_OLD.darkened(0.25), 2)
+	_flagstones(cell, look.stone.darkened(0.25), 2)
 	var rng := _rng(cell, 2)
 	for k: int in rng.randi_range(1, 4):
 		var u := rng.randf_range(0.15, 0.85)
@@ -91,7 +93,7 @@ func _stacks_floor(cell: Vector2i) -> void:
 
 
 func _stairs(cell: Vector2i) -> void:
-	draw_colored_polygon(Iso.cell_diamond(cell), Palette.STONE_OLD.darkened(0.3))
+	draw_colored_polygon(Iso.cell_diamond(cell), look.stone.darkened(0.3))
 	for k: int in 5:
 		var u := 0.1 + k * 0.18
 		draw_line(_at(cell, u, 0.0), _at(cell, u, 1.0), Color(Palette.NEAR_BLACK, 0.55), 3.0, true)
@@ -99,8 +101,8 @@ func _stairs(cell: Vector2i) -> void:
 
 ## An unbuilt plot on the Ark: a darker slab with rebar stubs, waiting for a district's core.
 func _foundation(cell: Vector2i) -> void:
-	draw_colored_polygon(Iso.cell_diamond(cell), Palette.STONE_OLD.darkened(0.35))
-	draw_colored_polygon(_sub_diamond(cell, 0.08, 0.08, 0.84, 0.0), Palette.STONE_OLD.darkened(0.15))
+	draw_colored_polygon(Iso.cell_diamond(cell), look.stone.darkened(0.35))
+	draw_colored_polygon(_sub_diamond(cell, 0.08, 0.08, 0.84, 0.0), look.stone.darkened(0.15))
 	var rng := _rng(cell, 4)
 	for k: int in 3:
 		var p := _at(cell, rng.randf_range(0.2, 0.8), rng.randf_range(0.2, 0.8))
@@ -108,7 +110,7 @@ func _foundation(cell: Vector2i) -> void:
 
 
 func _water(cell: Vector2i) -> void:
-	draw_colored_polygon(Iso.cell_diamond(cell), Palette.WATER_DEEP)
+	draw_colored_polygon(Iso.cell_diamond(cell), look.water)
 	var rng := _rng(cell, 3)
 	if rng.randf() < 0.55:
 		var u := rng.randf_range(0.1, 0.7)

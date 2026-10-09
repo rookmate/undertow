@@ -92,10 +92,27 @@ func test_muted_the_steward_keeps_its_comment_to_itself() -> void:
 	screen.close()
 
 
-func test_the_dock_ends_the_slice() -> void:
-	var panel := ark.open_end_panel()
+func test_the_dock_opens_the_loop_map() -> void:
+	var map := ark.open_city_map()
 	await wait_frames(2)
-	check(panel != null and get_tree().paused)
+	check(map != null and get_tree().paused and Modals.is_top(map))
+	var buttons: Dictionary = map.get("_buttons")
+	check_eq(buttons.size(), LevelCatalog.CITY.size(), "every district of Meridian is on it")
+	check_eq(CityMap.state_of(GameState.run, "vellum"), "done", "the Vellum is behind you")
+	check_eq(CityMap.state_of(GameState.run, "spire"), "unbuilt")
+	check(LevelCatalog.open_districts(GameState.run).is_empty(), "nothing else is built yet")
+	check((map.get("_go") as Button).disabled, "so the skiff isn't ready")
+	map.choose("vellum")
+	check_eq(map.chosen, "", "a done district can't be chosen")
+	var summary := map.open_summary()
+	await wait_frames(2)
+	check(Modals.is_top(summary), "the run so far opens over the map")
+	summary.close()
+	await wait_frames(1)
+	check(Modals.is_top(map), "and closes back to it")
+	map.close()
+	await wait_frames(1)
+	check_false(get_tree().paused)
 
 
 func test_buildings_stand_only_once_restored() -> void:

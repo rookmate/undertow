@@ -26,11 +26,14 @@ var gilt_lit: bool = true:
 var _base := DrawOps.new()
 var _glow := DrawOps.new()
 var _gilt := DrawOps.new()
+var look: DistrictLook = DistrictLook.new()
 var _emissive: Emissive
 
 
-func setup(at: Vector2i, kind: Facade, left_open: bool, right_open: bool) -> void:
+func setup(at: Vector2i, kind: Facade, left_open: bool, right_open: bool, district_look: DistrictLook = null) -> void:
 	cell = at
+	if district_look != null:
+		look = district_look
 	facade = kind
 	show_left = left_open
 	show_right = right_open
@@ -79,12 +82,12 @@ func _build() -> void:
 	var left := Vector2(-hw, 0)
 	var up := Vector2(0, -h)
 	if show_left:
-		_base.poly(PackedVector2Array([left, bottom, bottom + up, left + up]), Palette.BRICK_DARK)
+		_base.poly(PackedVector2Array([left, bottom, bottom + up, left + up]), look.wall_shade)
 		_face(left, bottom, h, false)
 	if show_right:
-		_base.poly(PackedVector2Array([bottom, right, right + up, bottom + up]), Palette.BRICK)
+		_base.poly(PackedVector2Array([bottom, right, right + up, bottom + up]), look.wall)
 		_face(bottom, right, h, true)
-	_base.poly(PackedVector2Array([top + up, right + up, bottom + up, left + up]), Palette.BRICK_TOP)
+	_base.poly(PackedVector2Array([top + up, right + up, bottom + up, left + up]), look.wall_top)
 	_base.polyline(PackedVector2Array([left + up, top + up, right + up]), Color(Palette.NEAR_BLACK, 0.5), 2.0)
 
 

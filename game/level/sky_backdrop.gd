@@ -6,6 +6,7 @@ extends Control
 const PARALLAX := 0.08
 
 var follow: Level
+var look: DistrictLook = DistrictLook.new()
 
 var _towers: Array[Rect2] = []
 var _offset: Vector2 = Vector2.ZERO
@@ -34,14 +35,17 @@ func _process(_delta: float) -> void:
 
 
 func _draw() -> void:
-	var colors := PackedColorArray([Palette.SKY_VIOLET, Palette.SKY_VIOLET, Palette.SKY_TEAL, Palette.SKY_TEAL])
+	var colors := PackedColorArray([look.sky_top, look.sky_top, look.sky_bottom, look.sky_bottom])
 	draw_polygon(PackedVector2Array([Vector2.ZERO, Vector2(size.x, 0), size, Vector2(0, size.y)]), colors)
 	var horizon := size.y * 0.62 + _offset.y
 	for t: Rect2 in _towers:
 		var r := Rect2(t.position + Vector2(_offset.x, horizon), t.size)
-		draw_rect(r, Color(Palette.BLACK_MIRROR, 0.85))
+		draw_rect(r, look.skyline)
 		var wy := r.position.y + 14.0
 		while wy < r.end.y:
 			draw_line(Vector2(r.position.x + 5.0, wy), Vector2(r.end.x - 5.0, wy), Color(Palette.HUMAN_CREAM, 0.035), 1.0)
 			wy += 17.0
-	draw_rect(Rect2(0, horizon, size.x, size.y), Palette.WATER_DEEP)
+	if look.horizon.a > 0.0:
+		draw_polygon(PackedVector2Array([Vector2(0, horizon - 160.0), Vector2(size.x, horizon - 160.0), Vector2(size.x, horizon), Vector2(0, horizon)]),
+			PackedColorArray([Color(look.horizon, 0.0), Color(look.horizon, 0.0), look.horizon, look.horizon]))
+	draw_rect(Rect2(0, horizon, size.x, size.y), look.water)

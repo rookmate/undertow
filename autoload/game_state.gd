@@ -177,6 +177,21 @@ func set_loadout(weapon_ids: Array[String], modes: Dictionary[String, String]) -
 	state_changed.emit(&"loadout")
 
 
+## A weapon recovered in the city: from now on the loadout offers it.
+func give_weapon(weapon_id: String) -> void:
+	if run.weapons_owned.has(weapon_id) or not WeaponDefs.is_known(weapon_id):
+		return
+	run.weapons_owned.append(weapon_id)
+	state_changed.emit(&"weapons_owned")
+
+
+func add_scrap(amount: int) -> void:
+	if amount == 0:
+		return
+	run.scrap = maxi(0, run.scrap + amount)
+	state_changed.emit(&"scrap")
+
+
 func restore_building(building_id: String) -> void:
 	if run.buildings_restored.has(building_id):
 		return

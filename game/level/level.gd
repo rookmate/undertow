@@ -12,6 +12,8 @@ signal enemy_died(enemy: Enemy)
 @export_file("*.txt") var map_path: String = ""
 
 var grid: LevelGrid
+## The district's materials, sky and light (DistrictLook.for_district(level_id)).
+var look: DistrictLook
 var world: Node2D
 ## Effects that lie on the ground (swing arcs, shock rings), above the floor and below the world.
 var fx_ground: Node2D
@@ -44,6 +46,7 @@ func _ready() -> void:
 	if map_path == "":
 		map_path = LevelCatalog.map_of(level_id)
 	grid = LevelGrid.load_file(map_path)
+	look = DistrictLook.for_district(level_id)
 	var problems := grid.validate(is_hub())
 	problems.append_array(_map_problems())
 	if not problems.is_empty():
@@ -61,7 +64,7 @@ func _ready() -> void:
 	var floor_layer := FloorLayer.new()
 	floor_layer.name = "Floor"
 	add_child(floor_layer)
-	floor_layer.setup(grid)
+	floor_layer.setup(grid, look)
 	var reflections := WetReflections.new()
 	reflections.name = "WetReflections"
 	add_child(reflections)
@@ -222,7 +225,7 @@ func _build_cells() -> void:
 					facade = BuildingCell.Facade.NEON_MAGENTA
 				"g":
 					facade = BuildingCell.Facade.NEON_LIME
-			b.setup(cell, facade, not grid.is_building(cell + Vector2i(0, 1)), not grid.is_building(cell + Vector2i(1, 0)))
+			b.setup(cell, facade, not grid.is_building(cell + Vector2i(0, 1)), not grid.is_building(cell + Vector2i(1, 0)), look)
 			world.add_child(b)
 			continue
 		match ch:
@@ -420,6 +423,7 @@ func _add_backdrop() -> void:
 	var layer := CanvasLayer.new()
 	layer.layer = -10
 	var sky := SkyBackdrop.new()
+	sky.look = look
 	layer.add_child(sky)
 	add_child(layer)
 	sky.follow = self
@@ -427,7 +431,7 @@ func _add_backdrop() -> void:
 
 func _add_atmosphere() -> void:
 	_ambient = CanvasModulate.new()
-	_ambient.color = Palette.AMBIENT_VOICE_ON
+	_ambient.color = look.ambient_on
 	add_child(_ambient)
 	var rain_layer := CanvasLayer.new()
 	rain_layer.layer = 2

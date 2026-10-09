@@ -22,7 +22,7 @@ func _ready() -> void:
 	if LevelCatalog.has_level(saved_level):
 		level_id = saved_level
 	picked = Loadout.from_run(run)
-	for id: String in WeaponDefs.SLICE_WEAPONS:
+	for id: String in WeaponDefs.PLAYABLE:
 		modes[id] = Loadout.chosen_mode(run, id)
 	_build()
 	_refresh()
@@ -42,7 +42,8 @@ func _build() -> void:
 	title.position = Vector2(96, 64)
 	add_child(title)
 	var sub := Label.new()
-	sub.text = "%s · CARRY TWO" % LevelCatalog.name_of(level_id).to_upper()
+	var slots := Loadout.slots_for(GameState.run.weapons_owned)
+	sub.text = "%s · CARRY %s" % [LevelCatalog.name_of(level_id).to_upper(), "TWO" if slots == 2 else "ONE"]
 	sub.add_theme_font_override(&"font", UiFonts.mono())
 	sub.add_theme_font_size_override(&"font_size", 20)
 	sub.add_theme_color_override(&"font_color", Palette.IVORY_DIM)
@@ -55,9 +56,7 @@ func _build() -> void:
 	grid.add_theme_constant_override(&"v_separation", 20)
 	grid.position = Vector2(96, 220)
 	add_child(grid)
-	var all: Array[String] = WeaponDefs.SLICE_WEAPONS.duplicate()
-	all.append_array(WeaponDefs.LOCKED_WEAPONS)
-	for id: String in all:
+	for id: String in WeaponDefs.GRID:
 		var card := _make_card(id)
 		grid.add_child(card)
 		_cards[id] = card
@@ -102,7 +101,7 @@ func _build() -> void:
 func _make_card(id: String) -> Button:
 	var card := Button.new()
 	card.custom_minimum_size = Vector2(420, 290)
-	card.disabled = not WeaponDefs.is_unlocked(id)
+	card.disabled = not _owned(id)
 	card.add_theme_stylebox_override(&"normal", UiTheme.panel_style(0.9))
 	card.pressed.connect(_on_card_pressed.bind(id))
 	var icon := WeaponIcon.new()
@@ -118,7 +117,7 @@ func _make_card(id: String) -> Button:
 	name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	card.add_child(name_label)
 	var tag := Label.new()
-	tag.text = WeaponDefs.asset_tag(id) if WeaponDefs.is_unlocked(id) else "NOT RECOVERED"
+	tag.text = WeaponDefs.asset_tag(id) if _owned(id) else "NOT RECOVERED"
 	tag.add_theme_font_override(&"font", UiFonts.mono())
 	tag.add_theme_font_size_override(&"font_size", 13)
 	tag.add_theme_color_override(&"font_color", Palette.IVORY_DIM)
@@ -138,13 +137,18 @@ func _make_card(id: String) -> Button:
 
 
 func _on_card_pressed(id: String) -> void:
+	var slots := Loadout.slots_for(GameState.run.weapons_owned)
 	if picked.has(id):
 		picked.erase(id)
-	elif picked.size() < Loadout.SLOTS:
+	elif picked.size() < slots:
 		picked.append(id)
 	else:
-		picked[Loadout.SLOTS - 1] = id
+		picked[slots - 1] = id
 	_refresh()
+
+
+func _owned(id: String) -> bool:
+	return GameState.run.weapons_owned.has(id) and WeaponDefs.is_playable(id)
 
 
 func _on_mode_toggled(slot_index: int) -> void:
@@ -163,13 +167,13 @@ func _refresh() -> void:
 	for i: int in _slots.size():
 		var id := picked[i] if i < picked.size() else ""
 		_slots[i].show_weapon(id, modes.get(id, Loadout.Mode.TUNED))
-	var problem := Loadout.validate(picked)
+	var problem := Loadout.validate(picked, GameState.run.weapons_owned)
 	_depart.disabled = problem != ""
 	_notice.text = problem
 
 
 func _on_depart() -> void:
-	if Loadout.validate(picked) != "":
+	if Loadout.validate(picked, GameState.run.weapons_owned) != "":
 		return
 	var mode_keys: Dictionary[String, String] = {}
 	for id: String in picked:

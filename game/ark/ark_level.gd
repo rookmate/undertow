@@ -13,7 +13,7 @@ const PLOTS: Dictionary[String, String] = {"A": "archive"}
 const DOORS: Dictionary[String, String] = {"a": "archive"}
 
 var archive_screen: ArchiveScreen
-var end_panel: EndOfSlice
+var city_map: CityMap
 
 
 func is_hub() -> bool:
@@ -145,7 +145,7 @@ func _on_fixture_used(kind: ArkFixture.Kind) -> void:
 	if kind == ArkFixture.Kind.ARCHIVE_DOOR:
 		open_archive()
 	else:
-		open_end_panel()
+		open_city_map()
 
 
 ## The Archive and the end panel pause the Ark through Modals (they own the pause while open).
@@ -158,9 +158,11 @@ func open_archive() -> ArchiveScreen:
 	return archive_screen
 
 
-func open_end_panel() -> EndOfSlice:
-	if end_panel != null:
-		return end_panel
-	end_panel = EndOfSlice.new()
-	add_child(end_panel)
-	return end_panel
+## The dock: the skiff and the Loop map.
+func open_city_map() -> CityMap:
+	if city_map != null:
+		return city_map
+	city_map = CityMap.new()
+	city_map.closed.connect(func() -> void: city_map = null)
+	add_child(city_map)
+	return city_map

@@ -33,6 +33,6 @@ func _draw() -> void:
 			draw_arc(c, 46.0, 0.0, TAU, 32, Palette.GREY_DEEP, 3.0, true)
 			draw_string(UiFonts.heading(), c + Vector2(-10, 16), "?", HORIZONTAL_ALIGNMENT_LEFT, -1, 48, Palette.GREY_DEEP)
 	# Half-peeled asset tag.
-	if weapon_id in WeaponDefs.SLICE_WEAPONS:
+	if WeaponDefs.is_playable(weapon_id):
 		draw_rect(Rect2(c + Vector2(20, 40), Vector2(44, 18)), Palette.PAPER)
 		draw_line(c + Vector2(24, 46), c + Vector2(58, 46), Palette.GREY_DEEP, 2.0)
