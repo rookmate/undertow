@@ -2,7 +2,7 @@ class_name LevelGrid
 extends RefCounted
 ## A level's layout, parsed from a text map in data/levels/ (legend at the top of each file).
 
-enum Floor { VOID, BUILDING, COBBLE, PAVEMENT, OLD_QUAY, STACKS, STAIRS, WATER, RAILING, LOW_WALL }
+enum Floor { VOID, BUILDING, COBBLE, PAVEMENT, OLD_QUAY, STACKS, STAIRS, WATER, RAILING, LOW_WALL, CONCRETE, FOUNDATION }
 
 const FLOOR_OF: Dictionary[String, Floor] = {
 	" ": Floor.VOID, "#": Floor.BUILDING, "d": Floor.BUILDING, "m": Floor.BUILDING, "g": Floor.BUILDING,
@@ -11,11 +11,13 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	"L": Floor.PAVEMENT, "K": Floor.COBBLE, "t": Floor.COBBLE, "o": Floor.PAVEMENT, "|": Floor.STACKS,
 	"P": Floor.COBBLE, "C": Floor.COBBLE, "R": Floor.COBBLE, "c": Floor.COBBLE, "k": Floor.COBBLE,
 	"W": Floor.PAVEMENT, "w": Floor.STACKS, "T": Floor.STACKS, "U": Floor.STACKS,
+	"n": Floor.CONCRETE, "G": Floor.CONCRETE, "a": Floor.CONCRETE, "N": Floor.CONCRETE, "Y": Floor.CONCRETE,
+	"s": Floor.CONCRETE, "D": Floor.CONCRETE, "f": Floor.FOUNDATION, "A": Floor.BUILDING,
 }
 ## Characters whose cell blocks movement.
-const SOLID := " #dmg~=-L|KtoRT"
+const SOLID := " #dmgA~=-L|KtoRT"
 ## People stand on these cells: walkable floor, but nothing should route through them.
-const OCCUPIED := "Ww"
+const OCCUPIED := "WwNY"
 
 var size: Vector2i = Vector2i.ZERO
 var _rows: PackedStringArray = []

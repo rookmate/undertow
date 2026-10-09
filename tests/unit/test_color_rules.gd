@@ -25,6 +25,10 @@ const STEWARD_ALLOWED: Dictionary[String, String] = {
 	"res://ui/core_choice/core_art.gd": "power cores are the Steward's amber prisms",
 	"res://ui/core_choice/core_choice.gd": "POWER CORE label and the Steward's comments on the cards",
 	"res://game/props/reliquary.gd": "the Steward's ring inlaid in the Reliquary lid",
+	"res://game/ark/ark_level.gd": "the Ark's ring of gold floor lights",
+	"res://game/props/ark_figure.gd": "Teo's tablet is the Steward's device, amber in his glasses",
+	"res://ui/archive/archive_screen.gd": "the Steward's present-day comment (its narration)",
+	"res://ui/archive/archive_dot.gd": "the Steward's own records are marked in its gold",
 }
 
 const SCAN_ROOTS: Array[String] = ["res://autoload", "res://core", "res://game", "res://ui", "res://data"]

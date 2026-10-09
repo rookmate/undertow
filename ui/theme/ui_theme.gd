@@ -3,6 +3,13 @@ extends RefCounted
 ## The dark, minimal UI from the mockups: ivory on near-black, Barlow Condensed labels, visible focus
 ## for controller navigation. No gold here: gold belongs to the Steward, not to UI chrome.
 
+## Makes the game's theme the default for every Control in the project.
+static func install() -> void:
+	ThemeDB.get_default_theme().merge_with(build())
+	ThemeDB.fallback_font = UiFonts.label()
+	ThemeDB.fallback_font_size = 26
+
+
 static func build() -> Theme:
 	var t := Theme.new()
 	t.default_font = UiFonts.label()

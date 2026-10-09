@@ -32,6 +32,10 @@ func _draw() -> void:
 				_stairs(cell)
 			LevelGrid.Floor.WATER:
 				_water(cell)
+			LevelGrid.Floor.CONCRETE:
+				_flagstones(cell, Palette.STONE_OLD.lightened(0.12), 1)
+			LevelGrid.Floor.FOUNDATION:
+				_foundation(cell)
 
 
 func _rng(cell: Vector2i, salt: int = 0) -> RandomNumberGenerator:
@@ -91,6 +95,16 @@ func _stairs(cell: Vector2i) -> void:
 	for k: int in 5:
 		var u := 0.1 + k * 0.18
 		draw_line(_at(cell, u, 0.0), _at(cell, u, 1.0), Color(Palette.NEAR_BLACK, 0.55), 3.0, true)
+
+
+## An unbuilt plot on the Ark: a darker slab with rebar stubs, waiting for a district's core.
+func _foundation(cell: Vector2i) -> void:
+	draw_colored_polygon(Iso.cell_diamond(cell), Palette.STONE_OLD.darkened(0.35))
+	draw_colored_polygon(_sub_diamond(cell, 0.08, 0.08, 0.84, 0.0), Palette.STONE_OLD.darkened(0.15))
+	var rng := _rng(cell, 4)
+	for k: int in 3:
+		var p := _at(cell, rng.randf_range(0.2, 0.8), rng.randf_range(0.2, 0.8))
+		draw_line(p, p + Vector2(0, -10), Palette.IRON_DARK, 2.0)
 
 
 func _water(cell: Vector2i) -> void:

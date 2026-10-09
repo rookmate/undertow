@@ -11,8 +11,8 @@ Milestone: **vertical slice** (design brief, "First milestone"). Plan and decisi
 | 4 | Voice toggle: assists, map, narration, lighting | done |
 | 5 | Adaptive narration from tagged line pools | done |
 | 6 | Level end with power-vs-truth core choice | done |
-| 7 | Ark hub with the Archive | next |
-| 8 | Tracking finished + debug overlay + save round-trip | |
+| 7 | Ark hub with the Archive | done |
+| 8 | Tracking finished + debug overlay + save round-trip | next |
 | — | Sol analysis review (reviews/vertical-slice.md), fixes, re-check | |
 
 ## Done
@@ -63,11 +63,18 @@ found it in the stacks; carry two. Faceted amber prisms vs cracked spheres; the 
 push power and dismiss truth. Carrying cores strengthens assists (power) and files memory logs
 (both); the level completes and the Archive is restored.
 
+**Step 7.** The Ark hub (`game/ark/ark.tscn`): the concrete disc with its ring of gold floor lights,
+the restored Archive, unbuilt plots, Noor and Teo, the survivors you woke. The Archive screen
+(mockup 5): log list (comforting / truth / unindexed / unrecovered), decision-record replay, the
+Steward's present-day comment, Noor's and Teo's reactions with trust changes on the first replay.
+Talk to Noor and Teo (their lines follow their trust). The dock ends the slice. Continue resumes on
+the Ark.
+
 ## Next
 
-Step 7: the Ark hub (concrete disc in the estuary, ring of gold floor lights, the restored Archive,
-survivors, Noor and Teo) and the Archive screen (log list, decision-record replay, the Steward's
-present-day comment, Noor's and Teo's reactions with trust changes).
+Step 8: the debug overlay finished (every tracked variable, the ending checklist with Reboot / Unplug
+/ Rewrite, override signing), `EndingRules` with tests for every case, the run summary at the end of
+the slice, save round-trip and failure paths, the Steam wrapper running without Steam.
 
 ## How to run
 

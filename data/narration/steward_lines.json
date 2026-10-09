@@ -15,7 +15,8 @@
 		"idle": {"cooldown": 30},
 		"checkpoint": {"cooldown": 0},
 		"reliquary_near": {"cooldown": 0, "priority": true},
-		"voice_restored": {"cooldown": 0, "priority": true}
+		"voice_restored": {"cooldown": 0, "priority": true},
+		"ark_arrive": {"cooldown": 0, "priority": true}
 	},
 	"lines": [
 		{"id": "VEL_ENTER_N1", "event": "level_enter", "tone": "neutral", "text": "The Vellum. Mind the paper; it's slick in the rain."},
@@ -83,6 +84,10 @@
 
 		{"id": "VOICE_BACK_N1", "event": "voice_restored", "tone": "neutral", "text": "There you are. I kept your place."},
 		{"id": "VOICE_BACK_B1", "event": "voice_restored", "tone": "bold", "text": "Back. Did you enjoy the dark?"},
-		{"id": "VOICE_BACK_C1", "event": "voice_restored", "tone": "cautious", "text": "There you are. I was worried."}
+		{"id": "VOICE_BACK_C1", "event": "voice_restored", "tone": "cautious", "text": "There you are. I was worried."},
+
+		{"id": "ARK_N1", "event": "ark_arrive", "tone": "neutral", "text": "The Ark. I'm not allowed to act here. I can still talk, if you'll let me."},
+		{"id": "ARK_B1", "event": "ark_arrive", "tone": "bold", "text": "The Ark. You brought them home. Not many could have."},
+		{"id": "ARK_C1", "event": "ark_arrive", "tone": "cautious", "text": "The Ark. You're safe here. Nothing on this disc answers to me."}
 	]
 }
