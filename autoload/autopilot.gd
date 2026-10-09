@@ -28,6 +28,7 @@ const SLICE_LONG: Array[String] = [
 const RING_GALLERY: Array[String] = ["save_isolated", "title_shown", "title_ring_present", "ring_gallery_shown"]
 const LONG_RUN_SECONDS := 55.0
 const AUTOPILOT_SAVES := "user://autopilot"
+const SCENARIOS: Array[String] = ["slice", "ring_gallery"]
 
 var active: bool = false
 var seconds: float = 30.0
@@ -63,15 +64,23 @@ func _ready() -> void:
 			scenario = arg.get_slice("=", 1)
 		elif arg.begins_with("--autopilot-shots="):
 			shots_dir = arg.get_slice("=", 1)
+	# The scenario names a save folder, so it is checked before anything touches the disk.
+	var save_dir := save_dir_for(scenario)
+	if save_dir == "":
+		push_error("Autopilot: unknown scenario '%s' (known: %s)" % [scenario, ", ".join(SCENARIOS)])
+		print("AUTOPILOT FAIL: known_scenario")
+		set_process(false)
+		get_tree().quit.call_deferred(1)
+		return
 	if shots_dir != "":
 		DirAccess.make_dir_recursive_absolute(shots_dir)
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	print("[autopilot] scenario=%s seconds=%.0f" % [scenario, seconds])
 	# Never touch the player's save: every automated run gets its own, emptied before it starts.
-	SaveService.use_directory(AUTOPILOT_SAVES.path_join(scenario))
+	SaveService.use_directory(save_dir)
 	SaveService.delete_save()
 	_register_expected()
-	check(SaveService.store.dir_path != SaveService.DEFAULT_DIR and not SaveService.has_save(), "save_isolated")
+	check(is_isolated(SaveService.store.dir_path) and not SaveService.has_save(), "save_isolated")
 	SceneRouter.scene_changed.connect(_on_scene_changed)
 	_on_scene_changed.call_deferred(SceneRouter.current_key)
 	RenderingServer.viewport_set_measure_render_time(get_viewport().get_viewport_rid(), true)
@@ -115,6 +124,19 @@ func _on_post_draw() -> void:
 	_tick_start_us = 0
 
 
+## The autopilot's own save folder for a known scenario, or "" for anything else (a name like "../saves"
+## must never become a path).
+func save_dir_for(scenario_name: String) -> String:
+	return AUTOPILOT_SAVES.path_join(scenario_name) if SCENARIOS.has(scenario_name) else ""
+
+
+## True if `dir` really is inside the autopilot's folder (compared as resolved paths, not strings).
+func is_isolated(dir: String) -> bool:
+	var root := ProjectSettings.globalize_path(AUTOPILOT_SAVES).simplify_path()
+	var resolved := ProjectSettings.globalize_path(dir).simplify_path()
+	return resolved.begins_with(root + "/")
+
+
 # --- Checks -------------------------------------------------------------------------------------
 func _register_expected() -> void:
 	var required: Array[String] = []
@@ -126,7 +148,6 @@ func _register_expected() -> void:
 		"ring_gallery":
 			required = RING_GALLERY.duplicate()
 		_:
-			push_error("Autopilot: unknown scenario '%s'" % scenario)
 			required = ["known_scenario"]
 	for c: String in required:
 		expect(c)

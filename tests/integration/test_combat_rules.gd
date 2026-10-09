@@ -42,21 +42,53 @@ func test_the_baton_cannot_strike_through_the_kiosk() -> void:
 	check_eq(behind.integrity.value, Custodian.MAX_INTEGRITY, "the kiosk stands between them")
 
 
-func test_a_fast_pellet_stops_at_the_kiosk_corner() -> void:
-	var kiosk := level.grid.first("K")
-	var target := level.add_enemy(Custodian.new(), kiosk + Vector2i(1, 0), Custodian.MAX_INTEGRITY)
-	target.set_physics_process(false)
+func _fire(team: Projectile.Team, from_cell: Vector2i, speed: float) -> Projectile:
 	var p := Projectile.new()
-	p.team = Projectile.Team.PLAYER
+	p.team = team
 	p.level = level
 	p.direction = Vector2(1, 0)
-	p.speed_tiles = 150.0
+	p.speed_tiles = speed
 	p.damage = 5.0
-	p.position = Iso.cell_center(kiosk + Vector2i(-1, 0))
+	p.max_tiles = 9.0
+	p.position = Iso.cell_center(from_cell)
 	level.world.add_child(p)
-	await wait_physics_frames(3)
-	check_false(is_instance_valid(p) and p.is_inside_tree() and not p.is_queued_for_deletion(), "the pellet is spent")
-	check_eq(target.integrity.value, Custodian.MAX_INTEGRITY, "nothing on the far side was hit")
+	return p
+
+
+func _spent(p: Variant) -> bool:
+	return not is_instance_valid(p) or not (p as Node).is_inside_tree() or (p as Node).is_queued_for_deletion()
+
+
+## The Drone's real speed, the Clerk's bale and an absurdly fast one: none crosses the kiosk.
+func test_shots_at_every_speed_stop_at_the_kiosk() -> void:
+	var kiosk := level.grid.first("K")
+	for speed: float in [RiotDrone.SHOT_SPEED, 150.0]:
+		var target := level.add_enemy(Custodian.new(), kiosk + Vector2i(2, 0), Custodian.MAX_INTEGRITY)
+		target.set_physics_process(false)
+		var p := _fire(Projectile.Team.PLAYER, kiosk + Vector2i(-1, 0), speed)
+		await wait_physics_frames(ceili(4.0 / speed * 60.0) + 3)
+		check(_spent(p), "the %.0f tiles/s pellet is spent" % speed)
+		check_eq(target.integrity.value, Custodian.MAX_INTEGRITY, "nothing behind the kiosk was hit at %.0f tiles/s" % speed)
+		level.remove_all_enemies()
+	await _put_player(kiosk + Vector2i(2, 0))
+	level.player.set_physics_process(false)
+	var before := level.player.integrity.value
+	var bale := _fire(Projectile.Team.ENEMY, kiosk + Vector2i(-1, 0), Clerk.BALE_SPEED)
+	await wait_physics_frames(ceili(4.0 / Clerk.BALE_SPEED * 60.0) + 3)
+	check(_spent(bale), "the bale is spent")
+	check_eq(level.player.integrity.value, before, "the bale didn't reach the Operator behind the kiosk")
+	level.player.set_physics_process(true)
+
+
+func test_an_open_shot_still_lands() -> void:
+	var kiosk := level.grid.first("K")
+	var row := kiosk + Vector2i(0, 2)
+	var target := level.add_enemy(Custodian.new(), row + Vector2i(3, 0), Custodian.MAX_INTEGRITY)
+	target.set_physics_process(false)
+	check(level.grid.first_block(Vector2(row) + Vector2(0.5, 0.5), Vector2(row) + Vector2(3.5, 0.5)) < 0.0, "nothing in the way")
+	_fire(Projectile.Team.PLAYER, row, RiotDrone.SHOT_SPEED)
+	await wait_physics_frames(20)
+	check(target.integrity.value < Custodian.MAX_INTEGRITY, "the pellet hit")
 
 
 func test_tuned_drone_ignores_a_nearer_enemy_it_cannot_reach() -> void:

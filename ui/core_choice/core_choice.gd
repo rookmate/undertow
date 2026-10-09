@@ -24,6 +24,8 @@ func _ready() -> void:
 	_refresh()
 	if not offered.is_empty():
 		_cards[offered[0]].grab_focus()
+	else:
+		_confirm.grab_focus()
 
 
 func _build() -> void:
@@ -38,7 +40,7 @@ func _build() -> void:
 	title.position = Vector2(96, 64)
 	add_child(title)
 	var sub := Label.new()
-	sub.text = "%d CORES · YOU CAN CARRY %d" % [offered.size(), CoreChoice.carry_count(offered)]
+	sub.text = "%d CORES · YOU CAN CARRY %d" % [offered.size(), Tunables.CORES_CARRIED_PER_LEVEL]
 	sub.add_theme_font_override(&"font", UiFonts.mono())
 	sub.add_theme_font_size_override(&"font_size", 20)
 	sub.add_theme_color_override(&"font_color", Palette.IVORY_DIM)
@@ -137,7 +139,7 @@ func _toggle(id: String) -> void:
 		return
 	if picked.has(id):
 		picked.erase(id)
-	elif picked.size() < CoreChoice.carry_count(offered):
+	elif picked.size() < Tunables.CORES_CARRIED_PER_LEVEL:
 		picked.append(id)
 	elif not picked.is_empty():
 		picked[picked.size() - 1] = id
@@ -149,20 +151,30 @@ func _refresh() -> void:
 		var card := _cards[id]
 		var badge := card.get_node(^"Badge") as Label
 		var carried := picked.has(id)
-		badge.text = "CARRY" if carried else ("LEAVE" if picked.size() == CoreChoice.carry_count(offered) else "")
+		badge.text = "CARRY" if carried else ("LEAVE" if picked.size() == Tunables.CORES_CARRIED_PER_LEVEL else "")
 		badge.add_theme_color_override(&"font_color", Palette.IVORY if carried else Palette.GREY_COLD)
 		var style := UiTheme.panel_style(0.92)
 		if carried:
 			style.border_color = Palette.IVORY
 			style.set_border_width_all(3)
 		card.add_theme_stylebox_override(&"normal", style)
-	_count.text = "%d / %d CHOSEN" % [picked.size(), CoreChoice.carry_count(offered)]
+	_count.text = "%d / %d CHOSEN" % [picked.size(), Tunables.CORES_CARRIED_PER_LEVEL]
+	var broken := CoreChoice.offer_problem(offered)
+	if broken != "":
+		# Broken content (reported at boot): say so and let the player leave; nothing is completed.
+		_summary.text = broken
+		_confirm.text = "BACK TO THE TITLE"
+		_confirm.disabled = false
+		return
 	_confirm.disabled = CoreChoice.validate(offered, picked) != ""
 
 
 func _on_confirm() -> void:
 	if _done:
 		_continue()
+		return
+	if CoreChoice.offer_problem(offered) != "":
+		SceneRouter.goto(&"title")
 		return
 	var problem := CoreChoice.apply(level_id, offered, picked)
 	if problem != "":

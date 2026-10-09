@@ -28,13 +28,16 @@ static func ensure_loaded() -> void:
 	errors = out
 	_loaded = true
 	for e: String in errors:
-		push_error("ContentDb: %s" % e)
+		Diagnostics.error("ContentDb: %s" % e)
 
 
 ## Checks both documents and returns only what is valid: {cores, reliquaries, logs}. Problems are added
 ## to `problems`. Pure, so tests can feed it broken content.
 static func validate_documents(cores_doc: Dictionary, logs_doc: Dictionary, problems: PackedStringArray) -> Dictionary:
 	var logs := {}
+	for need: Array in [[cores_doc, "cores"], [cores_doc, "reliquaries"], [logs_doc, "logs"]]:
+		if not (need[0] as Dictionary).has(need[1]):
+			problems.append("'%s' is missing" % need[1])
 	var raw_logs: Variant = logs_doc.get("logs", {})
 	if not raw_logs is Dictionary:
 		problems.append("'logs' must be an object")
@@ -69,7 +72,9 @@ static func validate_documents(cores_doc: Dictionary, logs_doc: Dictionary, prob
 			elif not ids.has(str(id)):
 				ids.append(str(id))
 		if ids.size() <= Tunables.CORES_CARRIED_PER_LEVEL:
+			# Dropped, not kept: a Reliquary that isn't a real choice must not complete a level.
 			problems.append("reliquary %s offers %d cores; it must offer more than the %d you can carry" % [level, ids.size(), Tunables.CORES_CARRIED_PER_LEVEL])
+			continue
 		reliquaries[str(level)] = ids
 	return {"cores": cores, "reliquaries": reliquaries, "logs": logs}
 

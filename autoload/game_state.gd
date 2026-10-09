@@ -10,12 +10,17 @@ var run: RunState = RunState.new()
 
 ## How the game quits once a close request is settled (tests replace it).
 var quit_handler: Callable
+var _closing: bool = false
 
 
 func _ready() -> void:
 	# Closing the window mid-run saves first; if that fails the player is asked, not silently dropped.
 	get_tree().auto_accept_quit = false
 	quit_handler = func() -> void: get_tree().quit()
+	# Every district's map and content are checked once at boot. Problems are engine errors (the gate
+	# fails on them); a broken Reliquary also refuses to complete its level, never a free pass.
+	for p: String in LevelCatalog.check_all():
+		Diagnostics.error("Content: %s" % p)
 
 
 func _notification(what: int) -> void:
@@ -24,11 +29,17 @@ func _notification(what: int) -> void:
 
 
 func _close_requested() -> void:
+	# One close at a time: pressing close again while the save question is up doesn't ask twice.
+	if _closing:
+		return
+	_closing = true
 	if run.location != "":
 		var safe: bool = await SaveFlow.before_leaving(get_tree())
 		if not safe:
+			_closing = false
 			return
 	quit_handler.call()
+	_closing = false
 
 
 func new_run() -> void:

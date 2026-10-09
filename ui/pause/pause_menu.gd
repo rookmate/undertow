@@ -4,8 +4,6 @@ extends CanvasLayer
 
 var _panel: PanelContainer
 var _resume: Button
-## Whatever had focus before the menu opened (another screen may still be open underneath).
-var _return_focus: Control
 
 
 func _ready() -> void:
@@ -52,24 +50,23 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
+## Opens over the game or over another screen (the Archive), but never over a question that must be
+## answered first (a failed save).
 func open() -> void:
-	if visible:
+	if visible or Modals.top_blocks():
 		return
-	_return_focus = get_viewport().gui_get_focus_owner()
 	visible = true
 	Modals.push(self)
 	_resume.grab_focus()
 
 
-## Closes the menu. The game stays paused if another screen still owns the pause (the Archive).
+## Closes the menu. The game stays paused if another screen still owns the pause (the Archive), and
+## focus goes back to where it was.
 func close() -> void:
 	if not visible:
 		return
 	visible = false
 	Modals.pop(self)
-	if is_instance_valid(_return_focus) and _return_focus.is_visible_in_tree():
-		_return_focus.grab_focus()
-	_return_focus = null
 
 
 func _to_title() -> void:

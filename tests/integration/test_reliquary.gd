@@ -84,3 +84,14 @@ func test_choosing_through_the_screen_applies_and_saves() -> void:
 	check(SaveService.has_save())
 	check_eq(SaveService.load_run().run.location, "ark", "the save resumes at the Ark")
 	screen.queue_free()
+
+
+func test_a_reliquary_with_no_real_choice_says_so_and_completes_nothing() -> void:
+	GameState.set_location("reliquary:nowhere")
+	var screen := await _open_choice()
+	check_eq((screen.get("offered") as Array).size(), 0)
+	check((screen.get("_summary") as Label).text.contains("broken"), "the screen says the Reliquary is broken")
+	var confirm := screen.get("_confirm") as Button
+	check_eq(confirm.text, "BACK TO THE TITLE", "the only way on is out")
+	check(GameState.run.levels_completed.is_empty() and GameState.run.buildings_restored.is_empty(), "nothing completed")
+	screen.queue_free()

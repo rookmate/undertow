@@ -12,6 +12,7 @@ const NOTICE_SECONDS := 6.0
 
 var asking: bool = false
 var error_code: Error = OK
+var _answered: bool = false
 
 var _first_button: Button
 
@@ -65,7 +66,7 @@ func _ready() -> void:
 		add_child(dim)
 		center.add_child(panel)
 		add_child(center)
-		Modals.push(self)
+		Modals.push(self, true)
 		_first_button.grab_focus()
 	else:
 		panel.position = Vector2(40, 160)
@@ -84,8 +85,19 @@ func _button(row: HBoxContainer, text: String, choice: Choice) -> Button:
 
 
 func _choose(choice: Choice) -> void:
+	if _answered or not Modals.is_top(self):
+		return
+	_answered = true
 	Modals.pop(self)
 	resolved.emit(choice)
+	queue_free()
+
+
+## The scene changed under the question (Modals.clear): the answer is "stay", and the question goes.
+func dismiss() -> void:
+	if asking and not _answered:
+		_answered = true
+		resolved.emit(Choice.STAY)
 	queue_free()
 
 

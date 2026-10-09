@@ -126,3 +126,23 @@ func test_validation_catches_broken_maps() -> void:
 	check(bad_line.validate(false).size() > 0, "a malformed id line")
 	var ok := LevelGrid.parse("@ 3,1 someone\n#####\n#P.W#\n#.R.#\n#####")
 	check(ok.validate(false).is_empty(), "a good little map passes: %s" % [ok.validate(false)])
+
+
+func test_shipped_districts_pass_the_boot_check() -> void:
+	check_eq(LevelCatalog.check_all(), PackedStringArray(), "every district's map and content agree")
+
+
+func test_maps_must_name_real_content_of_the_right_kind() -> void:
+	var wrong := LevelGrid.parse("@ 2,1 vellum_power_feed\n@ 3,1 log_0311_morning_feed\n#####\n#.TU#\n#####")
+	var problems := wrong.content_problems()
+	check_eq(problems.size(), 2, "a power core in a truth cache, a Steward log on a slip: %s" % [problems])
+	var unknown := LevelGrid.parse("@ 2,1 no_such_core\n#####\n#.T.#\n#####")
+	check_eq(unknown.content_problems().size(), 1, "an unknown core")
+
+
+func test_ids_are_unique_across_districts_and_every_district_has_a_reliquary() -> void:
+	var map := "@ 2,1 the_same_person\n#####\n#PW.#\n#.R.#\n#####"
+	var grids: Dictionary[String, LevelGrid] = {"vellum": LevelGrid.parse(map), "elsewhere": LevelGrid.parse(map)}
+	var problems := "\n".join(LevelCatalog.check(grids))
+	check(problems.contains("the_same_person is placed in both"), "a person can't live in two districts: %s" % problems)
+	check(problems.contains("elsewhere: This Reliquary is broken"), "a district with no Reliquary content is caught")
