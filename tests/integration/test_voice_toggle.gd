@@ -175,3 +175,19 @@ func test_the_hud_ring_redraws_only_when_its_state_changes() -> void:
 	Steward.set_voice(true)
 	await wait_frames(3)
 	check(draws[0] > settled, "it redraws when the state changes")
+
+
+## The hint bar and the HUD always show the same device's prompts, however the device changed.
+func test_hints_follow_the_device_like_the_hud() -> void:
+	var hints: LevelHints = null
+	for c: Node in level.get_children():
+		if c is LevelHints:
+			hints = c
+	var label: Label = hints.get("_label")
+	Controls.device = Controls.Device.KEYBOARD_MOUSE
+	await wait_frames(1)
+	check(label.text.begins_with("WASD"), label.text)
+	Controls.device = Controls.Device.PAD
+	await wait_frames(1)
+	check(label.text.begins_with("LEFT STICK"), "switched with the device: %s" % label.text)
+	Controls.device = Controls.Device.KEYBOARD_MOUSE
