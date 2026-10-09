@@ -67,7 +67,8 @@ func _draw() -> void:
 		return
 	var alpha := clampf(_left / FADE, 0.0, 1.0)
 	var font := UiFonts.narration()
-	var w := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 34).x
+	var font_size := roundi(34 * Options.subtitle_scale())
+	var w := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 	var at := Vector2((size.x - w) * 0.5, size.y - 190.0)
-	draw_rect(Rect2(at + Vector2(-24, -42), Vector2(w + 48, 60)), Color(Palette.NEAR_BLACK, 0.55 * alpha))
-	draw_string(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, 34, Color(Palette.STEWARD_GOLD, alpha))
+	draw_rect(Rect2(at + Vector2(-24, -font_size * 1.24), Vector2(w + 48, font_size * 1.76)), Color(Palette.NEAR_BLACK, 0.55 * alpha))
+	draw_string(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color(Palette.STEWARD_GOLD, alpha))

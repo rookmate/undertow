@@ -28,12 +28,13 @@ static func push(owner: Node, blocking: bool = false) -> void:
 	e.blocking = blocking
 	var focus := owner.get_viewport().gui_get_focus_owner()
 	e.return_focus = focus if focus != null and not owner.is_ancestor_of(focus) else null
-	if not _stack.is_empty():
-		var below := _stack[_stack.size() - 1].owner
+	var below: Node = _stack[_stack.size() - 1].owner if not _stack.is_empty() else null
+	# On the stack first, so making the screen below inert leaves this one alone even if it's nested in it.
+	_stack.append(e)
+	if below != null:
 		_set_inert(below, true)
 		if owner is CanvasLayer and below is CanvasLayer:
 			(owner as CanvasLayer).layer = maxi((owner as CanvasLayer).layer, (below as CanvasLayer).layer + 1)
-	_stack.append(e)
 	owner.get_tree().paused = true
 
 
@@ -99,6 +100,16 @@ static func _prune() -> void:
 				_set_inert(_stack[_stack.size() - 1].owner, false)
 
 
+## True if `control` belongs to another open screen nested inside `screen` (its own rules apply to it).
+static func _inside_other_screen(control: Node, screen: Node) -> bool:
+	var n := control
+	while n != null and n != screen:
+		if _index_of(n) >= 0:
+			return true
+		n = n.get_parent()
+	return false
+
+
 ## Makes every control in a screen unfocusable and unclickable, or gives back what each one had.
 static func _set_inert(node: Node, inert: bool) -> void:
 	if not is_instance_valid(node):
@@ -107,6 +118,8 @@ static func _set_inert(node: Node, inert: bool) -> void:
 	if node is Control:
 		controls.append(node)
 	for n: Node in controls:
+		if _inside_other_screen(n, node):
+			continue
 		var c := n as Control
 		if inert:
 			if c.has_meta(&"_modal_focus"):

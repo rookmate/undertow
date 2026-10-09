@@ -1,7 +1,8 @@
 extends Node
 ## Input map (keyboard/mouse and controller for every gameplay action), last-used-device tracking and
-## button-prompt labels. The map is defined here rather than in project.godot so it is readable,
-## testable (tests/unit/test_controls.gd) and ready for rebinding later.
+## button-prompt labels. The map is defined here rather than in project.godot so it is readable and
+## testable (tests/unit/test_controls.gd). Each rebindable action's first keyboard/mouse binding and first
+## controller binding can be changed in Options; the other defaults (arrow keys, J/K, the d-pad) stay.
 
 signal device_changed(device: Device)
 
@@ -36,18 +37,30 @@ const GAMEPLAY_ACTIONS: Array[StringName] = [
 	&"attack_primary", &"attack_secondary", &"dodge", &"interact", &"voice_toggle", &"pause",
 ]
 
-## Prompt labels per device. Placeholder text glyphs until real button art exists.
+## Actions the player can rebind (Options). Pause stays on Esc / Start so nobody can lock themselves out.
+const REBINDABLE: Array[StringName] = [
+	&"move_up", &"move_down", &"move_left", &"move_right",
+	&"attack_primary", &"attack_secondary", &"dodge", &"interact", &"voice_toggle",
+]
+
+## Prompt labels for actions whose prompt isn't read off their bindings. Placeholder text glyphs until
+## real button art exists.
 const PROMPTS: Dictionary[StringName, Array] = {
-	&"attack_primary": ["LMB", "RT"],
-	&"attack_secondary": ["RMB", "LT"],
-	&"dodge": ["SPACE", "A"],
-	&"interact": ["E", "X"],
-	&"voice_toggle": ["V", "Y"],
 	&"pause": ["ESC", "START"],
 	&"debug_overlay": ["F3", "BACK+R3"],
 	&"ui_accept": ["ENTER", "A"],
 	&"ui_cancel": ["ESC", "B"],
 }
+
+const PAD_BUTTON_NAMES: Dictionary[int, String] = {
+	JOY_BUTTON_A: "A", JOY_BUTTON_B: "B", JOY_BUTTON_X: "X", JOY_BUTTON_Y: "Y",
+	JOY_BUTTON_LEFT_SHOULDER: "LB", JOY_BUTTON_RIGHT_SHOULDER: "RB",
+	JOY_BUTTON_LEFT_STICK: "L3", JOY_BUTTON_RIGHT_STICK: "R3", JOY_BUTTON_BACK: "BACK", JOY_BUTTON_START: "START",
+	JOY_BUTTON_DPAD_UP: "D-UP", JOY_BUTTON_DPAD_DOWN: "D-DOWN", JOY_BUTTON_DPAD_LEFT: "D-LEFT", JOY_BUTTON_DPAD_RIGHT: "D-RIGHT",
+}
+
+## The player's changes: action -> {"kb": binding, "pad": binding} (either may be missing).
+var _overrides: Dictionary = {}
 
 ## The device prompts are shown for. Every change announces itself, however it's made (input, the
 ## autopilot, tests), so nothing showing prompts can go stale.
@@ -62,13 +75,134 @@ func _enter_tree() -> void:
 	register_actions()
 
 
-static func register_actions() -> void:
+func register_actions() -> void:
 	for action: StringName in BINDINGS:
 		if InputMap.has_action(action):
 			InputMap.erase_action(action)
 		InputMap.add_action(action, 0.2)
-		for binding: Array in BINDINGS[action]:
+		for binding: Array in bindings_for(action):
 			InputMap.action_add_event(action, _make_event(binding))
+
+
+## An action's bindings: its defaults, with the player's choice in place of the first keyboard/mouse one
+## and the first controller one.
+func bindings_for(action: StringName) -> Array:
+	var out: Array = []
+	var done := {"kb": false, "pad": false}
+	var chosen: Dictionary = _overrides.get(action, {})
+	for binding: Array in BINDINGS.get(action, []):
+		var slot := slot_of(binding)
+		if not done[slot] and chosen.has(slot):
+			out.append(chosen[slot])
+		else:
+			out.append(binding)
+		done[slot] = true
+	return out
+
+
+## "kb" for keys and mouse buttons, "pad" for controller buttons and sticks.
+func slot_of(binding: Array) -> String:
+	return "pad" if str(binding[0]).begins_with("pad") else "kb"
+
+
+## The binding shown and rebound for an action on one kind of device ([] if it has none).
+func primary(action: StringName, slot: String) -> Array:
+	for binding: Array in bindings_for(action):
+		if slot_of(binding) == slot:
+			return binding
+	return []
+
+
+## Binds an action's keyboard/mouse or controller slot. If another rebindable action already uses that
+## input there, the two swap, so no action is ever left unreachable.
+func set_binding(action: StringName, binding: Array) -> void:
+	if not REBINDABLE.has(action) or not _valid(binding):
+		Diagnostics.error("Controls: can't bind %s to %s" % [action, binding])
+		return
+	var slot := slot_of(binding)
+	var previous := primary(action, slot)
+	for other: StringName in REBINDABLE:
+		if other != action and primary(other, slot) == binding and not previous.is_empty():
+			_set_override(other, slot, previous)
+	_set_override(action, slot, binding)
+	register_actions()
+
+
+func _set_override(action: StringName, slot: String, binding: Array) -> void:
+	var chosen: Dictionary = _overrides.get(action, {})
+	chosen[slot] = binding
+	_overrides[action] = chosen
+
+
+func overrides() -> Dictionary:
+	return _overrides.duplicate(true)
+
+
+## Loads saved choices; anything that isn't a valid binding for a rebindable action is dropped.
+func set_overrides(saved: Dictionary) -> void:
+	_overrides = {}
+	for action: Variant in saved:
+		var chosen: Variant = saved[action]
+		if not REBINDABLE.has(StringName(str(action))) or not chosen is Dictionary:
+			continue
+		for slot: Variant in chosen:
+			var binding: Variant = (chosen as Dictionary)[slot]
+			if binding is Array and _valid(binding) and slot_of(binding) == str(slot):
+				_set_override(StringName(str(action)), str(slot), binding)
+	register_actions()
+
+
+func reset_bindings() -> void:
+	_overrides = {}
+	register_actions()
+
+
+static func _valid(binding: Array) -> bool:
+	if binding.size() != 2:
+		return false
+	match str(binding[0]):
+		"key", "mouse", "pad_button":
+			return binding[1] is int
+		"pad_axis":
+			return binding[1] is Array and (binding[1] as Array).size() == 2
+	return false
+
+
+## How a binding is written in prompts: the key's name on this keyboard layout, LMB/RMB, A/B/X/Y, RT/LT.
+func label_of(binding: Array) -> String:
+	if binding.is_empty():
+		return "—"
+	match str(binding[0]):
+		"key":
+			# The name this keyboard layout prints on that key (a headless run has no layout to ask).
+			var code := int(binding[1])
+			if DisplayServer.get_name() != "headless":
+				var mapped := DisplayServer.keyboard_get_keycode_from_physical(code)
+				code = mapped if mapped != KEY_NONE else code
+			return OS.get_keycode_string(code).to_upper()
+		"mouse":
+			return {MOUSE_BUTTON_LEFT: "LMB", MOUSE_BUTTON_RIGHT: "RMB", MOUSE_BUTTON_MIDDLE: "MMB",
+				MOUSE_BUTTON_XBUTTON1: "M4", MOUSE_BUTTON_XBUTTON2: "M5"}.get(int(binding[1]), "MOUSE %d" % int(binding[1]))
+		"pad_button":
+			return PAD_BUTTON_NAMES.get(int(binding[1]), "BUTTON %d" % int(binding[1]))
+		"pad_axis":
+			var spec: Array = binding[1]
+			var axis := int(spec[0])
+			var positive := float(spec[1]) > 0.0
+			match axis:
+				JOY_AXIS_TRIGGER_LEFT:
+					return "LT"
+				JOY_AXIS_TRIGGER_RIGHT:
+					return "RT"
+				JOY_AXIS_LEFT_X:
+					return "LS RIGHT" if positive else "LS LEFT"
+				JOY_AXIS_LEFT_Y:
+					return "LS DOWN" if positive else "LS UP"
+				JOY_AXIS_RIGHT_X:
+					return "RS RIGHT" if positive else "RS LEFT"
+				JOY_AXIS_RIGHT_Y:
+					return "RS DOWN" if positive else "RS UP"
+	return "?"
 
 
 ## Bindings answer every device (-1, Godot's "all devices"): a second controller, a reconnected one, or
@@ -130,12 +264,14 @@ func using_pad() -> bool:
 	return device == Device.PAD
 
 
-## Short label for an action on the current device, e.g. "V" or "Y".
+## Short label for an action on the current device, e.g. "V" or "Y", read off its current binding.
 func prompt(action: StringName) -> String:
-	if not PROMPTS.has(action):
-		return String(action).to_upper()
-	var labels: Array = PROMPTS[action]
-	return labels[1] if using_pad() else labels[0]
+	if PROMPTS.has(action):
+		var labels: Array = PROMPTS[action]
+		return labels[1] if using_pad() else labels[0]
+	if BINDINGS.has(action):
+		return label_of(primary(action, "pad" if using_pad() else "kb"))
+	return String(action).to_upper()
 
 
 func move_vector() -> Vector2:

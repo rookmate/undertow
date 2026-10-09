@@ -27,6 +27,11 @@ func _ready() -> void:
 	_resume.text = "RESUME"
 	_resume.pressed.connect(close)
 	box.add_child(_resume)
+	var options := Button.new()
+	options.text = "OPTIONS"
+	# Beside the menu, not inside it: the pause menu goes inert underneath, the options screen mustn't.
+	options.pressed.connect(func() -> void: get_parent().add_child(OptionsScreen.new()))
+	box.add_child(options)
 	var quit := Button.new()
 	quit.text = "SAVE AND RETURN TO TITLE"
 	quit.pressed.connect(_to_title)

@@ -2,7 +2,8 @@ extends Node
 ## Scripted player for the gate's 30-second run and for progress recordings. Does nothing unless the
 ## game is launched with `-- --autopilot`. Options (after `--`):
 ##   --autopilot-seconds=N      stop after N seconds (default 30)
-##   --autopilot-scenario=NAME  what to do: "slice" (default) or "ring_gallery"
+##   --autopilot-scenario=NAME  what to do: "slice" (default), "ring_gallery" or "options" (the options
+##                              screen from the title: volume, display, a rebinding, back)
 ##   --autopilot-shots=DIR      save screenshots at named moments into DIR
 ## Each scene script registers the checks it expects; at the end the autopilot prints
 ## "AUTOPILOT PASS" and exits 0 only if every expected check passed.
@@ -28,7 +29,8 @@ const SLICE_LONG: Array[String] = [
 const RING_GALLERY: Array[String] = ["save_isolated", "title_shown", "title_ring_present", "ring_gallery_shown"]
 const LONG_RUN_SECONDS := 55.0
 const AUTOPILOT_SAVES := "user://autopilot"
-const SCENARIOS: Array[String] = ["slice", "ring_gallery"]
+const SCENARIOS: Array[String] = ["slice", "ring_gallery", "options"]
+const OPTIONS_TOUR: Array[String] = ["save_isolated", "title_shown", "title_ring_present", "options_opened", "options_volume", "options_rebind", "options_closed"]
 
 var active: bool = false
 var seconds: float = 30.0
@@ -79,6 +81,8 @@ func _ready() -> void:
 	# Never touch the player's save: every automated run gets its own, emptied before it starts.
 	SaveService.use_directory(save_dir)
 	SaveService.delete_save()
+	# Default settings (bindings, volumes) whatever the player chose: runs must be repeatable.
+	Options.use_path(save_dir.path_join("settings.cfg"))
 	_register_expected()
 	check(is_isolated(SaveService.store.dir_path) and not SaveService.has_save(), "save_isolated")
 	SceneRouter.scene_changed.connect(_on_scene_changed)
@@ -147,6 +151,8 @@ func _register_expected() -> void:
 				required.append_array(SLICE_LONG)
 		"ring_gallery":
 			required = RING_GALLERY.duplicate()
+		"options":
+			required = OPTIONS_TOUR.duplicate()
 		_:
 			required = ["known_scenario"]
 	for c: String in required:
@@ -332,10 +338,63 @@ func _drive_title(gen: int) -> void:
 	if scenario == "ring_gallery":
 		expect("ring_gallery_shown")
 		SceneRouter.goto(&"ring_gallery")
+	elif scenario == "options":
+		_tour_options(gen)
 	elif scenario == "slice":
 		expect("level_reached")
 		# New Game has focus; accept it the way a controller or keyboard would.
 		tap(&"ui_accept")
+
+
+## Opens Options from the title with the keyboard/pad, turns a volume down, rebinds dodge, and goes back.
+func _tour_options(gen: int) -> void:
+	var title := get_tree().current_scene
+	var open: Button = null
+	for b: Node in title.find_children("*", "Button", true, false):
+		if (b as Button).text == "OPTIONS":
+			open = b
+	if open == null:
+		return
+	open.grab_focus()
+	tap(&"ui_accept")
+	if not await _wait(1.0, gen):
+		return
+	var screen: OptionsScreen = null
+	for c: Node in title.get_children():
+		if c is OptionsScreen:
+			screen = c
+	check(screen != null, "options_opened")
+	if screen == null:
+		return
+	await snap("options")
+	var sliders: Dictionary = screen.get("_sliders")
+	(sliders[&"Music"] as Control).grab_focus()
+	for i: int in 4:
+		tap(&"ui_left")
+		if not await _wait(0.3, gen):
+			return
+	check(Options.volumes[&"Music"] < Options.VOLUME_DEFAULTS[&"Music"], "options_volume")
+	var dodge_kb: Button = (screen.get("_binding_buttons") as Dictionary)["dodge/kb"]
+	dodge_kb.grab_focus()
+	if not await _wait(0.8, gen):
+		return
+	tap(&"ui_accept")
+	if not await _wait(0.8, gen):
+		return
+	var key := InputEventKey.new()
+	key.physical_keycode = KEY_R
+	key.pressed = true
+	Input.parse_input_event(key)
+	if not await _wait(0.8, gen):
+		return
+	check(Controls.primary(&"dodge", "kb") == ["key", KEY_R], "options_rebind")
+	await snap("options_rebound")
+	if not await _wait(1.0, gen):
+		return
+	screen.close()
+	if not await _wait(0.5, gen):
+		return
+	check(not is_instance_valid(screen) or screen.is_queued_for_deletion(), "options_closed")
 
 
 func _drive_ring_gallery(gen: int) -> void:

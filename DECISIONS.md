@@ -267,3 +267,10 @@ Asked of the user on 2026-10-09 and answered the same day.
     on a memory log after its replay, and when you try to wake one of the Waiting. Its last words before
     the Quiet are said once per launch on the title, cut off. Noor, Teo and the survivors stay text for
     now.
+89. **Options** (title and pause menu): volumes for each bus, window (windowed / fullscreen), vsync,
+    subtitle size (small / medium / large), and controls. Saved at once to `user://settings.cfg`,
+    separate from the run's save. Each rebindable action's first keyboard/mouse binding and first
+    controller binding can be changed (the other defaults stay); binding an input another action
+    uses swaps them, so nothing becomes unreachable; pause stays on Esc / Start. Prompts everywhere
+    are read off the current bindings. Tests and the autopilot always use default settings. At
+    launch, vsync is only touched if the player turned it off (so `--disable-vsync` still works).
