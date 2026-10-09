@@ -8,6 +8,12 @@ const FADE_SECONDS := 0.25
 const SCENES: Dictionary[StringName, String] = {
 	&"title": "res://ui/title/title.tscn",
 	&"ring_gallery": "res://ui/common/ring_gallery.tscn",
+	&"level_vellum": "res://game/level/vellum_street.tscn",
+}
+
+## Where a saved RunState.location resumes.
+const LOCATIONS: Dictionary[String, StringName] = {
+	"level:vellum": &"level_vellum",
 }
 
 var current_key: StringName = &""
@@ -35,6 +41,10 @@ func key_for_path(scene_path: String) -> StringName:
 		if SCENES[key] == scene_path:
 			return key
 	return &""
+
+
+func key_for_location(location: String) -> StringName:
+	return LOCATIONS.get(location, &"")
 
 
 func goto(key: StringName) -> void:
