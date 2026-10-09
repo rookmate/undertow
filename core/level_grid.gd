@@ -2,7 +2,7 @@ class_name LevelGrid
 extends RefCounted
 ## A level's layout, parsed from a text map in data/levels/ (legend at the top of each file).
 
-enum Floor { VOID, BUILDING, COBBLE, PAVEMENT, OLD_QUAY, STACKS, STAIRS, WATER, RAILING, LOW_WALL, CONCRETE, FOUNDATION }
+enum Floor { VOID, BUILDING, COBBLE, PAVEMENT, OLD_QUAY, STACKS, STAIRS, WATER, RAILING, LOW_WALL, CONCRETE, FOUNDATION, LAWN, STEPS, TIMBER, GRAVEL }
 
 const FLOOR_OF: Dictionary[String, Floor] = {
 	" ": Floor.VOID, "#": Floor.BUILDING, "d": Floor.BUILDING, "m": Floor.BUILDING, "g": Floor.BUILDING,
@@ -14,9 +14,14 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	"n": Floor.CONCRETE, "G": Floor.CONCRETE, "a": Floor.CONCRETE, "N": Floor.CONCRETE, "Y": Floor.CONCRETE,
 	"s": Floor.CONCRETE, "D": Floor.CONCRETE, "f": Floor.FOUNDATION, "A": Floor.BUILDING,
 	"p": Floor.CONCRETE,
+	# Kestrel Heights
+	"l": Floor.BUILDING, "v": Floor.LAWN, "H": Floor.LAWN, "j": Floor.LAWN, "F": Floor.COBBLE, "Q": Floor.COBBLE,
+	"X": Floor.COBBLE, "E": Floor.STEPS, "i": Floor.TIMBER, "q": Floor.GRAVEL,
 }
 ## Characters whose cell blocks movement.
-const SOLID := " #dmgA~=-L|KtoRT"
+## Lawns (and the hedges, planters and sprinklers on them) are the Steward's gardens: looked at, not
+## walked on. The smart gate 'Q' is solid only while closed (SmartGate), so it isn't listed.
+const SOLID := " #dmgAl~=-L|KtoRTvHjF"
 ## People stand on these cells: walkable floor, but nothing should route through them.
 const OCCUPIED := "WwNY"
 ## Placed things that need a stable id from an '@' line (people, caches, logs).
@@ -160,7 +165,7 @@ func is_occupied(cell: Vector2i) -> bool:
 ## The Lattice reaches this cell: it is lit, on the Steward's map and routable by its path.
 func is_indexed(cell: Vector2i) -> bool:
 	var f := floor_at(cell)
-	return f == Floor.COBBLE or f == Floor.PAVEMENT
+	return f == Floor.COBBLE or f == Floor.PAVEMENT or f == Floor.STEPS
 
 
 ## Tall things stop sight, swings and shots: buildings and tall props. Water, rails and low walls don't.

@@ -5,7 +5,7 @@ extends Node2D
 ## windows (human warmth), old-city neon, and the Steward's gilt threaded along the balcony ironwork,
 ## which dies when the voice is muted.
 
-enum Facade { PLAIN, DOOR, NEON_MAGENTA, NEON_LIME, ARCHIVE }
+enum Facade { PLAIN, DOOR, NEON_MAGENTA, NEON_LIME, ARCHIVE, LAUNDRY }
 
 const STORY := 74.0
 const STORIES := 3
@@ -119,6 +119,8 @@ func _face(a: Vector2, b: Vector2, h: float, street_side: bool) -> void:
 		_window(a, b, base, rng.randf() < (0.42 if street_side else 0.22), rng)
 		if story == 1:
 			_balcony(a, b, base)
+		if facade == Facade.LAUNDRY and street_side and story >= 1:
+			_laundry(a, b, base, rng)
 	if street_side and is_neon():
 		_neon(a, b)
 
@@ -149,6 +151,19 @@ func _balcony(a: Vector2, b: Vector2, base: float) -> void:
 		_base.line(_on_face(a, b, u, v), _on_face(a, b, u, v + 16.0), Palette.IRON_DARK, 1.5)
 	# The gilt: ten years of the Steward laid over the ironwork, a gold vein along the rail.
 	_gilt.line(_on_face(a, b, 0.18, v + 16.0), _on_face(a, b, 0.82, v + 16.0), Palette.STEWARD_GOLD_HOT, 1.5)
+
+
+## Washing still on the line, days after everyone left.
+func _laundry(a: Vector2, b: Vector2, base: float, rng: RandomNumberGenerator) -> void:
+	var v := base + STORY - 10.0
+	_base.line(_on_face(a, b, 0.08, v), _on_face(a, b, 0.92, v), Palette.IRON_DARK, 1.0)
+	var cloths: Array[Color] = [look.blossom, Palette.HUMAN_CREAM, Palette.STAINED_TEAL.lightened(0.3), look.blossom.darkened(0.15)]
+	var u := 0.12
+	while u < 0.86:
+		var w := rng.randf_range(0.08, 0.14)
+		var drop := rng.randf_range(14.0, 24.0)
+		_base.poly(PackedVector2Array([_on_face(a, b, u, v), _on_face(a, b, u + w, v), _on_face(a, b, u + w, v - drop), _on_face(a, b, u, v - drop)]), cloths[rng.randi() % cloths.size()])
+		u += w + rng.randf_range(0.03, 0.06)
 
 
 func _rose(a: Vector2, b: Vector2, base: float) -> void:

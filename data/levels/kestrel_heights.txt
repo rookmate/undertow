@@ -1,0 +1,47 @@
+; Kestrel Heights: three terraces of the believers' hillside, climbed by a switchback walk from the
+; funicular stop (bottom) to the civic garden and the Kestrel Reliquary (top). Act 1, the first district.
+; Rows are grid y (top = 0), columns grid x; on screen +x runs down-right and +y down-left.
+;
+; Shared legend (see vellum_street.txt): # building  d doorway  . walk (indexed)  , pavement (indexed)
+;   - low wall (here: the terrace retaining walls)  = railing  L Lattice lamp  P start  C checkpoint
+;   R Reliquary  c Custodian  W one of the Waiting  T truth cache
+; Kestrel Heights:
+;   l   terrace house with washing on the line     v   lawn (the Steward's; looked at, not walked on)
+;   H   trimmed hedge [lawn]                        F   stone planter of white blossom [walk]
+;   j   lawn sprinkler [lawn]                       Q   smart gate [walk]: open while the Steward listens
+;   E   stone steps between terraces (indexed)      X   Lamplighter [walk]
+;   i   a room's floorboards (unindexed)            q   garden gravel (unindexed)
+;
+; Ids ("@ x,y id"): saved, never rename.
+@ 18,4 kestrel_waiting_gardener
+@ 3,11 kestrel_truth_childs_map
+################################
+###l###d###l###d###l###d###l####
+##vvvvvvvvvvvvvvvvvvvvvvF,,,,,F=
+##vvvvvvvvvvvvvvvHHHvvvv,,,,R,,=
+##vvvvHHvvHHvvHHvvWHvvHH,,,,,,,=
+##vv........c.............C....=
+#lvv..................X........=
+##vvvLvvvL..vvvLvvvvLvvvvLvvvvv=
+##vvvvvvvj..vvvjvvvvvjvvvvvvvvv=
+#dvvvvvvvv..vvvvvvvvvvvvvvvvvvv=
+##--------EE-------------------=
+##iTiii-vv..vvvvvvvvvvvvvvvvvvv=
+##iiiii-vv..vvvjvvvvvvvjvvvvvvv=
+##---q--vv..vHvvvHLvvHvvvHvvvvv=
+##vvqqqqH.......X..............=
+##vvqqqqq...........C...X......=
+##vvvvvvvvvvLHHvvLHvvHLvvHHLQQv=
+##vvvvvvvvvvvvvvvvvvvvvvvvvv..v=
+##--------------------------EE-=
+##vvvvvvvvvvvvvvvvvvvvvvvvvv..v=
+#lvvvvvvvvvvvvvvvvvvvvvvvvvv..v=
+##vvv,,,,vHLvvHHvvHLvvHHvvHH..v=
+##vvv,,,,.....F...F.....C......=
+##vvv,P,,........c........c....=
+##vvv,,,,......................=
+#lvvv,,,,LvvvvLvvvvLvvvvLvvvvLv=
+##vvvvvvvvvvjvvvvvvvjvvvvvvjvvv=
+##vvvvvvvvvvvvvvvvvvvvvvvvvvvvv=
+  ==============================
+

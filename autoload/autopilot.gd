@@ -3,7 +3,9 @@ extends Node
 ## game is launched with `-- --autopilot`. Options (after `--`):
 ##   --autopilot-seconds=N      stop after N seconds (default 30)
 ##   --autopilot-scenario=NAME  what to do: "slice" (default), "ring_gallery" or "options" (the options
-##                              screen from the title: volume, display, a rebinding, back)
+##                              screen from the title: volume, display, a rebinding, back) or "tour"
+##                              (straight into --autopilot-level=ID: photographs its start, checkpoints,
+##                              finds and Reliquary, voice on and muted; for looking at a district)
 ##   --autopilot-shots=DIR      save screenshots at named moments into DIR
 ## Each scene script registers the checks it expects; at the end the autopilot prints
 ## "AUTOPILOT PASS" and exits 0 only if every expected check passed.
@@ -29,13 +31,16 @@ const SLICE_LONG: Array[String] = [
 const RING_GALLERY: Array[String] = ["save_isolated", "title_shown", "title_ring_present", "ring_gallery_shown"]
 const LONG_RUN_SECONDS := 55.0
 const AUTOPILOT_SAVES := "user://autopilot"
-const SCENARIOS: Array[String] = ["slice", "ring_gallery", "options"]
+const SCENARIOS: Array[String] = ["slice", "ring_gallery", "options", "tour"]
+const TOUR: Array[String] = ["save_isolated", "title_shown", "tour_level_reached", "tour_done"]
 const OPTIONS_TOUR: Array[String] = ["save_isolated", "title_shown", "title_ring_present", "options_opened", "options_volume", "options_rebind", "options_closed"]
 
 var active: bool = false
 var seconds: float = 30.0
 var scenario: String = "slice"
 var shots_dir: String = ""
+## The district a "tour" visits.
+var tour_level: String = ""
 
 var _elapsed: float = 0.0
 ## Real frame times (ms) while a district is on screen, for the performance report.
@@ -64,6 +69,8 @@ func _ready() -> void:
 			seconds = maxf(1.0, arg.get_slice("=", 1).to_float())
 		elif arg.begins_with("--autopilot-scenario="):
 			scenario = arg.get_slice("=", 1)
+		elif arg.begins_with("--autopilot-level="):
+			tour_level = arg.get_slice("=", 1)
 		elif arg.begins_with("--autopilot-shots="):
 			shots_dir = arg.get_slice("=", 1)
 	# The scenario names a save folder, so it is checked before anything touches the disk.
@@ -153,6 +160,8 @@ func _register_expected() -> void:
 			required = RING_GALLERY.duplicate()
 		"options":
 			required = OPTIONS_TOUR.duplicate()
+		"tour":
+			required = TOUR.duplicate()
 		_:
 			required = ["known_scenario"]
 	for c: String in required:
@@ -340,10 +349,55 @@ func _drive_title(gen: int) -> void:
 		SceneRouter.goto(&"ring_gallery")
 	elif scenario == "options":
 		_tour_options(gen)
+	elif scenario == "tour":
+		if not LevelCatalog.has_level(tour_level):
+			push_error("Autopilot: tour needs --autopilot-level=<district id> (got '%s')" % tour_level)
+			return
+		var target := tour_level
+		SceneRouter.goto_level(target, func() -> void:
+			GameState.new_run()
+			GameState.set_location("level:" + target))
 	elif scenario == "slice":
 		expect("level_reached")
 		# New Game has focus; accept it the way a controller or keyboard would.
 		tap(&"ui_accept")
+
+
+## A look round a district: its start, each checkpoint, each find and the Reliquary, then muted.
+func _drive_tour(gen: int) -> void:
+	var level := get_tree().current_scene as Level
+	if level == null or level.player == null:
+		return
+	check(level.level_id == tour_level, "tour_level_reached")
+	if not await _wait(2.5, gen):
+		return
+	await snap("tour_start")
+	var spots: Array[Vector2i] = []
+	for marker: String in ["C", "W", "T", "U", "R"]:
+		for c: Vector2i in level.grid.cells_with(marker):
+			spots.append(c)
+	for c: Vector2i in spots:
+		level.player.position = Iso.cell_center(_beside(level, c))
+		if not await _wait(1.8, gen):
+			return
+		await snap("tour_%s_%d_%d" % [level.grid.char_at(c), c.x, c.y])
+	level.player.position = Iso.cell_center(level.grid.start_cell())
+	tap(&"voice_toggle")
+	if not await _wait(2.5, gen):
+		return
+	await snap("tour_muted")
+	tap(&"voice_toggle")
+	check(true, "tour_done")
+
+
+## A walkable cell next to `c` (or `c` itself) to stand on.
+func _beside(level: Level, c: Vector2i) -> Vector2i:
+	if level.grid.is_walkable(c) and not level.grid.is_occupied(c):
+		return c
+	for d: Vector2i in [Vector2i(1, 1), Vector2i(0, 1), Vector2i(1, 0), Vector2i(-1, 1), Vector2i(1, -1), Vector2i(-1, 0), Vector2i(0, -1)]:
+		if level.grid.is_walkable(c + d) and not level.grid.is_occupied(c + d):
+			return c + d
+	return c
 
 
 ## Opens Options from the title with the keyboard/pad, turns a volume down, rebinds dodge, and goes back.
@@ -422,6 +476,9 @@ func _drive_loadout(gen: int) -> void:
 
 
 func _drive_level(gen: int) -> void:
+	if scenario == "tour":
+		_drive_tour(gen)
+		return
 	var level := get_tree().current_scene as Level
 	if level == null or level.player == null or level.level_id != LevelCatalog.FIRST_LEVEL:
 		return

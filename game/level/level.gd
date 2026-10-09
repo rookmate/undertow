@@ -225,6 +225,8 @@ func _build_cells() -> void:
 					facade = BuildingCell.Facade.NEON_MAGENTA
 				"g":
 					facade = BuildingCell.Facade.NEON_LIME
+				"l":
+					facade = BuildingCell.Facade.LAUNDRY
 			b.setup(cell, facade, not grid.is_building(cell + Vector2i(0, 1)), not grid.is_building(cell + Vector2i(1, 0)), look)
 			world.add_child(b)
 			continue
@@ -250,6 +252,16 @@ func _build_cells() -> void:
 				var reliquary := Reliquary.new()
 				reliquary.setup(self, cell, level_id)
 				world.add_child(reliquary)
+			"H":
+				_prop(cell, StaticProp.Kind.HEDGE)
+			"F":
+				_prop(cell, StaticProp.Kind.PLANTER)
+			"j":
+				_prop(cell, StaticProp.Kind.SPRINKLER)
+			"Q":
+				var gate := SmartGate.new()
+				gate.setup(self, cell)
+				world.add_child(gate)
 			"t":
 				var tram := _prop(cell, StaticProp.Kind.TRAM)
 				tram.joined_left = grid.char_at(cell + Vector2i(0, 1)) == "t"
@@ -258,7 +270,7 @@ func _build_cells() -> void:
 
 func _prop(cell: Vector2i, kind: StaticProp.Kind) -> StaticProp:
 	var p := StaticProp.new()
-	p.setup(cell, kind)
+	p.setup(cell, kind, look)
 	world.add_child(p)
 	return p
 

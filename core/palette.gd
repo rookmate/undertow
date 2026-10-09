@@ -52,6 +52,27 @@ const SKY_VIOLET := Color("#251C3B")
 const SKY_TEAL := Color("#0E2329")
 const FOG := Color("#9FB3BC")
 
+# --- Kestrel Heights (blue hour: pale stone, lawns, hedges, white blossom) ------------------------------
+const KESTREL_STONE_A := Color("#8A8780")
+const KESTREL_STONE_B := Color("#97938B")
+const KESTREL_WET := Color("#6F7D8C")
+const KESTREL_PAVEMENT := Color("#918D86")
+const KESTREL_LIMESTONE := Color("#B8AE9D")
+const KESTREL_LIMESTONE_SHADE := Color("#8C8375")
+const KESTREL_SLATE := Color("#545C69")
+const SKY_DUSK_BLUE := Color("#2B3B6B")
+const SKY_DUSK_LOW := Color("#4A477A")
+const SUNSET_ROSE := Color("#D98A7C")
+const LAWN := Color("#3B583A")
+const LAWN_STRIPE := Color("#446543")
+const HEDGE := Color("#2B4830")
+const BLOSSOM := Color("#EDEADF")
+const TIMBER := Color("#5B4535")
+const GRAVEL := Color("#6C6B67")
+## Kestrel's CanvasModulate: the blue hour is brighter than the city's night.
+const AMBIENT_DUSK_ON := Color(0.46, 0.48, 0.63)
+const AMBIENT_DUSK_MUTED := Color(0.27, 0.28, 0.33)
+
 # --- Characters ---------------------------------------------------------------------------------
 const COVERALL := Color("#39424A")
 const COVERALL_LIGHT := Color("#4B565E")

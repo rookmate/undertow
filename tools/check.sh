@@ -6,6 +6,8 @@
 #   3. The game runs for 30 s from the main scene under the autopilot with no ERROR/WARNING lines and
 #      every autopilot check passing. Windowed when a display exists, headless otherwise.
 #   4. A longer full-slice autopilot run (150 s) that expects every feature built so far to work.
+#   5. A tour of every district in LevelCatalog (autopilot scenario "tour": start, checkpoints, finds,
+#      Reliquary, muted), each with no ERROR/WARNING lines.
 # Env: SMOKE_SECONDS (30), FULL_SECONDS (150), SMOKE_SCENARIO (slice), HEADLESS=1 to force headless, LOG_DIR.
 set -uo pipefail
 
@@ -29,13 +31,13 @@ scan_log() { # $1 log file, $2 label
   return 0
 }
 
-echo "== 1/4 import (godot --headless --import)"
+echo "== 1/5 import (godot --headless --import)"
 timeout 900 godot --headless --path . --import > "$LOG_DIR/import.log" 2>&1
 code=$?
 if [ $code -ne 0 ]; then echo "  FAIL import exited with $code"; status=1; fi
 scan_log "$LOG_DIR/import.log" import && [ $code -eq 0 ] && echo "  ok"
 
-echo "== 2/4 tests"
+echo "== 2/5 tests"
 timeout 900 godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn > "$LOG_DIR/tests.log" 2>&1
 code=$?
 grep -E '^(  FAIL|RESULT)' "$LOG_DIR/tests.log" | sed 's/^/  /'
@@ -43,7 +45,7 @@ if [ $code -ne 0 ]; then echo "  FAIL tests exited with $code"; status=1; fi
 grep -q '^RESULT: PASS' "$LOG_DIR/tests.log" || { echo "  FAIL no passing RESULT line"; status=1; }
 scan_log "$LOG_DIR/tests.log" tests && [ $code -eq 0 ] && echo "  ok"
 
-echo "== 3/4 ${SMOKE_SECONDS}s run from the main scene (autopilot scenario: $SMOKE_SCENARIO)"
+echo "== 3/5 ${SMOKE_SECONDS}s run from the main scene (autopilot scenario: $SMOKE_SCENARIO)"
 # Windowed runs disable vsync: this machine's display server has no monitor attached, so presenting
 # with vsync blocks forever. --max-fps keeps the frame rate realistic.
 MODE=(--disable-vsync --max-fps 60)
@@ -57,7 +59,7 @@ if [ $code -ne 0 ]; then echo "  FAIL run exited with $code"; status=1; fi
 grep -q '^AUTOPILOT PASS' "$LOG_DIR/smoke.log" || { echo "  FAIL autopilot did not pass"; status=1; }
 scan_log "$LOG_DIR/smoke.log" run && [ $code -eq 0 ] && echo "  ok"
 
-echo "== 4/4 full slice run (${FULL_SECONDS:-150}s, every feature so far)"
+echo "== 4/5 full slice run (${FULL_SECONDS:-150}s, every feature so far)"
 timeout $(( ${FULL_SECONDS:-150} + 90 )) godot "${MODE[@]}" --path . -- --autopilot \
   --autopilot-seconds="${FULL_SECONDS:-150}" --autopilot-scenario="$SMOKE_SCENARIO" \
   --autopilot-shots="$LOG_DIR/shots_full" > "$LOG_DIR/full.log" 2>&1
@@ -66,6 +68,18 @@ grep -E '^AUTOPILOT' "$LOG_DIR/full.log" | sed 's/^/  /'
 if [ $code -ne 0 ]; then echo "  FAIL full run exited with $code"; status=1; fi
 grep -q '^AUTOPILOT PASS' "$LOG_DIR/full.log" || { echo "  FAIL full run autopilot did not pass"; status=1; }
 scan_log "$LOG_DIR/full.log" full && [ $code -eq 0 ] && echo "  ok"
+
+echo "== 5/5 district tours"
+for district in $(timeout 120 godot --headless --path . -s tools/list_districts.gd 2>/dev/null | sed -n 's/^DISTRICT //p'); do
+  log="$LOG_DIR/tour_$district.log"
+  timeout 150 godot "${MODE[@]}" --path . -- --autopilot --autopilot-seconds=40 --autopilot-scenario=tour \
+    --autopilot-level="$district" --autopilot-shots="$LOG_DIR/shots_tour_$district" > "$log" 2>&1
+  code=$?
+  grep -E '^AUTOPILOT' "$log" | sed "s/^/  $district: /"
+  if [ $code -ne 0 ]; then echo "  FAIL tour of $district exited with $code"; status=1; fi
+  grep -q '^AUTOPILOT PASS' "$log" || { echo "  FAIL tour of $district did not pass"; status=1; }
+  scan_log "$log" "tour $district" && [ $code -eq 0 ] && echo "  ok"
+done
 
 echo
 if [ $status -eq 0 ]; then echo "GATE: PASS"; else echo "GATE: FAIL"; fi

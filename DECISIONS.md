@@ -284,3 +284,10 @@ Asked of the user on 2026-10-09 and answered the same day.
     (the slice) keep all three weapons. New runs own all three until Kestrel Heights is the start.
 92. **Each district has a look** (`DistrictLook`: ground, walls, sky, horizon, water, ambient light),
     chosen from Palette colours; the Vellum's is unchanged (checked against screenshots).
+93. **Kestrel Heights' terrain:** lawns (and their hedges and sprinklers) are the Steward's gardens,
+    looked at and not walked on; stone steps between terraces are on the Lattice; a child's room and a
+    gravel garden walk are not. Smart gates stand open while the Steward listens and swing shut a
+    moment after it's muted (never on the Operator). Maps can be drawn by a generator script
+    (`tools/maps/`), keeping the hand-written legend and ids.
+94. **The gate tours every district** (stage 5 of `tools/check.sh`): a 40 s autopilot "tour" of each
+    district in the catalog, scanned for errors like the other runs. It caught a real bug the first time.

@@ -69,7 +69,8 @@ func test_occupied_cells_are_walkable_but_marked() -> void:
 ## covers the screen column above its footprint, i.e. cells behind it at (x - i, y - j) with
 ## |i - j| <= 1 and i + j up to its height in half-tiles.
 func test_no_building_hides_walkable_ground() -> void:
-	_check_occlusion(grid)
+	for id: String in LevelCatalog.LEVELS:
+		_check_occlusion(LevelGrid.load_file(LevelCatalog.map_of(id)))
 	_check_occlusion(LevelGrid.load_file("res://data/levels/ark.txt"))
 
 

@@ -99,6 +99,8 @@ def main():
         json.dump(manifest, fh, indent=1, sort_keys=True, ensure_ascii=False)
         fh.write("\n")
     print("%d lines, %d voiced now" % (len(manifest), made))
+    # Godot only sees new sound files once it has imported them.
+    subprocess.run(["godot", "--headless", "--path", ROOT, "--import"], capture_output=True, timeout=600)
 
 
 if __name__ == "__main__":
