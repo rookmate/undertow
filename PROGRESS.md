@@ -111,8 +111,8 @@ at the end. The user's answers (2026-10-09) are in DECISIONS.md 80–87.
 | 13b | The Loop (north arc): stalled trains as bridges, the Waiting in carriages, the driver's cab; the Conductor at the junction; route and tour | done |
 | 14 | The Signal Room and the Overrides screen (mockup 6): six overrides with effects and Steward replies | done |
 | 15 | The Tideworks: cranes and containers, Salvagers, the union hall, finding the Riot Drone, the Crane | done |
-| 16 | The Workshop: scrap and weapon upgrades | next |
-| — | Sol analysis review (reviews/act-1.md), fixes, re-check | |
+| 16 | The Workshop: scrap and weapon upgrades | done |
+| — | Sol analysis review (reviews/act-1.md), fixes, re-check | next |
 
 ## Later milestones (planned)
 

@@ -71,6 +71,11 @@ func announce_fired() -> void:
 	fired.emit()
 
 
+## How much harder this weapon hits in the mode it's running in now (Workshop upgrades).
+func damage_scale() -> float:
+	return Upgrades.damage_mult(GameState.run, weapon_id, Loadout.mode_key(mode()))
+
+
 func level() -> Level:
 	return player.level if player != null else null
 

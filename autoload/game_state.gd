@@ -188,6 +188,19 @@ func give_weapon(weapon_id: String) -> void:
 	state_changed.emit(&"weapons_owned")
 
 
+## Buys the next Workshop level for a weapon's mode. Returns "" or why not (nothing changes then).
+func buy_upgrade(weapon_id: String, mode_key: String) -> String:
+	var problem := Upgrades.why_not(run, weapon_id, mode_key)
+	if problem != "":
+		return problem
+	run.scrap -= Upgrades.next_cost(run, weapon_id, mode_key)
+	var k := Upgrades.key(weapon_id, mode_key)
+	run.upgrades[k] = Upgrades.level(run, weapon_id, mode_key) + 1
+	state_changed.emit(&"upgrades")
+	state_changed.emit(&"scrap")
+	return ""
+
+
 func add_scrap(amount: int) -> void:
 	if amount == 0:
 		return
