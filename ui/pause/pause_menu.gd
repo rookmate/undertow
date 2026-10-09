@@ -66,6 +66,7 @@ func close() -> void:
 	if not visible:
 		return
 	visible = false
+	Sound.play(&"ui_back")
 	Modals.pop(self)
 
 

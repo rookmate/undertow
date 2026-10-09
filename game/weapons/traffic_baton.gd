@@ -70,10 +70,12 @@ func _swing(continues_combo: bool) -> void:
 	if finisher and _last_on_beat:
 		damage *= ON_BEAT_FINISHER
 	var arc := TUNED_ARC if tuned else MANUAL_ARC
+	Sound.play(&"baton_swing", player.global_position)
 	for e: Node2D in targets_in_range(reach + 0.5):
 		var enemy := e as Enemy
 		if CombatMath.in_arc(player.global_position, _swing_dir, enemy.global_position, reach, arc, enemy.radius_tiles):
 			enemy.take_hit(damage, _swing_dir, 0.9 if finisher else 0.45, 0.4 if finisher else 0.12)
+			Sound.play(&"baton_hit", enemy.global_position)
 	var lv := level()
 	if lv != null:
 		var fx := Fx.spawn(lv.fx_ground, player.global_position, Fx.Shape.ARC, Color(glow_color(), 0.55), 0.22)

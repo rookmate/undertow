@@ -94,6 +94,10 @@ func _ready() -> void:
 	watch.setup(self)
 	hud = Hud.new()
 	add_child(hud)
+	var audio := LevelAudio.new()
+	audio.name = "Audio"
+	audio.level = self
+	add_child(audio)
 	Steward.voice_changed.connect(_on_voice_changed)
 	_apply_perf_flags.call_deferred()
 	add_child(PauseMenu.new())
@@ -186,6 +190,7 @@ func _update_checkpoint() -> void:
 	for c: Vector2i in grid.cells_with("C"):
 		if c != checkpoint_cell and Iso.ground_distance(player.global_position, Iso.cell_center(c)) < 1.3:
 			checkpoint_cell = c
+			Sound.play(&"checkpoint")
 
 
 ## Back on your feet at the last checkpoint, at full Integrity.

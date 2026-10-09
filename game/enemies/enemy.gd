@@ -88,6 +88,7 @@ func _enter(next: State) -> void:
 	state = next
 	_state_time = 0.0
 	if next == State.WINDUP:
+		Sound.play(&"windup", global_position)
 		attack_windup.emit(self, windup_seconds())
 		Steward.report_windup(self, windup_seconds())
 
@@ -110,6 +111,7 @@ func take_hit(amount: float, from_dir: Vector2, knock_tiles: float, stun_seconds
 	if integrity.is_depleted():
 		_die()
 		return
+	Sound.play(&"machine_hit", global_position)
 	if stun_seconds > 0.0:
 		_stun_left = stun_seconds
 		_enter(State.STUNNED)
@@ -118,6 +120,7 @@ func take_hit(amount: float, from_dir: Vector2, knock_tiles: float, stun_seconds
 
 
 func _die() -> void:
+	Sound.play(&"machine_death", global_position)
 	_enter(State.DEAD)
 	remove_from_group(&"enemies")
 	collision_layer = 0

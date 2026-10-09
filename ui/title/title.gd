@@ -14,6 +14,7 @@ var _prompt: Label
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	Sound.set_ambience({&"rain": 0.7})
 	var backdrop: Control = preload("res://ui/title/title_backdrop.gd").new()
 	add_child(backdrop)
 	var rain := Rain.new()
@@ -40,7 +41,7 @@ func _ready() -> void:
 	_continue.disabled = not SaveService.has_save()
 	_new_game.pressed.connect(_start_new_game)
 	_continue.pressed.connect(_continue_game)
-	_quit.pressed.connect(func() -> void: get_tree().quit())
+	_quit.pressed.connect(func() -> void: Sound.quit())
 
 	_quiet = Label.new()
 	_quiet.add_theme_font_override(&"font", UiFonts.narration())

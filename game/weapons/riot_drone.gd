@@ -72,6 +72,7 @@ func _shoot(tuned: bool) -> void:
 	p.size = 5.0
 	p.position = player.global_position + Iso.ground_velocity(dir, 0.35)
 	lv.world.add_child(p)
+	Sound.play(&"drone_shot", player.global_position)
 	_cooldown = 1.0 / (TUNED_RATE if tuned else MANUAL_RATE)
 	heat = minf(1.0, heat + HEAT_PER_SHOT)
 	if heat >= 1.0:

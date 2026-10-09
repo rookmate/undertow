@@ -100,6 +100,7 @@ func _physics_process(delta: float) -> void:
 	if input_enabled and Input.is_action_just_pressed(&"dodge"):
 		var dir := ground if ground.length_squared() > 0.01 else facing_ground
 		if dodge.try_start(dir):
+			Sound.play(&"dodge", global_position)
 			dodged.emit(dodge.direction)
 	# Rolling passes through enemies; walking bumps into them.
 	collision_mask = 1 if dodge.is_rolling() else 1 | (1 << 2)
@@ -204,6 +205,7 @@ func take_hit(amount: float, from_position: Vector2) -> bool:
 	if away != Vector2.ZERO:
 		_knock = Iso.ground_velocity(away, 3.0)
 	_body.flash()
+	Sound.play(&"hurt", global_position)
 	hurt.emit(applied)
 	if integrity.is_depleted():
 		_go_down()
@@ -216,6 +218,7 @@ func self_damage(amount: float) -> void:
 		return
 	integrity.take(amount)
 	_body.flash()
+	Sound.play(&"hurt", global_position)
 	hurt.emit(amount)
 	if integrity.is_depleted():
 		_go_down()
@@ -236,4 +239,5 @@ func revive_at(world_position: Vector2) -> void:
 	_downed = false
 	_body.downed = false
 	dodge = Dodge.new()
+	Sound.play(&"respawn")
 	respawned.emit()

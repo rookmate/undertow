@@ -96,12 +96,12 @@ Sol's closure check found nothing open. 229 tests.
 ## Milestone 2: Act 1 (in progress)
 
 Following the world bible's order. Same gates per step, a video per visible step, Sol analysis review
-at the end. Questions asked of the user on 2026-10-09 (push email, art, music, GodotSteam, writing,
-open decisions); defaults in DECISIONS.md 80–86 until answered.
+at the end. The user's answers (2026-10-09) are in DECISIONS.md 80–87.
 
 | Step | What | Status |
 |---|---|---|
-| 9 | Audio: buses, `Sound` service, synthesized placeholder SFX and ambience, hooks in play and UI | next |
+| 9 | Audio: buses, `Sound` service, synthesized placeholder SFX and ambience, hooks in play and UI | done |
+| 9b | Voiced narration: placeholder text-to-speech for every Steward line, played with its subtitles | next |
 | 10 | Options: volumes, display, subtitle size, key and pad rebinding, saved settings | |
 | 11 | District structure: acts and unlocks, New Game starts in Kestrel Heights, the Loop map from the Ark dock, per-district look | |
 | 12 | Kestrel Heights: terraces, smart gates, sprinklers, Lamplighters, the child's map (first truth core), voice tutorial | |

@@ -28,6 +28,7 @@ func interact(_player: Operator) -> void:
 	if not can_interact():
 		return
 	taken = true
+	Sound.play(&"truth_find", global_position)
 	GameState.unlock_log(log_id)
 
 

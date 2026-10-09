@@ -244,6 +244,7 @@ func _on_replay() -> void:
 	for i: int in total:
 		await Wait.seconds(self, LINE_SECONDS)
 		_shown_lines = i + 1
+		Sound.play(&"record_tick")
 		_render_record()
 	last_replay = ArchiveModel.replay(selected)
 	SaveFlow.checkpoint(get_tree())
@@ -273,6 +274,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func close() -> void:
 	if replaying:
 		return
+	Sound.play(&"ui_back")
 	Modals.pop(self)
 	closed.emit()
 	queue_free()

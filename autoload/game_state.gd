@@ -16,7 +16,7 @@ var _closing: bool = false
 func _ready() -> void:
 	# Closing the window mid-run saves first; if that fails the player is asked, not silently dropped.
 	get_tree().auto_accept_quit = false
-	quit_handler = func() -> void: get_tree().quit()
+	quit_handler = func() -> void: Sound.quit()
 	# Every district's map and content are checked once at boot. Problems are engine errors (the gate
 	# fails on them); a broken Reliquary also refuses to complete its level, never a free pass.
 	for p: String in LevelCatalog.check_all():
