@@ -19,6 +19,8 @@ var speed_tiles: float = 2.2
 var aggro_tiles: float = 3.8
 var leash_tiles: float = 9.0
 var facing_ground: Vector2 = Vector2(0, 1)
+## Parts a machine gives up when taken apart (spent at the Workshop).
+var scrap_value: int = 1
 
 var _state_time: float = 0.0
 var _knock: Vector2 = Vector2.ZERO
@@ -48,6 +50,10 @@ func setup(owner_level: Level, cell: Vector2i, max_integrity: float) -> void:
 
 func is_alive() -> bool:
 	return state != State.DEAD
+
+
+func grid_cell() -> Vector2i:
+	return Iso.world_to_cell(global_position)
 
 
 func player() -> Operator:
@@ -121,6 +127,7 @@ func take_hit(amount: float, from_dir: Vector2, knock_tiles: float, stun_seconds
 
 func _die() -> void:
 	Sound.play(&"machine_death", global_position)
+	GameState.add_scrap(scrap_value)
 	_enter(State.DEAD)
 	remove_from_group(&"enemies")
 	collision_layer = 0

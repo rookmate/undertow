@@ -4,7 +4,7 @@ extends Node2D
 ## shelves, a Feed kiosk, a stalled tram segment and bollards; in Kestrel Heights, trimmed hedges, stone
 ## planters of white blossom, and lawn sprinklers that still come on.
 
-enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD, HEDGE, PLANTER, SPRINKLER }
+enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD, HEDGE, PLANTER, SPRINKLER, BED }
 
 const SPRAY_PERIOD := 6.0
 
@@ -57,6 +57,8 @@ func _draw() -> void:
 			_planter()
 		Kind.SPRINKLER:
 			_sprinkler()
+		Kind.BED:
+			_bed()
 
 
 ## A stone urn of white blossom.
@@ -68,6 +70,13 @@ func _planter() -> void:
 	for k: int in 14:
 		var p := Vector2(rng.randf_range(-20, 20), rng.randf_range(-58, -30))
 		draw_circle(p, rng.randf_range(2.5, 4.5), look.blossom, true, -1.0, true)
+
+
+## A child's bed, unmade, and the nightlight still on beside it.
+func _bed() -> void:
+	_prism(22.0, look.timber.lightened(0.1), look.timber.darkened(0.2), look.blossom.darkened(0.1), 0.8)
+	draw_colored_polygon(PackedVector2Array([Vector2(-30, -26), Vector2(4, -10), Vector2(24, -20), Vector2(-10, -36)]), Palette.STAINED_TEAL.lightened(0.2))
+	draw_circle(Vector2(36, -30), 7.0, Color(Palette.HUMAN_CREAM, 0.95), true, -1.0, true)
 
 
 ## A pop-up sprinkler on the lawn: for half of every few seconds it fans water over the grass.

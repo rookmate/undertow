@@ -8,6 +8,8 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 LOG_DIR="$ROOT/reports/export"
 mkdir -p "$LOG_DIR" build/linux build/windows build/macos
+# Screenshots land inside the project folder: keep Godot from importing them.
+touch "$ROOT/reports/.gdignore"
 BAD='^(ERROR|SCRIPT ERROR|USER ERROR|USER SCRIPT ERROR):|Parse Error|Failed to load'
 status=0
 for spec in "Linux:build/linux/Undertow.x86_64" "Windows:build/windows/Undertow.exe" "macOS:build/macos/Undertow.zip"; do

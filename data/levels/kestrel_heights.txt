@@ -11,10 +11,16 @@
 ;   j   lawn sprinkler [lawn]                       Q   smart gate [walk]: open while the Steward listens
 ;   E   stone steps between terraces (indexed)      X   Lamplighter [walk]
 ;   i   a room's floorboards (unindexed)            q   garden gravel (unindexed)
+;   b   a child's bed [floorboards]
+;
+; Place hints ("! x,y text", {action} becomes its key): shown while the Operator is near the cell;
+; [voice_on] or [muted] first shows it only in that state.
 ;
 ; Ids ("@ x,y id"): saved, never rename.
 @ 18,4 kestrel_waiting_gardener
 @ 3,11 kestrel_truth_childs_map
+! 9,15 [voice_on] {voice_toggle}  MUTE THE STEWARD. IT CAN'T SEE PAST THE HEDGE.
+! 28,19 [muted] MUTED, THE GATES WON'T OPEN.  {voice_toggle}  BRINGS IT BACK.
 ################################
 ###l###d###l###d###l###d###l####
 ##vvvvvvvvvvvvvvvvvvvvvvF,,,,,F=
@@ -26,7 +32,7 @@
 ##vvvvvvvj..vvvjvvvvvjvvvvvvvvv=
 #dvvvvvvvv..vvvvvvvvvvvvvvvvvvv=
 ##--------EE-------------------=
-##iTiii-vv..vvvvvvvvvvvvvvvvvvv=
+##iTibi-vv..vvvvvvvvvvvvvvvvvvv=
 ##iiiii-vv..vvvjvvvvvvvjvvvvvvv=
 ##---q--vv..vHvvvHLvvHvvvHvvvvv=
 ##vvqqqqH.......X..............=

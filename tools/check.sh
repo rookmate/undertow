@@ -17,6 +17,8 @@ LOG_DIR="${LOG_DIR:-$ROOT/reports/check}"
 SMOKE_SECONDS="${SMOKE_SECONDS:-30}"
 SMOKE_SCENARIO="${SMOKE_SCENARIO:-slice}"
 mkdir -p "$LOG_DIR"
+# Screenshots land inside the project folder: keep Godot from importing them.
+touch "$ROOT/reports/.gdignore"
 rm -rf "$LOG_DIR/shots" "$LOG_DIR/shots_full"
 BAD='^(ERROR|SCRIPT ERROR|WARNING|SCRIPT WARNING|USER ERROR|USER WARNING|USER SCRIPT ERROR):|Parse Error|Failed to load script|Attempt to resume function'
 status=0

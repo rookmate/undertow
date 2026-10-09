@@ -104,7 +104,9 @@ func _ready() -> void:
 	Steward.voice_changed.connect(_on_voice_changed)
 	_apply_perf_flags.call_deferred()
 	add_child(PauseMenu.new())
-	add_child(LevelHints.new())
+	var hints := LevelHints.new()
+	hints.level = self
+	add_child(hints)
 	GameState.set_location(location_key())
 	SaveFlow.checkpoint(get_tree())
 	_on_ready_extra()
@@ -258,6 +260,16 @@ func _build_cells() -> void:
 				_prop(cell, StaticProp.Kind.PLANTER)
 			"j":
 				_prop(cell, StaticProp.Kind.SPRINKLER)
+			"b":
+				var bed := _prop(cell, StaticProp.Kind.BED)
+				var nightlight := PointLight2D.new()
+				nightlight.texture = LightTextures.radial()
+				nightlight.color = Palette.HUMAN_CREAM
+				nightlight.energy = 1.3
+				nightlight.texture_scale = 1.4
+				nightlight.scale = Vector2(1.0, Iso.SQUASH)
+				nightlight.position = Vector2(36, -20)
+				bed.add_child(nightlight)
 			"Q":
 				var gate := SmartGate.new()
 				gate.setup(self, cell)
@@ -408,6 +420,8 @@ func _spawn_enemies() -> void:
 				break
 	for k: Vector2i in grid.cells_with("k"):
 		_add_enemy(Clerk.new(), k, Clerk.MAX_INTEGRITY)
+	for x: Vector2i in grid.cells_with("X"):
+		_add_enemy(Lamplighter.new(), x, Lamplighter.MAX_INTEGRITY)
 
 
 func _add_enemy(e: Enemy, cell: Vector2i, max_integrity: float) -> void:
