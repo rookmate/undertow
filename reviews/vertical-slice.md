@@ -1,7 +1,7 @@
 # Milestone review: vertical slice
 
 Reviewer: **sol_analyst** (Sol 6.1, xhigh, read-only) via the "Sol analysis" skill, run through
-`codex exec -s read-only`. Scope: `git diff 911fb9c..499648a` (steps 0–8). Author of the code under
+`codex exec -s read-only`. Scope: `git diff c114ef0..33e130d` (steps 0–8). Author of the code under
 review: Claude Code (Claude Opus 5.5).
 
 - Round 1: 29 findings (verbatim), then what was done about each.
@@ -13,7 +13,7 @@ review: Claude Code (Claude Opus 5.5).
 
 I would not call the milestone done yet. The acceptance flows are implemented, but there are save-loss risks, input and combat bugs, violations of the path and hardware-coverage rules, and several assumptions that will break when a second district is added.
 
-Reviewed `911fb9c..499648ad780504dcd0c80cf6f2fc83f984388478`, the design brief, world bible, decisions, production code, tests, and existing gate logs. The logs substantiate 164 passing tests, 19 passing smoke checks, and 43 passing full-slice checks without reported errors or warnings. I did not rerun the gate because its autopilot writes to the normal player save slot. Read-only numerical checks confirmed the aim, path, and projectile geometry findings below. No files were edited.
+Reviewed `c114ef0..33e130dcbd2259d8c12bdc66f1404968dfc28043`, the design brief, world bible, decisions, production code, tests, and existing gate logs. The logs substantiate 164 passing tests, 19 passing smoke checks, and 43 passing full-slice checks without reported errors or warnings. I did not rerun the gate because its autopilot writes to the normal player save slot. Read-only numerical checks confirmed the aim, path, and projectile geometry findings below. No files were edited.
 
 “Confirmed” means the implementation and failure path are verified in the code; it does not mean every filesystem fault or future-content scenario was exercised in Godot.
 
@@ -343,11 +343,11 @@ That has to be measured on the Deck itself.
 
 ## Round 2 findings (verbatim from sol_analyst)
 
-Scope: `git diff 499648a..9e028fc` (the round 1 fixes) plus a re-check of every round 1 finding.
+Scope: `git diff 33e130d..9c3a52d` (the round 1 fixes) plus a re-check of every round 1 finding.
 
 I would not close the milestone yet. Most round-1 fixes are substantive, and the recorded gate passes are supported by the logs. However, the fix introduces a projectile-wall regression, broken invalid-map recovery, and a way to complete a level without recovering any cores. Several growth and failure-path guarantees are also incomplete.
 
-Reviewed `git diff 499648a..9e028fc`, the 29 original findings, the brief, world bible, decisions, changed production code, tests, and validation logs. No files were edited. I did not rerun the gate because it writes files and this session is read-only. Read-only numerical reproductions confirmed the projectile obstruction failure and the Ark population capacity failure.
+Reviewed `git diff 33e130d..9c3a52d`, the 29 original findings, the brief, world bible, decisions, changed production code, tests, and validation logs. No files were edited. I did not rerun the gate because it writes files and this session is read-only. Read-only numerical reproductions confirmed the projectile obstruction failure and the Ark population capacity failure.
 
 “Confirmed” below means the code and failure path are established. It does not mean every scenario was reproduced interactively in Godot.
 
@@ -524,11 +524,11 @@ Not fixed, with reasons:
 
 ## Round 3 findings (verbatim from sol_analyst)
 
-Scope: `git diff 9e028fc..1e5b28a` (the round 2 fixes) plus a re-check of every round 2 finding.
+Scope: `git diff 9c3a52d..52590db` (the round 2 fixes) plus a re-check of every round 2 finding.
 
-I would not close the milestone yet. Eight round-2 findings are resolved, and the Archive content-volume inference is addressed. Finding 3 is partly resolved: zero-core completion is prevented, but expanded off-path content can still bypass a missing or rejected Reliquary definition. I found no new high-severity issue in `9e028fc..1e5b28a`.
+I would not close the milestone yet. Eight round-2 findings are resolved, and the Archive content-volume inference is addressed. Finding 3 is partly resolved: zero-core completion is prevented, but expanded off-path content can still bypass a missing or rejected Reliquary definition. I found no new high-severity issue in `9c3a52d..52590db`.
 
-Reviewed commit `1e5b28a`, the diff, earlier findings and explanations, the brief, decisions, production code, tests, and validation logs. No files were edited. I did not rerun Godot checks because they write files. Read-only numerical checks supported the projectile fix and confirmed the remaining content-validation control flow.
+Reviewed commit `52590db`, the diff, earlier findings and explanations, the brief, decisions, production code, tests, and validation logs. No files were edited. I did not rerun Godot checks because they write files. Read-only numerical checks supported the projectile fix and confirmed the remaining content-validation control flow.
 
 The confirmed remaining finding, ranked by severity, is:
 
@@ -578,9 +578,9 @@ can't leak patched content into later ones.
 
 ## Round 4 (closure check, verbatim from sol_analyst)
 
-Scope: `git diff 1e5b28a..de3ca30`.
+Scope: `git diff 52590db..a5c48de`.
 
-The remaining finding is resolved at `de3ca30`. I would close the milestone under the stated acceptance criteria.
+The remaining finding is resolved at `a5c48de`. I would close the milestone under the stated acceptance criteria.
 
 Confirmed from code and stored evidence:
 
@@ -588,7 +588,7 @@ Confirmed from code and stored evidence:
 - The regression test supplies three valid found cores with a missing definition, then an undersized definition. Both applications are refused; assertions cover cores, logs, completion, restoration, retained finds, and refusal to move to the Ark. Rejected definitions already become absent through content validation. [tests/unit/test_core_choice.gd:135](/home/homebox/Documents/rookmate/undertow/tests/unit/test_core_choice.gd:135), [core/content_db.gd:74](/home/homebox/Documents/rookmate/undertow/core/content_db.gd:74)
 - All affected callers use the updated signatures. Stored logs confirm 229 passing tests, 23/23 smoke checks, and 45/45 full-slice checks. I independently scanned all four gate logs and found no error or warning lines. [tests.log:241](/home/homebox/Documents/rookmate/undertow/reports/check/tests.log:241), [smoke.log:38](/home/homebox/Documents/rookmate/undertow/reports/check/smoke.log:38), [full.log:60](/home/homebox/Documents/rookmate/undertow/reports/check/full.log:60)
 
-Review judgment: I found no new bug, crash risk, brief violation, or material maintainability regression in `git diff 1e5b28a..de3ca30`. The shared validation remains the canonical progression check.
+Review judgment: I found no new bug, crash risk, brief violation, or material maintainability regression in `git diff 52590db..a5c48de`. The shared validation remains the canonical progression check.
 
 Closure follows from this fix and the earlier recorded resolutions. Hardware validation and content caching retain their accepted written reasons; no open high-severity issue was found. [reviews/vertical-slice.md:515](/home/homebox/Documents/rookmate/undertow/reviews/vertical-slice.md:515), [reviews/vertical-slice.md:567](/home/homebox/Documents/rookmate/undertow/reviews/vertical-slice.md:567)
 
