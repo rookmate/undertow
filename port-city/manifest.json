@@ -1,0 +1,111 @@
+{
+  "generator": "built-in image_gen",
+  "canonical_ring": "11-ring-reference.png",
+  "note": "Native widescreen renders approximate 16:9 with subpixel-to-integer dimension rounding. Images have not been cropped or stretched.",
+  "images": [
+    {
+      "line": 1,
+      "file": "01-archive-district.png",
+      "requested_aspect_ratio": "16:9",
+      "width": 1672,
+      "height": 941,
+      "sha256": "0f4625da20be312370a1580d240ee6b2b0e61e914929001131f4b9c6c73465dd"
+    },
+    {
+      "line": 2,
+      "file": "02-tower-plaza.png",
+      "requested_aspect_ratio": "16:9",
+      "width": 1672,
+      "height": 941,
+      "sha256": "c48b52c9fbce0b7b97cd8cab0c42f6a16699d9c37d227935d7175d29941a1e97"
+    },
+    {
+      "line": 3,
+      "file": "03-fishing-quarter.png",
+      "requested_aspect_ratio": "16:9",
+      "width": 1672,
+      "height": 940,
+      "sha256": "cb373346426b4a40b08bb882b673ee77443cb0279517e74aa0a0d192c24134eb"
+    },
+    {
+      "line": 4,
+      "file": "04-hillside-houses.png",
+      "requested_aspect_ratio": "16:9",
+      "width": 1672,
+      "height": 941,
+      "sha256": "fc7dc95e6926f0d7e50e57ca4e3f9eb1fb6e2fc357917e9d9ff1f5ad5a56d1a5"
+    },
+    {
+      "line": 5,
+      "file": "05-automated-docks.png",
+      "requested_aspect_ratio": "16:9",
+      "width": 1672,
+      "height": 941,
+      "sha256": "624c1d4fef633638e968436abbc452a46eeb06cc668bb34ed4ba88bd685d9fee"
+    },
+    {
+      "line": 6,
+      "file": "06-hospital-corridor.png",
+      "requested_aspect_ratio": "16:9",
+      "width": 1672,
+      "height": 941,
+      "sha256": "0ccc06cb18a5f9015d428219c791c926c793f2fede97d76863319d2a22411f25"
+    },
+    {
+      "line": 7,
+      "file": "07-paper-archives.png",
+      "requested_aspect_ratio": "16:9",
+      "width": 1672,
+      "height": 941,
+      "sha256": "8eef9e37da4c51d57e9ed2de72437e20ce39adafd64361ddf09bc910bb4bbd5d"
+    },
+    {
+      "line": 8,
+      "file": "08-seawall-pumping-station.png",
+      "requested_aspect_ratio": "16:9",
+      "width": 1672,
+      "height": 941,
+      "sha256": "ef6f30d82354d46bdb3fa768a3264f0bc39e7b19e46a5a0b31c74eee10af9c97"
+    },
+    {
+      "line": 9,
+      "file": "09-emergency-platform.png",
+      "requested_aspect_ratio": "16:9",
+      "width": 1672,
+      "height": 941,
+      "sha256": "8239feed3bc547e46a11755cf3a3c1b8a9a6623430835fab94ca7920ed8f2cd9"
+    },
+    {
+      "line": 10,
+      "file": "10-isometric-city-block.png",
+      "requested_aspect_ratio": "3:2",
+      "width": 1536,
+      "height": 1024,
+      "sha256": "13f1ab1af762debd1ca2aca7839b9e1e4610c7d67831dee251593208ab44c1b2"
+    },
+    {
+      "line": 11,
+      "file": "11-ring-reference.png",
+      "requested_aspect_ratio": "1:1",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "a3e158a7f9f9caa02021a592252018b85143116a0c6aeb28908f979e28a60615"
+    },
+    {
+      "line": 12,
+      "file": "12-character-lineup.png",
+      "requested_aspect_ratio": "16:9",
+      "width": 1672,
+      "height": 941,
+      "sha256": "e32c72645ae06735e02b6f5970cd76518d7d69b1f854f389da3b6ef28d4ddf9b"
+    },
+    {
+      "line": 13,
+      "file": "13-city-poster.png",
+      "requested_aspect_ratio": "2:3",
+      "width": 1024,
+      "height": 1536,
+      "sha256": "e8f4895bc78dd101b805e6bcc3a665541c6dcdeba62e48bb950c72b2881f02e2"
+    }
+  ]
+}
