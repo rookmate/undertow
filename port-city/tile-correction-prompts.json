@@ -1,0 +1,10 @@
+[
+  {
+    "line": 1,
+    "prompt": "Edit this image only by removing ONE object: erase the single largest, lowest glowing rectangular floor tile, centered at approximately 47% of image width and 94% of image height, in the bottom foreground. Replace that one tile and its glow with ordinary dark wet cobblestones matching the surroundings. KEEP the other THREE smaller glowing floor tiles above it exactly as they are, at roughly 47% width and 83%, 85%, and 89% height, ahead of the walker. There must be exactly THREE illuminated floor tiles total. Do not add, move, duplicate or redraw any tile. Everything else in the entire painting must remain unchanged. Same 16:9 canvas, ring, train, buildings, people, colors and paint finish."
+  },
+  {
+    "line": 13,
+    "prompt": "Make only a precise floor-tile correction to this vertical 2:3 poster. It currently contains FOUR gold floor tiles. Remove the TWO nearest tiles, at approximately (18% width, 74.5% height) and (25% width, 72.7% height), replacing them with normal dark wet rooftop. Preserve the TWO remaining farther tiles, near (33% width, 70.6% height) and (38% width, 69.2% height). Add ONE smaller, fainter third tile continuing that same path away from the figure, near (42% width, 68.2% height). The final image must have exactly THREE glowing tiles total, all ahead of the figure toward the rooftop parapet, no tile under or behind their feet. Preserve absolutely everything else: composition, figure, giant ring geometry and gap, city, viaduct, reflection puddle, paint finish, and quiet EMPTY DARK BOTTOM FIFTH for the title. No text."
+  }
+]
