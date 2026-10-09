@@ -291,3 +291,11 @@ Asked of the user on 2026-10-09 and answered the same day.
     (`tools/maps/`), keeping the hand-written legend and ids.
 94. **The gate tours every district** (stage 5 of `tools/check.sh`): a 40 s autopilot "tour" of each
     district in the catalog, scanned for errors like the other runs. It caught a real bug the first time.
+95. **Lamplighters** (Kestrel Heights): while the Steward listens they walk a little ahead of you and
+    light the path; they aren't targets. Muted, they hunt: a red-orange windup, then a beam of the
+    Lattice's light hooks you (3 damage) and drags you toward the nearest lit cell for up to 1.8 s;
+    hitting the Lamplighter, breaking its line of sight or unmuting frees you.
+96. **Place hints** live in the map file (`! x,y text`, `{action}` becomes its key, `[voice_on]` /
+    `[muted]` limit them to one state). Kestrel teaches muting at the hedge gap and the shut gates.
+97. **Machines give up scrap** when taken apart (Custodian 1, Clerk 2, Lamplighter 3), kept in the run
+    for the Workshop.

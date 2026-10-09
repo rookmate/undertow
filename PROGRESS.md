@@ -105,8 +105,8 @@ at the end. The user's answers (2026-10-09) are in DECISIONS.md 80–87.
 | 10 | Options: volumes, display, subtitle size, key and pad rebinding, saved settings | done |
 | 11 | District structure: acts and unlock order, found weapons, scrap and upgrades in the save (v2), the Loop map from the Ark dock, per-district look | done |
 | 12a | Kestrel Heights: the district (terraces, lawns, hedges, planters, sprinklers, smart gates, laundry, blue-hour look), its cores, logs and voiced lines | done |
-| 12b | Kestrel Heights: Lamplighters, the child's room, the gardener, the voice tutorial | next |
-| 12c | New Game starts in Kestrel Heights with the baton; autopilot routes for Kestrel and the Vellum | |
+| 12b | Kestrel Heights: Lamplighters, the child's room, the gardener, the voice tutorial | done |
+| 12c | New Game starts in Kestrel Heights with the baton; autopilot routes for Kestrel and the Vellum | next |
 | 13 | Bosses and the Loop: boss framework (tuned and manual solutions), stalled trains, the Conductor | |
 | 14 | The Signal Room and the Overrides screen (mockup 6): six overrides with effects and Steward replies | |
 | 15 | The Tideworks: cranes and containers, Salvagers, the union hall, finding the Riot Drone, the Crane | |

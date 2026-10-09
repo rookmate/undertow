@@ -280,6 +280,10 @@ def build():
     clang = env(mix((tone(0.9, 210), 0.6), (tone(0.9, 331), 0.4), (tone(0.9, 517), 0.25)), 0.001, 0.22)
     latch = env(highpass(white(0.03, rng), 2500), 0.0005, 0.005)
     write("gate_shut", mix((creak, 0.5), (clang, 1.0, 0.45), (latch, 0.7, 0.6)), -4)
+    # A Lamplighter's beam taking hold: an electric snap and a rising hum that holds.
+    snap = env(highpass(white(0.05, rng), 2000), 0.0005, 0.01)
+    hold = env(mix((tone(1.2, lambda t: 220 + 60 * min(t, 0.3)), 0.5), (tone(1.2, lambda t: 440 + 120 * min(t, 0.3), "tri"), 0.25)), 0.02, None, 0.3)
+    write("lamp_hook", mix((snap, 0.9), (hold, 0.8, 0.03)), -6)
 
     # --- Ambience loops (seamless) ---
     # Rain on stone: pink noise shaped bright, with a slow wash.

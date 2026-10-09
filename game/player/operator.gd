@@ -40,6 +40,10 @@ var _downed: bool = false
 ## Knockback velocity, decaying; moved through physics with everything else so it can't push the
 ## Operator into a wall.
 var _knock: Vector2 = Vector2.ZERO
+## Being dragged by something (a Lamplighter's beam): toward this point, until the time runs out.
+var _pull_to: Vector2 = Vector2.ZERO
+var _pull_speed: float = 0.0
+var _pull_left: float = 0.0
 var _grace: float = 0.0
 
 
@@ -114,8 +118,27 @@ func _physics_process(delta: float) -> void:
 			facing_ground = ground.normalized()
 	velocity += _knock
 	_knock = _knock.move_toward(Vector2.ZERO, 1500.0 * delta)
+	if _pull_left > 0.0:
+		_pull_left -= delta
+		if Iso.ground_distance(global_position, _pull_to) > 0.25:
+			velocity += Iso.ground_velocity(Iso.ground_dir_between(global_position, _pull_to), _pull_speed)
 	move_and_slide()
 	_body.update_pose(facing_ground, velocity, dodge, delta)
+
+
+## Dragged toward a point for a while (through the world's collision, like walking).
+func pull_toward(target: Vector2, tiles_per_second: float, seconds: float) -> void:
+	_pull_to = target
+	_pull_speed = tiles_per_second
+	_pull_left = seconds
+
+
+func release_pull() -> void:
+	_pull_left = 0.0
+
+
+func is_pulled() -> bool:
+	return _pull_left > 0.0
 
 
 func set_carried_light(on: bool) -> void:

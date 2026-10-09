@@ -16,6 +16,7 @@ var _since_attack: float = 1.2
 
 
 func _ready() -> void:
+	scrap_value = 2
 	radius_tiles = 0.32
 	speed_tiles = 1.8
 	aggro_tiles = 6.5

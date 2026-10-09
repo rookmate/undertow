@@ -11,7 +11,9 @@ var cell: Vector2i
 var level: Level
 var open: bool = true
 var _shape: CollisionShape2D
-var _closing_in: float = -1.0
+## Muted: the gate shuts once this runs out and the Operator is clear.
+var _closing: bool = false
+var _closing_in: float = 0.0
 
 
 func setup(owner_level: Level, at: Vector2i) -> void:
@@ -39,14 +41,15 @@ func _exit_tree() -> void:
 
 func _on_voice(on: bool) -> void:
 	if on:
-		_closing_in = -1.0
+		_closing = false
 		_set_open(true)
 	else:
+		_closing = true
 		_closing_in = CLOSE_DELAY
 
 
 func _physics_process(delta: float) -> void:
-	if _closing_in < 0.0:
+	if not _closing:
 		return
 	_closing_in -= delta
 	if _closing_in > 0.0:
@@ -54,7 +57,7 @@ func _physics_process(delta: float) -> void:
 	# Never shut on the Operator: wait until they're clear of the gate.
 	if level != null and level.player != null and Iso.ground_distance(level.player.global_position, global_position) < 0.95:
 		return
-	_closing_in = -1.0
+	_closing = false
 	_set_open(false)
 	Sound.play(&"gate_shut", global_position)
 

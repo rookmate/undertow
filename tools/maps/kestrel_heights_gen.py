@@ -49,6 +49,7 @@ rect(4, 14, 7, 15, 'q')                     # a garden walk the Lattice never li
 rect(2, 11, 6, 12, 'i')                     # the child's room, its front open
 rect(7, 11, 7, 12, '-'); rect(2, 13, 7, 13, '-'); put(5, 13, 'q')
 put(3, 11, 'T')
+put(5, 11, 'b')                    # her bed, the nightlight still on
 # Retaining wall, steps at the east end.
 rect(2, 18, W - 6, 18, '-'); rect(28, 18, 29, 18, 'E')
 # Terrace 1 (bottom): the funicular stop, the promenade east, the sea beyond the railing.

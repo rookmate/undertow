@@ -16,12 +16,12 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	"p": Floor.CONCRETE,
 	# Kestrel Heights
 	"l": Floor.BUILDING, "v": Floor.LAWN, "H": Floor.LAWN, "j": Floor.LAWN, "F": Floor.COBBLE, "Q": Floor.COBBLE,
-	"X": Floor.COBBLE, "E": Floor.STEPS, "i": Floor.TIMBER, "q": Floor.GRAVEL,
+	"X": Floor.COBBLE, "E": Floor.STEPS, "i": Floor.TIMBER, "q": Floor.GRAVEL, "b": Floor.TIMBER,
 }
 ## Characters whose cell blocks movement.
 ## Lawns (and the hedges, planters and sprinklers on them) are the Steward's gardens: looked at, not
 ## walked on. The smart gate 'Q' is solid only while closed (SmartGate), so it isn't listed.
-const SOLID := " #dmgAl~=-L|KtoRTvHjF"
+const SOLID := " #dmgAl~=-L|KtoRTvHjFb"
 ## People stand on these cells: walkable floor, but nothing should route through them.
 const OCCUPIED := "WwNY"
 ## Placed things that need a stable id from an '@' line (people, caches, logs).
@@ -30,6 +30,8 @@ const NEEDS_ID := "WwTU"
 var size: Vector2i = Vector2i.ZERO
 ## Stable ids of placed things, from the map's '@ x,y id' lines.
 var entity_ids: Dictionary[Vector2i, String] = {}
+## Place hints from the map's '! x,y text' lines: shown near that cell ({action} becomes its key).
+var hints: Dictionary[Vector2i, String] = {}
 ## Problems found while parsing (bad '@' lines); validate() adds the rest.
 var parse_errors: PackedStringArray = []
 var _rows: PackedStringArray = []
@@ -51,6 +53,9 @@ static func parse(text: String) -> LevelGrid:
 		if row.begins_with("@"):
 			grid._parse_id_line(row)
 			continue
+		if row.begins_with("!"):
+			grid._parse_hint_line(row)
+			continue
 		grid._rows.append(row)
 	while grid._rows.size() > 0 and grid._rows[grid._rows.size() - 1].strip_edges() == "":
 		grid._rows.remove_at(grid._rows.size() - 1)
@@ -70,6 +75,16 @@ func _parse_id_line(line: String) -> void:
 		parse_errors.append("bad id line '%s' (expected '@ x,y id')" % line)
 		return
 	entity_ids[Vector2i(xy[0].to_int(), xy[1].to_int())] = parts[1]
+
+
+func _parse_hint_line(line: String) -> void:
+	var rest := line.substr(1).strip_edges()
+	var space := rest.find(" ")
+	var xy := rest.substr(0, space).split(",") if space > 0 else PackedStringArray()
+	if xy.size() != 2 or not xy[0].is_valid_int() or not xy[1].is_valid_int() or rest.substr(space + 1).strip_edges() == "":
+		parse_errors.append("bad hint line '%s' (expected '! x,y text')" % line)
+		return
+	hints[Vector2i(xy[0].to_int(), xy[1].to_int())] = rest.substr(space + 1).strip_edges()
 
 
 func entity_id(cell: Vector2i) -> String:
