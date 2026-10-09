@@ -175,6 +175,7 @@ func test_a_save_question_owns_input_and_stay_gives_focus_back() -> void:
 		await _press(&"pause")
 		check(pause.visible and Modals.is_top(pause), "Start opens the pause menu")
 		await _press(&"ui_down")
+		await _press(&"ui_down")
 		var quit_button := get_viewport().gui_get_focus_owner()
 		check(quit_button is Button and (quit_button as Button).text.begins_with("SAVE AND RETURN"), "focus on save-and-return")
 		await _press(&"ui_accept")
@@ -250,3 +251,22 @@ func test_screens_under_the_top_one_are_inert_until_it_closes() -> void:
 	check_eq(back.focus_mode, before, "it comes back when the pause menu closes")
 	archive.close()
 	ark.queue_free()
+
+
+## A screen opened from inside another (options inside a menu) keeps its own controls usable.
+func test_a_screen_nested_in_another_is_not_made_inert_with_it() -> void:
+	var outer := CanvasLayer.new()
+	var outer_button := Button.new()
+	outer.add_child(outer_button)
+	add_child(outer)
+	Modals.push(outer)
+	var inner := CanvasLayer.new()
+	var inner_button := Button.new()
+	inner.add_child(inner_button)
+	outer.add_child(inner)
+	Modals.push(inner)
+	check_eq(outer_button.focus_mode, Control.FOCUS_NONE, "the screen underneath is inert")
+	check(inner_button.focus_mode != Control.FOCUS_NONE, "the one on top, though inside it, isn't")
+	Modals.pop(inner)
+	Modals.pop(outer)
+	outer.queue_free()

@@ -102,8 +102,8 @@ at the end. The user's answers (2026-10-09) are in DECISIONS.md 80–87.
 |---|---|---|
 | 9 | Audio: buses, `Sound` service, synthesized placeholder SFX and ambience, hooks in play and UI | done |
 | 9b | Voiced narration: placeholder text-to-speech for every Steward line, played with its subtitles | done |
-| 10 | Options: volumes, display, subtitle size, key and pad rebinding, saved settings | next |
-| 11 | District structure: acts and unlocks, New Game starts in Kestrel Heights, the Loop map from the Ark dock, per-district look | |
+| 10 | Options: volumes, display, subtitle size, key and pad rebinding, saved settings | done |
+| 11 | District structure: acts and unlocks, New Game starts in Kestrel Heights, the Loop map from the Ark dock, per-district look | next |
 | 12 | Kestrel Heights: terraces, smart gates, sprinklers, Lamplighters, the child's map (first truth core), voice tutorial | |
 | 13 | Bosses and the Loop: boss framework (tuned and manual solutions), stalled trains, the Conductor | |
 | 14 | The Signal Room and the Overrides screen (mockup 6): six overrides with effects and Steward replies | |
@@ -180,5 +180,5 @@ tools/record.sh <name> [seconds] [scenario]   # progress video -> ../undertow-re
 ```
 
 Autopilot scenarios (`-- --autopilot --autopilot-scenario=NAME`): `slice` (default: title → loadout
-→ level, fighting up the street), `ring_gallery`. Runs of 55 s or more also expect the route to finish.
+→ level, fighting up the street), `ring_gallery`, `options` (the options screen: a volume, a rebinding). Runs of 55 s or more also expect the route to finish.
 Gate logs and screenshots land in `reports/check/` (ignored by git).

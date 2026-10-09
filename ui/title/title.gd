@@ -38,6 +38,11 @@ func _ready() -> void:
 
 	_new_game = _menu_button("NEW GAME", column)
 	_continue = _menu_button("CONTINUE", column)
+	var options := _menu_button("OPTIONS", column)
+	options.pressed.connect(func() -> void:
+		var screen := OptionsScreen.new()
+		screen.closed.connect(func() -> void: options.grab_focus())
+		add_child(screen))
 	_quit = _menu_button("QUIT", column)
 	_continue.disabled = not SaveService.has_save()
 	_new_game.pressed.connect(_start_new_game)

@@ -6,6 +6,7 @@ extends Node
 
 const DIRS: Array[String] = ["res://tests/unit", "res://tests/integration"]
 const SCRATCH_SAVES := "user://test_saves"
+const SCRATCH_SETTINGS := "user://test_settings.cfg"
 ## Real time one test may take before the run is abandoned (a test awaiting something that never comes).
 const TEST_TIMEOUT_MSEC := 120000
 
@@ -40,6 +41,8 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	OS.add_logger(_errors)
 	SaveService.use_directory(SCRATCH_SAVES)
+	# The player's settings (rebound keys, volumes) must not change what tests see.
+	Options.use_path(SCRATCH_SETTINGS)
 	_run.call_deferred()
 
 
