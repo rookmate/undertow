@@ -7,6 +7,9 @@ var level: Level
 
 func _setup_level(weapon_id: String, mode: Loadout.Mode) -> void:
 	GameState.new_run()
+	# Every weapon this test carries has been found.
+	for id: String in WeaponDefs.PLAYABLE:
+		GameState.give_weapon(id)
 	var other := WeaponDefs.DEFIB if weapon_id != WeaponDefs.DEFIB else WeaponDefs.BATON
 	var modes: Dictionary[String, String] = {weapon_id: Loadout.mode_key(mode), other: "tuned"}
 	var ids: Array[String] = [weapon_id, other]

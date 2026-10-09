@@ -2,7 +2,9 @@ extends Node
 ## Scripted player for the gate's 30-second run and for progress recordings. Does nothing unless the
 ## game is launched with `-- --autopilot`. Options (after `--`):
 ##   --autopilot-seconds=N      stop after N seconds (default 30)
-##   --autopilot-scenario=NAME  what to do: "slice" (default), "ring_gallery" or "options" (the options
+##   --autopilot-scenario=NAME  what to do: "slice" (default: New Game, Kestrel Heights, the Ark, the
+##                              Loop map), "vellum" (a prepared run straight to the Vellum and its whole
+##                              route to the Archive), "ring_gallery", "options" (the options
 ##                              screen from the title: volume, display, a rebinding, back) or "tour"
 ##                              (straight into --autopilot-level=ID: photographs its start, checkpoints,
 ##                              finds and Reliquary, voice on and muted; for looking at a district)
@@ -11,15 +13,29 @@ extends Node
 ## "AUTOPILOT PASS" and exits 0 only if every expected check passed.
 
 ## Everything a scenario must achieve, registered up front so a run that stops early can't pass.
-const SLICE_SHORT: Array[String] = [
+## New Game into Kestrel Heights (the 30 s run from the main scene).
+const KESTREL_SHORT: Array[String] = [
+	"save_isolated", "title_shown", "title_ring_present", "loadout_shown", "loadout_one_weapon",
+	"level_reached", "player_spawned", "path_three_tiles_ahead", "lamplighters_light_the_way",
+	"narration_heard", "enemy_killed",
+]
+## Runs of LONG_RUN_SECONDS or more play Kestrel Heights through to the Loop map.
+const KESTREL_LONG: Array[String] = [
+	"dodge_performed", "gate_open_while_listening", "muted_at_the_hedge", "gate_shut_behind",
+	"lamplighter_hooked", "lamplighter_beaten", "childs_map_found", "gardener_woken", "voice_restored",
+	"route_completed", "core_choice_shown", "kestrel_cores_carried", "ark_reached", "ark_bare",
+	"loop_map_shown", "vellum_open_on_map",
+]
+## The Vellum, from a prepared run (Kestrel done, all three weapons).
+const VELLUM_SHORT: Array[String] = [
 	"save_isolated", "title_shown", "title_ring_present", "loadout_shown", "loadout_applied",
 	"level_reached", "player_spawned", "walls_block", "path_three_tiles_ahead", "voice_muted_by_key",
 	"muted_lamps_dark", "muted_hand_lamp_on", "muted_cold_grade", "muted_path_and_map",
 	"muted_assists_off", "voice_restored_lamps", "voice_restored", "narration_heard",
 	"dodge_performed", "enemy_killed",
 ]
-## Runs of LONG_RUN_SECONDS or more play the whole slice to the dock.
-const SLICE_LONG: Array[String] = [
+## Runs of LONG_RUN_SECONDS or more play the whole Vellum to the Archive and the dock.
+const VELLUM_LONG: Array[String] = [
 	"threat_warning_shown", "slowmo_on_dodge", "stacks_reached", "stacks_hidden_while_listening",
 	"steward_blind_in_stacks", "found_unindexed_log", "found_truth_core", "woke_survivor_in_stacks",
 	"woke_survivor_in_doorway", "route_completed", "arrived_by_reliquary", "playstyle_profiled",
@@ -31,7 +47,7 @@ const SLICE_LONG: Array[String] = [
 const RING_GALLERY: Array[String] = ["save_isolated", "title_shown", "title_ring_present", "ring_gallery_shown"]
 const LONG_RUN_SECONDS := 55.0
 const AUTOPILOT_SAVES := "user://autopilot"
-const SCENARIOS: Array[String] = ["slice", "ring_gallery", "options", "tour"]
+const SCENARIOS: Array[String] = ["slice", "vellum", "ring_gallery", "options", "tour"]
 const TOUR: Array[String] = ["save_isolated", "title_shown", "tour_level_reached", "tour_done"]
 const OPTIONS_TOUR: Array[String] = ["save_isolated", "title_shown", "title_ring_present", "options_opened", "options_volume", "options_rebind", "options_closed"]
 
@@ -153,9 +169,13 @@ func _register_expected() -> void:
 	var required: Array[String] = []
 	match scenario:
 		"slice":
-			required = SLICE_SHORT.duplicate()
+			required = KESTREL_SHORT.duplicate()
 			if seconds >= LONG_RUN_SECONDS:
-				required.append_array(SLICE_LONG)
+				required.append_array(KESTREL_LONG)
+		"vellum":
+			required = VELLUM_SHORT.duplicate()
+			if seconds >= LONG_RUN_SECONDS:
+				required.append_array(VELLUM_LONG)
 		"ring_gallery":
 			required = RING_GALLERY.duplicate()
 		"options":
@@ -361,6 +381,14 @@ func _drive_title(gen: int) -> void:
 		expect("level_reached")
 		# New Game has focus; accept it the way a controller or keyboard would.
 		tap(&"ui_accept")
+	elif scenario == "vellum":
+		expect("level_reached")
+		SceneRouter.goto(&"loadout", func() -> void:
+			GameState.new_run()
+			GameState.complete_level("kestrel")
+			for id: String in WeaponDefs.PLAYABLE:
+				GameState.give_weapon(id)
+			GameState.set_location("loadout:vellum"))
 
 
 ## A look round a district: its start, each checkpoint, each find and the Reliquary, then muted.
@@ -464,6 +492,13 @@ func _drive_loadout(gen: int) -> void:
 	if not await _wait(1.5, gen):
 		return
 	await snap("loadout")
+	if str(screen.get("level_id")) == "kestrel":
+		var picked: Array[String] = screen.get("picked")
+		check(picked == [WeaponDefs.BATON] and Loadout.slots_for(GameState.run.weapons_owned) == 1, "loadout_one_weapon")
+		var go := screen.get("_depart") as Button
+		go.grab_focus()
+		tap(&"ui_accept")
+		return
 	# Run the baton by hand, the way a player clicking the slot's toggle would.
 	screen.call("_on_mode_toggled", 0)
 	if not await _wait(1.0, gen):
@@ -480,7 +515,12 @@ func _drive_level(gen: int) -> void:
 		_drive_tour(gen)
 		return
 	var level := get_tree().current_scene as Level
-	if level == null or level.player == null or level.level_id != LevelCatalog.FIRST_LEVEL:
+	if level == null or level.player == null:
+		return
+	if level.level_id == "kestrel":
+		_drive_kestrel(level, gen)
+		return
+	if level.level_id != "vellum":
 		return
 	pass_check("level_reached")
 	var player := level.player
@@ -544,6 +584,9 @@ func _drive_level(gen: int) -> void:
 func _drive_core_choice(gen: int) -> void:
 	pass_check("core_choice_shown")
 	var screen := get_tree().current_scene
+	if str(screen.get("level_id")) == "kestrel":
+		_choose_in_kestrel(screen, gen)
+		return
 	var offered: Array[String] = screen.get("offered")
 	check(offered.size() == 4 and offered.has(ContentIds.CORE_TRUTH_STACKS), "four_cards_with_the_found_core")
 	if not await _wait(1.5, gen):
@@ -576,6 +619,9 @@ func _drive_ark(gen: int) -> void:
 	if ark == null:
 		return
 	var player := ark.player
+	if scenario == "slice":
+		_ark_after_kestrel(ark, gen)
+		return
 	var archive_cells := 0
 	var figures: Dictionary[String, int] = {}
 	for n: Node in ark.world.get_children():
@@ -642,6 +688,143 @@ func _drive_ark(gen: int) -> void:
 		return
 	await snap("debug_overlay_final")
 	DebugOverlay.toggle()
+
+
+# --- Kestrel Heights ----------------------------------------------------------------------------------
+func _lamplighters(level: Level) -> Array[Lamplighter]:
+	var out: Array[Lamplighter] = []
+	for n: Node in level.world.get_children():
+		if n is Lamplighter:
+			out.append(n as Lamplighter)
+	return out
+
+
+func _gates(level: Level) -> Array[SmartGate]:
+	var out: Array[SmartGate] = []
+	for n: Node in level.world.get_children():
+		if n is SmartGate:
+			out.append(n as SmartGate)
+	return out
+
+
+## The switchback climb: terrace 1's Custodians, through the gate while it listens, mute at the hedge,
+## let a Lamplighter take hold and put it down, the child's map, wake the gardener (muted), the Steward
+## back, the Reliquary.
+func _drive_kestrel(level: Level, gen: int) -> void:
+	pass_check("level_reached")
+	var player := level.player
+	pass_check("player_spawned")
+	Controls.device = Controls.Device.PAD
+	var long_run := seconds >= LONG_RUN_SECONDS
+	player.dodged.connect(func(_d: Vector2) -> void: pass_check("dodge_performed"), CONNECT_ONE_SHOT)
+	Narrator.line_spoken.connect(func(_id: String, _t: String) -> void: pass_check("narration_heard"), CONNECT_ONE_SHOT)
+	var start_count := level.living_enemies().size()
+	if not await _wait(1.2, gen):
+		return
+	await snap("kestrel_start")
+	check(level.predicted_path.shown.size() == Tunables.PATH_TILES_AHEAD, "path_three_tiles_ahead")
+	check(_lamplighters(level).all(func(l: Lamplighter) -> bool: return not l.hunting and not l.is_in_group(&"enemies")), "lamplighters_light_the_way")
+	for cell: Vector2i in [Vector2i(12, 23), Vector2i(20, 23), Vector2i(27, 23), Vector2i(28, 20), Vector2i(28, 18)]:
+		if not await advance_to(level, player, cell, 25.0, gen):
+			return
+		if level.living_enemies().size() < start_count:
+			pass_check("enemy_killed")
+	if level.living_enemies().size() < start_count:
+		pass_check("enemy_killed")
+	await snap("kestrel_terrace_1")
+	if not long_run:
+		return
+	check(_gates(level).all(func(g: SmartGate) -> bool: return g.open), "gate_open_while_listening")
+	for cell: Vector2i in [Vector2i(28, 16), Vector2i(28, 15), Vector2i(24, 14), Vector2i(18, 14), Vector2i(12, 14), Vector2i(10, 14)]:
+		if not await advance_to(level, player, cell, 25.0, gen):
+			return
+	await snap("kestrel_hedge_hint")
+	tap(&"voice_toggle")
+	check(await _until(func() -> bool: return not Steward.voice_on, 1.0, gen), "muted_at_the_hedge")
+	check(await _until(func() -> bool: return _gates(level).all(func(g: SmartGate) -> bool: return not g.open), 3.0, gen), "gate_shut_behind")
+	# Muted, a Lamplighter comes for you: let it take hold, then put it down.
+	check(await _until(func() -> bool: return _lamplighters(level).any(func(l: Lamplighter) -> bool: return l.hooking), 8.0, gen), "lamplighter_hooked")
+	await snap("kestrel_hooked")
+	var lamp: Lamplighter = null
+	for l: Lamplighter in _lamplighters(level):
+		if l.hooking or (lamp == null and l.is_alive()):
+			lamp = l
+	var frame := 0
+	var spent := 0.0
+	while lamp != null and lamp.is_alive() and spent < 15.0:
+		if gen != _generation or _finished:
+			return
+		frame += 1
+		_fight(player, lamp, frame)
+		await get_tree().physics_frame
+		spent += get_physics_process_delta_time()
+	_release_all()
+	check(lamp != null and not lamp.is_alive(), "lamplighter_beaten")
+	for cell: Vector2i in [Vector2i(10, 14), Vector2i(8, 15), Vector2i(6, 15), Vector2i(5, 14)]:
+		if not await advance_to(level, player, cell, 20.0, gen):
+			return
+	if not await _use_at(level, player, Vector2i(3, 12), gen):
+		return
+	check(GameState.run.found_core_ids.has("kestrel_truth_childs_map"), "childs_map_found")
+	await snap("kestrel_childs_room")
+	for cell: Vector2i in [Vector2i(5, 14), Vector2i(8, 15), Vector2i(10, 14), Vector2i(10, 12), Vector2i(10, 9), Vector2i(10, 6), Vector2i(15, 5)]:
+		if not await advance_to(level, player, cell, 25.0, gen):
+			return
+	if not await _use_at(level, player, Vector2i(18, 5), gen):
+		return
+	check(GameState.run.survivor_ids.has("kestrel_waiting_gardener"), "gardener_woken")
+	await snap("kestrel_gardener")
+	tap(&"voice_toggle")
+	check(await _until(func() -> bool: return Steward.voice_on and level.predicted_path.shown.size() == Tunables.PATH_TILES_AHEAD, 3.0, gen), "voice_restored")
+	for cell: Vector2i in [Vector2i(22, 5), Vector2i(26, 5), Vector2i(28, 4)]:
+		if not await advance_to(level, player, cell, 25.0, gen):
+			return
+	pass_check("route_completed")
+	await snap("kestrel_reliquary")
+	tap(&"interact")
+
+
+## Carry the child's map and the Day core.
+func _choose_in_kestrel(screen: Node, gen: int) -> void:
+	var offered: Array[String] = screen.get("offered")
+	if not await _wait(1.5, gen):
+		return
+	await snap("kestrel_core_choice")
+	screen.call("_toggle", "kestrel_truth_childs_map")
+	screen.call("_toggle", "kestrel_power_day")
+	if not await _wait(0.8, gen):
+		return
+	var confirm := screen.get("_confirm") as Button
+	confirm.grab_focus()
+	tap(&"ui_accept")
+	if not await _wait(1.0, gen):
+		return
+	var r := GameState.run
+	check(offered.size() == 4 and r.cores_truth() == 1 and r.cores_power() == 1 and r.levels_completed.has("kestrel"), "kestrel_cores_carried")
+	await snap("kestrel_core_choice_done")
+	confirm.grab_focus()
+	tap(&"ui_accept")
+
+
+## After Kestrel Heights the Ark is bare (nothing restored yet); the dock's map shows the Vellum open.
+func _ark_after_kestrel(ark: ArkLevel, gen: int) -> void:
+	var archive := 0
+	for n: Node in ark.world.get_children():
+		if n is BuildingCell and (n as BuildingCell).facade == BuildingCell.Facade.ARCHIVE:
+			archive += 1
+	check(archive == 0 and GameState.run.buildings_restored.is_empty(), "ark_bare")
+	if not await _wait(1.5, gen):
+		return
+	await snap("ark_bare")
+	for cell: Vector2i in [Vector2i(17, 17), Vector2i(19, 19), Vector2i(20, 20)]:
+		if not await advance_to(ark, ark.player, cell, 20.0, gen):
+			return
+	tap(&"interact")
+	if not await _wait(1.0, gen):
+		return
+	check(ark.city_map != null, "loop_map_shown")
+	check(CityMap.state_of(GameState.run, "vellum") == "open" and CityMap.state_of(GameState.run, "kestrel") == "done", "vellum_open_on_map")
+	await snap("loop_map_after_kestrel")
 
 
 ## Off the path: down the stair into the overflow stacks. Nothing there while the Steward listens;

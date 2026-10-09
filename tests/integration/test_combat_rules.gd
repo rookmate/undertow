@@ -7,6 +7,8 @@ var level: Level
 
 func before_each() -> void:
 	GameState.new_run()
+	for id: String in WeaponDefs.PLAYABLE:
+		GameState.give_weapon(id)
 	Steward.set_voice(true)
 	var ids: Array[String] = [WeaponDefs.BATON, WeaponDefs.RIOT_DRONE]
 	var modes: Dictionary[String, String] = {WeaponDefs.BATON: "tuned", WeaponDefs.RIOT_DRONE: "tuned"}

@@ -14,8 +14,8 @@ const SIGNAL_JAMMER := "signal_jammer"
 const GRID: Array[String] = [BATON, RIOT_DRONE, DEFIB, SIGNAL_JAMMER]
 ## Weapons that exist in code (can be carried).
 const PLAYABLE: Array[String] = [BATON, RIOT_DRONE, DEFIB]
-## What a new run owns. Until Act 1's districts exist, the slice's three.
-const STARTING: Array[String] = [BATON, RIOT_DRONE, DEFIB]
+## What a new run owns: a maintenance worker's traffic baton. The rest are found in the city.
+const STARTING: Array[String] = [BATON]
 ## What a version-1 save (the vertical slice) owned.
 const SLICE_SET: Array[String] = [BATON, RIOT_DRONE, DEFIB]
 
