@@ -13,7 +13,7 @@ Milestone: **vertical slice** (design brief, "First milestone"). Plan and decisi
 | 6 | Level end with power-vs-truth core choice | done |
 | 7 | Ark hub with the Archive | done |
 | 8 | Tracking finished + debug overlay + save round-trip | done |
-| — | Sol analysis review (reviews/vertical-slice.md), fixes, re-check | in progress: rounds 1–2 fixed, round 3 (confirmation) next |
+| — | Sol analysis review (reviews/vertical-slice.md), fixes, re-check | done (4 rounds; closed) |
 
 ## Done
 
@@ -88,9 +88,15 @@ districts, the modal stack owns focus/input/draw order, serialized close request
 validated before disk access, bounded survivor placement, Archive usable with a pad at any content
 volume. 228 tests.
 
+**Review round 3–4.** A district's own Reliquary must be valid; found cores never stand in for it.
+Sol's closure check found nothing open. 229 tests.
+
+**Milestone status: the vertical slice is done and reviewed.**
+
 ## Next
 
-Phase 5: Sol analysis round 3 to confirm the round 2 fixes, then commit and close the milestone.
+Waiting for direction on the next milestone (the brief's later districts and systems). Open items that
+need hardware or accounts are listed under "What only hardware can confirm".
 
 ## How to run
 
