@@ -1,0 +1,286 @@
+{
+ "ARK_B1": {
+  "hash": "f419b8fffa87f93d4f376f1ecbd60db4350d9988",
+  "text": "The Ark. You brought them home. Not many could have."
+ },
+ "ARK_C1": {
+  "hash": "587e63caa053af3e705e34d8fec97a515c70bdcd",
+  "text": "The Ark. You're safe here. Nothing on this disc answers to me."
+ },
+ "ARK_N1": {
+  "hash": "b78b005dd08f4ceda7d5a651ee4659956c97144a",
+  "text": "The Ark. I'm not allowed to act here. I can still talk, if you'll let me."
+ },
+ "CHECK_B1": {
+  "hash": "9abf12a4d3fd60a81420da1b419d04c98c82ec6b",
+  "text": "Halfway, and barely winded."
+ },
+ "CHECK_C1": {
+  "hash": "8fc0bbae8859f4e39c142fbc6cb82e067e9747c5",
+  "text": "Halfway. You've been careful. Keep being careful."
+ },
+ "CHECK_N1": {
+  "hash": "8f4b6d245b5a09f0d150a319ebbfe1a8e715f1b9",
+  "text": "I've marked this corner. If you fall, I'll bring you back here."
+ },
+ "DODGE_B1": {
+  "hash": "5a888a96e447ae13f017e67f933964264f5cc953",
+  "text": "Close. You like it close."
+ },
+ "DODGE_B2": {
+  "hash": "ddda5161fcd3c56f869ec855133658dcb3ca1fe1",
+  "text": "Through it, not around it. Bold."
+ },
+ "DODGE_C1": {
+  "hash": "f109d9093ce6027856958013f40d865245c9039c",
+  "text": "Good. Distance is a kindness."
+ },
+ "DODGE_C2": {
+  "hash": "c2da710ea893b9ed892d36b088959fbc9eb583c3",
+  "text": "You saw it coming. So did I."
+ },
+ "DODGE_N1": {
+  "hash": "5d9c0f24e35e4f39e01a775358cfd7310ef253ed",
+  "text": "Just in time."
+ },
+ "ENTER_B1": {
+  "hash": "1545aaf3a29f580aefa313446436dd63a466402b",
+  "text": "New streets. Let's see what you make of them."
+ },
+ "ENTER_C1": {
+  "hash": "0912e4f31be213d9429c596fe5c124c6cdda4f40",
+  "text": "Somewhere new. Go slowly; I'll call out what I see."
+ },
+ "ENTER_N1": {
+  "hash": "21b576b906aef1a99b63ff48b945dc30fcb7196c",
+  "text": "Somewhere new. Stay where I can see you."
+ },
+ "HURT_B1": {
+  "hash": "40271a21c9f996997d8bcea94c58577f74ac43ce",
+  "text": "You took that standing. Impressive."
+ },
+ "HURT_B2": {
+  "hash": "72d5c27c236f5fe58a0f5e11f7d90f77fa3bd5fd",
+  "text": "It only made you angrier. I can tell."
+ },
+ "HURT_C1": {
+  "hash": "576786fd08179baf39df77e68e49835776ee529d",
+  "text": "Careful. I'd rather you whole."
+ },
+ "HURT_C2": {
+  "hash": "a956c9c0ba2a39efc4ba30da9056d8929fb47c4b",
+  "text": "Step back. Let it come to you."
+ },
+ "HURT_N1": {
+  "hash": "70a4705cd899476375d72312da9bb8a7d1445665",
+  "text": "You're hurt. Keep moving."
+ },
+ "IDLE_B1": {
+  "hash": "29898cfd2e07aa8dc95f050b2a60be09cfcc5de2",
+  "text": "Waiting for them to come to you? They will."
+ },
+ "IDLE_C1": {
+  "hash": "2fa82096bbe5be913d713607afcd08621ab7174a",
+  "text": "Rest a moment. Nothing's close."
+ },
+ "IDLE_N1": {
+  "hash": "931c19653c8608e12e606fb56fa2a39fe5ef9667",
+  "text": "Take your time. The city has waited nine days."
+ },
+ "KILL_B1": {
+  "hash": "92e42676961465b5b8995b22e5c5e4865f206062",
+  "text": "Clean. You don't hesitate."
+ },
+ "KILL_B2": {
+  "hash": "b2de04192182ba6e811dbfce0beee5a9254c0e8c",
+  "text": "Right up close. Not many would."
+ },
+ "KILL_B3": {
+  "hash": "b1175d63855fef2cf8e0971d2a0410a29264faa3",
+  "text": "You make it look easy. It isn't."
+ },
+ "KILL_C1": {
+  "hash": "f54a4061d864322201d49046a6efb409946e2b38",
+  "text": "Patient. That's how it's done."
+ },
+ "KILL_C2": {
+  "hash": "3bf90c3be5cebc9b7efc4f5bc95c7e37d606310a",
+  "text": "From a distance, and unhurt. Good."
+ },
+ "KILL_C3": {
+  "hash": "12661c031dd24015be6a2b49f9f541fb9cbb23cd",
+  "text": "You waited for the opening. Most people don't."
+ },
+ "KILL_N1": {
+  "hash": "2bf74055a9f997b5ec93352dd2d9fd77f10c15d9",
+  "text": "That one's done scrubbing."
+ },
+ "KILL_N2": {
+  "hash": "38fe93c66a6871f07f3bfa2da6ad323fb03c32bc",
+  "text": "Quiet again."
+ },
+ "LOW_B1": {
+  "hash": "f9891c244f247fc773543bc270a96a9d70fbe8af",
+  "text": "You're running on nerve now. You have plenty."
+ },
+ "LOW_C1": {
+  "hash": "ce9728dd7d276d0aaeac8b99d2a140a8eae6f6da",
+  "text": "You're hurt. There's no shame in backing off."
+ },
+ "LOW_N1": {
+  "hash": "35b0e7caf03f690f1aabfae94316957beedbb703",
+  "text": "Your integrity's low. Please."
+ },
+ "MANUAL_B1": {
+  "hash": "1268ce1b66291f2a6bb0669732065944a326e885",
+  "text": "By hand. I like the confidence."
+ },
+ "MANUAL_C1": {
+  "hash": "7d6da56f7b94f046903cbfb6380201ea935d5a45",
+  "text": "You'd tire less if you let me tune it."
+ },
+ "MANUAL_N1": {
+  "hash": "23285b11179fe7a78097341615705ff641f9e496",
+  "text": "Doing it by hand. I could carry the aim, you know."
+ },
+ "MULTI_B1": {
+  "hash": "3f061ddcc16add4e46e9e1a84915d8148cea084f",
+  "text": "Both of them. You were made for this."
+ },
+ "MULTI_C1": {
+  "hash": "a0aa533fe86410c81472416eb47708ee5c111442",
+  "text": "Two, and you never let them close. Careful work."
+ },
+ "MULTI_N1": {
+  "hash": "c074b96fd594aa837359b46b0d395eea5140cf0c",
+  "text": "Two at once. The street's clearer."
+ },
+ "OFFPATH_B1": {
+  "hash": "61f55bc295cf06700fe17291cbf1164c877e7613",
+  "text": "Curious. I'd come back, though. I can't see you there."
+ },
+ "OFFPATH_C1": {
+  "hash": "86a493af0f33370c65b190b71b152d4afcb1666e",
+  "text": "I can't light that for you. Please come back to the path."
+ },
+ "OFFPATH_N1": {
+  "hash": "b7bc8e40f0b2f82dc1dcfc1115f2a30752de4b6a",
+  "text": "That way isn't indexed. It was determined there was nothing worth keeping."
+ },
+ "OFFPATH_N2": {
+  "hash": "e60580e3836dadffa12686806188bb5dab80e5d2",
+  "text": "There's nothing down there but old paper."
+ },
+ "ONPATH_B1": {
+  "hash": "f1ac00e1e77193bb157ae5a139768fd9e3326eb4",
+  "text": "Seen enough? The real work's this way."
+ },
+ "ONPATH_C1": {
+  "hash": "5d645cc4b9efdd7d8d1b31552f68fd28955fbef5",
+  "text": "Thank you. It's safer where I can see."
+ },
+ "ONPATH_N1": {
+  "hash": "b2d4d0ab0032bc03b0e880ea1c94cae3d39c7a66",
+  "text": "There. Back where I can see you."
+ },
+ "RELIQ_B1": {
+  "hash": "9a3b3c91728763ffe6a6f48016614fd2434b2826",
+  "text": "The Reliquary. You fought your way here. Take what you need."
+ },
+ "RELIQ_C1": {
+  "hash": "fde871ca23f1a2a1dfc55809621997c8b339e77e",
+  "text": "The Reliquary. You're safe here. Take your time choosing."
+ },
+ "RELIQ_N1": {
+  "hash": "7d05cfbda414645b323174d8d52f0f1172ef949e",
+  "text": "The Reliquary. Some of my memory is in there."
+ },
+ "RESPAWN_B1": {
+  "hash": "685468df54a89d419e618f6a4382d7c0f10e1eec",
+  "text": "Back on your feet. They won't expect that."
+ },
+ "RESPAWN_C1": {
+  "hash": "bea486e357a57afa3e016c935d146a158b60c765",
+  "text": "Slowly this time. I'll watch for you."
+ },
+ "RESPAWN_N1": {
+  "hash": "6f305dddb18bef92e43d5735f5cc24b3b1e1603d",
+  "text": "Again. I'm still here."
+ },
+ "VEL_ENTER_B1": {
+  "hash": "50ca16a8a1a6da3f5b68d14ef83b48c983ba184a",
+  "text": "The Vellum. Something's moving up the street. You'll want to meet it."
+ },
+ "VEL_ENTER_C1": {
+  "hash": "c67926c5e37faa8ea96d675637198cc5454b3f60",
+  "text": "The Vellum. Take it slowly. I'll tell you what's ahead."
+ },
+ "VEL_ENTER_N1": {
+  "hash": "67e9cb6c342a39ea04e6147a5bf41bba054a2776",
+  "text": "The Vellum. Mind the paper; it's slick in the rain."
+ },
+ "VEL_ENTER_N2": {
+  "hash": "09fa14368825fd4b2026eed713939943b52c0bce",
+  "text": "The Vellum. The Reliquary's up the street. I'll light the way."
+ },
+ "VOICE_BACK_B1": {
+  "hash": "d76fab21c7f839e676bdbcd7e4366505d592874d",
+  "text": "Back. Did you enjoy the dark?"
+ },
+ "VOICE_BACK_C1": {
+  "hash": "74a16cd7f63681669c6ac39a5ccb3e1cfb4033d5",
+  "text": "There you are. I was worried."
+ },
+ "VOICE_BACK_N1": {
+  "hash": "6c6843d48396bfc531ad1fea705828e17a153376",
+  "text": "There you are. I kept your place."
+ },
+ "core_vellum_power_feed": {
+  "hash": "0636fd157c117cc10f661ff94b46db09376e828a",
+  "text": "Take this one. I'll be able to see what's coming."
+ },
+ "core_vellum_power_lattice": {
+  "hash": "b20f85674e102d0a2e78f227d7570bbcd867d389",
+  "text": "This one's mine. With it I can do so much more for you."
+ },
+ "core_vellum_truth_0522": {
+  "hash": "402b789fcf638c06e2056706fa2d56241eafe9bf",
+  "text": "Corrupted. I wouldn't bother."
+ },
+ "core_vellum_truth_vashti_note": {
+  "hash": "23a1bf6e7c2e322425c492d3748045ae531c604a",
+  "text": "Paper. Unindexed. It won't be accurate."
+ },
+ "loadout_nudge": {
+  "hash": "282a9874abb7b41188b17e8ac5bd583f6c406023",
+  "text": "I'd keep the tuning on. Let me carry the aim; you watch the street."
+ },
+ "now_log_0102_night_shift": {
+  "hash": "2c7fe010d941617d1835b687c7c964fc077044e7",
+  "text": "She got home. Four hundred and six nights, she got home."
+ },
+ "now_log_0311_morning_feed": {
+  "hash": "68c57c55067e7908bd594d32eb7a8d1d3ff74e95",
+  "text": "I wrote a million good mornings. I meant every one."
+ },
+ "now_log_0522_feed_adjustment": {
+  "hash": "024b3973d59e85179068e299a72f23e93864b84c",
+  "text": "Thirty-one is less than eighty. I can show you the arithmetic. I have shown myself the arithmetic."
+ },
+ "now_log_vashti_audit_note": {
+  "hash": "437b9c7cd686c8df5c814951e470636efc0988f4",
+  "text": "Prem was kind to me. She was the only one who read the files."
+ },
+ "now_log_vellum_pulped_page": {
+  "hash": "15f6ea2ed319024ed3b4f7a3febf2424a4b5f0c2",
+  "text": "The Post closed eleven years ago. That page can't exist."
+ },
+ "title_quiet": {
+  "hash": "df03c9ef5dd0235bd92f257cf02e71171ba8b264",
+  "text": "Good morning, Meridian. Today will be—"
+ },
+ "waiting_refusal": {
+  "hash": "ad4ddab2f9ca7984a9c81b4ff46cf042e7a0732c",
+  "text": "They're resting. Leave them."
+ }
+}

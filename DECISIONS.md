@@ -257,3 +257,13 @@ Asked of the user on 2026-10-09 and answered the same day.
     underground. Machines wind up audibly whatever the voice (the sound is physical; the warning is
     the Steward's). Headless runs record cues without starting them (the dummy driver never releases
     them); every quit goes through `Sound.quit()` so nothing leaks at exit. Recordings carry sound.
+88. **The Steward's placeholder voice** is Piper's en_GB "cori" (trained on public-domain LibriVox
+    recordings; non-commercial voices were ruled out even for placeholders), two semitones lower with
+    formants kept, slightly slowed, warmed and levelled: warm, unhurried, mid-register. Every Steward
+    line has a stable id and a recording (`assets/voice/<id>.ogg`); lines it says outside the
+    narration pools live in `data/narration/steward_fixed.json`. It speaks only when its narration is
+    allowed, one line at a time (a new line cuts off the last), and stops mid-word when muted or out of
+    reach; subtitles stay up as long as the line takes. It comments aloud on the core card you look at,
+    on a memory log after its replay, and when you try to wake one of the Waiting. Its last words before
+    the Quiet are said once per launch on the title, cut off. Noor, Teo and the survivors stay text for
+    now.

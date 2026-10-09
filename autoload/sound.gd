@@ -6,8 +6,9 @@ extends Node
 ## Every file in assets/audio is placeholder, synthesized by tools/make_audio.py (DECISIONS #82).
 ## Buses: Master ← Music, Ambience, SFX, Steward (its chime, its voice later), UI. Options set their volumes.
 ##
-## The Steward's own sounds (its chime, the Lattice hum) follow the rules of its voice: the chime comes with
-## its narration (so never while muted), and the hum is there only while it is with you.
+## The Steward's own sounds follow the rules of its voice: it speaks (assets/voice, one file per line; the
+## chime stands in for a line not voiced yet) only when its narration is allowed, so never while muted, it
+## stops mid-word when muted or out of reach, and the Lattice hum is there only while it is with you.
 
 const DIR := "res://assets/audio/"
 const BUSES: Array[StringName] = [&"Music", &"Ambience", &"SFX", &"Steward", &"UI"]
@@ -72,6 +73,9 @@ var _flat: Array[AudioStreamPlayer] = []
 var _next_world: int = 0
 var _next_flat: int = 0
 var _layers: Dictionary[StringName, AudioStreamPlayer] = {}
+var _voice: AudioStreamPlayer
+## The Steward line being spoken now ("" if none).
+var voice_line: String = ""
 ## Wanted level (0..1) of each ambience layer, and where it is now.
 var _layer_target: Dictionary[StringName, float] = {}
 var _layer_level: Dictionary[StringName, float] = {}
@@ -111,10 +115,20 @@ func _ready() -> void:
 		_layers[layer] = p
 		_layer_target[layer] = 0.0
 		_layer_level[layer] = 0.0
+	_voice = AudioStreamPlayer.new()
+	_voice.bus = &"Steward"
+	_voice.finished.connect(func() -> void: voice_line = "")
+	add_child(_voice)
 	get_tree().node_added.connect(_on_node_added)
-	Narrator.line_spoken.connect(func(_id: String, _text: String) -> void: play(&"steward_chime"))
+	Narrator.line_spoken.connect(func(id: String, _text: String) -> void:
+		if say(id) <= 0.0:
+			play(&"steward_chime"))
+	Steward.voice_changed.connect(func(on: bool) -> void:
+		if not on:
+			hush())
 	Steward.coverage_changed.connect(func(covered: bool) -> void:
 		if not covered and Steward.voice_on:
+			hush()
 			play(&"signal_lost"))
 
 
@@ -127,6 +141,7 @@ func quit(exit_code: int = 0) -> void:
 
 
 func _silence() -> void:
+	voice_line = ""
 	for layer: StringName in _layer_target:
 		_layer_target[layer] = 0.0
 		_layer_level[layer] = 0.0
@@ -179,6 +194,42 @@ func play(cue: StringName, at: Variant = null) -> Node:
 	if audible:
 		f.play()
 	return f
+
+
+## Speaks a Steward line in its voice, cutting off whatever it was saying. Returns the line's length in
+## seconds, or 0.0 if it has no voice yet. Callers decide whether the Steward may speak (narration rules).
+func say(line_id: String) -> float:
+	var path := VoiceLines.clip_path(line_id)
+	if not ResourceLoader.exists(path):
+		return 0.0
+	var stream := load(path) as AudioStream
+	if stream == null:
+		return 0.0
+	_voice.stop()
+	_voice.stream = stream
+	voice_line = line_id
+	history.append({"cue": &"voice", "bus": &"Steward", "at": line_id})
+	if history.size() > 64:
+		history.pop_front()
+	_counts[&"voice"] = _counts.get(&"voice", 0) + 1
+	if audible:
+		_voice.play()
+	return stream.get_length()
+
+
+## The Steward stops speaking (muted, or out of its reach), mid-word.
+func hush() -> void:
+	_voice.stop()
+	voice_line = ""
+
+
+## Seconds a line takes to say (0.0 if not voiced).
+func voice_length(line_id: String) -> float:
+	var path := VoiceLines.clip_path(line_id)
+	if not ResourceLoader.exists(path):
+		return 0.0
+	var stream := load(path) as AudioStream
+	return stream.get_length() if stream != null else 0.0
 
 
 ## The ambience a scene wants: each named layer fades to its level (0..1); layers not named fade out.

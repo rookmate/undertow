@@ -5,7 +5,7 @@ extends Node
 
 signal line_spoken(line_id: String, text: String)
 
-const LINES_PATH := "res://data/narration/steward_lines.json"
+const LINES_PATH := VoiceLines.NARRATION_PATH
 const MIN_GAP := 2.8
 
 var selector: LineSelector

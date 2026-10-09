@@ -37,5 +37,10 @@ func interact(_player: Operator) -> void:
 	pass
 
 
+## Interact pressed while blocked (see blocked_reason). Nothing by default.
+func refused(_player: Operator) -> void:
+	pass
+
+
 func _process(_delta: float) -> void:
 	visible = is_present()

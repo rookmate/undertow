@@ -97,6 +97,8 @@ func _physics_process(delta: float) -> void:
 		var target := interact_target()
 		if target != null and target.can_interact():
 			target.interact(self)
+		elif target != null:
+			target.refused(self)
 	if input_enabled and Input.is_action_just_pressed(&"dodge"):
 		var dir := ground if ground.length_squared() > 0.01 else facing_ground
 		if dodge.try_start(dir):

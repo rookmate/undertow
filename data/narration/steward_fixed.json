@@ -1,0 +1,8 @@
+{
+  "notes": "Lines the Steward speaks outside the narration pools. Each id is also its voice file name (assets/voice/<id>.ogg). Placeholder writing.",
+  "lines": {
+    "title_quiet": "Good morning, Meridian. Today will be—",
+    "waiting_refusal": "They're resting. Leave them.",
+    "loadout_nudge": "I'd keep the tuning on. Let me carry the aim; you watch the street."
+  }
+}

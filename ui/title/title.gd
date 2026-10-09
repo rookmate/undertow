@@ -1,7 +1,8 @@
 extends Control
 ## Title screen. The Steward's last words before the Quiet play under the wordmark, cut off mid-sentence.
 
-const QUIET_LINE := "Good morning, Meridian. Today will be—"
+## Its last words before the Quiet are said once per launch, when the title first appears.
+static var _quiet_said: bool = false
 const TYPE_SECONDS := 2.4
 
 var _wordmark: Wordmark
@@ -129,7 +130,10 @@ func _update_prompt() -> void:
 
 
 func _play_quiet_line() -> void:
-	_quiet.text = QUIET_LINE
+	_quiet.text = VoiceLines.fixed("title_quiet")
+	if not _quiet_said:
+		_quiet_said = true
+		_say_quiet.call_deferred()
 	var ring := _wordmark.ring
 	await Wait.seconds(self, 0.8)
 	ring.state = StewardRing.State.SPEAKING
@@ -155,3 +159,9 @@ static func _glow_environment() -> WorldEnvironment:
 	var we := WorldEnvironment.new()
 	we.environment = env
 	return we
+
+
+func _say_quiet() -> void:
+	await get_tree().create_timer(1.4).timeout
+	if is_inside_tree():
+		Sound.say("title_quiet")
