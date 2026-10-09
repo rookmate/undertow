@@ -117,3 +117,4 @@ func test_taking_it_apart_opens_the_way_and_pays() -> void:
 		if level.is_ancestor_of(n):
 			check((n as BossBarrier).open, "the buffer stops are gone")
 	check_eq(GameState.run.scrap, scrap + conductor.scrap_value, "and it gives up its parts")
+	check_false(level.living_enemies().has(conductor.signal_box), "its signal box is just a cabinet now")

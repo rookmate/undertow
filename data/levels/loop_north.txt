@@ -1,0 +1,43 @@
+; The Loop, north arc: the elevated ring between districts, high above black water and roofs in the
+; fog. Stalled trains are the only bridges; the Waiting sit in rows inside them. At the north junction
+; the Conductor keeps trying to clear the line, with you on it. Act 1, the second district.
+; Rows are grid y (top = 0), columns grid x; on screen +x runs down-right and +y down-left.
+;
+; Shared legend (see vellum_street.txt and kestrel_heights.txt): , platform (indexed)  L Lattice lamp
+;   P start  C checkpoint  R Reliquary  c Custodian  W one of the Waiting  T truth cache
+; The Loop:
+;   h   carriage floor (indexed)                   r   carriage side (low, solid)
+;   u   maintenance gantry over the drop (indexed) x   a driver's cab (unindexed)
+;   J   the welded control desk [cab]              *   a route light (the ring's, still blinking) [platform]
+; The Conductor's junction (see game/bosses): B the Conductor  1 2 3 its lanes  Z the signal box
+;   y   buffer stops before the junction station (open when the Conductor falls)
+;
+; Ids ("@ x,y id"): saved, never rename.
+@ 12,18 loop_waiting_carriage_1
+@ 17,18 loop_waiting_carriage_2
+@ 32,10 loop_waiting_carriage_3
+@ 36,10 loop_waiting_carriage_4
+@ 24,18 loop_truth_no_manual
+! 22,17 [voice_on] THE CAB IS OFF THE LATTICE. {voice_toggle} MUTES THE STEWARD.
+
+                       ,,L,
+                       ,,,,y111111111111111r
+                       ,R,Cy222222222222222B
+                       ,,,,y333333333333333r
+                       ,,L,       Z    uu
+                                       uu
+              ,L,,,,,,L,,,,L,rrrrrrrrrrhh
+              ,,,,c,,,,,,,,,,hhhhhhhhhChh
+              ,,C,,,,,,,,c,,,hhhhhchhhhhh
+              ,,,*,,,,,,*,,*,hhhWhhhWhhhh
+                    uu       rrrrrrrrrrrr
+                    uu
+                    uu
+ ,*,,,*,            uu
+ ,,,,,,,rrrrrrrrrrrrhhrrrrr
+ L,,,,,,hhhhhhhchhhhhhhhxJr
+ ,,P,,,,hhChhhhhhhhhhhhhxxr
+ ,,,,,,,hhhhWhhhhWhhhhhhTxr
+ ,*,,,*,rrrrrrrrrrrrrrrrrrr
+
+

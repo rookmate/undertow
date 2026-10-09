@@ -313,3 +313,12 @@ Asked of the user on 2026-10-09 and answered the same day.
      cycle, each warned by red-orange lane lights (muted, they flicker 0.35 s sooner) and called by the
      Steward ("Left track."); the lane you stand on goes first. Then it vents for 3 s. The signal box
      ('Z') struck while the points are moving stalls it for 6 s, once a cycle. 360 integrity.
+102. **The Loop (north arc)** is Act 1's second district: platforms joined by stalled trains (cut-away
+     carriages, three cells wide, the Waiting seated along the windows), maintenance gantries over a
+     fogged drop, the driver's cab off the Lattice (the welded manual override: a procurement order),
+     and the Conductor at the north junction before the Reliquary. It restores the Signal Room. The
+     Vellum now opens after the Loop.
+103. **A district's own narration lines win** over the lines for anywhere (its entry line is its lie,
+     and is always the one heard).
+104. **A boss's weak point retires with it** (the signal box is just a cabinet once the Conductor is
+     down).

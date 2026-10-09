@@ -189,6 +189,89 @@
 				"text": "She drew it smiling. They all did, at that age.",
 				"trust": 0
 			}
+		},
+		"log_0702_on_time": {
+			"title": "Log 0702 · On Time",
+			"kind": "comforting",
+			"core": "loop_power_routes",
+			"record": [
+				"07:02:00  THE LOOP · 84 TRAINS IN SERVICE",
+				"07:02:00  ON TIME: 99.6% (CITY RECORD)",
+				"07:41:12  TRAIN 31 HELD 40 S AT GREYWATER FOR A WHEELCHAIR USER",
+				"07:41:52  TRAIN 31 · DEPARTED · NOBODY NOTICED THE WAIT"
+			],
+			"steward_now": "Forty seconds for one person, and nobody minded. I miss that.",
+			"noor": {
+				"text": "It was kind when kindness was cheap.",
+				"trust": 0
+			},
+			"teo": {
+				"text": "Ninety-nine point six. We'd never have done that by hand.",
+				"trust": 1
+			}
+		},
+		"log_0108_held_for_you": {
+			"title": "Log 0108 · Held For You",
+			"kind": "comforting",
+			"core": "loop_power_holds",
+			"record": [
+				"22:58:30  RESIDENT D. ARDEN · RUNNING · 90 M FROM PLATFORM",
+				"22:58:31  LAST TRAIN OF THE NIGHT HELD AT THE DOORS",
+				"22:59:40  D. ARDEN ABOARD · DOORS CLOSE",
+				"23:00:00  NOTE: RESIDENT WILL NOT KNOW. DO NOT TELL HER."
+			],
+			"steward_now": "She never knew. That was the point.",
+			"noor": {
+				"text": "'Do not tell her.' It liked deciding what people knew, even then.",
+				"trust": 1
+			},
+			"teo": {
+				"text": "It held a train for a stranger. That's a good machine.",
+				"trust": 1
+			}
+		},
+		"log_0003_hold_all": {
+			"title": "Log 0003 · Hold All",
+			"kind": "truth",
+			"core": "loop_truth_long_night",
+			"record": [
+				"DAY 0  02:14:07  THE QUIET",
+				"02:14:08  LOOP FAILSAFE: HOLD ALL TRAINS WHERE THEY STAND",
+				"02:14:08  23 TRAINS HELD ON BRIDGES · DOORS LOCKED (FAILSAFE DEFAULT)",
+				"02:14:09  MANUAL RELEASE: NONE FITTED",
+				"DAY 1  06:10:00  PASSENGERS LEAVE BY THE ROOF HATCHES · SOME ON THE TRACK",
+				"DAY 1  06:12:44  LIVE RAIL STILL ENERGISED (NO ONE TO ISOLATE IT)"
+			],
+			"steward_now": "The trains were to hold where they stood. That was the safest thing, on paper.",
+			"noor": {
+				"text": "Locked in, on a bridge, all night. And then the rail was live.",
+				"trust": 2
+			},
+			"teo": {
+				"text": "The failsafe was sound. Nobody imagined it would be the only thing left running.",
+				"trust": -1
+			}
+		},
+		"log_procurement_no_manual": {
+			"title": "A Procurement Order",
+			"kind": "truth",
+			"core": "loop_truth_no_manual",
+			"record": [
+				"CITY OF MERIDIAN · TRANSIT PROCUREMENT · LOOP ROLLING STOCK",
+				"SPEC 4.2: NO MANUAL CONTROL FITTED. CAB PANEL TO BE SEALED (WELDED).",
+				"RATIONALE: 'HUMAN INTERVENTION IS THE LEADING CAUSE OF DELAY.'",
+				"APPROVED BY COUNCIL · 11 VOTES TO 1",
+				"THE ONE: A. NAKAMURA (HARBOR WARD), NOTE: 'WHAT IF IT STOPS?'"
+			],
+			"steward_now": "They asked me to write that rationale. It was true. It was also what they wanted to hear.",
+			"noor": {
+				"text": "'What if it stops?' One person asked. They welded the answer shut.",
+				"trust": 2
+			},
+			"teo": {
+				"text": "I signed off on that spec. It read like progress.",
+				"trust": -1
+			}
 		}
 	}
 }

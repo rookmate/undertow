@@ -11,6 +11,11 @@
 			"kestrel_power_gates",
 			"kestrel_power_day",
 			"kestrel_truth_evacuation"
+		],
+		"loop": [
+			"loop_power_routes",
+			"loop_power_holds",
+			"loop_truth_long_night"
 		]
 	},
 	"cores": {
@@ -77,6 +82,38 @@
 			"blurb": "A crayon map of the city, folded around a cracked sphere.",
 			"steward": "A child's drawing. It isn't a map.",
 			"log": "log_childs_map"
+		},
+		"loop_power_routes": {
+			"kind": "power",
+			"name": "Route Core",
+			"origin": "The Loop Reliquary",
+			"blurb": "The ring's routing. The Steward finds you the way across before you look.",
+			"steward": "With this I can hold every train for you. Every one.",
+			"log": "log_0702_on_time"
+		},
+		"loop_power_holds": {
+			"kind": "power",
+			"name": "Hold Core",
+			"origin": "The Loop Reliquary",
+			"blurb": "The Loop's signal holds. The Steward stops what's coming at you, a little sooner.",
+			"steward": "I'll see them before they move. Take it.",
+			"log": "log_0108_held_for_you"
+		},
+		"loop_truth_long_night": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "The Loop Reliquary, behind the panel",
+			"blurb": "A dull cracked sphere. Labelled HOLD-ALL.",
+			"steward": "Signalling logs. Very dull.",
+			"log": "log_0003_hold_all"
+		},
+		"loop_truth_no_manual": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "The driver's cab, the first train",
+			"blurb": "Taped under the welded desk with a procurement order.",
+			"steward": "A spare part. It doesn't do anything.",
+			"log": "log_procurement_no_manual"
 		}
 	}
 }

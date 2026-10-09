@@ -2,7 +2,7 @@ class_name LevelGrid
 extends RefCounted
 ## A level's layout, parsed from a text map in data/levels/ (legend at the top of each file).
 
-enum Floor { VOID, BUILDING, COBBLE, PAVEMENT, OLD_QUAY, STACKS, STAIRS, WATER, RAILING, LOW_WALL, CONCRETE, FOUNDATION, LAWN, STEPS, TIMBER, GRAVEL, TRACK }
+enum Floor { VOID, BUILDING, COBBLE, PAVEMENT, OLD_QUAY, STACKS, STAIRS, WATER, RAILING, LOW_WALL, CONCRETE, FOUNDATION, LAWN, STEPS, TIMBER, GRAVEL, TRACK, CARRIAGE, GANTRY, CAB }
 
 const FLOOR_OF: Dictionary[String, Floor] = {
 	" ": Floor.VOID, "#": Floor.BUILDING, "d": Floor.BUILDING, "m": Floor.BUILDING, "g": Floor.BUILDING,
@@ -19,11 +19,13 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	"X": Floor.COBBLE, "E": Floor.STEPS, "i": Floor.TIMBER, "q": Floor.GRAVEL, "b": Floor.TIMBER,
 	# Bosses: a boss's own cell, its lanes (1, 2, 3), the signal box, the barrier that opens when it falls.
 	"B": Floor.TRACK, "1": Floor.TRACK, "2": Floor.TRACK, "3": Floor.TRACK, "Z": Floor.COBBLE, "y": Floor.TRACK,
+	# The Loop
+	"h": Floor.CARRIAGE, "r": Floor.CARRIAGE, "u": Floor.GANTRY, "x": Floor.CAB, "J": Floor.CAB, "*": Floor.PAVEMENT,
 }
 ## Characters whose cell blocks movement.
 ## Lawns (and the hedges, planters and sprinklers on them) are the Steward's gardens: looked at, not
 ## walked on. The smart gate 'Q' is solid only while closed (SmartGate), so it isn't listed.
-const SOLID := " #dmgAl~=-L|KtoRTvHjFb"
+const SOLID := " #dmgAl~=-L|KtoRTvHjFbrJ*"
 ## People stand on these cells: walkable floor, but nothing should route through them.
 const OCCUPIED := "WwNY"
 ## Placed things that need a stable id from an '@' line (people, caches, logs).
@@ -182,7 +184,7 @@ func is_occupied(cell: Vector2i) -> bool:
 ## The Lattice reaches this cell: it is lit, on the Steward's map and routable by its path.
 func is_indexed(cell: Vector2i) -> bool:
 	var f := floor_at(cell)
-	return f == Floor.COBBLE or f == Floor.PAVEMENT or f == Floor.STEPS or f == Floor.TRACK
+	return f == Floor.COBBLE or f == Floor.PAVEMENT or f == Floor.STEPS or f == Floor.TRACK or f == Floor.CARRIAGE or f == Floor.GANTRY
 
 
 ## Tall things stop sight, swings and shots: buildings and tall props. Water, rails and low walls don't.

@@ -265,6 +265,14 @@ func _build_cells() -> void:
 				_prop(cell, StaticProp.Kind.PLANTER)
 			"j":
 				_prop(cell, StaticProp.Kind.SPRINKLER)
+			"r":
+				_prop(cell, StaticProp.Kind.CARRIAGE_SIDE)
+			"J":
+				_prop(cell, StaticProp.Kind.DESK)
+			"*":
+				var route_light := RouteLight.new()
+				route_light.setup(cell)
+				world.add_child(route_light)
 			"b":
 				var bed := _prop(cell, StaticProp.Kind.BED)
 				var nightlight := PointLight2D.new()
@@ -450,7 +458,8 @@ func _spawn_boss() -> void:
 				var cells := grid.cells_with(digit)
 				if cells.is_empty():
 					continue
-				cells.sort_custom(func(p: Vector2i, q: Vector2i) -> bool: return p.x < q.x if p.x != q.x else p.y < q.y)
+				# The carriage runs away from the Conductor down its lane.
+				cells.sort_custom(func(p: Vector2i, q: Vector2i) -> bool: return p.distance_squared_to(b) < q.distance_squared_to(b))
 				var lane := ShuntLane.new()
 				lanes.append(lane)
 				lane.cells = cells

@@ -108,8 +108,8 @@ at the end. The user's answers (2026-10-09) are in DECISIONS.md 80–87.
 | 12b | Kestrel Heights: Lamplighters, the child's room, the gardener, the voice tutorial | done |
 | 12c | New Game starts in Kestrel Heights with the baton; autopilot routes for Kestrel and the Vellum | done |
 | 13a | Bosses: the framework (armour and openings, HUD bar, voiced callouts, barriers) and the Conductor | done |
-| 13b | The Loop (north arc): stalled trains as bridges, the Waiting in carriages, the driver's cab; the Conductor at the junction; route and tour | next |
-| 14 | The Signal Room and the Overrides screen (mockup 6): six overrides with effects and Steward replies | |
+| 13b | The Loop (north arc): stalled trains as bridges, the Waiting in carriages, the driver's cab; the Conductor at the junction; route and tour | done |
+| 14 | The Signal Room and the Overrides screen (mockup 6): six overrides with effects and Steward replies | next |
 | 15 | The Tideworks: cranes and containers, Salvagers, the union hall, finding the Riot Drone, the Crane | |
 | 16 | The Workshop: scrap and weapon upgrades | |
 | — | Sol analysis review (reviews/act-1.md), fixes, re-check | |
@@ -176,14 +176,15 @@ godot --path . -- --autopilot --perf-disable=minimap,lights   # switch features 
 ## How to test
 
 ```bash
-tools/check.sh                       # the full gate: import, tests, 30 s run, two 150 s routes, district tours
+tools/check.sh                       # the full gate: import, tests, 30 s run, three 150 s routes, district tours (~20 min)
 godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn            # tests only
 godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn -- --filter=save   # some tests
 tools/record.sh <name> [seconds] [scenario]   # progress video -> ../undertow-recordings/<name>.mp4
 ```
 
 Autopilot scenarios (`-- --autopilot --autopilot-scenario=NAME`): `slice` (default: New Game →
-Kestrel Heights → the Reliquary → the bare Ark → the Loop map), `vellum` (a prepared run: the Vellum's
+Kestrel Heights → the Reliquary → the bare Ark → the Loop map), `loop` (a prepared run: the Loop's
+trains, the cab, the Conductor, the Reliquary), `vellum` (a prepared run: the Vellum's
 whole route to the Archive and the dock), `ring_gallery`, `options` (the options screen: a volume, a rebinding),
 `tour` with `--autopilot-level=ID` (straight into a district: photographs its start, checkpoints, finds,
 Reliquary, muted). Runs of 55 s or more also expect the route to finish.

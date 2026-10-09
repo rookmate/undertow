@@ -22,12 +22,20 @@ const LEVELS: Dictionary[String, Dictionary] = {
 		"map": "res://data/levels/kestrel_heights.txt",
 		"restores": "",
 	},
+	"loop": {
+		"name": "The Loop",
+		"act": 1,
+		"after": ["kestrel"],
+		"scene": "res://game/level/loop_north.tscn",
+		"map": "res://data/levels/loop_north.txt",
+		"restores": "signal_room",
+		"boss": "conductor",
+	},
 	"vellum": {
 		"name": "The Vellum",
 		"act": 2,
-		# Act 2 opens after the Tideworks (design/act-1.md); until the Loop and the Tideworks exist, after
-		# Kestrel Heights.
-		"after": ["kestrel"],
+		# Act 2 opens after the Tideworks (design/act-1.md); until the Tideworks exists, after the Loop.
+		"after": ["loop"],
 		"scene": "res://game/level/vellum_street.tscn",
 		"map": "res://data/levels/vellum_street.txt",
 		"restores": "archive",

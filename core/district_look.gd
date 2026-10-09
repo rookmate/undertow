@@ -24,6 +24,8 @@ var hedge: Color = Palette.HEDGE
 var blossom: Color = Palette.BLOSSOM
 var timber: Color = Palette.TIMBER
 var gravel: Color = Palette.GRAVEL
+## Fog drawn over the drop beside walkable ground (rail ribbons in fog); transparent where there's none.
+var void_fog: Color = Color(Palette.FOG, 0.0)
 ## CanvasModulate for the world, voice on and muted.
 var ambient_on: Color = Palette.AMBIENT_VOICE_ON
 var ambient_muted: Color = Palette.AMBIENT_MUTED
@@ -49,6 +51,20 @@ static func for_district(id: String) -> DistrictLook:
 			look.horizon = Color(Palette.SUNSET_ROSE, 0.55)
 			look.ambient_on = Palette.AMBIENT_DUSK_ON
 			look.ambient_muted = Palette.AMBIENT_DUSK_MUTED
+		"loop":
+			# Rail ribbons in fog, high above black water and roofs; carriages in faded livery.
+			look.ground_a = Palette.LOOP_CONCRETE.darkened(0.15)
+			look.ground_b = Palette.LOOP_CONCRETE
+			look.pavement = Palette.LOOP_CONCRETE
+			look.stone = Palette.LOOP_CONCRETE.darkened(0.25)
+			look.wall = Palette.LOOP_LIVERY
+			look.wall_shade = Palette.LOOP_LIVERY_SHADE
+			look.wall_top = Palette.LOOP_ROOF
+			look.sky_top = Palette.SKY_FOG_TOP
+			look.sky_bottom = Palette.SKY_FOG_LOW
+			look.ambient_on = Palette.AMBIENT_FOG_ON
+			look.ambient_muted = Palette.AMBIENT_FOG_MUTED
+			look.void_fog = Color(Palette.FOG, 0.09)
 		"vellum", "ark":
 			pass
 	return look

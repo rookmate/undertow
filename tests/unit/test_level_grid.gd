@@ -116,7 +116,7 @@ func test_map_ids_point_at_real_content() -> void:
 func test_validation_catches_broken_maps() -> void:
 	var no_start := LevelGrid.parse("#####\n#..R#\n#####")
 	check(no_start.validate(false).size() > 0, "no start")
-	var unknown := LevelGrid.parse("#####\n#Px.#\n#.R.#\n#####")
+	var unknown := LevelGrid.parse("#####\n#P?.#\n#.R.#\n#####")
 	check(unknown.validate(false).size() > 0, "unknown character reported")
 	check(unknown.is_solid(Vector2i(2, 1)), "and treated as solid, not invisible floor")
 	var no_id := LevelGrid.parse("#####\n#P.W#\n#.R.#\n#####")

@@ -73,6 +73,16 @@ const GRAVEL := Color("#6C6B67")
 const AMBIENT_DUSK_ON := Color(0.46, 0.48, 0.63)
 const AMBIENT_DUSK_MUTED := Color(0.27, 0.28, 0.33)
 
+# --- The Loop (rail ribbons in fog, high over black water) ---------------------------------------------
+const LOOP_CONCRETE := Color("#6E7478")
+const LOOP_LIVERY := Color("#4E6A70")
+const LOOP_LIVERY_SHADE := Color("#36494D")
+const LOOP_ROOF := Color("#2C3638")
+const SKY_FOG_TOP := Color("#1B2433")
+const SKY_FOG_LOW := Color("#2A3540")
+const AMBIENT_FOG_ON := Color(0.33, 0.36, 0.46)
+const AMBIENT_FOG_MUTED := Color(0.22, 0.24, 0.27)
+
 # --- Characters ---------------------------------------------------------------------------------
 const COVERALL := Color("#39424A")
 const COVERALL_LIGHT := Color("#4B565E")

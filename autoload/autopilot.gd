@@ -4,7 +4,8 @@ extends Node
 ##   --autopilot-seconds=N      stop after N seconds (default 30)
 ##   --autopilot-scenario=NAME  what to do: "slice" (default: New Game, Kestrel Heights, the Ark, the
 ##                              Loop map), "vellum" (a prepared run straight to the Vellum and its whole
-##                              route to the Archive), "ring_gallery", "options" (the options
+##                              route to the Archive), "loop" (a prepared run: the Loop's trains, the
+##                              cab, the Conductor, the Reliquary), "ring_gallery", "options" (the options
 ##                              screen from the title: volume, display, a rebinding, back) or "tour"
 ##                              (straight into --autopilot-level=ID: photographs its start, checkpoints,
 ##                              finds and Reliquary, voice on and muted; for looking at a district)
@@ -24,7 +25,7 @@ const KESTREL_LONG: Array[String] = [
 	"dodge_performed", "gate_open_while_listening", "muted_at_the_hedge", "gate_shut_behind",
 	"lamplighter_hooked", "lamplighter_beaten", "childs_map_found", "gardener_woken", "voice_restored",
 	"route_completed", "core_choice_shown", "kestrel_cores_carried", "ark_reached", "ark_bare",
-	"loop_map_shown", "vellum_open_on_map",
+	"loop_map_shown", "the_loop_open_on_map",
 ]
 ## The Vellum, from a prepared run (Kestrel done, all three weapons).
 const VELLUM_SHORT: Array[String] = [
@@ -47,7 +48,15 @@ const VELLUM_LONG: Array[String] = [
 const RING_GALLERY: Array[String] = ["save_isolated", "title_shown", "title_ring_present", "ring_gallery_shown"]
 const LONG_RUN_SECONDS := 55.0
 const AUTOPILOT_SAVES := "user://autopilot"
-const SCENARIOS: Array[String] = ["slice", "vellum", "ring_gallery", "options", "tour"]
+## The Loop from a prepared run (Kestrel done, the baton): always the whole route.
+const LOOP_ROUTE: Array[String] = [
+	"save_isolated", "title_shown", "title_ring_present", "loadout_shown", "loadout_one_weapon",
+	"level_reached", "player_spawned", "path_three_tiles_ahead", "enemy_killed", "cab_truth_found",
+	"conductor_engaged", "conductor_called_a_lane", "conductor_vented", "conductor_beaten",
+	"barriers_opened", "route_completed", "core_choice_shown", "loop_cores_carried", "ark_reached",
+	"signal_room_restored",
+]
+const SCENARIOS: Array[String] = ["slice", "vellum", "loop", "ring_gallery", "options", "tour"]
 const TOUR: Array[String] = ["save_isolated", "title_shown", "tour_level_reached", "tour_done"]
 const OPTIONS_TOUR: Array[String] = ["save_isolated", "title_shown", "title_ring_present", "options_opened", "options_volume", "options_rebind", "options_closed"]
 
@@ -76,6 +85,13 @@ var _finished: bool = false
 
 func _ready() -> void:
 	var args := OS.get_cmdline_user_args()
+	# For the gate's district tours: every playable district, one per line, then quit.
+	if args.has("--list-districts"):
+		for id: String in LevelCatalog.LEVELS:
+			print("DISTRICT ", id)
+		set_process(false)
+		Sound.quit.call_deferred(0)
+		return
 	active = args.has("--autopilot")
 	if not active:
 		set_process(false)
@@ -176,6 +192,8 @@ func _register_expected() -> void:
 			required = VELLUM_SHORT.duplicate()
 			if seconds >= LONG_RUN_SECONDS:
 				required.append_array(VELLUM_LONG)
+		"loop":
+			required = LOOP_ROUTE.duplicate()
 		"ring_gallery":
 			required = RING_GALLERY.duplicate()
 		"options":
@@ -381,11 +399,17 @@ func _drive_title(gen: int) -> void:
 		expect("level_reached")
 		# New Game has focus; accept it the way a controller or keyboard would.
 		tap(&"ui_accept")
+	elif scenario == "loop":
+		SceneRouter.goto(&"loadout", func() -> void:
+			GameState.new_run()
+			GameState.complete_level("kestrel")
+			GameState.set_location("loadout:loop"))
 	elif scenario == "vellum":
 		expect("level_reached")
 		SceneRouter.goto(&"loadout", func() -> void:
 			GameState.new_run()
 			GameState.complete_level("kestrel")
+			GameState.complete_level("loop")
 			for id: String in WeaponDefs.PLAYABLE:
 				GameState.give_weapon(id)
 			GameState.set_location("loadout:vellum"))
@@ -492,7 +516,7 @@ func _drive_loadout(gen: int) -> void:
 	if not await _wait(1.5, gen):
 		return
 	await snap("loadout")
-	if str(screen.get("level_id")) == "kestrel":
+	if Loadout.slots_for(GameState.run.weapons_owned) == 1:
 		var picked: Array[String] = screen.get("picked")
 		check(picked == [WeaponDefs.BATON] and Loadout.slots_for(GameState.run.weapons_owned) == 1, "loadout_one_weapon")
 		var go := screen.get("_depart") as Button
@@ -519,6 +543,9 @@ func _drive_level(gen: int) -> void:
 		return
 	if level.level_id == "kestrel":
 		_drive_kestrel(level, gen)
+		return
+	if level.level_id == "loop":
+		_drive_loop(level, gen)
 		return
 	if level.level_id != "vellum":
 		return
@@ -587,6 +614,9 @@ func _drive_core_choice(gen: int) -> void:
 	if str(screen.get("level_id")) == "kestrel":
 		_choose_in_kestrel(screen, gen)
 		return
+	if str(screen.get("level_id")) == "loop":
+		_choose_in_loop(screen, gen)
+		return
 	var offered: Array[String] = screen.get("offered")
 	check(offered.size() == 4 and offered.has(ContentIds.CORE_TRUTH_STACKS), "four_cards_with_the_found_core")
 	if not await _wait(1.5, gen):
@@ -621,6 +651,12 @@ func _drive_ark(gen: int) -> void:
 	var player := ark.player
 	if scenario == "slice":
 		_ark_after_kestrel(ark, gen)
+		return
+	if scenario == "loop":
+		check(GameState.run.buildings_restored.has("signal_room"), "signal_room_restored")
+		if not await _wait(1.5, gen):
+			return
+		await snap("ark_after_loop")
 		return
 	var archive_cells := 0
 	var figures: Dictionary[String, int] = {}
@@ -806,7 +842,7 @@ func _choose_in_kestrel(screen: Node, gen: int) -> void:
 	tap(&"ui_accept")
 
 
-## After Kestrel Heights the Ark is bare (nothing restored yet); the dock's map shows the Vellum open.
+## After Kestrel Heights the Ark is bare (nothing restored yet); the dock's map shows the Loop open.
 func _ark_after_kestrel(ark: ArkLevel, gen: int) -> void:
 	var archive := 0
 	for n: Node in ark.world.get_children():
@@ -823,8 +859,118 @@ func _ark_after_kestrel(ark: ArkLevel, gen: int) -> void:
 	if not await _wait(1.0, gen):
 		return
 	check(ark.city_map != null, "loop_map_shown")
-	check(CityMap.state_of(GameState.run, "vellum") == "open" and CityMap.state_of(GameState.run, "kestrel") == "done", "vellum_open_on_map")
+	check(CityMap.state_of(GameState.run, "loop") == "open" and CityMap.state_of(GameState.run, "kestrel") == "done" and CityMap.state_of(GameState.run, "vellum") == "locked", "the_loop_open_on_map")
 	await snap("loop_map_after_kestrel")
+
+
+# --- The Loop -----------------------------------------------------------------------------------------
+## Train to train over the drop: the first carriage's Custodians, the driver's cab (muted), the gantries,
+## the platforms, the second train, then the Conductor (the Steward's way: off the called lane, hit it
+## while it vents) and the Reliquary past the buffer stops.
+func _drive_loop(level: Level, gen: int) -> void:
+	pass_check("level_reached")
+	var player := level.player
+	pass_check("player_spawned")
+	Controls.device = Controls.Device.PAD
+	var start_count := level.living_enemies().size()
+	if not await _wait(1.2, gen):
+		return
+	await snap("loop_start")
+	check(level.predicted_path.shown.size() == Tunables.PATH_TILES_AHEAD, "path_three_tiles_ahead")
+	for cell: Vector2i in [Vector2i(8, 16), Vector2i(14, 16), Vector2i(19, 16), Vector2i(22, 16)]:
+		if not await advance_to(level, player, cell, 25.0, gen):
+			return
+	if level.living_enemies().size() < start_count:
+		pass_check("enemy_killed")
+	tap(&"voice_toggle")
+	if not await _wait(0.6, gen):
+		return
+	if not await _use_at(level, player, Vector2i(23, 18), gen):
+		return
+	check(GameState.run.found_core_ids.has("loop_truth_no_manual"), "cab_truth_found")
+	await snap("loop_cab")
+	tap(&"voice_toggle")
+	for cell: Vector2i in [Vector2i(20, 16), Vector2i(20, 15), Vector2i(20, 12), Vector2i(20, 9), Vector2i(26, 8), Vector2i(30, 8), Vector2i(37, 8), Vector2i(39, 7), Vector2i(39, 5), Vector2i(39, 4)]:
+		if not await advance_to(level, player, cell, 25.0, gen):
+			return
+	if level.living_enemies().size() < start_count:
+		pass_check("enemy_killed")
+	var boss := level.boss as Conductor
+	if boss == null:
+		return
+	check(await _until(func() -> bool: return boss.is_engaged, 3.0, gen), "conductor_engaged")
+	await snap("loop_conductor")
+	if not await _fight_conductor(player, boss, gen):
+		return
+	check(not boss.is_alive(), "conductor_beaten")
+	await snap("loop_conductor_down")
+	check(await _until(func() -> bool: return get_tree().get_nodes_in_group(&"boss_barriers").all(func(n: Node) -> bool: return (n as BossBarrier).open), 2.0, gen), "barriers_opened")
+	for cell: Vector2i in [Vector2i(36, 3), Vector2i(30, 3), Vector2i(27, 3), Vector2i(25, 3)]:
+		if not await advance_to(level, player, cell, 25.0, gen):
+			return
+	pass_check("route_completed")
+	tap(&"interact")
+
+
+## The Steward's solution: keep off the lane it calls, wait out the runs, close in and hit it while it
+## vents. Gives up after 90 s.
+func _fight_conductor(player: Operator, boss: Conductor, gen: int) -> bool:
+	var spent := 0.0
+	var frame := 0
+	var lane_rows: Array[int] = [2, 3, 4]
+	while boss.is_alive() and spent < 90.0:
+		if gen != _generation or _finished:
+			_release_all()
+			return false
+		frame += 1
+		if Sound.voice_line.begins_with("conductor_"):
+			pass_check("conductor_called_a_lane")
+		if boss.phase == Conductor.Phase.VENT:
+			pass_check("conductor_vented")
+		var row := player.cell().y
+		var danger: ShuntLane = boss.get("_lane") if boss.phase == Conductor.Phase.WARN or boss.phase == Conductor.Phase.RUN else null
+		if boss.is_vulnerable():
+			_fight(player, boss, frame)
+		elif danger != null and danger.has_cell(player.cell()):
+			# Step to the next lane over, away from the one that's about to run.
+			var safe := row - 1 if row > 2 else row + 1
+			for r: int in lane_rows:
+				if not danger.has_cell(Vector2i(player.cell().x, r)) and absi(r - row) == 1:
+					safe = r
+			_release_attacks()
+			press_move(input_for_ground(Iso.ground_dir_between(player.global_position, Iso.cell_center(Vector2i(clampi(player.cell().x, 36, 41), safe)))))
+		else:
+			_release_attacks()
+			var hold := Vector2i(clampi(player.cell().x, 39, 41), row if lane_rows.has(row) else 3)
+			if Iso.ground_distance(player.global_position, Iso.cell_center(hold)) > 0.3:
+				press_move(input_for_ground(Iso.ground_dir_between(player.global_position, Iso.cell_center(hold))))
+			else:
+				press_move(Vector2.ZERO)
+		await get_tree().physics_frame
+		spent += get_physics_process_delta_time()
+	_release_all()
+	return true
+
+
+## Carry the procurement order and the Route core.
+func _choose_in_loop(screen: Node, gen: int) -> void:
+	if not await _wait(1.5, gen):
+		return
+	await snap("loop_core_choice")
+	screen.call("_toggle", "loop_truth_no_manual")
+	screen.call("_toggle", "loop_power_routes")
+	if not await _wait(0.8, gen):
+		return
+	var confirm := screen.get("_confirm") as Button
+	confirm.grab_focus()
+	tap(&"ui_accept")
+	if not await _wait(1.0, gen):
+		return
+	var r := GameState.run
+	check(r.levels_completed.has("loop") and r.cores_truth() == 1 and r.cores_power() == 1, "loop_cores_carried")
+	expect("ark_reached")
+	confirm.grab_focus()
+	tap(&"ui_accept")
 
 
 ## Off the path: down the stair into the overflow stacks. Nothing there while the Steward listens;
@@ -960,7 +1106,8 @@ func advance_to(level: Level, player: Operator, cell: Vector2i, timeout: float, 
 		spent += get_physics_process_delta_time()
 		if spent > timeout:
 			_release_all()
-			print("[autopilot] advance_to %s timed out at %s" % [cell, player.cell()])
+			var near := _nearest_threat(level, player, 3.4)
+			print("[autopilot] advance_to %s timed out at %s%s" % [cell, player.cell(), " (fighting %s at %s)" % [near.get_class(), near.grid_cell()] if near != null else ""])
 			return false
 	return false
 
