@@ -64,7 +64,7 @@ var _counts: Dictionary[StringName, int] = {}
 ## Under the dummy audio driver (headless runs: tests, CI) nothing can be heard and the driver never
 ## releases a sound once started, so cues are set up and recorded but not started. Movie Maker also uses
 ## the dummy driver, but drives it frame by frame and records it, so recordings are audible.
-var audible: bool = AudioServer.get_driver_name() != "Dummy" or OS.get_cmdline_args().has("--write-movie")
+var audible: bool = AudioServer.get_driver_name() != "Dummy" or Engine.get_write_movie_path() != ""
 
 var _streams: Dictionary[String, AudioStream] = {}
 var _world: Array[AudioStreamPlayer2D] = []
