@@ -236,6 +236,8 @@ func _build_cells() -> void:
 					facade = BuildingCell.Facade.LAUNDRY
 				"M":
 					facade = BuildingCell.Facade.SIGNAL_ROOM
+				"I":
+					facade = BuildingCell.Facade.WORKSHOP
 			b.setup(cell, facade, not grid.is_building(cell + Vector2i(0, 1)), not grid.is_building(cell + Vector2i(1, 0)), look)
 			world.add_child(b)
 			continue

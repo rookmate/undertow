@@ -546,5 +546,13 @@
  "waiting_refusal": {
   "hash": "ad4ddab2f9ca7984a9c81b4ff46cf042e7a0732c",
   "text": "They're resting. Leave them."
+ },
+ "workshop_manual": {
+  "hash": "e0fcb7688db68522a3c5600dbf0e159b4696a2d2",
+  "text": "You'd rather do it yourself. All right. I'll watch."
+ },
+ "workshop_tuned": {
+  "hash": "6e54b6a68b52f29853b4f0ddb508d36687a572e2",
+  "text": "Good. Let me make it sing for you."
  }
 }

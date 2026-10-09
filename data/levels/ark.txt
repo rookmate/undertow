@@ -5,6 +5,7 @@
 ;   n  concrete          G  concrete with a gold floor light     f  unbuilt plot (foundation)
 ;   A  the Archive (from the Vellum)   a  its door                 D  the dock (the skiff, the Loop map)
 ;   M  the Signal Room (from the Loop) e  its door
+;   I  the Workshop (from the Tideworks) z  its door
 ;   N  Noor      Y  Teo      s  where woken survivors stand      p  start (off the skiff)
 ;   ~  water
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -15,9 +16,9 @@
 ~~~~~~AAAMMennnGn~~~~~~~
 ~~~~~~AAAnnnnffnnn~~~~~~
 ~~~~~~AAAannnffnnG~~~~~~
-~~~~GnnnnnnnnnnnnnG~~~~~
-~~~~nnnnnnnNnnnffnn~~~~~
-~~~~nnnnnnnnnnnffnn~~~~~
+~~~~InnnnnnnnnnnnnG~~~~~
+~~~~IznnnnnNnnnffnn~~~~~
+~~~~Innnnnnnnnnffnn~~~~~
 ~~~GnnnnnYnnnnnnnnnG~~~~
 ~~~~nffnnnnnnnnnnnn~~~~~
 ~~~~nffnnnnnnnnnnnn~~~~~

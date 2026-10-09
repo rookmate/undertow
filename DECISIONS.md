@@ -345,3 +345,8 @@ Asked of the user on 2026-10-09 and answered the same day.
 109. **Boss weak points share one base** (`WeakPoint`: struck while the boss is switching, it stalls;
      never a threat, never aimed at by the Steward, retired when the boss falls). The autopilot fights
      bosses only in their own fight loops.
+110. **The Workshop** stands on the Ark's west rim once the Tideworks is done. Each found weapon's
+     tuned and manual modes upgrade separately, two levels each (6 and 12 scrap), every level +20%
+     damage in that mode (a tuned upgrade waits while muted, since muted weapons run manual). The
+     Steward is pleased when you upgrade what it runs, resigned when you upgrade what you run. Scrap
+     shows on the HUD.

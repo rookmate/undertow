@@ -65,7 +65,7 @@ func _discharge(radius: float, damage: float, stun: float, cue: StringName = &"g
 	for e: Node2D in targets_in_range(radius + 0.6):
 		var enemy := e as Enemy
 		if Iso.ground_distance(player.global_position, enemy.global_position) <= radius + enemy.radius_tiles:
-			enemy.take_hit(damage, Iso.ground_dir_between(player.global_position, enemy.global_position), 0.7, stun)
+			enemy.take_hit(damage * damage_scale(), Iso.ground_dir_between(player.global_position, enemy.global_position), 0.7, stun)
 	var lv := level()
 	if lv != null:
 		var ring := Fx.spawn(lv.fx_ground, player.global_position, Fx.Shape.DISC, Color(WeaponGlow.hot(is_tuned()), 0.9), 0.35)

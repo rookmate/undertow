@@ -64,6 +64,7 @@ const TIDEWORKS_ROUTE: Array[String] = [
 	"level_reached", "player_spawned", "riot_drone_found", "strike_records_found", "enemy_killed",
 	"crane_engaged", "crane_called_a_drop", "crane_rested", "crane_beaten", "barriers_opened",
 	"route_completed", "core_choice_shown", "tideworks_cores_carried", "ark_reached", "workshop_restored",
+	"workshop_standing", "upgrade_bought",
 ]
 const SCENARIOS: Array[String] = ["slice", "vellum", "loop", "tideworks", "ring_gallery", "options", "tour"]
 const TOUR: Array[String] = ["save_isolated", "title_shown", "tour_level_reached", "tour_done"]
@@ -678,9 +679,27 @@ func _drive_ark(gen: int) -> void:
 		return
 	if scenario == "tideworks":
 		check(GameState.run.buildings_restored.has("workshop"), "workshop_restored")
+		var standing := 0
+		for n: Node in ark.world.get_children():
+			if n is BuildingCell and (n as BuildingCell).facade == BuildingCell.Facade.WORKSHOP:
+				standing += 1
+		check(standing > 0, "workshop_standing")
 		if not await _wait(1.5, gen):
 			return
 		await snap("ark_after_tideworks")
+		if not await _use_at(ark, player, Vector2i(6, 9), gen):
+			return
+		var shop := ark.workshop_screen
+		if shop == null:
+			return
+		await snap("workshop")
+		var scrap := GameState.run.scrap
+		shop.buy(WeaponDefs.RIOT_DRONE, "tuned")
+		check(GameState.run.scrap == scrap - Upgrades.COSTS[0] and Upgrades.level(GameState.run, WeaponDefs.RIOT_DRONE, "tuned") == 1, "upgrade_bought")
+		if not await _wait(2.5, gen):
+			return
+		await snap("workshop_bought")
+		shop.close()
 		return
 	if scenario == "loop":
 		check(GameState.run.buildings_restored.has("signal_room"), "signal_room_restored")

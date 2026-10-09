@@ -8,15 +8,18 @@ extends Level
 const SURVIVOR_SPOTS := "s"
 ## Which map letters are which Ark building's plot. A plot is built only once that building has been
 ## restored by bringing a district's core home; until then it is an unbuilt slab.
-const PLOTS: Dictionary[String, String] = {"A": "archive", "M": "signal_room"}
+const PLOTS: Dictionary[String, String] = {"A": "archive", "M": "signal_room", "I": "workshop"}
 ## The door belongs to the building it opens.
-const DOORS: Dictionary[String, String] = {"a": "archive", "e": "signal_room"}
+const DOORS: Dictionary[String, String] = {"a": "archive", "e": "signal_room", "z": "workshop"}
 ## What each building's door is.
-const DOOR_KINDS: Dictionary[String, ArkFixture.Kind] = {"archive": ArkFixture.Kind.ARCHIVE_DOOR, "signal_room": ArkFixture.Kind.SIGNAL_DOOR}
+const DOOR_KINDS: Dictionary[String, ArkFixture.Kind] = {
+	"archive": ArkFixture.Kind.ARCHIVE_DOOR, "signal_room": ArkFixture.Kind.SIGNAL_DOOR, "workshop": ArkFixture.Kind.WORKSHOP_DOOR,
+}
 
 var archive_screen: ArchiveScreen
 var city_map: CityMap
 var overrides_screen: OverridesScreen
+var workshop_screen: WorkshopScreen
 
 
 func is_hub() -> bool:
@@ -150,6 +153,8 @@ func _on_fixture_used(kind: ArkFixture.Kind) -> void:
 			open_archive()
 		ArkFixture.Kind.SIGNAL_DOOR:
 			open_overrides()
+		ArkFixture.Kind.WORKSHOP_DOOR:
+			open_workshop()
 		_:
 			open_city_map()
 
@@ -162,6 +167,16 @@ func open_archive() -> ArchiveScreen:
 	archive_screen.closed.connect(func() -> void: archive_screen = null)
 	add_child(archive_screen)
 	return archive_screen
+
+
+## The Workshop: weapon upgrades for scrap.
+func open_workshop() -> WorkshopScreen:
+	if workshop_screen != null:
+		return workshop_screen
+	workshop_screen = WorkshopScreen.new()
+	workshop_screen.closed.connect(func() -> void: workshop_screen = null)
+	add_child(workshop_screen)
+	return workshop_screen
 
 
 ## The Signal Room: the standing orders.

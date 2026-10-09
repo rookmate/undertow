@@ -5,7 +5,7 @@ extends Node2D
 ## windows (human warmth), old-city neon, and the Steward's gilt threaded along the balcony ironwork,
 ## which dies when the voice is muted.
 
-enum Facade { PLAIN, DOOR, NEON_MAGENTA, NEON_LIME, ARCHIVE, LAUNDRY, SIGNAL_ROOM }
+enum Facade { PLAIN, DOOR, NEON_MAGENTA, NEON_LIME, ARCHIVE, LAUNDRY, SIGNAL_ROOM, WORKSHOP }
 
 const STORY := 74.0
 const STORIES := 3
@@ -115,6 +115,17 @@ func _face(a: Vector2, b: Vector2, h: float, street_side: bool) -> void:
 		var base := story * STORY
 		if story == 0 and facade == Facade.DOOR and street_side:
 			_door(a, b)
+			continue
+		if facade == Facade.WORKSHOP:
+			# A roller shutter half up on the ground floor, light and sparks inside; warm windows above.
+			if story == 0 and street_side:
+				var shutter := PackedVector2Array([_on_face(a, b, 0.15, 0.0), _on_face(a, b, 0.85, 0.0), _on_face(a, b, 0.85, 40.0), _on_face(a, b, 0.15, 40.0)])
+				_glow.poly(shutter, Color(Palette.HUMAN_CREAM, 0.5))
+				for k: int in 5:
+					var slat := 44.0 + k * 6.0
+					_base.line(_on_face(a, b, 0.15, slat), _on_face(a, b, 0.85, slat), Palette.IRON_DARK, 2.0)
+			else:
+				_window(a, b, base, true, rng)
 			continue
 		if facade == Facade.SIGNAL_ROOM:
 			# Restored and staffed by people: warm windows, and the signal lamps on its mast (below).

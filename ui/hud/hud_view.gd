@@ -71,7 +71,7 @@ func _state_signature() -> String:
 	if level == null or level.player == null:
 		return ""
 	var p := level.player
-	var parts := PackedStringArray([str(roundi(p.integrity.value)), "%.3f" % _shown_integrity, "%.2f" % _hurt_flash])
+	var parts := PackedStringArray([str(roundi(p.integrity.value)), "%.3f" % _shown_integrity, "%.2f" % _hurt_flash, str(GameState.run.scrap)])
 	var b := level.boss
 	if b != null and is_instance_valid(b):
 		parts.append("%d%d%d%.1f" % [int(b.is_engaged), int(b.is_alive()), int(b.is_vulnerable()), b.integrity.value])
@@ -186,6 +186,8 @@ func _draw_integrity(at: Vector2, p: Operator) -> void:
 	draw_rect(Rect2(bar.position, Vector2(BAR_W * p.integrity.ratio(), 12)), Palette.IVORY)
 	if _hurt_flash > 0.0:
 		draw_rect(bar.grow(3.0), Color(Palette.DANGER, _hurt_flash * 2.0), false, 2.0)
+	# Parts taken from machines, for the Workshop.
+	draw_string(UiFonts.mono(), at + Vector2(0, -22), "SCRAP %d" % GameState.run.scrap, HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Palette.IVORY_DIM)
 
 
 func _draw_weapon(r: Rect2, w: Weapon) -> void:

@@ -36,6 +36,7 @@ const STEWARD_ALLOWED: Dictionary[String, String] = {
 	"res://game/level/route_light.gd": "the Loop's route lights are the Steward's",
 	"res://ui/ark/overrides_screen.gd": "the Steward's replies to your orders (its narration)",
 	"res://game/level/crane_leg.gd": "the gilt climbing the Tideworks' crane legs is the Steward's overlay",
+	"res://ui/ark/workshop_screen.gd": "the Steward's view on your upgrades (its narration)",
 	"res://game/bosses/crane.gd": "the Crane is the Steward's last working crane: its core and its gilt are the Steward's",
 }
 

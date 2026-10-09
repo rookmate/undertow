@@ -65,7 +65,7 @@ func _shoot(tuned: bool) -> void:
 	p.level = lv
 	p.direction = dir
 	p.speed_tiles = SHOT_SPEED
-	p.damage = TUNED_DAMAGE if tuned else MANUAL_DAMAGE
+	p.damage = (TUNED_DAMAGE if tuned else MANUAL_DAMAGE) * damage_scale()
 	p.max_tiles = TUNED_RANGE if tuned else MANUAL_RANGE
 	p.pierce = 0 if tuned else MANUAL_PIERCE
 	p.color = WeaponGlow.hot(tuned)

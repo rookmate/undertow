@@ -11,6 +11,8 @@
     "find_riot_drone": "A Warden's drone. I suppose you'd better have it.",
     "crane_drop": "Drop. Get out from under it.",
     "crane_swing": "Swing. Get in close to the tower.",
-    "crane_rest": "Its cab's down. Now."
+    "crane_rest": "Its cab's down. Now.",
+    "workshop_tuned": "Good. Let me make it sing for you.",
+    "workshop_manual": "You'd rather do it yourself. All right. I'll watch."
   }
 }
