@@ -10,7 +10,7 @@ extends RefCounted
 ##   "reliquary:<id>"  its Reliquary opened, cores not chosen yet
 ##   "ark"             the hub
 
-const FIRST_LEVEL := "vellum"
+const FIRST_LEVEL := "kestrel"
 
 ## Playable districts. "after": districts that must be completed first (the world bible's acts).
 const LEVELS: Dictionary[String, Dictionary] = {
@@ -25,7 +25,9 @@ const LEVELS: Dictionary[String, Dictionary] = {
 	"vellum": {
 		"name": "The Vellum",
 		"act": 2,
-		"after": [],
+		# Act 2 opens after the Tideworks (design/act-1.md); until the Loop and the Tideworks exist, after
+		# Kestrel Heights.
+		"after": ["kestrel"],
 		"scene": "res://game/level/vellum_street.tscn",
 		"map": "res://data/levels/vellum_street.txt",
 		"restores": "archive",

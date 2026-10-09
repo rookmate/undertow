@@ -299,3 +299,8 @@ Asked of the user on 2026-10-09 and answered the same day.
     `[muted]` limit them to one state). Kestrel teaches muting at the hedge gap and the shut gates.
 97. **Machines give up scrap** when taken apart (Custodian 1, Clerk 2, Lamplighter 3), kept in the run
     for the Workshop.
+98. **New Game starts in Kestrel Heights with only the Traffic Baton**; the loadout carries one weapon
+    until another is found. The Vellum opens after Kestrel Heights for now (after the Tideworks once
+    the Loop and the Tideworks exist). Kestrel restores no Ark building, so the Ark is bare after it.
+99. **The gate's long runs** play New Game through Kestrel Heights to the Loop map (`slice`) and, from a
+    prepared run with all three weapons, the Vellum's whole route to the Archive (`vellum`).
