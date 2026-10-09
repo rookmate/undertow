@@ -5,8 +5,8 @@
 #      test loads every script, so script errors and warnings fail here too.
 #   3. The game runs for 30 s from the main scene under the autopilot with no ERROR/WARNING lines and
 #      every autopilot check passing. Windowed when a display exists, headless otherwise.
-#   4. A longer full-slice autopilot run (90 s) that expects every feature built so far to work.
-# Env: SMOKE_SECONDS (30), FULL_SECONDS (90), SMOKE_SCENARIO (slice), HEADLESS=1 to force headless, LOG_DIR.
+#   4. A longer full-slice autopilot run (150 s) that expects every feature built so far to work.
+# Env: SMOKE_SECONDS (30), FULL_SECONDS (150), SMOKE_SCENARIO (slice), HEADLESS=1 to force headless, LOG_DIR.
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -57,9 +57,9 @@ if [ $code -ne 0 ]; then echo "  FAIL run exited with $code"; status=1; fi
 grep -q '^AUTOPILOT PASS' "$LOG_DIR/smoke.log" || { echo "  FAIL autopilot did not pass"; status=1; }
 scan_log "$LOG_DIR/smoke.log" run && [ $code -eq 0 ] && echo "  ok"
 
-echo "== 4/4 full slice run (${FULL_SECONDS:-90}s, every feature so far)"
-timeout $(( ${FULL_SECONDS:-90} + 90 )) godot "${MODE[@]}" --path . -- --autopilot \
-  --autopilot-seconds="${FULL_SECONDS:-90}" --autopilot-scenario="$SMOKE_SCENARIO" \
+echo "== 4/4 full slice run (${FULL_SECONDS:-150}s, every feature so far)"
+timeout $(( ${FULL_SECONDS:-150} + 90 )) godot "${MODE[@]}" --path . -- --autopilot \
+  --autopilot-seconds="${FULL_SECONDS:-150}" --autopilot-scenario="$SMOKE_SCENARIO" \
   --autopilot-shots="$LOG_DIR/shots_full" > "$LOG_DIR/full.log" 2>&1
 code=$?
 grep -E '^AUTOPILOT' "$LOG_DIR/full.log" | sed 's/^/  /'

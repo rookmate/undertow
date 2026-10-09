@@ -8,6 +8,8 @@ const CHIPS: Array[String] = ["PATH", "MAP", "THREAT WARNINGS", "DODGE SLOW-MO",
 
 var ring: StewardRing
 var speaking: bool = false
+## On the Ark the Steward may advise and may not act: no assists to show.
+var advising_only: bool = false
 
 
 func _ready() -> void:
@@ -31,7 +33,7 @@ func _process(_delta: float) -> void:
 func _draw() -> void:
 	var on := Steward.voice_on
 	var a := Steward.assists()
-	var title := "STEWARD · LISTENING" if on else "STEWARD · MUTED"
+	var title := ("STEWARD · ADVISING ONLY" if advising_only else "STEWARD · LISTENING") if on else "STEWARD · MUTED"
 	var title_col := Palette.STEWARD_GOLD if on else Palette.GREY_COLD
 	var heading := UiFonts.heading()
 	draw_string(heading, Vector2(76, 30), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 28, title_col)
@@ -44,6 +46,8 @@ func _draw() -> void:
 	if not on:
 		var t := int(Steward.muted_for)
 		draw_string(UiFonts.mono(), Vector2(76, 56), "MUTED %02d:%02d" % [floori(t / 60.0), t % 60], HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Palette.IVORY_DIM)
+	if advising_only:
+		return
 	var states: Array[bool] = [a.path_visible, a.map_mode == Assists.MapMode.STEWARD, a.threat_warnings, a.dodge_slowmo_seconds > 0.0, a.aim_assist > 0.0, not a.weapons_forced_manual]
 	var x := 0.0
 	var y := 82.0

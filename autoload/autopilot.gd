@@ -179,6 +179,8 @@ func _on_scene_changed(key: StringName) -> void:
 			_drive_level(gen)
 		&"core_choice":
 			_drive_core_choice(gen)
+		&"ark":
+			_drive_ark(gen)
 
 
 func _drive_title(gen: int) -> void:
@@ -310,6 +312,68 @@ func _drive_core_choice(gen: int) -> void:
 	check(r.levels_completed.has(ContentIds.LEVEL_VELLUM) and r.buildings_restored.has("archive") and r.logs_unlocked.has("log_vashti_audit_note"), "level_completed_archive_restored")
 	check(SaveService.has_save(), "saved_after_choice")
 	await snap("core_choice_done")
+	expect("ark_reached")
+	confirm.grab_focus()
+	tap(&"ui_accept")
+
+
+## The Ark: the restored Archive, Noor and Teo, the survivors; replay two memories, talk, take the skiff.
+func _drive_ark(gen: int) -> void:
+	pass_check("ark_reached")
+	var ark := get_tree().current_scene as ArkLevel
+	if ark == null:
+		return
+	var player := ark.player
+	var archive_cells := 0
+	var figures: Dictionary[String, int] = {}
+	for n: Node in ark.world.get_children():
+		if n is BuildingCell and (n as BuildingCell).facade == BuildingCell.Facade.ARCHIVE:
+			archive_cells += 1
+		if n is ArkFigure:
+			var key := (n as ArkFigure).display_name()
+			figures[key] = int(figures.get(key, 0)) + 1
+	check(archive_cells > 0, "archive_restored_on_the_ark")
+	check(figures.get("NOOR", 0) == 1 and figures.get("TEO", 0) == 1, "noor_and_teo_present")
+	check(int(figures.get("SURVIVOR", 0)) == GameState.run.survivors_found(), "survivors_on_the_ark")
+	if not await _wait(1.5, gen):
+		return
+	await snap("ark")
+	for c: String in ["archive_replayed", "trust_changed", "end_of_slice_shown"]:
+		expect(c)
+	if not await advance_to(ark, player, Vector2i(10, 7), 20.0, gen):
+		return
+	tap(&"interact")
+	if not await _wait(0.8, gen):
+		return
+	var screen := ark.archive_screen
+	if screen == null:
+		return
+	await snap("archive")
+	var noor_before := GameState.run.noor_trust
+	var teo_before := GameState.run.teo_trust
+	for log_id: String in ["log_0311_morning_feed", "log_vashti_audit_note"]:
+		screen.select(log_id)
+		screen.call("_on_replay")
+		var lines := (ContentDb.memory_log(log_id).get("record", []) as Array).size()
+		if not await _wait(lines * ArchiveScreen.LINE_SECONDS + 1.2, gen):
+			return
+		await snap("archive_" + log_id)
+	check(GameState.run.logs_replayed.size() >= 2, "archive_replayed")
+	check(GameState.run.noor_trust != noor_before or GameState.run.teo_trust != teo_before, "trust_changed")
+	tap(&"ui_cancel")
+	if not await _wait(0.8, gen):
+		return
+	if not await _use_at(ark, player, Vector2i(12, 9), gen):
+		return
+	await snap("ark_noor")
+	for cell: Vector2i in [Vector2i(17, 17), Vector2i(19, 19), Vector2i(20, 20)]:
+		if not await advance_to(ark, player, cell, 20.0, gen):
+			return
+	tap(&"interact")
+	if not await _wait(1.0, gen):
+		return
+	check(ark.end_panel != null, "end_of_slice_shown")
+	await snap("end_of_slice")
 
 
 ## Off the path: down the stair into the overflow stacks. Nothing there while the Steward listens;
@@ -357,26 +421,37 @@ func _visit_stacks(level: Level, player: Operator, gen: int) -> bool:
 func _toggle_voice_and_check(level: Level, player: Operator, gen: int) -> bool:
 	var toggles := GameState.run.voice_toggle_count
 	tap(&"voice_toggle")
-	if not await _wait(1.6, gen):
-		return false
-	var lamps_dark := true
-	for n: Node in get_tree().get_nodes_in_group(&"lattice_lamps"):
-		lamps_dark = lamps_dark and not (n as LampPost).lit
+	var all_lamps := func(lit: bool) -> bool:
+		for n: Node in get_tree().get_nodes_in_group(&"lattice_lamps"):
+			if (n as LampPost).lit != lit:
+				return false
+		return true
+	check(await _until(func() -> bool: return not Steward.voice_on and GameState.run.voice_toggle_count == toggles + 1, 1.0, gen), "voice_muted_by_key")
+	check(await _until(func() -> bool: return all_lamps.call(false), 3.0, gen), "muted_lamps_dark")
+	check(player.carried_light_on(), "muted_hand_lamp_on")
+	check(await _until(func() -> bool: return level.lighting.grade_amount() > 0.95, 3.0, gen), "muted_cold_grade")
 	var a := Steward.assists()
-	check(not Steward.voice_on and GameState.run.voice_toggle_count == toggles + 1, "voice_muted_by_key")
-	check(lamps_dark and player.carried_light_on() and level.lighting.grade_amount() > 0.95, "muted_lighting_state")
 	check(level.predicted_path.shown.is_empty() and level.hud.minimap.mode() == Assists.MapMode.HAND_SCAN, "muted_path_and_map")
 	check(not a.threat_warnings and a.aim_assist == 0.0 and a.dodge_slowmo_seconds == 0.0 and not player.weapons[1].is_tuned() and a.damage_taken_mult > 1.0, "muted_assists_off")
 	await snap("muted_street")
 	tap(&"voice_toggle")
-	if not await _wait(1.6, gen):
-		return false
-	var lamps_lit := true
-	for n: Node in get_tree().get_nodes_in_group(&"lattice_lamps"):
-		lamps_lit = lamps_lit and (n as LampPost).lit
-	check(Steward.voice_on and lamps_lit and level.predicted_path.shown.size() == Tunables.PATH_TILES_AHEAD and level.hud.subtitles.is_speaking(), "voice_restored")
+	check(await _until(func() -> bool: return Steward.voice_on and all_lamps.call(true), 3.0, gen), "voice_restored_lamps")
+	check(await _until(func() -> bool: return level.predicted_path.shown.size() == Tunables.PATH_TILES_AHEAD and level.hud.subtitles.is_speaking(), 3.0, gen), "voice_restored")
 	await snap("voice_restored")
-	return true
+	return gen == _generation
+
+
+## Waits until `condition` holds (true) or `timeout` seconds pass (false).
+func _until(condition: Callable, timeout: float, gen: int) -> bool:
+	var spent := 0.0
+	while spent < timeout:
+		if gen != _generation or _finished:
+			return false
+		if condition.call():
+			return true
+		await get_tree().process_frame
+		spent += get_process_delta_time() / maxf(Engine.time_scale, 0.01)
+	return bool(condition.call())
 
 
 func _watch_threats(level: Level, gen: int) -> void:

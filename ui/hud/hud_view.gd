@@ -63,6 +63,8 @@ func _draw() -> void:
 	_draw_threats(p)
 	_draw_interaction(p)
 	_draw_woken_lines()
+	if level.is_hub():
+		return
 	var bottom := size.y - MARGIN
 	_draw_integrity(Vector2(MARGIN, bottom - CHIP_H - 64.0), p)
 	for i: int in p.weapons.size():
@@ -109,16 +111,19 @@ func _draw_interaction(p: Operator) -> void:
 	draw_string(label_font, at + Vector2(-tw * 0.5, 0), text, HORIZONTAL_ALIGNMENT_LEFT, -1, 26, Palette.IVORY)
 
 
-## What a woken survivor says, in plain type and human cream (the serif belongs to the Steward).
+## What people say, in plain type and human cream (the serif belongs to the Steward).
 func _draw_woken_lines() -> void:
 	for n: Node in get_tree().get_nodes_in_group(&"interactables"):
-		var w := n as TheWaiting
-		if w == null or w.spoken_line() == "" or not level.is_ancestor_of(w):
+		if not level.is_ancestor_of(n) or not n.has_method(&"spoken_line"):
 			continue
-		var at := _to_screen(w.global_position + Vector2(0, -170))
+		var line: String = n.call(&"spoken_line")
+		if line == "":
+			continue
+		var at := _to_screen((n as Node2D).global_position + Vector2(0, -238))
 		var font := UiFonts.label()
-		var tw := font.get_string_size(w.spoken_line(), HORIZONTAL_ALIGNMENT_LEFT, -1, 26).x
-		draw_string(font, at + Vector2(-tw * 0.5, 0), w.spoken_line(), HORIZONTAL_ALIGNMENT_LEFT, -1, 26, Palette.HUMAN_CREAM)
+		var tw := font.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1, 26).x
+		draw_rect(Rect2(at + Vector2(-tw * 0.5 - 12, -28), Vector2(tw + 24, 38)), Color(Palette.NEAR_BLACK, 0.6))
+		draw_string(font, at + Vector2(-tw * 0.5, 0), line, HORIZONTAL_ALIGNMENT_LEFT, -1, 26, Palette.HUMAN_CREAM)
 
 
 func _draw_integrity(at: Vector2, p: Operator) -> void:

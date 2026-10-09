@@ -11,6 +11,7 @@ const SCENES: Dictionary[StringName, String] = {
 	&"loadout": "res://ui/loadout/loadout.tscn",
 	&"level_vellum": "res://game/level/vellum_street.tscn",
 	&"core_choice": "res://ui/core_choice/core_choice.tscn",
+	&"ark": "res://game/ark/ark.tscn",
 }
 
 ## Where a saved RunState.location resumes.
@@ -19,6 +20,7 @@ const LOCATIONS: Dictionary[String, StringName] = {
 	"level:vellum": &"loadout",
 	# Opened the Reliquary but didn't choose yet: back to the choice, found cores intact.
 	"reliquary:vellum": &"core_choice",
+	"ark": &"ark",
 }
 
 var current_key: StringName = &""
@@ -29,7 +31,9 @@ var _busy: bool = false
 func _ready() -> void:
 	layer = 90
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	get_tree().root.theme = UiTheme.build()
+	# Merge the game's theme into the engine default so every Control gets it, including ones under a
+	# CanvasLayer or Node2D, where theme inheritance from the root window stops.
+	UiTheme.install()
 	_fade = ColorRect.new()
 	_fade.color = Palette.NEAR_BLACK
 	_fade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)

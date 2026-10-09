@@ -1,0 +1,32 @@
+; The Ark: a civic emergency platform in the estuary, a concrete disc with a ring of gold floor lights
+; and the only charter clause the council never amended: "the Steward may advise here and may not act."
+; Same orientation and conventions as the level maps (see vellum_street.txt).
+;
+;   n  concrete          G  concrete with a gold floor light     f  unbuilt plot (foundation)
+;   A  the Archive (restored)    a  the Archive's door           D  the dock (end of the slice)
+;   N  Noor      Y  Teo      s  where woken survivors stand      P  start (off the skiff)
+;   ~  water
+~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~G~~~~~~~~~~~~
+~~~~~~~~~nnnnnG~~~~~~~~~
+~~~~~~AAAnnnnnnGn~~~~~~~
+~~~~~~AAAnnnnffnnn~~~~~~
+~~~~~~AAAannnffnnG~~~~~~
+~~~~GnnnnnnnnnnnnnG~~~~~
+~~~~nnnnnnnNnnnffnn~~~~~
+~~~~nnnnnnnnnnnffnn~~~~~
+~~~GnnnnnYnnnnnnnnnG~~~~
+~~~~nffnnnnnnnnnnnn~~~~~
+~~~~nffnnnnnnnnnnnn~~~~~
+~~~~GnnnnnnnnnnnnnG~~~~~
+~~~~~GnnffnnffnnsG~~~~~~
+~~~~~nnnffnnffnsnn~~~~~~
+~~~~~~nGnnnnnnsGnn~~~~~~
+~~~~~~~~GnnnnnG~~nn~~~~~
+~~~~~~~~~~~G~~~~~~nP~~~~
+~~~~~~~~~~~~~~~~~~~nn~~~
+~~~~~~~~~~~~~~~~~~~~Dn~~
+~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~

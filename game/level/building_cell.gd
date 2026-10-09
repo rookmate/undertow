@@ -5,7 +5,7 @@ extends Node2D
 ## windows (human warmth), old-city neon, and the Steward's gilt threaded along the balcony ironwork,
 ## which dies when the voice is muted.
 
-enum Facade { PLAIN, DOOR, NEON_MAGENTA, NEON_LIME }
+enum Facade { PLAIN, DOOR, NEON_MAGENTA, NEON_LIME, ARCHIVE }
 
 const STORY := 74.0
 const STORIES := 3
@@ -107,6 +107,12 @@ func _face(a: Vector2, b: Vector2, h: float, street_side: bool) -> void:
 		if story == 0 and facade == Facade.DOOR and street_side:
 			_door(a, b)
 			continue
+		if facade == Facade.ARCHIVE:
+			# Restored and in use: every window warm, a rose of stained glass over the door.
+			_window(a, b, base, true, rng)
+			if story == 1 and street_side:
+				_rose(a, b, base)
+			continue
 		_window(a, b, base, rng.randf() < (0.42 if street_side else 0.22), rng)
 		if story == 1:
 			_balcony(a, b, base)
@@ -140,6 +146,16 @@ func _balcony(a: Vector2, b: Vector2, base: float) -> void:
 		_base.line(_on_face(a, b, u, v), _on_face(a, b, u, v + 16.0), Palette.IRON_DARK, 1.5)
 	# The gilt: ten years of the Steward laid over the ironwork, a gold vein along the rail.
 	_gilt.line(_on_face(a, b, 0.18, v + 16.0), _on_face(a, b, 0.82, v + 16.0), Palette.STEWARD_GOLD_HOT, 1.5)
+
+
+func _rose(a: Vector2, b: Vector2, base: float) -> void:
+	var c := _on_face(a, b, 0.5, base + 30.0)
+	var petals := PackedVector2Array()
+	for i: int in 13:
+		var ang := TAU * i / 12.0
+		petals.append(c + Vector2(cos(ang) * 14.0, sin(ang) * 18.0))
+	_glow.poly(petals, Color(Palette.STAINED_ROSE.lightened(0.3), 0.9))
+	_base.polyline(petals, Palette.IRON_DARK, 2.0)
 
 
 func _door(a: Vector2, b: Vector2) -> void:

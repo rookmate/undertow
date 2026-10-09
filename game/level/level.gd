@@ -55,8 +55,7 @@ func _ready() -> void:
 	_build_cells()
 	_build_collision()
 	_spawn_player()
-	_spawn_enemies()
-	_spawn_people_and_finds()
+	_populate()
 	_add_steward_path()
 	_add_atmosphere()
 	exploration = Exploration.new()
@@ -76,8 +75,9 @@ func _ready() -> void:
 	Steward.voice_changed.connect(_on_voice_changed)
 	add_child(PauseMenu.new())
 	add_child(LevelHints.new())
-	GameState.set_location("level:" + level_id)
+	GameState.set_location(location_key())
 	GameState.save()
+	_on_ready_extra()
 
 
 func _process(delta: float) -> void:
@@ -86,7 +86,8 @@ func _process(delta: float) -> void:
 	# Level play only (DECISIONS #11): menus, pause and the Ark don't count toward voice_on_ratio.
 	var real_delta := delta / maxf(Engine.time_scale, 0.01)
 	GameState.add_play_time(real_delta)
-	GameState.add_voice_time(real_delta, Steward.voice_on)
+	if not is_hub():
+		GameState.add_voice_time(real_delta, Steward.voice_on)
 	exploration.observe(player.cell())
 	_update_checkpoint()
 
@@ -106,6 +107,26 @@ func _exit_tree() -> void:
 	if Steward.voice_changed.is_connected(_on_voice_changed):
 		Steward.voice_changed.disconnect(_on_voice_changed)
 	Engine.time_scale = 1.0
+
+
+# --- Hooks (the Ark overrides these) --------------------------------------------------------------
+## A hub (the Ark) has no enemies, no Steward path, no weapons, and doesn't count voice time.
+func is_hub() -> bool:
+	return false
+
+
+## What RunState.location records while the player is here.
+func location_key() -> String:
+	return "level:" + level_id
+
+
+func _populate() -> void:
+	_spawn_enemies()
+	_spawn_people_and_finds()
+
+
+func _on_ready_extra() -> void:
+	pass
 
 
 func living_enemies() -> Array[Enemy]:
@@ -140,6 +161,8 @@ func _build_cells() -> void:
 			var b := BuildingCell.new()
 			var facade := BuildingCell.Facade.PLAIN
 			match ch:
+				"A":
+					facade = BuildingCell.Facade.ARCHIVE
 				"d":
 					facade = BuildingCell.Facade.DOOR
 				"m":
@@ -226,11 +249,12 @@ func _spawn_player() -> void:
 	checkpoint_cell = grid.first("P")
 	player.position = Iso.cell_center(checkpoint_cell)
 	world.add_child(player)
-	var ids := Loadout.from_run(GameState.run)
-	var modes: Array[Loadout.Mode] = []
-	for id: String in ids:
-		modes.append(Loadout.chosen_mode(GameState.run, id))
-	player.equip(ids, modes)
+	if not is_hub():
+		var ids := Loadout.from_run(GameState.run)
+		var modes: Array[Loadout.Mode] = []
+		for id: String in ids:
+			modes.append(Loadout.chosen_mode(GameState.run, id))
+		player.equip(ids, modes)
 	camera = Camera2D.new()
 	camera.position_smoothing_enabled = true
 	camera.position_smoothing_speed = 6.0

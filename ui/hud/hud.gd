@@ -16,10 +16,13 @@ func _ready() -> void:
 	view.level = level
 	add_child(view)
 	pill = StewardPill.new()
+	pill.advising_only = level.is_hub()
 	add_child(pill)
 	minimap = Minimap.new()
 	minimap.level = level
 	add_child(minimap)
+	# The Steward has no map of the Ark: it may advise here and may not act.
+	minimap.visible = not level.is_hub()
 	subtitles = Subtitles.new()
 	subtitles.speaking_changed.connect(func(on: bool) -> void: pill.speaking = on)
 	add_child(subtitles)

@@ -69,15 +69,20 @@ func test_occupied_cells_are_walkable_but_marked() -> void:
 ## covers the screen column above its footprint, i.e. cells behind it at (x - i, y - j) with
 ## |i - j| <= 1 and i + j up to its height in half-tiles.
 func test_no_building_hides_walkable_ground() -> void:
+	_check_occlusion(grid)
+	_check_occlusion(LevelGrid.load_file("res://data/levels/ark.txt"))
+
+
+func _check_occlusion(g: LevelGrid) -> void:
 	var rows_hidden := ceili((BuildingCell.STORY * BuildingCell.STORIES + BuildingCell.PARAPET) / Iso.HALF_H)
-	for c: Vector2i in grid.all_cells():
-		if not grid.is_building(c):
+	for c: Vector2i in g.all_cells():
+		if not g.is_building(c):
 			continue
 		for i: int in range(0, rows_hidden + 1):
 			for j: int in range(0, rows_hidden + 1):
 				if i + j == 0 or i + j > rows_hidden or absi(i - j) > 1:
 					continue
 				var behind := c - Vector2i(i, j)
-				if grid.is_walkable(behind):
+				if g.is_walkable(behind):
 					fail("building %s hides walkable cell %s" % [c, behind])
 					return

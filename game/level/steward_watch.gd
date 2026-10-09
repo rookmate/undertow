@@ -32,7 +32,8 @@ func setup(owner_level: Level) -> void:
 		w.fired.connect(_on_fired.bind(w))
 	level.enemy_died.connect(_on_enemy_died)
 	_was_indexed = level.grid.is_indexed(p.cell())
-	_say_later(&"level_enter", 1.4)
+	if not level.is_hub():
+		_say_later(&"level_enter", 1.4)
 
 
 func _say_later(event: StringName, seconds: float) -> void:
@@ -74,6 +75,8 @@ func _process(delta: float) -> void:
 			else:
 				_record(&"left_path")
 				_say(&"path_left")
+	if level.is_hub():
+		return
 	if not _checkpoint_said and cell != level.grid.first("P") and cell == level.checkpoint_cell:
 		_checkpoint_said = true
 		_say(&"checkpoint")

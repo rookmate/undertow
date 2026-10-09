@@ -156,3 +156,16 @@ brief and the user's answers didn't cover it.
     first, so Continue lands back on the cards with any found core still offered.
 56. **The Steward's card comments show only while it listens.** Muted, the cards show only their own
     description.
+57. **The Ark is a hub level** (`ArkLevel`, map `data/levels/ark.txt`): same builder, but no enemies,
+    no predicted path, no weapons, no voice-time counting, no minimap ("the Steward may advise here and
+    may not act"); the HUD pill reads "STEWARD · ADVISING ONLY". The restored Archive stands on the back
+    edge; unbuilt plots for the other buildings; Noor (cyan lantern) and Teo (tablet, gold in his
+    glasses) by the Archive; every woken survivor stands lit in cream by the Commons plot.
+58. **Archive screen:** opened from the Archive door, pauses the Ark. Recovered logs first (the
+    Steward's comforting records, then truth, then unindexed), unrecovered entries last with their
+    titles withheld. Replay prints the decision record line by line (0.45 s per line), then shows the
+    Steward's present-day comment (only while it listens) and Noor's and Teo's reactions; trust moves
+    once per log, only for companions who are present. Companions' lines on the Ark change with trust.
+59. **The game's UI theme is merged into the engine default theme** (`UiTheme.install()`), because
+    theme inheritance stops at CanvasLayers and Node2Ds; overlays (pause, Archive, end panel) need it.
+60. **End of the slice:** the dock on the Ark ("THE SKIFF ISN'T READY").
