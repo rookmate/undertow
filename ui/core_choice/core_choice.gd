@@ -159,21 +159,21 @@ func _refresh() -> void:
 			style.set_border_width_all(3)
 		card.add_theme_stylebox_override(&"normal", style)
 	_count.text = "%d / %d CHOSEN" % [picked.size(), Tunables.CORES_CARRIED_PER_LEVEL]
-	var broken := CoreChoice.offer_problem(offered)
+	var broken := CoreChoice.offer_problem(level_id, offered)
 	if broken != "":
 		# Broken content (reported at boot): say so and let the player leave; nothing is completed.
 		_summary.text = broken
 		_confirm.text = "BACK TO THE TITLE"
 		_confirm.disabled = false
 		return
-	_confirm.disabled = CoreChoice.validate(offered, picked) != ""
+	_confirm.disabled = CoreChoice.validate(level_id, offered, picked) != ""
 
 
 func _on_confirm() -> void:
 	if _done:
 		_continue()
 		return
-	if CoreChoice.offer_problem(offered) != "":
+	if CoreChoice.offer_problem(level_id, offered) != "":
 		SceneRouter.goto(&"title")
 		return
 	var problem := CoreChoice.apply(level_id, offered, picked)

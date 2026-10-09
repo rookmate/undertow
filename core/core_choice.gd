@@ -16,17 +16,25 @@ static func offer(level_id: String, run: RunState) -> Array[String]:
 	return out
 
 
-## "" if the offer is a real choice: more cores than can be carried. Otherwise the Reliquary's content is
-## broken, and the level can't be completed from it (never a free pass with fewer cores).
-static func offer_problem(offered: Array[String]) -> String:
-	if offered.size() <= Tunables.CORES_CARRIED_PER_LEVEL:
-		return "This Reliquary is broken: it offers %d cores, and there must be more than %d." % [offered.size(), Tunables.CORES_CARRIED_PER_LEVEL]
+## "" if this district's Reliquary is a real choice. Its own definition must offer more cores than can be
+## carried: cores found off the path add to it and never stand in for a missing or rejected one. And
+## what's on the table now must too. Otherwise the content is broken and the level can't be completed
+## from it.
+static func offer_problem(level_id: String, offered: Array[String]) -> String:
+	var carried := Tunables.CORES_CARRIED_PER_LEVEL
+	if not LevelCatalog.has_level(level_id):
+		return "This Reliquary is broken: %s isn't a district." % level_id
+	var own := ContentDb.reliquary(level_id).size()
+	if own <= carried:
+		return "This Reliquary is broken: it holds %d cores of its own, and there must be more than %d." % [own, carried]
+	if offered.size() <= carried:
+		return "This Reliquary is broken: it offers %d cores, and there must be more than %d." % [offered.size(), carried]
 	return ""
 
 
-## "" if `picks` is a valid choice from `offered`, otherwise why not.
-static func validate(offered: Array[String], picks: Array[String]) -> String:
-	var broken := offer_problem(offered)
+## "" if `picks` is a valid choice from what `level_id`'s Reliquary offers, otherwise why not.
+static func validate(level_id: String, offered: Array[String], picks: Array[String]) -> String:
+	var broken := offer_problem(level_id, offered)
 	if broken != "":
 		return broken
 	if picks.size() != Tunables.CORES_CARRIED_PER_LEVEL:
@@ -41,7 +49,7 @@ static func validate(offered: Array[String], picks: Array[String]) -> String:
 
 ## Takes the picked cores, files their logs for the Archive, ends the level and restores its building.
 static func apply(level_id: String, offered: Array[String], picks: Array[String]) -> String:
-	var problem := validate(offered, picks)
+	var problem := validate(level_id, offered, picks)
 	if problem != "":
 		return problem
 	for id: String in picks:

@@ -71,7 +71,7 @@ static func check(grids: Dictionary[String, LevelGrid]) -> PackedStringArray:
 			if placed_in.has(id) and placed_in[id] != level_id:
 				problems.append("id %s is placed in both %s and %s" % [id, placed_in[id], level_id])
 			placed_in[id] = level_id
-		var broken := CoreChoice.offer_problem(ContentDb.reliquary(level_id))
+		var broken := CoreChoice.offer_problem(level_id, ContentDb.reliquary(level_id))
 		if broken != "":
 			problems.append("%s: %s" % [level_id, broken])
 	return problems

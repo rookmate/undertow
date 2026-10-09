@@ -17,6 +17,9 @@ func before_each() -> void:
 
 
 func after_each() -> void:
+	# Some tests stand in a much larger Archive; the real content is read back even if one aborted.
+	ContentDb._loaded = false
+	ContentDb.ensure_loaded()
 	Modals.clear()
 	get_tree().paused = false
 	if not Steward.voice_on:
@@ -206,7 +209,6 @@ func test_an_ark_map_without_survivor_spots_is_refused() -> void:
 ## A full Archive (many districts' logs, a long record, writers' long titles and reactions) still fits
 ## its screen and works with a pad.
 func test_a_full_archive_fits_and_scrolls_with_a_pad() -> void:
-	var real_logs: Dictionary = ContentDb._logs.duplicate(true)
 	var long_record: Array = []
 	for i: int in 60:
 		long_record.append("%02d:%02d · line %d of a long decision record" % [i % 24, i, i])
@@ -253,7 +255,6 @@ func test_a_full_archive_fits_and_scrolls_with_a_pad() -> void:
 	await _press_action(&"ui_left")
 	check(first_unlocked.has_focus(), "left goes back to the log in the list")
 	screen.close()
-	ContentDb._logs = real_logs
 
 
 func _press_action(action: StringName) -> void:

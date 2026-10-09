@@ -214,8 +214,9 @@ brief and the user's answers didn't cover it.
     corner two walls share is blocked.
 75. **A broken map or broken content never becomes progress.** A broken level stops and the router
     takes the player to the title (nothing saved). A Reliquary must offer more cores than you can
-    carry, or the level can't be completed from it. Every district's map and content are checked
-    together at boot (`LevelCatalog.check_all`): ids unique across districts, caches hold truth
+    carry, or the level can't be completed from it: its own definition must (cores found off the path
+    add to it, never stand in for a missing or rejected one), and so must what's on the table.
+    Every district's map and content are checked together at boot (`LevelCatalog.check_all`): ids unique across districts, caches hold truth
     cores, slips hold unindexed logs. District maps are listed in `LevelCatalog`.
 76. **The top screen owns everything** (`Modals`): drawn on top, the only one focusable and
     clickable, focus restored when it closes. A failed-save question is blocking: no pause menu over
