@@ -6,6 +6,12 @@ func before_each() -> void:
 	GameState.new_run()
 
 
+## Some tests stand in broken content; the real files are read back afterwards even if a test aborted.
+func after_each() -> void:
+	ContentDb._loaded = false
+	ContentDb.ensure_loaded()
+
+
 func test_content_loads_and_links_up() -> void:
 	ContentDb.ensure_loaded()
 	check(ContentDb.errors.is_empty(), "content files parse: %s" % [ContentDb.errors])
@@ -45,10 +51,10 @@ func test_carry_exactly_two_different_offered_cores() -> void:
 	var same: Array[String] = [offer[0], offer[0]]
 	var outside: Array[String] = [offer[0], "spoon"]
 	var ok: Array[String] = [offer[0], offer[1]]
-	check(CoreChoice.validate(offer, one) != "")
-	check(CoreChoice.validate(offer, same) != "")
-	check(CoreChoice.validate(offer, outside) != "")
-	check_eq(CoreChoice.validate(offer, ok), "")
+	check(CoreChoice.validate(ContentIds.LEVEL_VELLUM, offer, one) != "")
+	check(CoreChoice.validate(ContentIds.LEVEL_VELLUM, offer, same) != "")
+	check(CoreChoice.validate(ContentIds.LEVEL_VELLUM, offer, outside) != "")
+	check_eq(CoreChoice.validate(ContentIds.LEVEL_VELLUM, offer, ok), "")
 
 
 func test_applying_takes_cores_files_logs_and_restores_the_archive() -> void:
@@ -119,14 +125,37 @@ func test_a_broken_offer_completes_nothing() -> void:
 	var none: Array[String] = []
 	var two: Array[String] = ["vellum_power_lattice", "vellum_power_feed"]
 	for offer: Array[String] in [none, two]:
-		check(CoreChoice.offer_problem(offer) != "", "%d cores is not a choice" % offer.size())
-		check(CoreChoice.validate(offer, offer) != "", "carrying all %d is refused" % offer.size())
+		check(CoreChoice.offer_problem(ContentIds.LEVEL_VELLUM, offer) != "", "%d cores is not a choice" % offer.size())
+		check(CoreChoice.validate(ContentIds.LEVEL_VELLUM, offer, offer) != "", "carrying all %d is refused" % offer.size())
 		check(CoreChoice.apply(ContentIds.LEVEL_VELLUM, offer, offer) != "")
+	_check_nothing_progressed([])
+
+
+## Found cores add to a Reliquary; they never stand in for a missing or rejected one, however many.
+func test_found_cores_never_stand_in_for_a_broken_reliquary() -> void:
+	var found: Array[String] = ["vellum_power_lattice", "vellum_power_feed", "vellum_truth_0522"]
+	for id: String in found:
+		GameState.find_core(id)
+	# "vellum" missing from the content, then a one-core definition that validation would have rejected.
+	for definition: Variant in [null, ["vellum_power_feed"]]:
+		ContentDb._reliquaries.erase(ContentIds.LEVEL_VELLUM)
+		if definition != null:
+			ContentDb._reliquaries[ContentIds.LEVEL_VELLUM] = definition
+		var offer := CoreChoice.offer(ContentIds.LEVEL_VELLUM, GameState.run)
+		check(offer.size() >= 3, "three valid cards on the table (%d)" % offer.size())
+		check(CoreChoice.offer_problem(ContentIds.LEVEL_VELLUM, offer) != "", "but the Reliquary itself is broken")
+		var picks: Array[String] = [offer[0], offer[1]]
+		check(CoreChoice.apply(ContentIds.LEVEL_VELLUM, offer, picks) != "", "so carrying two is refused")
+	_check_nothing_progressed(found)
+
+
+func _check_nothing_progressed(found: Array[String]) -> void:
 	var r := GameState.run
 	check_eq(r.cores_power() + r.cores_truth(), 0, "no cores taken")
+	check(r.logs_unlocked.is_empty(), "no logs filed")
 	check(r.levels_completed.is_empty(), "the level isn't completed")
 	check(r.buildings_restored.is_empty(), "nothing is restored")
-	check(r.logs_unlocked.is_empty(), "no logs filed")
+	check_eq(r.found_core_ids, found, "the found cores are still in hand")
 	check(r.location != "ark", "and the run hasn't moved to the Ark")
 
 
