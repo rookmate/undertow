@@ -32,7 +32,11 @@ func _populate() -> void:
 		_figure(c, ArkFigure.Who.TEO, "", GameState.run.teo_present)
 	var survivors := GameState.run.survivor_ids
 	var spots := survivor_cells(survivors.size())
-	for i: int in survivors.size():
+	if spots.size() < survivors.size():
+		# More people are home than the Ark has room to show: a content limit to raise (a bigger Commons),
+		# reported loudly; everyone stays in the run, and nothing crashes.
+		Diagnostics.error("Ark: room for %d survivors, %d are home" % [spots.size(), survivors.size()])
+	for i: int in spots.size():
 		_figure(spots[i], ArkFigure.Who.SURVIVOR, survivors[i], true)
 	for marker: String in DOORS:
 		if not GameState.run.buildings_restored.has(DOORS[marker]):
@@ -53,12 +57,22 @@ func _add_steward_path() -> void:
 	pass
 
 
+## The Ark needs somewhere for Noor, Teo and the survivors to stand and a dock to leave from.
+func _map_problems() -> PackedStringArray:
+	var problems := super()
+	for marker: String in [SURVIVOR_SPOTS, "N", "Y", "D"]:
+		if grid.cells_with(marker).is_empty():
+			problems.append("the Ark needs at least one '%s'" % marker)
+	return problems
+
+
 func _building_standing(ch: String) -> bool:
 	return not PLOTS.has(ch) or GameState.run.buildings_restored.has(PLOTS[ch])
 
 
 ## Where `count` survivors stand: the marked spots by the Commons plot first, then the nearest free
-## concrete around them, so everyone you bring home is there to talk to.
+## concrete around them, so everyone you bring home is there to talk to. Returns fewer cells than asked
+## only when the Ark is full.
 func survivor_cells(count: int) -> Array[Vector2i]:
 	var out: Array[Vector2i] = grid.cells_with(SURVIVOR_SPOTS)
 	if out.size() >= count or out.is_empty():

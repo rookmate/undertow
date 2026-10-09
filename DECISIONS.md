@@ -210,3 +210,18 @@ brief and the user's answers didn't cover it.
 73. **Performance evidence comes from the autopilot's `[perf]` report**; `--perf-disable=…` is a
     developer flag for measuring feature costs. The 60 fps-on-Deck target can only be confirmed on a
     Deck.
+74. **Walls are exact:** shots and sight lines walk every grid cell they cross; a line through the
+    corner two walls share is blocked.
+75. **A broken map or broken content never becomes progress.** A broken level stops and the router
+    takes the player to the title (nothing saved). A Reliquary must offer more cores than you can
+    carry, or the level can't be completed from it. Every district's map and content are checked
+    together at boot (`LevelCatalog.check_all`): ids unique across districts, caches hold truth
+    cores, slips hold unindexed logs. District maps are listed in `LevelCatalog`.
+76. **The top screen owns everything** (`Modals`): drawn on top, the only one focusable and
+    clickable, focus restored when it closes. A failed-save question is blocking: no pause menu over
+    it. Scene changes dismiss open screens; an unanswered save question counts as "stay".
+77. **The Ark shows every survivor it has room for** (about 158 now) and reports any overflow; nobody
+    leaves the run.
+78. **Archive text stays in its boxes** (ellipsis), and the record scrolls with up/down from a pad.
+79. **Deliberate errors in tests** go through `Diagnostics` and are captured and checked; any other
+    engine or script error still fails the test and the gate.

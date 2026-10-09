@@ -150,3 +150,120 @@ func test_the_archive_list_scrolls() -> void:
 	check(list.get_parent() is ScrollContainer, "the log list lives in a scroll container")
 	check((list.get_parent() as ScrollContainer).follow_focus, "and follows controller focus")
 	screen.close()
+
+
+## The interaction prompt follows the camera, so it redraws while shown; when you walk away it must be
+## drawn away too, then the HUD goes back to redrawing only on change.
+func test_walking_away_clears_the_interaction_prompt() -> void:
+	var noor: Node2D = null
+	for c: Node in ark.world.get_children():
+		if c is ArkFigure and (c as ArkFigure).who == ArkFigure.Who.NOOR:
+			noor = c
+	var view := ark.hud.view
+	var draws := [0]
+	view.draw.connect(func() -> void: draws[0] += 1)
+	ark.player.position = noor.position + Iso.ground_velocity(Vector2(1, 0), 0.8)
+	await wait_frames(4)
+	check(ark.player.interact_target() != null, "next to Noor there is something to do")
+	var while_near: int = draws[0]
+	check(while_near >= 2, "the prompt is redrawn as it follows the camera")
+	ark.player.position = Iso.cell_center(ark.grid.start_cell())
+	await wait_frames(3)
+	check(ark.player.interact_target() == null, "away from everyone there is nothing")
+	check(draws[0] > while_near, "the HUD is redrawn without the prompt")
+	var settled: int = draws[0]
+	await wait_frames(10)
+	check_eq(draws[0], settled, "and then left alone while nothing changes")
+
+
+func test_a_full_ark_is_reported_not_crashed_on() -> void:
+	var capacity := ark.survivor_cells(100000).size()
+	ark.queue_free()
+	await wait_frames(1)
+	check(capacity > 20, "room for a crowd (%d)" % capacity)
+	for i: int in capacity + 5:
+		GameState.add_survivor("crowd_%d" % i)
+	Diagnostics.capture()
+	var full := (load("res://game/ark/ark.tscn") as PackedScene).instantiate() as ArkLevel
+	add_child(full)
+	await wait_frames(2)
+	var reports := Diagnostics.release()
+	check_eq(_count_in(full, ArkFigure.Who.SURVIVOR), capacity, "everyone there's room for stands on the Ark")
+	check(reports.size() == 1 and reports[0].contains("room for %d" % capacity), "and the overflow is reported: %s" % [reports])
+	check_eq(GameState.run.survivors_found(), capacity + 5 + 1, "nobody is dropped from the run")
+	ark = full
+
+
+func test_an_ark_map_without_survivor_spots_is_refused() -> void:
+	var bare := LevelGrid.parse("#####\n#pND#\n#Y..#\n#####")
+	var probe := ArkLevel.new()
+	probe.grid = bare
+	var problems := "\n".join(probe.call(&"_map_problems"))
+	check(problems.contains("'s'"), "no survivor spots: %s" % problems)
+	probe.free()
+
+
+## A full Archive (many districts' logs, a long record, writers' long titles and reactions) still fits
+## its screen and works with a pad.
+func test_a_full_archive_fits_and_scrolls_with_a_pad() -> void:
+	var real_logs: Dictionary = ContentDb._logs.duplicate(true)
+	var long_record: Array = []
+	for i: int in 60:
+		long_record.append("%02d:%02d · line %d of a long decision record" % [i % 24, i, i])
+	for i: int in 40:
+		var id := "log_bulk_%02d" % i
+		ContentDb._logs[id] = {
+			"title": "A title that goes on and on and on " .repeat(4) if i == 0 else "Bulk %d" % i, "kind": "truth",
+			"core": "", "record": long_record if i == 0 else ["one line"], "steward_now": "s",
+			"noor": {"text": "Noor has a great deal to say about this. ".repeat(20), "trust": 0}, "teo": {"text": "t", "trust": 0}}
+		GameState.unlock_log(id)
+		GameState.run.logs_replayed.append(id)
+	var screen := ark.open_archive()
+	await wait_frames(2)
+	var list: VBoxContainer = screen.get("_list")
+	var scroll := list.get_parent() as ScrollContainer
+	var last := list.get_child(list.get_child_count() - 1) as Button
+	var first_unlocked: Button = (screen.get("_buttons") as Dictionary)["log_bulk_00"]
+	check(first_unlocked.size.x <= scroll.size.x, "a long title doesn't widen the list (%.0f)" % first_unlocked.size.x)
+	for b: Node in list.get_children():
+		if not (b as Button).disabled:
+			last = b as Button
+	last.grab_focus()
+	await wait_frames(3)
+	check(scroll.scroll_vertical > 0, "focusing the last log scrolls the list to it")
+	screen.select("log_bulk_00")
+	await wait_frames(2)
+	var title: Label = screen.get("_title")
+	check(title.clip_text and title.size.x <= 1141.0, "the long title stays in its box")
+	var noor: Label = screen.get("_noor")
+	check(noor.clip_text and noor.size.y <= 161.0, "a long reaction stays in its box (%.0f tall)" % noor.size.y)
+	var record: RichTextLabel = screen.get("_record")
+	first_unlocked.grab_focus()
+	await _press_action(&"ui_right")
+	check(record.has_focus(), "right from the list reaches the record")
+	var bar := record.get_v_scroll_bar()
+	check(bar.max_value > bar.page, "the record is longer than its box")
+	bar.value = 0.0
+	for i: int in 4:
+		await _press_action(&"ui_down")
+	check(bar.value > 0.0, "down scrolls the record")
+	var lower := bar.value
+	await _press_action(&"ui_up")
+	check(bar.value < lower, "up scrolls back to earlier lines")
+	await _press_action(&"ui_left")
+	check(first_unlocked.has_focus(), "left goes back to the log in the list")
+	screen.close()
+	ContentDb._logs = real_logs
+
+
+func _press_action(action: StringName) -> void:
+	var down := InputEventAction.new()
+	down.action = action
+	down.pressed = true
+	Input.parse_input_event(down)
+	await wait_frames(1)
+	var up := InputEventAction.new()
+	up.action = action
+	up.pressed = false
+	Input.parse_input_event(up)
+	await wait_frames(1)

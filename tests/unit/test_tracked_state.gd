@@ -90,3 +90,13 @@ func test_steam_wrapper_runs_without_steam() -> void:
 	SteamService.unlock_achievement("ACH_TEST")
 	SteamService.set_rich_presence("status", "testing")
 	check(true, "calls without Steam are harmless no-ops")
+
+
+func test_the_autopilot_never_saves_outside_its_own_folder() -> void:
+	check_eq(Autopilot.save_dir_for("slice"), "user://autopilot/slice")
+	for bad: String in ["../saves", "", "slice/../../saves", "nope"]:
+		check_eq(Autopilot.save_dir_for(bad), "", "'%s' is refused before it becomes a path" % bad)
+	check(Autopilot.is_isolated("user://autopilot/slice"))
+	check_false(Autopilot.is_isolated("user://autopilot/../saves"), "a path that resolves to the player's saves")
+	check_false(Autopilot.is_isolated(SaveService.DEFAULT_DIR))
+	check_false(Autopilot.is_isolated("user://autopilot"), "the folder itself isn't a scenario's folder")

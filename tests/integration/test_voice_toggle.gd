@@ -159,3 +159,19 @@ func test_the_hand_scan_hears_only_about_cells_it_had_not_seen() -> void:
 	await wait_frames(3)
 	check(heard.is_empty(), "walking back over charted ground reveals nothing: %s" % [heard])
 	level.exploration.discovered.disconnect(collect)
+
+
+## The HUD's ring is drawn once per state: idle or muted, it doesn't redraw every frame.
+func test_the_hud_ring_redraws_only_when_its_state_changes() -> void:
+	var ring := level.hud.pill.ring
+	var draws := [0]
+	ring.draw.connect(func() -> void: draws[0] += 1)
+	Steward.set_voice(false)
+	await wait_frames(3)
+	check_eq(ring.state, StewardRing.State.MUTED)
+	var settled: int = draws[0]
+	await wait_frames(20)
+	check_eq(draws[0], settled, "muted, the ring is left alone")
+	Steward.set_voice(true)
+	await wait_frames(3)
+	check(draws[0] > settled, "it redraws when the state changes")

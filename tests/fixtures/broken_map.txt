@@ -1,0 +1,5 @@
+; A map with a stray character and no start: the level must refuse it.
+#####
+#.?.#
+#...#
+#####

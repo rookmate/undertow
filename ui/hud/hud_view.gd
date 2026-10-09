@@ -14,6 +14,7 @@ var _shown_integrity: float = 1.0
 ## What was last drawn. The HUD redraws when this changes, or every frame while something on it is
 ## pinned to the world (it has to follow the camera).
 var _signature: String = ""
+var _was_anchored: bool = false
 ## Threat callouts: enemy -> seconds left. Keys can be freed at any time (enemies die), so they are
 ## held as Variants and checked before use.
 var _threats: Dictionary = {}
@@ -56,10 +57,14 @@ func _process(delta: float) -> void:
 			_threats[key] = left
 	if level != null and level.player != null:
 		_shown_integrity = move_toward(_shown_integrity, level.player.integrity.ratio(), delta * 0.8)
+	# World-anchored marks (threats, prompts, people's words) move with the camera, so they redraw every
+	# frame while there are any, and once more when the last one goes so it doesn't linger.
 	var signature := _state_signature()
-	if signature != _signature or _world_anchored():
+	var anchored := _world_anchored()
+	if signature != _signature or anchored or _was_anchored:
 		_signature = signature
 		queue_redraw()
+	_was_anchored = anchored
 
 
 func _state_signature() -> String:

@@ -33,7 +33,7 @@ var _rows: PackedStringArray = []
 static func load_file(path: String) -> LevelGrid:
 	var text := FileAccess.get_file_as_string(path)
 	if text.is_empty():
-		push_error("LevelGrid: could not read %s" % path)
+		Diagnostics.error("LevelGrid: could not read %s" % path)
 	return parse(text)
 
 
@@ -127,6 +127,22 @@ func floor_at(cell: Vector2i) -> Floor:
 	return FLOOR_OF.get(char_at(cell), Floor.VOID)
 
 
+## The content each placed thing names exists and is the right kind: a cache 'T' holds a truth core, a
+## slip 'U' an unindexed log. People ('W', 'w') are only named; LevelCatalog.check keeps names unique.
+func content_problems() -> PackedStringArray:
+	var problems := PackedStringArray()
+	for c: Vector2i in entity_ids:
+		var id := entity_ids[c]
+		match char_at(c):
+			"T":
+				if not ContentDb.is_truth(id):
+					problems.append("the cache at %s holds %s, which isn't a truth core" % [c, id])
+			"U":
+				if str(ContentDb.memory_log(id).get("kind", "")) != "unindexed":
+					problems.append("the slip at %s holds %s, which isn't an unindexed log" % [c, id])
+	return problems
+
+
 ## Unknown characters fail closed: solid, never accidental invisible floor.
 func is_solid(cell: Vector2i) -> bool:
 	var ch := char_at(cell)
@@ -154,22 +170,46 @@ func blocks_line(cell: Vector2i) -> bool:
 	return is_building(cell) or "Kt|R".contains(char_at(cell))
 
 
-## Grid-space parameter (0..1) along `from`→`to` where the line first enters a blocking cell, or -1 if it
-## doesn't. The cells at either end don't count (whoever stands there isn't hiding behind themselves).
+## Grid-space parameter (0..1) along `from`→`to` where the segment first touches a blocking cell (0 if
+## it starts inside one), or -1 if it never does. Walks every cell the segment crosses, exactly, so no
+## speed or tick length can step over a wall or slip through a corner. A segment passing exactly through
+## a cell corner touches both cells beside it.
 func first_block(from: Vector2, to: Vector2) -> float:
-	var start := Vector2i(floori(from.x), floori(from.y))
+	var cell := Vector2i(floori(from.x), floori(from.y))
+	if blocks_line(cell):
+		return 0.0
 	var end := Vector2i(floori(to.x), floori(to.y))
-	var steps := maxi(1, ceili(from.distance_to(to) / 0.05))
-	for i: int in range(1, steps + 1):
-		var t := float(i) / steps
-		var p := from.lerp(to, t)
-		var c := Vector2i(floori(p.x), floori(p.y))
-		if c != start and c != end and blocks_line(c):
-			return float(i - 1) / steps
+	var d := to - from
+	var step := Vector2i(int(signf(d.x)), int(signf(d.y)))
+	var t_delta := Vector2(INF if d.x == 0.0 else absf(1.0 / d.x), INF if d.y == 0.0 else absf(1.0 / d.y))
+	var t_max := Vector2(
+		INF if d.x == 0.0 else (float(cell.x + (1 if d.x > 0.0 else 0)) - from.x) / d.x,
+		INF if d.y == 0.0 else (float(cell.y + (1 if d.y > 0.0 else 0)) - from.y) / d.y)
+	# Bounded by the cells between the ends, in case rounding never lands exactly on `end`.
+	for i: int in absi(end.x - cell.x) + absi(end.y - cell.y) + 2:
+		if cell == end:
+			break
+		var t := minf(t_max.x, t_max.y)
+		if t > 1.0:
+			break
+		if t_max.x < t_max.y:
+			cell.x += step.x
+			t_max.x += t_delta.x
+		elif t_max.y < t_max.x:
+			cell.y += step.y
+			t_max.y += t_delta.y
+		else:
+			if blocks_line(cell + Vector2i(step.x, 0)) or blocks_line(cell + Vector2i(0, step.y)):
+				return t
+			cell += step
+			t_max += t_delta
+		if blocks_line(cell):
+			return t
 	return -1.0
 
 
-## Nothing tall between two screen positions on the ground.
+## Nothing tall between two screen positions on the ground. People never stand inside a blocking cell
+## (their bodies collide with it), so the cells at the ends are checked like any other.
 func line_clear(a: Vector2, b: Vector2) -> bool:
 	return first_block(Iso.world_to_grid(a), Iso.world_to_grid(b)) < 0.0
 

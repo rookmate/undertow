@@ -23,7 +23,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	selector = LineSelector.load_file(LINES_PATH)
 	for e: String in selector.errors:
-		push_error("Narrator: %s" % e)
+		Diagnostics.error("Narrator: %s" % e)
 	_rng.randomize()
 	# Cooldowns, recent lines and tone counts belong to one run.
 	GameState.run_replaced.connect(reset_session)

@@ -16,16 +16,21 @@ static func offer(level_id: String, run: RunState) -> Array[String]:
 	return out
 
 
-## How many of the offered cores can be carried: two, or all of them if fewer are left.
-static func carry_count(offered: Array[String]) -> int:
-	return mini(Tunables.CORES_CARRIED_PER_LEVEL, offered.size())
+## "" if the offer is a real choice: more cores than can be carried. Otherwise the Reliquary's content is
+## broken, and the level can't be completed from it (never a free pass with fewer cores).
+static func offer_problem(offered: Array[String]) -> String:
+	if offered.size() <= Tunables.CORES_CARRIED_PER_LEVEL:
+		return "This Reliquary is broken: it offers %d cores, and there must be more than %d." % [offered.size(), Tunables.CORES_CARRIED_PER_LEVEL]
+	return ""
 
 
 ## "" if `picks` is a valid choice from `offered`, otherwise why not.
 static func validate(offered: Array[String], picks: Array[String]) -> String:
-	var n := carry_count(offered)
-	if picks.size() != n:
-		return "Carry exactly %d." % n
+	var broken := offer_problem(offered)
+	if broken != "":
+		return broken
+	if picks.size() != Tunables.CORES_CARRIED_PER_LEVEL:
+		return "Carry exactly %d." % Tunables.CORES_CARRIED_PER_LEVEL
 	for i: int in picks.size():
 		if not offered.has(picks[i]):
 			return "%s isn't on offer." % picks[i]

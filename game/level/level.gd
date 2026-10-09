@@ -8,7 +8,8 @@ signal player_spawned(player: Operator)
 signal enemy_died(enemy: Enemy)
 
 @export var level_id: String = "vellum"
-@export_file("*.txt") var map_path: String = "res://data/levels/vellum_street.txt"
+## Districts take their map from LevelCatalog; hubs and test fixtures name one here.
+@export_file("*.txt") var map_path: String = ""
 
 var grid: LevelGrid
 var world: Node2D
@@ -29,6 +30,8 @@ var slow_mo: SlowMo
 var watch: StewardWatch
 var hud: Hud
 
+## True when the map was broken and the level never started (see _ready).
+var failed: bool = false
 var _ambient: CanvasModulate
 var _enemies: Array[Enemy] = []
 var _off_lattice_for: float = 0.0
@@ -38,13 +41,21 @@ const COVERAGE_GRACE := 0.6
 
 
 func _ready() -> void:
+	if map_path == "":
+		map_path = LevelCatalog.map_of(level_id)
 	grid = LevelGrid.load_file(map_path)
 	var problems := grid.validate(is_hub())
+	problems.append_array(_map_problems())
 	if not problems.is_empty():
-		# A broken map never becomes a saved location: report it and go back to the title.
+		# A broken map never becomes a saved location: report it, stop here, and let the router take the
+		# player back to the title. Nothing below ran, so nothing may run per frame either.
+		failed = true
+		set_process(false)
+		set_physics_process(false)
+		set_process_unhandled_input(false)
 		for p: String in problems:
-			push_error("Level %s: %s" % [map_path, p])
-		SceneRouter.goto(&"title")
+			Diagnostics.error("Level %s: %s" % [map_path, p])
+		SceneRouter.abandon(self)
 		return
 	_add_backdrop()
 	var floor_layer := FloorLayer.new()
@@ -132,6 +143,11 @@ func _exit_tree() -> void:
 
 
 # --- Hooks (the Ark overrides these) --------------------------------------------------------------
+## What else this kind of level needs from its map, beyond LevelGrid.validate: real content behind ids.
+func _map_problems() -> PackedStringArray:
+	return grid.content_problems()
+
+
 ## A hub (the Ark) has no enemies, no Steward path, no weapons, and doesn't count voice time.
 func is_hub() -> bool:
 	return false

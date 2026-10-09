@@ -114,10 +114,29 @@ func test_shipped_content_is_valid() -> void:
 	check(ContentDb.errors.is_empty(), "%s" % [ContentDb.errors])
 
 
-func test_carry_count_never_asks_for_more_than_offered() -> void:
-	var one: Array[String] = ["a"]
-	var many: Array[String] = ["a", "b", "c"]
-	check_eq(CoreChoice.carry_count(one), 1)
-	check_eq(CoreChoice.carry_count(many), Tunables.CORES_CARRIED_PER_LEVEL)
-	var pick_one: Array[String] = ["a"]
-	check_eq(CoreChoice.validate(one, pick_one), "")
+## A Reliquary that isn't a real choice (missing or too small) never completes the level.
+func test_a_broken_offer_completes_nothing() -> void:
+	var none: Array[String] = []
+	var two: Array[String] = ["vellum_power_lattice", "vellum_power_feed"]
+	for offer: Array[String] in [none, two]:
+		check(CoreChoice.offer_problem(offer) != "", "%d cores is not a choice" % offer.size())
+		check(CoreChoice.validate(offer, offer) != "", "carrying all %d is refused" % offer.size())
+		check(CoreChoice.apply(ContentIds.LEVEL_VELLUM, offer, offer) != "")
+	var r := GameState.run
+	check_eq(r.cores_power() + r.cores_truth(), 0, "no cores taken")
+	check(r.levels_completed.is_empty(), "the level isn't completed")
+	check(r.buildings_restored.is_empty(), "nothing is restored")
+	check(r.logs_unlocked.is_empty(), "no logs filed")
+	check(r.location != "ark", "and the run hasn't moved to the Ark")
+
+
+func test_missing_and_undersized_reliquaries_are_dropped_and_reported() -> void:
+	var logs_doc := {"logs": {"log_ok": {"title": "T", "kind": "truth", "record": ["a"], "steward_now": "s", "noor": {"text": "n", "trust": 1}, "teo": {"text": "t", "trust": 0}}}}
+	var core := {"kind": "power", "name": "N", "steward": "Take it.", "log": "log_ok"}
+	var small := PackedStringArray()
+	var out := ContentDb.validate_documents({"cores": {"a": core, "b": core}, "reliquaries": {"vellum": ["a", "b"]}}, logs_doc, small)
+	check_false((out["reliquaries"] as Dictionary).has("vellum"), "a two-core Reliquary is dropped, not kept")
+	check(small.size() == 1, "and reported: %s" % [small])
+	var missing := PackedStringArray()
+	ContentDb.validate_documents({"cores": {"a": core}}, logs_doc, missing)
+	check("\n".join(missing).contains("'reliquaries' is missing"), "a missing section is reported: %s" % [missing])

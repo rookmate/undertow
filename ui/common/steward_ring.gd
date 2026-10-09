@@ -12,8 +12,9 @@ const WITHHOLD_DEG := 3.0
 
 @export var state: State = State.IDLE:
 	set(value):
-		state = value
-		queue_redraw()
+		if value != state:
+			state = value
+			queue_redraw()
 ## > 1 makes the gold bloom on canvases with HDR glow.
 @export var hdr: float = 1.0
 

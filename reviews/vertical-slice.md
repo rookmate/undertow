@@ -338,3 +338,184 @@ go (game logic on the main thread, frame submission, GPU). On this machine (Inte
 The Deck renders 1280×800 (about half the pixels) on a GPU in the same class, so the GPU side should
 have headroom; its CPU is slower than this one, so the 6–7 ms of game logic is the number to watch.
 That has to be measured on the Deck itself.
+
+## Round 2 findings (verbatim from sol_analyst)
+
+Scope: `git diff 499648a..9e028fc` (the round 1 fixes) plus a re-check of every round 1 finding.
+
+I would not close the milestone yet. Most round-1 fixes are substantive, and the recorded gate passes are supported by the logs. However, the fix introduces a projectile-wall regression, broken invalid-map recovery, and a way to complete a level without recovering any cores. Several growth and failure-path guarantees are also incomplete.
+
+Reviewed `git diff 499648a..9e028fc`, the 29 original findings, the brief, world bible, decisions, changed production code, tests, and validation logs. No files were edited. I did not rerun the gate because it writes files and this session is read-only. Read-only numerical reproductions confirmed the projectile obstruction failure and the Ark population capacity failure.
+
+“Confirmed” below means the code and failure path are established. It does not mean every scenario was reproduced interactively in Godot.
+
+The logs confirm:
+
+- [tests.log:216](/home/homebox/Documents/rookmate/undertow/reports/check/tests.log:216): 207 tests pass.
+- [smoke.log:34](/home/homebox/Documents/rookmate/undertow/reports/check/smoke.log:34): 20 checks pass at 30 seconds.
+- [full.log:60](/home/homebox/Documents/rookmate/undertow/reports/check/full.log:60): 45 checks pass at 150 seconds.
+- [linux-run.log:33](/home/homebox/Documents/rookmate/undertow/reports/export/linux-run.log:33): the exported Linux build passes 20 checks.
+- The three export logs explicitly list the maps and JSON documents in their packages. The inspected logs contain no reported errors or warnings.
+
+For each round-1 finding:
+
+| # | Verdict | Evidence and remaining reason |
+|---|---|---|
+| 1 | **Partly** | Supported scenarios now select isolated saves before driving scenes. However, `scenario` becomes a directory component before validation, and isolation compares unnormalized strings. `../saves` can target the player's directory. See confirmed finding 7 below. [autoload/autopilot.gd:70](/home/homebox/Documents/rookmate/undertow/autoload/autopilot.gd:70) |
+| 2 | **Resolved** | `cursor_aim()` offsets the cursor by the projectile's chest height before converting to ground aim. The added test covers the original three-tile example. It is a geometry test, rather than a mouse-input combat test, but it verifies the faulty calculation. [game/player/operator.gd:188](/home/homebox/Documents/rookmate/undertow/game/player/operator.gd:188), [tests/unit/test_combat_geometry.gd:31](/home/homebox/Documents/rookmate/undertow/tests/unit/test_combat_geometry.gd:31) |
+| 3 | **Resolved** | Pause pops its own ownership and restores previous focus; another modal keeps the tree paused. The Archive test exercises this directly. The new save dialog has separate ownership problems described below. [ui/pause/pause_menu.gd:65](/home/homebox/Documents/rookmate/undertow/ui/pause/pause_menu.gd:65), [tests/integration/test_modals_and_routing.gd:27](/home/homebox/Documents/rookmate/undertow/tests/integration/test_modals_and_routing.gd:27) |
+| 4 | **Resolved** | `_start()` rejects busy navigation before invoking `prepare`; Title and Loadout place their state changes inside that callback. GUI input is disabled during the fade. [autoload/scene_router.gd:99](/home/homebox/Documents/rookmate/undertow/autoload/scene_router.gd:99), [ui/title/title.gd:85](/home/homebox/Documents/rookmate/undertow/ui/title/title.gd:85), [tests/integration/test_modals_and_routing.gd:60](/home/homebox/Documents/rookmate/undertow/tests/integration/test_modals_and_routing.gd:60) |
+| 5 | **Resolved** | Writes flush and check the file error, then compare the temporary file with the intended contents before rotation. Short-write and failed-write tests check preservation of the main save; corrupt main files no longer overwrite good backups. Rename/removal failures are not covered by the injected boundary. [core/save_store.gd:43](/home/homebox/Documents/rookmate/undertow/core/save_store.gd:43), [tests/unit/test_save_store.gd:91](/home/homebox/Documents/rookmate/undertow/tests/unit/test_save_store.gd:91) |
+| 6 | **Partly** | Checkpoints now report failure, and leaving offers retry, leave, and stay. Those choices have meaningful tests. However, exit requests are not serialized, and save dialogs do not fully participate in focus/input ownership or transition cleanup. See confirmed finding 4. [ui/common/save_flow.gd:16](/home/homebox/Documents/rookmate/undertow/ui/common/save_flow.gd:16), [tests/integration/test_save_flow.gd:52](/home/homebox/Documents/rookmate/undertow/tests/integration/test_save_flow.gd:52) |
+| 7 | **Resolved** | Coverage feeds the shared assist calculation. Narration, profiling, damage, weapon mode, warnings, slow motion, and the map's player marker consult that state. The accepted 0.6-second grace and Ark exception are explicit. [game/level/level.gd:110](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:110), [core/assists.gd:34](/home/homebox/Documents/rookmate/undertow/core/assists.gd:34), [tests/integration/test_coverage.gd:30](/home/homebox/Documents/rookmate/undertow/tests/integration/test_coverage.gd:30) |
+| 8 | **Resolved** | Loadout derives the district from the saved location; departure, resume routing, and restoration use `LevelCatalog`. The former fixed Vellum routes are removed. [ui/loadout/loadout.gd:19](/home/homebox/Documents/rookmate/undertow/ui/loadout/loadout.gd:19), [autoload/scene_router.gd:79](/home/homebox/Documents/rookmate/undertow/autoload/scene_router.gd:79), [core/core_choice.gd:49](/home/homebox/Documents/rookmate/undertow/core/core_choice.gd:49) |
+| 9 | **Partly** | Placement IDs, level-scoped narration, and actual cache markers replace the Vellum constants. Validation checks duplicate IDs within one map, but it does not validate content references or uniqueness across maps. The “ids point at real content” check covers only the shipped Vellum map. [core/level_grid.gd:88](/home/homebox/Documents/rookmate/undertow/core/level_grid.gd:88), [game/level/level.gd:304](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:304), [tests/unit/test_level_grid.gd:108](/home/homebox/Documents/rookmate/undertow/tests/unit/test_level_grid.gd:108) |
+| 10 | **Resolved** | Prediction explicitly excludes the current cell, and rendering immediately removes cells outside the current prediction. Added tests inspect painted membership while moving, at a corner, and after muting. [core/path_predictor.gd:67](/home/homebox/Documents/rookmate/undertow/core/path_predictor.gd:67), [game/path/predicted_path.gd:43](/home/homebox/Documents/rookmate/undertow/game/path/predicted_path.gd:43), [tests/integration/test_predicted_path.gd:163](/home/homebox/Documents/rookmate/undertow/tests/integration/test_predicted_path.gd:163) |
+| 11 | **Resolved** | Coverage now depends on indexed floor rather than navigation openness. Prediction can start from a neighboring open cell when the Operator occupies a lamp cell's playable corner. The added integration test covers that case. [core/path_predictor.gd:49](/home/homebox/Documents/rookmate/undertow/core/path_predictor.gd:49), [tests/integration/test_predicted_path.gd:190](/home/homebox/Documents/rookmate/undertow/tests/integration/test_predicted_path.gd:190) |
+| 12 | **Resolved** | Voice and coverage changes cancel active slow motion immediately. Both transitions have tests. [game/level/slow_mo.gd:16](/home/homebox/Documents/rookmate/undertow/game/level/slow_mo.gd:16), [tests/integration/test_coverage.gd:65](/home/homebox/Documents/rookmate/undertow/tests/integration/test_coverage.gd:65) |
+| 13 | **Resolved** | Shared weapon candidate filtering now requires line of sight, and Custodian strikes do too. Tests cover the original kiosk obstruction and an unobstructed alternative target. The visibility query's sampled geometry still has corner limitations described below. [game/weapons/weapon.gd:80](/home/homebox/Documents/rookmate/undertow/game/weapons/weapon.gd:80), [game/enemies/custodian.gd:59](/home/homebox/Documents/rookmate/undertow/game/enemies/custodian.gd:59), [tests/integration/test_combat_rules.gd:35](/home/homebox/Documents/rookmate/undertow/tests/integration/test_combat_rules.gd:35) |
+| 14 | **Partly** | Target-circle sweeps and travel ordering are implemented. Wall obstruction is regressed at normal projectile speeds because every tick excludes its start and end cells. The wall test uses an unusually fast projectile that skips across the entire kiosk in one tick. See confirmed finding 1. [game/weapons/projectile.gd:34](/home/homebox/Documents/rookmate/undertow/game/weapons/projectile.gd:34), [tests/integration/test_combat_rules.gd:48](/home/homebox/Documents/rookmate/undertow/tests/integration/test_combat_rules.gd:48) |
+| 15 | **Resolved** | Knockback contributes velocity before `move_and_slide()`. The integration test applies repeated hits against a building boundary and checks that the player remains on playable ground. [game/player/operator.gd:112](/home/homebox/Documents/rookmate/undertow/game/player/operator.gd:112), [tests/integration/test_combat_rules.gd:75](/home/homebox/Documents/rookmate/undertow/tests/integration/test_combat_rules.gd:75) |
+| 16 | **Partly** | The original nested-type crashes and unknown offered-core handling are addressed. Missing required collections and Reliquary keys are still accepted; undersized offers are retained after reporting an error; `_loaded` becomes true even with errors. The new choice fallback converts these failures into successful progression. [core/content_db.gd:20](/home/homebox/Documents/rookmate/undertow/core/content_db.gd:20), [core/content_db.gd:36](/home/homebox/Documents/rookmate/undertow/core/content_db.gd:36) |
+| 17 | **Partly** | Unknown cells fail closed, and marker/ID/reachability validation exists. Initialization stops before saving. However, returning to Title is rejected during the incoming transition, and processing continues against uninitialized fields. See confirmed finding 2. [game/level/level.gd:40](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:40), [game/level/level.gd:95](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:95) |
+| 18 | **Resolved** | Archive facade and door construction consult restoration state; otherwise an `UnbuiltPlot` appears. Before/after restoration behavior has integration coverage. Additional building types will still need their own plot and fixture definitions. [game/ark/ark_level.gd:37](/home/homebox/Documents/rookmate/undertow/game/ark/ark_level.gd:37), [game/ark/ark_level.gd:56](/home/homebox/Documents/rookmate/undertow/game/ark/ark_level.gd:56), [tests/integration/test_ark.gd:98](/home/homebox/Documents/rookmate/undertow/tests/integration/test_ark.gd:98) |
+| 19 | **Partly** | Population now expands beyond three markers, and the eight-survivor test is meaningful. Exhausting available cells, or removing all `s` markers, returns a short array that `_populate()` indexes as though complete. See confirmed finding 8. [game/ark/ark_level.gd:33](/home/homebox/Documents/rookmate/undertow/game/ark/ark_level.gd:33), [game/ark/ark_level.gd:62](/home/homebox/Documents/rookmate/undertow/game/ark/ark_level.gd:62) |
+| 20 | **Resolved** | The list is bounded in a focus-following scroll container, and the record is bounded with internal scrolling. The new test checks structure and `follow_focus`, but does not exercise large content volumes or controller scrolling through long records. [ui/archive/archive_screen.gd:43](/home/homebox/Documents/rookmate/undertow/ui/archive/archive_screen.gd:43), [ui/archive/archive_screen.gd:63](/home/homebox/Documents/rookmate/undertow/ui/archive/archive_screen.gd:63), [tests/integration/test_ark.gd:146](/home/homebox/Documents/rookmate/undertow/tests/integration/test_ark.gd:146) |
+| 21 | **Resolved** | Both props call the canonical `RingPainter`; the Reliquary projects it onto its lid. No substitute geometry remains in these props. [game/props/reliquary.gd:60](/home/homebox/Documents/rookmate/undertow/game/props/reliquary.gd:60), [game/level/static_prop.gd:85](/home/homebox/Documents/rookmate/undertow/game/level/static_prop.gd:85) |
+| 22 | **Resolved** | Profiling requires Steward presence and excludes hubs. The Ark test emits a dodge and checks that caution is unchanged. [game/level/steward_watch.gd:50](/home/homebox/Documents/rookmate/undertow/game/level/steward_watch.gd:50), [tests/integration/test_coverage.gd:79](/home/homebox/Documents/rookmate/undertow/tests/integration/test_coverage.gd:79) |
+| 23 | **Resolved** | `run_replaced` calls `reset_session()`. New Game and Continue both emit it; ordinary district transitions do not. The added test checks history, tone counts, and cooldown behavior. [autoload/narrator.gd:28](/home/homebox/Documents/rookmate/undertow/autoload/narrator.gd:28), [tests/integration/test_adaptive_narration.gd:109](/home/homebox/Documents/rookmate/undertow/tests/integration/test_adaptive_narration.gd:109) |
+| 24 | **Resolved** | Loadout creates its live Steward line only when voice is on; the added test checks its absence when muted. [ui/loadout/loadout.gd:77](/home/homebox/Documents/rookmate/undertow/ui/loadout/loadout.gd:77), [tests/integration/test_adaptive_narration.gd:119](/home/homebox/Documents/rookmate/undertow/tests/integration/test_adaptive_narration.gd:119) |
+| 25 | **Resolved** | Complete scenario checklists are registered at startup. Long runs require Archive and ending checks even if those phases are never reached. Unknown scenarios retain a failing required check. [autoload/autopilot.gd:119](/home/homebox/Documents/rookmate/undertow/autoload/autopilot.gd:119), [autoload/autopilot.gd:151](/home/homebox/Documents/rookmate/undertow/autoload/autopilot.gd:151) |
+| 26 | **Resolved** | Missing expected directories and zero executed tests now fail. The runner also collects runtime errors/warnings and applies a real-time timeout. I verified the implementation; the throwaway broken-test demonstrations are reported evidence, not independently rerun evidence. [tests/test_runner.gd:63](/home/homebox/Documents/rookmate/undertow/tests/test_runner.gd:63), [tests/test_runner.gd:113](/home/homebox/Documents/rookmate/undertow/tests/test_runner.gd:113) |
+| 27 | **Resolved** | Bindings explicitly use all devices, and tests check button/axis action matching for device IDs 0, 1, and 3. Physical reconnection remains part of finding 29. [autoload/controls.gd:98](/home/homebox/Documents/rookmate/undertow/autoload/controls.gd:98), [tests/unit/test_controls.gd:28](/home/homebox/Documents/rookmate/undertow/tests/unit/test_controls.gd:28) |
+| 28 | **Resolved** | All presets include text/JSON data, export logs show the required files, and the exported Linux executable passes its smoke run. This closes the packaging concern, not Windows/macOS runtime compatibility. [export_presets.cfg:10](/home/homebox/Documents/rookmate/undertow/export_presets.cfg:10), [reports/export/Linux.log:57](/home/homebox/Documents/rookmate/undertow/reports/export/Linux.log:57) |
+| 29 | **Not resolved, with a written reason** | Development-host performance is measured, and unavailable hardware is clearly documented. Deck performance, real controllers, and Windows/macOS runtime behavior remain unverified. [PROGRESS.md:117](/home/homebox/Documents/rookmate/undertow/PROGRESS.md:117), [reviews/vertical-slice.md:321](/home/homebox/Documents/rookmate/undertow/reviews/vertical-slice.md:321) |
+
+The confirmed findings in the fix diff, ranked by severity, are:
+
+1. **High · bug: ordinary projectiles now pass through blocking cells.**
+
+   [core/level_grid.gd:159](/home/homebox/Documents/rookmate/undertow/core/level_grid.gd:159) excludes both endpoint cells from `first_block()`. [game/weapons/projectile.gd:41](/home/homebox/Documents/rookmate/undertow/game/weapons/projectile.gd:41) calls that query independently for every movement tick.
+
+   At the Drone's normal speed of 15 tiles/second, a 60 Hz tick travels 0.25 tiles. Entering a kiosk excludes it as the end cell; subsequent ticks exclude it as both endpoint cells; leaving excludes it as the start cell. A shot can cross the entire kiosk without finding a wall. Clerk bales have the same problem.
+
+   A numerical reproduction against the shipped kiosk at `(13,17)` returned `-1` for all eight consecutive quarter-tile segments crossing it. The added test instead uses 150 tiles/second, placing the kiosk between the endpoints and concealing the regression.
+
+   The query also samples every 0.05 tiles rather than calculating cell intersections, so sufficiently short corner crossings can escape detection.
+
+   **Required change:** use exact segment traversal/intersection for blocking geometry. Separate any actor-endpoint exceptions from projectile obstruction. Test normal-speed entry, travel within a blocker, exit, grazing corners, and different tick rates.
+
+2. **High · crash risk: invalid-map recovery leaves an unusable level running.**
+
+   [game/level/level.gd:43](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:43) requests Title from `_ready()` and returns. During normal navigation, [autoload/scene_router.gd:105](/home/homebox/Documents/rookmate/undertow/autoload/scene_router.gd:105) keeps `_busy` true throughout scene creation and the return fade, so that recovery request is rejected.
+
+   The failed level remains current. Its `_process()` then calls `exploration.observe(player.cell())` despite neither object having been initialized. Loading an invalid map directly also leaves processing enabled while recovery waits for its fade.
+
+   **Required change:** disable failed level processing immediately and make initialization failure an explicit router outcome. Add a test that enters a malformed level through the real router and verifies recovery, unchanged saved progress, and absence of subsequent null-access errors.
+
+3. **High · brief violation/data-integrity bug: invalid or missing Reliquary content can restore a building with zero cores.**
+
+   [core/content_db.gd:36](/home/homebox/Documents/rookmate/undertow/core/content_db.gd:36) defaults missing collections to empty dictionaries. It does not require a Reliquary entry for every catalog district. Undersized offers are reported but retained at line 73.
+
+   The new [core/core_choice.gd:20](/home/homebox/Documents/rookmate/undertow/core/core_choice.gd:20) reduces the required carry count to the offer size. Consequently, `validate([], [])` succeeds. `apply()` then completes the district, restores its building, clears found cores, and moves the run to the Ark.
+
+   A missing or mistyped Reliquary key therefore bypasses the brief's forced trade-off. The old behavior rejected an undersized choice; this diff converts the same content defect into apparently successful progression.
+
+   **Required change:** validate catalog-to-content completeness before play and reject invalid offers. If revisiting completed districts needs different rules, model that explicitly instead of relaxing fresh-level completion. Add tests for absent keys, undersized offers, and zero-core application that assert no progression changes.
+
+4. **Medium · bug/maintainability: the modal stack owns pause, but does not own input, focus, or exit-request lifetime consistently.**
+
+   [ui/pause/pause_menu.gd:44](/home/homebox/Documents/rookmate/undertow/ui/pause/pause_menu.gd:44) opens a hidden Pause menu regardless of the existing top modal. A save question draws at layer 80; Pause draws at layer 40. Pressing Start during a failed window-close save therefore pushes Pause above the question logically and focuses controls behind it visually.
+
+   `Modals.is_top()` guards selected `_unhandled_input()` handlers, but GUI button callbacks remain enabled. `SaveFailure._choose()` has no ownership check or previous-focus restoration. Repeated close requests also start multiple independent `before_leaving()` coroutines because [autoload/game_state.gd:26](/home/homebox/Documents/rookmate/undertow/autoload/game_state.gd:26) has no in-progress guard.
+
+   Save dialogs are children of the root, whereas scene transitions merely clear the stack. Thus another navigation can leave a live dialog and suspended exit request behind after its scene is gone.
+
+   **Required change:** let one modal owner manage focus, enabled controls, visual order, and teardown. Serialize leaving requests and prevent Pause from taking focus behind a pending save decision. Test real input, repeated close requests, Stay focus restoration, and transition cleanup.
+
+5. **Medium · bug: HUD redraw caching leaves expired world prompts on screen.**
+
+   [ui/hud/hud_view.gd:59](/home/homebox/Documents/rookmate/undertow/ui/hud/hud_view.gd:59) redraws while a world annotation currently exists. Its signature includes Integrity and weapon state, but excludes annotation presence.
+
+   Walk out of interaction range with unchanged weapon/Integrity state. `_world_anchored()` becomes false and the signature remains unchanged, so the draw list containing the previous interaction prompt is retained. The same failure applies when the last threat expires or the last survivor speech ends.
+
+   **Required change:** redraw on the transition from having world annotations to having none, or separate the always-updated annotation layer from the cached HUD. Test annotation removal, not only appearance.
+
+6. **Medium · content/data-integrity gap: map validation does not validate the promised content contracts.**
+
+   [core/level_grid.gd:88](/home/homebox/Documents/rookmate/undertow/core/level_grid.gd:88) checks local ID presence and uniqueness without consulting content. A `T` pointing to an unknown core or a `U` pointing to an unknown log passes map validation.
+
+   The cache records the unknown core, which `CoreChoice.offer()` later filters out. The slip records an unknown unlocked log, which the Archive never lists. Duplicate survivor IDs across different maps also remain undetected and share global rescue state.
+
+   **Required change:** validate all catalog maps against core/log kinds and global survivor identity before gameplay. Keep that contract in one validation boundary. The current Vellum-only assertions do not protect new districts.
+
+7. **Medium · save-loss risk: an unknown autopilot scenario can escape the isolated save directory before being rejected.**
+
+   [autoload/autopilot.gd:71](/home/homebox/Documents/rookmate/undertow/autoload/autopilot.gd:71) joins the unchecked scenario onto `user://autopilot`, then immediately deletes saves. Only afterward does `_register_expected()` reject unknown scenarios.
+
+   `--autopilot-scenario=../saves` produces `user://autopilot/../saves`, which resolves to the player's save directory. The string differs from `DEFAULT_DIR`, so the isolation check does not detect the alias. Both the gate and recording script accept an externally supplied scenario.
+
+   **Required change:** validate the scenario against the supported names before any filesystem operation, and use the validated name for its directory. Test rejection without touching either player save file.
+
+8. **Medium · future-content crash risk: survivor overflow assumes allocation cannot run out.**
+
+   [game/ark/ark_level.gd:89](/home/homebox/Documents/rookmate/undertow/game/ark/ark_level.gd:89) can return fewer cells than requested, while `_populate()` unconditionally indexes `spots[i]` for every survivor.
+
+   Exhaustively following the current allocator over the shipped Ark yields 158 available survivor cells. Requesting 159 returns only 158. Removing all `s` markers produces the same short-array failure immediately, and hub validation permits that map.
+
+   This replaces the old silent population cap with an eventual out-of-bounds failure.
+
+   **Required change:** make allocation capacity explicit and retain access to overflow survivors, or validate a supported population limit before construction. Test exhaustion and missing seed markers, alongside the existing eight-survivor case.
+
+9. **Low · incomplete performance fix: the HUD ring still requests redraw every frame while idle or muted.**
+
+   [ui/hud/steward_pill.gd:27](/home/homebox/Documents/rookmate/undertow/ui/hud/steward_pill.gd:27) assigns `ring.state` every frame. The setter at [ui/common/steward_ring.gd:13](/home/homebox/Documents/rookmate/undertow/ui/common/steward_ring.gd:13) unconditionally queues a redraw, even when the value is unchanged.
+
+   Removing the unconditional redraw from the ring's own `_process()` therefore does not deliver the claimed behavior for the gameplay HUD.
+
+   **Required change:** ignore unchanged state assignments. This does not invalidate the measured host improvement, but the documented explanation overstates which redraw work was removed.
+
+The remaining inferences and unverified risks are separate:
+
+- Deck performance and physical controller/platform behavior remain open as documented. The host logs support approximately 60 FPS average; they do not establish the target hardware result.
+- Large Archive lists and long records now have bounds, but the added test checks container properties only. Controller access to earlier portions of a long record, long titles, and long companion reactions still needs a realistic content-volume test.
+- Growth-related failures above are confirmed conditional code paths. The current two-survivor, valid-content slice does not demonstrate that players already encounter them.
+
+The tests were strengthened overall. I found no removal of meaningful existing assertions in the reviewed changes. Write-failure, coverage, cancellation, painted-path, collision, and controller-matching tests provide useful evidence. The remaining gaps are consequential: the wall test uses a speed that avoids the normal-speed bug; malformed-map tests stop at `validate()`; malformed-content tests inspect diagnostics without testing refusal of progression; modal tests mostly invoke methods directly; and population tests never exhaust allocation.
+
+Acceptance is therefore **not met**. Finding 29 has an adequate written reason. The claim that the other 28 are fully fixed is not supported, and the new high-severity failures need correction before closure.
+## Round 2: what was done about each finding
+
+All nine round 2 findings are fixed, and so is the Archive content-volume inference. Each fix has a
+test that was run against the code before the fix and **failed there** (checked by stashing the fix),
+so the tests are not just green on the new code. The "partly" verdicts on round 1 items map onto these
+findings: #1 → 7, #6 → 4, #9 → 6, #14 → 1, #16 → 3, #17 → 2, #19 → 8.
+
+| # | Resolution | Covered by |
+|---|---|---|
+| 1 | `LevelGrid.first_block` walks every cell the segment crosses exactly (grid traversal, not 0.05-tile samples), counts the cells at both ends, and treats a segment through a shared wall corner as blocked. Actors can't stand inside blocking cells (their bodies collide), so sight lines use the same rule. | `test_ticks_of_any_length_stop_at_the_wall` (0.05–2.5-tile ticks stop exactly at the kiosk face), `test_blocking_counts_the_cells_at_both_ends`, `test_a_corner_between_two_walls_does_not_let_a_shot_through`, `test_shots_at_every_speed_stop_at_the_kiosk` (the Drone's real 15 tiles/s, the Clerk's bale, 150 tiles/s), `test_an_open_shot_still_lands` |
+| 2 | A level whose map fails validation sets `failed`, stops processing, physics and input at once, and calls `SceneRouter.abandon()`. During a transition the router goes on to the title behind the same fade (the broken level is never announced as current); outside one it starts a normal transition. Nothing is saved. | `test_entering_a_broken_level_lands_on_the_title` (through the real router, with a fixture level: lands on the title, input back, save file byte-identical, no errors after the reports), `test_a_broken_map_stops_the_level_before_anything_runs` |
+| 3 | `CoreChoice` no longer shrinks the carry count: an offer that isn't more than two cores is reported as a broken Reliquary and can't complete the level (no cores, no restore, no Ark). `ContentDb` reports missing top-level sections and drops undersized Reliquaries instead of keeping them. `LevelCatalog.check_all()` runs at boot and fails loudly if any district lacks a real Reliquary. The card screen says the Reliquary is broken and offers only "back to the title". | `test_a_broken_offer_completes_nothing`, `test_missing_and_undersized_reliquaries_are_dropped_and_reported`, `test_ids_are_unique_across_districts_and_every_district_has_a_reliquary`, `test_a_reliquary_with_no_real_choice_says_so_and_completes_nothing` |
+| 4 | `Modals` now owns draw order (a pushed screen goes above the one under it), input (screens under the top go inert: no focus, no clicks) and focus (restored to where it was when the top closes). A save question is *blocking*: the pause menu can't open over it. Close requests are serialized (one question however often close is pressed). Scene changes dismiss open screens; a pending save question resolves as "stay" instead of waiting forever. | `test_a_save_question_owns_input_and_stay_gives_focus_back` (real pad input: Start, down, accept, right, right, accept), `test_closing_the_window_twice_asks_once` (also: Start during the close question opens nothing), `test_a_scene_change_dismisses_an_open_question`, `test_screens_under_the_top_one_are_inert_until_it_closes` |
+| 5 | The HUD redraws once more when the last world-anchored mark (prompt, threat, survivor's words) goes, then stops. | `test_walking_away_clears_the_interaction_prompt` (counts draws: redrawn on leaving, then left alone) |
+| 6 | `LevelGrid.content_problems()`: a cache must hold a truth core, a slip an unindexed log. `LevelCatalog.check()` validates every district's map and content together and rejects an id placed in two districts. Levels run the content check on load too. District maps now come from the catalog (one source of truth). | `test_maps_must_name_real_content_of_the_right_kind`, `test_ids_are_unique_across_districts_and_every_district_has_a_reliquary`, `test_shipped_districts_pass_the_boot_check` |
+| 7 | The scenario is checked against the known list before anything touches the disk; an unknown one prints `AUTOPILOT FAIL: known_scenario` and exits 1. Isolation compares resolved paths, so `user://autopilot/../saves` is not "isolated". | `test_the_autopilot_never_saves_outside_its_own_folder`; run by hand with `--autopilot-scenario=../saves`: exits 1, the player's save untouched |
+| 8 | Survivor placement returns fewer cells only when the Ark is full; the Ark then shows everyone there's room for and reports the overflow (nobody leaves the run, nothing indexes past the end). Ark maps must have survivor spots, Noor, Teo and the dock. Current capacity: about 158. | `test_a_full_ark_is_reported_not_crashed_on`, `test_an_ark_map_without_survivor_spots_is_refused` |
+| 9 | The ring's state setter ignores unchanged values, so the HUD ring is drawn once per state as documented. | `test_the_hud_ring_redraws_only_when_its_state_changes` |
+| inference: Archive volume | Titles, the Steward's comment and the reactions are clipped with an ellipsis inside fixed boxes; list buttons clip long titles. The record box takes focus (right from the list, left back) and scrolls on ui_up/ui_down from any device: Godot's own RichTextLabel scrolling reads only keyboard keys, so a pad could never scroll it. | `test_a_full_archive_fits_and_scrolls_with_a_pad` (40 logs, a 60-line record, long title and reaction) |
+
+Supporting change: broken content and maps are reported through `Diagnostics.error` (an engine error
+normally). Tests that break things on purpose capture those reports and check them, so the test
+runner's "any logged error fails the test" rule and the gate's log scan stay as strict as before.
+
+Gate after round 2: import clean; **228 tests** pass; 30 s run 23/23 checks; 150 s full-slice run
+45/45; no errors or warnings in any log; 60 fps average (1% low 56–57 fps) capped at 60 on this
+machine; `tools/export.sh` exports all three platforms and the exported Linux build passes its run.
+
+Not fixed, with reasons:
+- **29 (hardware):** needs a Steam Deck, real controllers and Windows/macOS machines (see PROGRESS.md,
+  "What only hardware can confirm").
+- **ContentDb caches its result even when it found errors** (round 2, table row 16): kept on purpose.
+  The errors are reported at boot (the gate fails on them) and every consumer now refuses broken
+  content (no level completes from a broken Reliquary); re-reading the files on every call would add
+  nothing.

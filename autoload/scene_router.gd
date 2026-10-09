@@ -26,6 +26,8 @@ var current_key: StringName = &""
 var current_level: String = ""
 var _fade: ColorRect
 var _busy: bool = false
+## Set when the scene being entered couldn't start; the transition then goes on to the title instead.
+var _abandoned: bool = false
 
 
 func _ready() -> void:
@@ -75,6 +77,16 @@ func goto_level(level_id: String, prepare: Callable = Callable()) -> bool:
 	return _start(LevelCatalog.scene_of(level_id), LEVEL_KEY, level_id, prepare)
 
 
+## Called by a scene that can't start (a broken map). If it arrived through a transition, the player is
+## taken on to the title behind the same fade; if it is the current scene otherwise, a normal transition
+## to the title starts. A scene that isn't current (a test fixture) is left as it is.
+func abandon(scene: Node) -> void:
+	if _busy:
+		_abandoned = true
+	elif scene == get_tree().current_scene:
+		goto(&"title")
+
+
 ## Where Continue takes a saved location: a screen key, or &"" if this build has no such place.
 func destination_for(location: String) -> StringName:
 	if location == "ark":
@@ -118,11 +130,18 @@ func _transition(path: String, key: StringName, level_id: String) -> void:
 	await tween.finished
 	Modals.clear()
 	get_tree().paused = false
+	_abandoned = false
 	var err := get_tree().change_scene_to_file(path)
 	if err != OK:
 		push_error("SceneRouter: could not load %s (%s)" % [path, error_string(err)])
 	else:
 		await get_tree().scene_changed
+		if _abandoned:
+			_abandoned = false
+			key = &"title"
+			level_id = ""
+			get_tree().change_scene_to_file(SCENES[key])
+			await get_tree().scene_changed
 		current_key = key
 		current_level = level_id
 		scene_changed.emit(key)

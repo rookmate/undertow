@@ -13,7 +13,7 @@ Milestone: **vertical slice** (design brief, "First milestone"). Plan and decisi
 | 6 | Level end with power-vs-truth core choice | done |
 | 7 | Ark hub with the Archive | done |
 | 8 | Tracking finished + debug overlay + save round-trip | done |
-| — | Sol analysis review (reviews/vertical-slice.md), fixes, re-check | in progress: round 1 fixed, round 2 next |
+| — | Sol analysis review (reviews/vertical-slice.md), fixes, re-check | in progress: rounds 1–2 fixed, round 3 (confirmation) next |
 
 ## Done
 
@@ -82,9 +82,15 @@ stack, atomic scene navigation, line of sight and swept projectiles, map-file id
 content validation, the Ark built from progression, the Archive scrolls, any controller works,
 export presets, frame-time work (60 fps capped on this machine), a stricter test runner.
 
+**Review fixes (round 2).** Exact wall traversal for shots and sight, broken maps return to the title
+through the router, broken Reliquaries can't complete a level, boot-time map/content check across
+districts, the modal stack owns focus/input/draw order, serialized close requests, autopilot scenario
+validated before disk access, bounded survivor placement, Archive usable with a pad at any content
+volume. 228 tests.
+
 ## Next
 
-Phase 5: Sol analysis round 2 on the fixes, fix anything serious it finds, re-run the gate, commit.
+Phase 5: Sol analysis round 3 to confirm the round 2 fixes, then commit and close the milestone.
 
 ## How to run
 
