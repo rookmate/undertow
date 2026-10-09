@@ -86,3 +86,12 @@ func _check_occlusion(g: LevelGrid) -> void:
 				if g.is_walkable(behind):
 					fail("building %s hides walkable cell %s" % [c, behind])
 					return
+
+
+## "The Steward may advise here and may not act": the Ark has no Lattice cells at all.
+func test_the_ark_has_no_lattice() -> void:
+	var ark := LevelGrid.load_file("res://data/levels/ark.txt")
+	check(ark.start_cell().x >= 0, "the Ark has a start")
+	for c: Vector2i in ark.all_cells():
+		check_false(ark.is_indexed(c), "%s on the Ark is indexed" % c)
+	check(ark.reachable_from(ark.start_cell()).has(ark.first("a") + Vector2i(1, 0)), "the Archive door is reachable from the dock")

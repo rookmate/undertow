@@ -63,6 +63,9 @@ func _process(delta: float) -> void:
 		if _idle > IDLE_SECONDS:
 			_idle = 0.0
 			_say(&"idle")
+	# The Ark has no Lattice: nothing to step off or back onto.
+	if level.is_hub():
+		return
 	# Stepping off the Lattice and back.
 	var cell := p.cell()
 	if level.grid.is_walkable(cell):
@@ -75,9 +78,7 @@ func _process(delta: float) -> void:
 			else:
 				_record(&"left_path")
 				_say(&"path_left")
-	if level.is_hub():
-		return
-	if not _checkpoint_said and cell != level.grid.first("P") and cell == level.checkpoint_cell:
+	if not _checkpoint_said and cell != level.grid.start_cell() and cell == level.checkpoint_cell:
 		_checkpoint_said = true
 		_say(&"checkpoint")
 	if not _reliquary_said and Iso.ground_distance(p.global_position, Iso.cell_center(level.grid.first("R"))) < RELIQUARY_TILES:

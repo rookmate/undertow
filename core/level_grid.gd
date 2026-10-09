@@ -13,6 +13,7 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	"W": Floor.PAVEMENT, "w": Floor.STACKS, "T": Floor.STACKS, "U": Floor.STACKS,
 	"n": Floor.CONCRETE, "G": Floor.CONCRETE, "a": Floor.CONCRETE, "N": Floor.CONCRETE, "Y": Floor.CONCRETE,
 	"s": Floor.CONCRETE, "D": Floor.CONCRETE, "f": Floor.FOUNDATION, "A": Floor.BUILDING,
+	"p": Floor.CONCRETE,
 }
 ## Characters whose cell blocks movement.
 const SOLID := " #dmgA~=-L|KtoRT"
@@ -100,6 +101,12 @@ func cells_with(ch: String) -> Array[Vector2i]:
 			out.append(Vector2i(x, y))
 			x = row.find(ch, x + 1)
 	return out
+
+
+## Where the Operator starts: 'P' on a level's lit street, 'p' on a hub's bare concrete.
+func start_cell() -> Vector2i:
+	var on_street := first("P")
+	return on_street if on_street.x >= 0 else first("p")
 
 
 func first(ch: String) -> Vector2i:
