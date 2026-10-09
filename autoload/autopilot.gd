@@ -248,10 +248,16 @@ func _drive_level(gen: int) -> void:
 	check(level.grid.is_walkable(player.cell()) and player.cell().x >= 9, "walls_block")
 	check(level.predicted_path.shown.size() == Tunables.PATH_TILES_AHEAD, "path_three_tiles_ahead")
 	await snap("path")
+	if not await _toggle_voice_and_check(level, player, gen):
+		return
 	var route: Array[Vector2i] = [Vector2i(12, 37), Vector2i(13, 33), Vector2i(14, 30), Vector2i(13, 26), Vector2i(12, 21), Vector2i(11, 15), Vector2i(9, 10), Vector2i(5, 9)]
 	var long_run := seconds >= 55.0
 	if long_run:
 		expect("route_completed")
+		expect("threat_warning_shown")
+		expect("slowmo_on_dodge")
+		level.slow_mo.started.connect(func(_s: float) -> void: pass_check("slowmo_on_dodge"), CONNECT_ONE_SHOT)
+		_watch_threats(level, gen)
 	var shot_fight := false
 	for i: int in route.size():
 		if not await advance_to(level, player, route[i], 25.0, gen):
@@ -284,7 +290,7 @@ func _visit_stacks(level: Level, player: Operator, gen: int) -> bool:
 			cache = n
 	check(level.predicted_path.shown.is_empty() and cache != null and not cache.is_present(), "stacks_hidden_while_listening")
 	await snap("stacks_listening")
-	Steward.set_voice(false)
+	tap(&"voice_toggle")
 	if not await _wait(1.2, gen):
 		return false
 	await snap("stacks_muted")
@@ -305,8 +311,44 @@ func _visit_stacks(level: Level, player: Operator, gen: int) -> bool:
 	if not await _use_at(level, player, Vector2i(10, 25), gen):
 		return false
 	check(GameState.run.survivor_ids.has(ContentIds.SURVIVOR_DOORWAY), "woke_survivor_in_doorway")
-	Steward.set_voice(true)
+	tap(&"voice_toggle")
+	return await _wait(0.5, gen)
+
+
+## Mutes the Steward with the voice key and checks everything the brief's voice table says changes,
+## then turns it back on.
+func _toggle_voice_and_check(level: Level, player: Operator, gen: int) -> bool:
+	var toggles := GameState.run.voice_toggle_count
+	tap(&"voice_toggle")
+	if not await _wait(1.6, gen):
+		return false
+	var lamps_dark := true
+	for n: Node in get_tree().get_nodes_in_group(&"lattice_lamps"):
+		lamps_dark = lamps_dark and not (n as LampPost).lit
+	var a := Steward.assists()
+	check(not Steward.voice_on and GameState.run.voice_toggle_count == toggles + 1, "voice_muted_by_key")
+	check(lamps_dark and player.carried_light_on() and level.lighting.grade_amount() > 0.95, "muted_lighting_state")
+	check(level.predicted_path.shown.is_empty() and level.hud.minimap.mode() == Assists.MapMode.HAND_SCAN, "muted_path_and_map")
+	check(not a.threat_warnings and a.aim_assist == 0.0 and a.dodge_slowmo_seconds == 0.0 and not player.weapons[1].is_tuned() and a.damage_taken_mult > 1.0, "muted_assists_off")
+	await snap("muted_street")
+	tap(&"voice_toggle")
+	if not await _wait(1.6, gen):
+		return false
+	var lamps_lit := true
+	for n: Node in get_tree().get_nodes_in_group(&"lattice_lamps"):
+		lamps_lit = lamps_lit and (n as LampPost).lit
+	check(Steward.voice_on and lamps_lit and level.predicted_path.shown.size() == Tunables.PATH_TILES_AHEAD and level.hud.subtitles.is_speaking(), "voice_restored")
+	await snap("voice_restored")
 	return true
+
+
+func _watch_threats(level: Level, gen: int) -> void:
+	while gen == _generation and not _finished:
+		if not level.hud.view.active_threats().is_empty():
+			pass_check("threat_warning_shown")
+			await snap("threat_warning")
+			return
+		await get_tree().physics_frame
 
 
 ## Walks to `cell` and presses Interact.

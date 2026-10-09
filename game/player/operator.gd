@@ -16,9 +16,8 @@ const RADIUS_TILES := 0.3
 const MAX_INTEGRITY := 100.0
 const DOWNED_SECONDS := 1.6
 const HURT_GRACE := 0.35
-## Aim assist while the Steward is listening and a weapon is manual.
+## Aim assist while the Steward is listening (strength from Steward.assists()).
 const ASSIST_CONE_DEG := 24.0
-const ASSIST_STRENGTH := 0.55
 const ASSIST_REACH := 8.0
 
 const WEAPON_SCRIPTS: Dictionary[String, GDScript] = {
@@ -36,6 +35,7 @@ var facing_ground: Vector2 = Vector2(0, -1)
 var input_enabled: bool = true
 
 var _body: OperatorBody
+var _carried_light: PointLight2D
 var _downed: bool = false
 var _grace: float = 0.0
 
@@ -53,6 +53,16 @@ func _ready() -> void:
 	add_child(shape)
 	_body = OperatorBody.new()
 	add_child(_body)
+	# A maintenance hand lamp: what you carry when the Steward's lamps are dark.
+	_carried_light = PointLight2D.new()
+	_carried_light.texture = LightTextures.radial()
+	_carried_light.color = Palette.IVORY
+	_carried_light.energy = 1.15
+	_carried_light.texture_scale = 2.6
+	_carried_light.scale = Vector2(1.0, Iso.SQUASH)
+	_carried_light.position = Vector2(0, -10)
+	_carried_light.enabled = false
+	add_child(_carried_light)
 	add_to_group(&"player")
 
 
@@ -98,6 +108,15 @@ func _physics_process(delta: float) -> void:
 			facing_ground = ground.normalized()
 	move_and_slide()
 	_body.update_pose(facing_ground, velocity, dodge, delta)
+
+
+func set_carried_light(on: bool) -> void:
+	if _carried_light != null:
+		_carried_light.enabled = on
+
+
+func carried_light_on() -> bool:
+	return _carried_light != null and _carried_light.enabled
 
 
 ## What Interact would act on (or explain), if anything is close enough.
@@ -149,11 +168,12 @@ func aim_ground() -> Vector2:
 		var to_mouse := Iso.ground_dir_between(global_position, get_global_mouse_position())
 		if to_mouse != Vector2.ZERO:
 			aim = to_mouse
-	if Steward.voice_on and level != null:
+	var strength := Steward.assists().aim_assist
+	if strength > 0.0 and level != null:
 		var threats: Array[Node2D] = []
 		for e: Enemy in level.living_enemies():
 			threats.append(e)
-		aim = CombatMath.assist_aim(aim, global_position, threats, ASSIST_REACH, ASSIST_CONE_DEG, ASSIST_STRENGTH)
+		aim = CombatMath.assist_aim(aim, global_position, threats, ASSIST_REACH, ASSIST_CONE_DEG, strength)
 	return aim
 
 

@@ -118,3 +118,19 @@ brief and the user's answers didn't cover it.
     fourth card (step 6).
 45. **The gate has a fourth stage:** a 90 s full-slice autopilot run that must pass every check for
     the features built so far (the 30 s run stays as the brief's required check).
+46. **The voice switch (V / Y)** works in levels only and is remembered in the run
+    (`RunState.voice_on`). `Assists.compute(voice, power cores, overrides)` is the single source for
+    what it changes: path, map mode, threat warnings, dodge slow-mo, aim assist, forced manual,
+    damage multiplier, narration. Power cores strengthen aim assist (+0.1 each, max 0.85) and slow-mo
+    (+0.08 s each).
+47. **Muted lighting state:** Lattice lamps go dark one by one outward from the Operator (45 ms apart),
+    the gilt dies, the ambient tweens to cold, and a screen-space grade (`mute_grade.gdshader`) pulls
+    the world to cold greys and ivory while sparing bright saturated light (neon, truth cyan). The
+    Operator's ivory hand lamp comes on. Unmuting reverses it; the Steward says "There you are."
+48. **Threat warnings** are the Steward's: a gold bracket and "THREAT" over the enemy winding up and a
+    gold arc around the Operator pointing at it. The danger itself stays red-orange (the windup).
+49. **Slow-mo:** time scale 0.35 for 0.35 s (unscaled) when a dodge starts within 2.4 tiles of a
+    windup or an incoming bale, or when a hit lands inside the roll's invulnerability. Voice on only.
+50. **Minimap:** voice on, the Steward's map in gold, "STEWARD MAP · 100% CHARTED", without the
+    unindexed stacks. Muted, a hand scan of cells within 3 tiles of where you've walked, with the
+    real percentage of all walkable cells (including off-path ones).

@@ -11,6 +11,9 @@ var level: Level
 
 var _hurt_flash: float = 0.0
 var _shown_integrity: float = 1.0
+## Threat callouts: enemy -> seconds left. Keys can be freed at any time (enemies die), so they are
+## held as Variants and checked before use.
+var _threats: Dictionary = {}
 
 
 func _ready() -> void:
@@ -18,10 +21,36 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	if level != null and level.player != null:
 		level.player.hurt.connect(func(_a: float) -> void: _hurt_flash = 0.35)
+	Steward.threat_warned.connect(_on_threat)
+
+
+func _exit_tree() -> void:
+	if Steward.threat_warned.is_connected(_on_threat):
+		Steward.threat_warned.disconnect(_on_threat)
+
+
+func _on_threat(enemy: Node2D, seconds: float) -> void:
+	_threats[enemy] = seconds + 0.2
+
+
+## Enemies currently called out by the Steward (tests read this).
+func active_threats() -> Array[Node2D]:
+	var out: Array[Node2D] = []
+	for key: Variant in _threats:
+		if is_instance_valid(key):
+			out.append(key as Node2D)
+	return out
 
 
 func _process(delta: float) -> void:
 	_hurt_flash = maxf(0.0, _hurt_flash - delta)
+	var warnings_on := Steward.assists().threat_warnings
+	for key: Variant in _threats.keys():
+		var left: float = _threats[key] - delta
+		if left <= 0.0 or not is_instance_valid(key) or not warnings_on:
+			_threats.erase(key)
+		else:
+			_threats[key] = left
 	if level != null and level.player != null:
 		_shown_integrity = move_toward(_shown_integrity, level.player.integrity.ratio(), delta * 0.8)
 	queue_redraw()
@@ -31,12 +60,28 @@ func _draw() -> void:
 	if level == null or level.player == null:
 		return
 	var p := level.player
+	_draw_threats(p)
 	_draw_interaction(p)
 	_draw_woken_lines()
 	var bottom := size.y - MARGIN
 	_draw_integrity(Vector2(MARGIN, bottom - CHIP_H - 64.0), p)
 	for i: int in p.weapons.size():
 		_draw_weapon(Rect2(MARGIN + i * (CHIP_W + 14.0), bottom - CHIP_H, CHIP_W, CHIP_H), p.weapons[i])
+
+
+## The Steward's threat callout: a gold bracket over the enemy winding up, and a gold mark on a ring
+## around the Operator pointing at it. (The danger itself is the enemy's red-orange windup.)
+func _draw_threats(p: Operator) -> void:
+	var font := UiFonts.heading()
+	var me := _to_screen(p.global_position + Vector2(0, -80))
+	for e: Node2D in active_threats():
+		var at := _to_screen(e.global_position + Vector2(0, -150))
+		draw_polyline(PackedVector2Array([at + Vector2(-26, -8), at + Vector2(-26, 8), at + Vector2(-18, 8)]), Palette.STEWARD_GOLD, 3.0, true)
+		draw_polyline(PackedVector2Array([at + Vector2(26, -8), at + Vector2(26, 8), at + Vector2(18, 8)]), Palette.STEWARD_GOLD, 3.0, true)
+		draw_string(font, at + Vector2(-34, -16), "THREAT", HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Palette.STEWARD_GOLD)
+		var dir := (_to_screen(e.global_position) - _to_screen(p.global_position)).normalized()
+		var a := dir.angle()
+		draw_arc(me, 96.0, a - 0.22, a + 0.22, 10, Palette.STEWARD_GOLD, 4.0, true)
 
 
 func _to_screen(world_pos: Vector2) -> Vector2:

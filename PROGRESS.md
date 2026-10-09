@@ -8,8 +8,8 @@ Milestone: **vertical slice** (design brief, "First milestone"). Plan and decisi
 | 1 | Isometric movement, dodge, greybox Vellum street | done |
 | 2 | Combat with two-weapon loadout, tuned/manual modes | done |
 | 3 | Predictive path, hidden off-path area | done |
-| 4 | Voice toggle: assists, map, narration, lighting | next |
-| 5 | Adaptive narration from tagged line pools | |
+| 4 | Voice toggle: assists, map, narration, lighting | done |
+| 5 | Adaptive narration from tagged line pools | next |
 | 6 | Level end with power-vs-truth core choice | |
 | 7 | Ark hub with the Archive | |
 | 8 | Tracking finished + debug overlay + save round-trip | |
@@ -43,11 +43,17 @@ muted. The overflow stacks: the Marrow over the unindexed cells; one of the Wait
 (Prem Vashti's note) and an unindexed slip, all absent while the Steward listens. Interact (E / X):
 wake the Waiting (muted only; the Steward objects otherwise), take the core, read the slip.
 
+**Step 4.** The voice toggle (V / Y) switches everything in the brief's voice table: path, lighting
+state (lamps die one by one, gilt dies, cold grade, hand lamp), minimap (Steward map vs hand scan with
+% charted), threat warnings, dodge slow-mo, aim assist, forced manual weapons, ×1.4 damage taken,
+narration (silent when muted). HUD: "STEWARD · LISTENING [V]" pill with the ring, assist chips (struck
+through when muted), muted timer, DMG TAKEN ×1.4, subtitles in Fraunces gold. Voice time is tracked in
+level play only, and the toggle count.
+
 ## Next
 
-Step 4: the voice toggle (V / Y) and everything it switches: lighting state (gilt and Lattice die,
-cold greys), minimap (Steward map vs hand scan), assists (threat warnings, dodge slow-mo, aim assist),
-forced manual, ×1.4 damage, narration on/off, voice-time tracking; HUD pill "STEWARD · LISTENING".
+Step 5: adaptive narration. Tagged line pools in JSON (event × tone), a playstyle profile fed by play,
+weighted selection without repeats; a risky run and a cautious run should sound noticeably different.
 
 ## How to run
 
