@@ -124,5 +124,10 @@ static func open_districts(run: RunState) -> Array[String]:
 	return out
 
 
+## The boss a district ends with ("" for none): its 'B' cell on the map.
+static func boss_of(level_id: String) -> String:
+	return str(LEVELS.get(level_id, {}).get("boss", ""))
+
+
 static func act_of(level_id: String) -> int:
 	return int(LEVELS.get(level_id, {}).get("act", 0))

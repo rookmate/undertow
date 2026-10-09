@@ -3,6 +3,10 @@
   "lines": {
     "title_quiet": "Good morning, Meridian. Today will be—",
     "waiting_refusal": "They're resting. Leave them.",
-    "loadout_nudge": "I'd keep the tuning on. Let me carry the aim; you watch the street."
+    "loadout_nudge": "I'd keep the tuning on. Let me carry the aim; you watch the street.",
+    "conductor_left": "Left track.",
+    "conductor_middle": "Middle track. Move.",
+    "conductor_right": "Right track.",
+    "conductor_vent": "It's venting. Now."
   }
 }

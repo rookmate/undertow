@@ -46,6 +46,8 @@ func _draw() -> void:
 				_timber(cell)
 			LevelGrid.Floor.GRAVEL:
 				_gravel(cell)
+			LevelGrid.Floor.TRACK:
+				_track(cell)
 
 
 ## Plain floor characters: what a placed thing's cell is drawn as, taken from a neighbour.
@@ -155,6 +157,16 @@ func _timber(cell: Vector2i) -> void:
 	for k: int in 5:
 		var u := 0.1 + k * 0.2
 		draw_line(_at(cell, u, 0.0), _at(cell, u, 1.0), Color(Palette.NEAR_BLACK, 0.3), 1.5, true)
+
+
+## Track bed: ballast, sleepers, two rails running along the cell.
+func _track(cell: Vector2i) -> void:
+	draw_colored_polygon(Iso.cell_diamond(cell), look.gravel.darkened(0.25))
+	for k: int in 4:
+		var u := 0.12 + k * 0.25
+		draw_line(_at(cell, u, 0.1), _at(cell, u, 0.9), Color(look.timber.darkened(0.2), 0.9), 5.0, true)
+	for v: float in [0.3, 0.7]:
+		draw_line(_at(cell, 0.0, v), _at(cell, 1.0, v), Palette.IRON_DARK.lightened(0.25), 3.0, true)
 
 
 ## A garden walk the Lattice never lit.

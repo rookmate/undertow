@@ -21,6 +21,8 @@ var leash_tiles: float = 9.0
 var facing_ground: Vector2 = Vector2(0, 1)
 ## Parts a machine gives up when taken apart (spent at the Workshop).
 var scrap_value: int = 1
+## Whether the Steward's tuned aim will pick this as a target.
+var steward_aims_at: bool = true
 
 var _state_time: float = 0.0
 var _knock: Vector2 = Vector2.ZERO

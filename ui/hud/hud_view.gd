@@ -72,6 +72,9 @@ func _state_signature() -> String:
 		return ""
 	var p := level.player
 	var parts := PackedStringArray([str(roundi(p.integrity.value)), "%.3f" % _shown_integrity, "%.2f" % _hurt_flash])
+	var b := level.boss
+	if b != null and is_instance_valid(b):
+		parts.append("%d%d%d%.1f" % [int(b.is_engaged), int(b.is_alive()), int(b.is_vulnerable()), b.integrity.value])
 	for w: Weapon in p.weapons:
 		parts.append("%s%d%s%.2f" % [Controls.prompt(w.action()), int(w.is_tuned()), w.status(), snappedf(w.readiness(), 0.02)])
 	return "|".join(parts)
@@ -92,6 +95,7 @@ func _draw() -> void:
 	if level == null or level.player == null:
 		return
 	var p := level.player
+	_draw_boss()
 	_draw_threats(p)
 	_draw_interaction(p)
 	_draw_woken_lines()
@@ -105,6 +109,19 @@ func _draw() -> void:
 
 ## The Steward's threat callout: a gold bracket over the enemy winding up, and a gold mark on a ring
 ## around the Operator pointing at it. (The danger itself is the enemy's red-orange windup.)
+## The boss's name and integrity, top centre, once the fight has started. Brighter while it's open.
+func _draw_boss() -> void:
+	var b := level.boss
+	if b == null or not is_instance_valid(b) or not b.is_engaged or not b.is_alive():
+		return
+	var w := 640.0
+	var at := Vector2((size.x - w) * 0.5, 40.0)
+	draw_string(UiFonts.heading(), at + Vector2(0, -6), b.boss_name, HORIZONTAL_ALIGNMENT_LEFT, -1, 26, Palette.IVORY)
+	draw_rect(Rect2(at + Vector2(0, 6), Vector2(w, 10)), Color(Palette.NEAR_BLACK, 0.7))
+	var fill := Palette.IVORY if b.is_vulnerable() else Palette.IVORY_DIM
+	draw_rect(Rect2(at + Vector2(0, 6), Vector2(w * b.integrity.ratio(), 10)), fill)
+
+
 func _draw_threats(p: Operator) -> void:
 	var font := UiFonts.heading()
 	var me := _to_screen(p.global_position + Vector2(0, -80))

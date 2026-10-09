@@ -2,7 +2,7 @@ class_name LevelGrid
 extends RefCounted
 ## A level's layout, parsed from a text map in data/levels/ (legend at the top of each file).
 
-enum Floor { VOID, BUILDING, COBBLE, PAVEMENT, OLD_QUAY, STACKS, STAIRS, WATER, RAILING, LOW_WALL, CONCRETE, FOUNDATION, LAWN, STEPS, TIMBER, GRAVEL }
+enum Floor { VOID, BUILDING, COBBLE, PAVEMENT, OLD_QUAY, STACKS, STAIRS, WATER, RAILING, LOW_WALL, CONCRETE, FOUNDATION, LAWN, STEPS, TIMBER, GRAVEL, TRACK }
 
 const FLOOR_OF: Dictionary[String, Floor] = {
 	" ": Floor.VOID, "#": Floor.BUILDING, "d": Floor.BUILDING, "m": Floor.BUILDING, "g": Floor.BUILDING,
@@ -17,6 +17,8 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	# Kestrel Heights
 	"l": Floor.BUILDING, "v": Floor.LAWN, "H": Floor.LAWN, "j": Floor.LAWN, "F": Floor.COBBLE, "Q": Floor.COBBLE,
 	"X": Floor.COBBLE, "E": Floor.STEPS, "i": Floor.TIMBER, "q": Floor.GRAVEL, "b": Floor.TIMBER,
+	# Bosses: a boss's own cell, its lanes (1, 2, 3), the signal box, the barrier that opens when it falls.
+	"B": Floor.TRACK, "1": Floor.TRACK, "2": Floor.TRACK, "3": Floor.TRACK, "Z": Floor.COBBLE, "y": Floor.TRACK,
 }
 ## Characters whose cell blocks movement.
 ## Lawns (and the hedges, planters and sprinklers on them) are the Steward's gardens: looked at, not
@@ -180,7 +182,7 @@ func is_occupied(cell: Vector2i) -> bool:
 ## The Lattice reaches this cell: it is lit, on the Steward's map and routable by its path.
 func is_indexed(cell: Vector2i) -> bool:
 	var f := floor_at(cell)
-	return f == Floor.COBBLE or f == Floor.PAVEMENT or f == Floor.STEPS
+	return f == Floor.COBBLE or f == Floor.PAVEMENT or f == Floor.STEPS or f == Floor.TRACK
 
 
 ## Tall things stop sight, swings and shots: buildings and tall props. Water, rails and low walls don't.
