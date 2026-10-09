@@ -4,7 +4,7 @@ extends Node2D
 ## shelves, a Feed kiosk, a stalled tram segment and bollards; in Kestrel Heights, trimmed hedges, stone
 ## planters of white blossom, and lawn sprinklers that still come on.
 
-enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD, HEDGE, PLANTER, SPRINKLER, BED, CARRIAGE_SIDE, DESK }
+enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD, HEDGE, PLANTER, SPRINKLER, BED, CARRIAGE_SIDE, DESK, CONTAINER }
 
 const SPRAY_PERIOD := 6.0
 
@@ -63,6 +63,8 @@ func _draw() -> void:
 			# Cut away to the window line so the carriage's inside (and who sits in it) shows.
 			_prism(30.0, look.wall, look.wall_shade, look.wall_top, 1.0)
 			draw_line(Vector2(-Iso.HALF_W, -30), Vector2(0, Iso.HALF_H - 30), Color(Palette.BLACK_MIRROR, 0.8), 3.0)
+		Kind.CONTAINER:
+			_container()
 		Kind.DESK:
 			_prism(36.0, Palette.IRON_DARK.lightened(0.15), Palette.IRON_DARK, Palette.GREY_DEEP, 0.7)
 			# The manual override: welded over at installation.
@@ -78,6 +80,17 @@ func _planter() -> void:
 	for k: int in 14:
 		var p := Vector2(rng.randf_range(-20, 20), rng.randf_range(-58, -30))
 		draw_circle(p, rng.randf_range(2.5, 4.5), look.blossom, true, -1.0, true)
+
+
+## A stack of shipping containers, rust through the paint: the walls of the Tideworks' canyons.
+func _container() -> void:
+	var shades: Array[Color] = [Palette.CONTAINER_TEAL, Palette.CONTAINER_RED, Palette.CONTAINER_GREY, Palette.RUST]
+	var c := shades[absi(hash(cell)) % shades.size()]
+	_prism(58.0, c, c.darkened(0.3), c.lightened(0.1), 0.98)
+	for k: int in 5:
+		var u := (k + 0.5) / 5.0
+		var foot := Vector2(0, Iso.HALF_H * 0.98).lerp(Vector2(Iso.HALF_W * 0.98, 0), u)
+		draw_line(foot, foot + Vector2(0, -58), Color(Palette.NEAR_BLACK, 0.22), 1.5)
 
 
 ## A child's bed, unmade, and the nightlight still on beside it.

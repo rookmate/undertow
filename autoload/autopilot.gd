@@ -5,7 +5,9 @@ extends Node
 ##   --autopilot-scenario=NAME  what to do: "slice" (default: New Game, Kestrel Heights, the Ark, the
 ##                              Loop map), "vellum" (a prepared run straight to the Vellum and its whole
 ##                              route to the Archive), "loop" (a prepared run: the Loop's trains, the
-##                              cab, the Conductor, the Reliquary), "ring_gallery", "options" (the options
+##                              cab, the Conductor, the Reliquary), "tideworks" (a prepared run: the
+##                              depot's drone, the union hall, Salvagers, the Crane), "ring_gallery",
+##                              "options" (the options
 ##                              screen from the title: volume, display, a rebinding, back) or "tour"
 ##                              (straight into --autopilot-level=ID: photographs its start, checkpoints,
 ##                              finds and Reliquary, voice on and muted; for looking at a district)
@@ -56,7 +58,14 @@ const LOOP_ROUTE: Array[String] = [
 	"barriers_opened", "route_completed", "core_choice_shown", "loop_cores_carried", "ark_reached",
 	"signal_room_restored", "signal_room_standing", "override_signed", "steward_answered_the_order",
 ]
-const SCENARIOS: Array[String] = ["slice", "vellum", "loop", "ring_gallery", "options", "tour"]
+## The Tideworks from a prepared run (Kestrel and the Loop done, the baton): always the whole route.
+const TIDEWORKS_ROUTE: Array[String] = [
+	"save_isolated", "title_shown", "title_ring_present", "loadout_shown", "loadout_one_weapon",
+	"level_reached", "player_spawned", "riot_drone_found", "strike_records_found", "enemy_killed",
+	"crane_engaged", "crane_called_a_drop", "crane_rested", "crane_beaten", "barriers_opened",
+	"route_completed", "core_choice_shown", "tideworks_cores_carried", "ark_reached", "workshop_restored",
+]
+const SCENARIOS: Array[String] = ["slice", "vellum", "loop", "tideworks", "ring_gallery", "options", "tour"]
 const TOUR: Array[String] = ["save_isolated", "title_shown", "tour_level_reached", "tour_done"]
 const OPTIONS_TOUR: Array[String] = ["save_isolated", "title_shown", "title_ring_present", "options_opened", "options_volume", "options_rebind", "options_closed"]
 
@@ -194,6 +203,8 @@ func _register_expected() -> void:
 				required.append_array(VELLUM_LONG)
 		"loop":
 			required = LOOP_ROUTE.duplicate()
+		"tideworks":
+			required = TIDEWORKS_ROUTE.duplicate()
 		"ring_gallery":
 			required = RING_GALLERY.duplicate()
 		"options":
@@ -404,12 +415,19 @@ func _drive_title(gen: int) -> void:
 			GameState.new_run()
 			GameState.complete_level("kestrel")
 			GameState.set_location("loadout:loop"))
+	elif scenario == "tideworks":
+		SceneRouter.goto(&"loadout", func() -> void:
+			GameState.new_run()
+			GameState.complete_level("kestrel")
+			GameState.complete_level("loop")
+			GameState.set_location("loadout:tideworks"))
 	elif scenario == "vellum":
 		expect("level_reached")
 		SceneRouter.goto(&"loadout", func() -> void:
 			GameState.new_run()
 			GameState.complete_level("kestrel")
 			GameState.complete_level("loop")
+			GameState.complete_level("tideworks")
 			for id: String in WeaponDefs.PLAYABLE:
 				GameState.give_weapon(id)
 			GameState.set_location("loadout:vellum"))
@@ -547,6 +565,9 @@ func _drive_level(gen: int) -> void:
 	if level.level_id == "loop":
 		_drive_loop(level, gen)
 		return
+	if level.level_id == "tideworks":
+		_drive_tideworks(level, gen)
+		return
 	if level.level_id != "vellum":
 		return
 	pass_check("level_reached")
@@ -617,6 +638,9 @@ func _drive_core_choice(gen: int) -> void:
 	if str(screen.get("level_id")) == "loop":
 		_choose_in_loop(screen, gen)
 		return
+	if str(screen.get("level_id")) == "tideworks":
+		_choose_in_tideworks(screen, gen)
+		return
 	var offered: Array[String] = screen.get("offered")
 	check(offered.size() == 4 and offered.has(ContentIds.CORE_TRUTH_STACKS), "four_cards_with_the_found_core")
 	if not await _wait(1.5, gen):
@@ -651,6 +675,12 @@ func _drive_ark(gen: int) -> void:
 	var player := ark.player
 	if scenario == "slice":
 		_ark_after_kestrel(ark, gen)
+		return
+	if scenario == "tideworks":
+		check(GameState.run.buildings_restored.has("workshop"), "workshop_restored")
+		if not await _wait(1.5, gen):
+			return
+		await snap("ark_after_tideworks")
 		return
 	if scenario == "loop":
 		check(GameState.run.buildings_restored.has("signal_room"), "signal_room_restored")
@@ -970,6 +1000,116 @@ func _fight_conductor(player: Operator, boss: Conductor, gen: int) -> bool:
 	return true
 
 
+# --- The Tideworks ------------------------------------------------------------------------------------
+## The side yard first (the Riot Drone off the depot's rack; muted, the union hall's strike ledger), then
+## the quay's Salvagers, the pier, the last Crane (the Steward's way), and the Reliquary on the pier head.
+func _drive_tideworks(level: Level, gen: int) -> void:
+	pass_check("level_reached")
+	var player := level.player
+	pass_check("player_spawned")
+	Controls.device = Controls.Device.PAD
+	var start_count := level.living_enemies().size()
+	if not await _wait(1.2, gen):
+		return
+	await snap("tideworks_start")
+	for cell: Vector2i in [Vector2i(8, 11), Vector2i(10, 9), Vector2i(10, 7), Vector2i(11, 6), Vector2i(11, 5)]:
+		if not await advance_to(level, player, cell, 25.0, gen):
+			return
+	if not await _use_at(level, player, Vector2i(11, 4), gen):
+		return
+	check(GameState.run.weapons_owned.has(WeaponDefs.RIOT_DRONE) and player.weapons.size() == 2, "riot_drone_found")
+	await snap("tideworks_depot")
+	tap(&"voice_toggle")
+	for cell: Vector2i in [Vector2i(11, 6), Vector2i(9, 7), Vector2i(8, 5), Vector2i(7, 4), Vector2i(5, 4)]:
+		if not await advance_to(level, player, cell, 25.0, gen):
+			return
+	if not await _use_at(level, player, Vector2i(3, 4), gen):
+		return
+	check(GameState.run.found_core_ids.has("tideworks_truth_strike_records"), "strike_records_found")
+	await snap("tideworks_union_hall")
+	tap(&"voice_toggle")
+	for cell: Vector2i in [Vector2i(7, 4), Vector2i(8, 6), Vector2i(10, 8), Vector2i(12, 10), Vector2i(19, 11), Vector2i(26, 11), Vector2i(30, 11), Vector2i(33, 11), Vector2i(36, 11)]:
+		if not await advance_to(level, player, cell, 25.0, gen):
+			return
+	if level.living_enemies().filter(func(e: Enemy) -> bool: return e.is_threat).size() < start_count:
+		pass_check("enemy_killed")
+	var crane := level.boss as Crane
+	if crane == null:
+		return
+	check(await _until(func() -> bool: return crane.is_engaged, 3.0, gen), "crane_engaged")
+	await snap("tideworks_crane")
+	if not await _fight_crane(player, crane, gen):
+		return
+	check(not crane.is_alive(), "crane_beaten")
+	await snap("tideworks_crane_down")
+	check(await _until(func() -> bool: return get_tree().get_nodes_in_group(&"boss_barriers").all(func(n: Node) -> bool: return (n as BossBarrier).open), 2.0, gen), "barriers_opened")
+	for cell: Vector2i in [Vector2i(39, 7), Vector2i(39, 5), Vector2i(40, 3)]:
+		if not await advance_to(level, player, cell, 25.0, gen):
+			return
+	pass_check("route_completed")
+	tap(&"interact")
+
+
+## The Steward's way with the Crane: out from under the drop, in by the tower for the swing, hit it while
+## its cab is down. Gives up after 100 s.
+func _fight_crane(player: Operator, crane: Crane, gen: int) -> bool:
+	var spent := 0.0
+	var frame := 0
+	while crane.is_alive() and spent < 100.0:
+		if gen != _generation or _finished:
+			_release_all()
+			return false
+		frame += 1
+		if Sound.voice_line == "crane_drop":
+			pass_check("crane_called_a_drop")
+		if crane.phase == Crane.Phase.REST:
+			pass_check("crane_rested")
+		var at := player.global_position
+		var to_tower := Iso.ground_dir_between(at, crane.global_position)
+		var d := Iso.ground_distance(at, crane.global_position)
+		if crane.is_vulnerable():
+			_fight(player, crane, frame)
+		elif crane.phase == Crane.Phase.SWING_WARN or crane.phase == Crane.Phase.SWING:
+			_release_attacks()
+			press_move(input_for_ground(to_tower) if d > 1.6 else Vector2.ZERO)
+		elif crane.phase == Crane.Phase.AIM or crane.phase == Crane.Phase.DROP:
+			_release_attacks()
+			var mark: Vector2 = crane.get("_mark")
+			if Iso.ground_distance(at, mark) < Crane.DROP_RADIUS + 0.8:
+				var away := Iso.ground_dir_between(mark, at)
+				press_move(input_for_ground(Vector2(-away.y, away.x) if d > 3.5 else away))
+			else:
+				press_move(Vector2.ZERO)
+		else:
+			_release_attacks()
+			press_move(input_for_ground(to_tower) if d > 3.0 else Vector2.ZERO)
+		await get_tree().physics_frame
+		spent += get_physics_process_delta_time()
+	_release_all()
+	return true
+
+
+## Carry the strike ledger and the Crane core.
+func _choose_in_tideworks(screen: Node, gen: int) -> void:
+	if not await _wait(1.5, gen):
+		return
+	await snap("tideworks_core_choice")
+	screen.call("_toggle", "tideworks_truth_strike_records")
+	screen.call("_toggle", "tideworks_power_cranes")
+	if not await _wait(0.8, gen):
+		return
+	var confirm := screen.get("_confirm") as Button
+	confirm.grab_focus()
+	tap(&"ui_accept")
+	if not await _wait(1.0, gen):
+		return
+	var r := GameState.run
+	check(r.levels_completed.has("tideworks") and r.cores_truth() == 1 and r.cores_power() == 1, "tideworks_cores_carried")
+	expect("ark_reached")
+	confirm.grab_focus()
+	tap(&"ui_accept")
+
+
 ## Carry the procurement order and the Route core.
 func _choose_in_loop(screen: Node, gen: int) -> void:
 	if not await _wait(1.5, gen):
@@ -1134,7 +1274,8 @@ func _nearest_threat(level: Level, player: Operator, reach: float) -> Enemy:
 	var best: Enemy = null
 	var best_d := reach
 	for e: Enemy in level.living_enemies():
-		if not e.is_threat:
+		# Weak points aren't threats; bosses have their own fight (_fight_conductor, _fight_crane).
+		if not e.is_threat or e is Boss:
 			continue
 		var d := Iso.ground_distance(player.global_position, e.global_position)
 		if d <= best_d:

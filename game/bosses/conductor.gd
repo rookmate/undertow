@@ -20,7 +20,6 @@ const STALL_SECONDS := 6.0
 
 var phase: Phase = Phase.IDLE
 var lanes: Array[ShuntLane] = []
-var signal_box: SignalBox
 ## Times stalled through the signal box (the manual solution).
 var stalls: int = 0
 
@@ -41,7 +40,7 @@ func is_vulnerable() -> bool:
 	return phase == Phase.VENT or phase == Phase.STALLED
 
 
-## The points are moving: the window for the signal box.
+## The points are moving: the window for the signal box (its weak point).
 func is_switching() -> bool:
 	return phase == Phase.WARN
 
@@ -107,7 +106,7 @@ func _fight(delta: float) -> void:
 
 
 ## The signal box struck: while switching, the gantry stalls (once a cycle).
-func on_signal_box_hit() -> void:
+func on_weak_point_hit() -> void:
 	if not is_switching() or _stalled_this_cycle or state == State.DEAD:
 		return
 	_stalled_this_cycle = true
@@ -120,8 +119,6 @@ func on_signal_box_hit() -> void:
 func _die() -> void:
 	for l: ShuntLane in lanes:
 		l.warn(-1.0)
-	if signal_box != null:
-		signal_box.retire()
 	super()
 	Narrator.notify(&"boss_down", level.level_id if level != null else "")
 

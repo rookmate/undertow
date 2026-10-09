@@ -31,11 +31,20 @@ const LEVELS: Dictionary[String, Dictionary] = {
 		"restores": "signal_room",
 		"boss": "conductor",
 	},
+	"tideworks": {
+		"name": "The Tideworks",
+		"act": 1,
+		"after": ["loop"],
+		"scene": "res://game/level/tideworks.tscn",
+		"map": "res://data/levels/tideworks.txt",
+		"restores": "workshop",
+		"boss": "crane",
+	},
 	"vellum": {
 		"name": "The Vellum",
 		"act": 2,
-		# Act 2 opens after the Tideworks (design/act-1.md); until the Tideworks exists, after the Loop.
-		"after": ["loop"],
+		# Act 2 opens after the Tideworks (design/act-1.md).
+		"after": ["tideworks"],
 		"scene": "res://game/level/vellum_street.tscn",
 		"map": "res://data/levels/vellum_street.txt",
 		"restores": "archive",

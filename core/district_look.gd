@@ -65,6 +65,20 @@ static func for_district(id: String) -> DistrictLook:
 			look.ambient_on = Palette.AMBIENT_FOG_ON
 			look.ambient_muted = Palette.AMBIENT_FOG_MUTED
 			look.void_fog = Color(Palette.FOG, 0.09)
+		"tideworks":
+			# Rust and black water, sodium-dark steel in the rain; the gilt runs along the gantries.
+			look.ground_a = Palette.DOCK_CONCRETE
+			look.ground_b = Palette.DOCK_CONCRETE_B
+			look.ground_wet = Palette.STEEL_WET.lightened(0.15)
+			look.pavement = Palette.DOCK_CONCRETE_B
+			look.stone = Palette.STEEL_WET
+			look.wall = Palette.RUST
+			look.wall_shade = Palette.RUST_DARK
+			look.wall_top = Palette.STEEL_WET
+			look.sky_top = Palette.SKY_STORM_TOP
+			look.sky_bottom = Palette.SKY_STORM_LOW
+			look.ambient_on = Palette.AMBIENT_STORM_ON
+			look.ambient_muted = Palette.AMBIENT_STORM_MUTED
 		"vellum", "ark":
 			pass
 	return look

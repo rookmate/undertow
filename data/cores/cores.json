@@ -16,6 +16,11 @@
 			"loop_power_routes",
 			"loop_power_holds",
 			"loop_truth_long_night"
+		],
+		"tideworks": [
+			"tideworks_power_cranes",
+			"tideworks_power_manifests",
+			"tideworks_truth_lockout"
 		]
 	},
 	"cores": {
@@ -114,6 +119,38 @@
 			"blurb": "Taped under the welded desk with a procurement order.",
 			"steward": "A spare part. It doesn't do anything.",
 			"log": "log_procurement_no_manual"
+		},
+		"tideworks_power_cranes": {
+			"kind": "power",
+			"name": "Crane Core",
+			"origin": "The Tideworks Reliquary",
+			"blurb": "The port's lifting schedules. The Steward moves what's in your way.",
+			"steward": "With this I can clear a path through anything. Take it.",
+			"log": "log_0412_record_tonnage"
+		},
+		"tideworks_power_manifests": {
+			"kind": "power",
+			"name": "Manifest Core",
+			"origin": "The Tideworks Reliquary",
+			"blurb": "Every container's contents. The Steward knows what's coming before it lands.",
+			"steward": "Nothing will surprise you again. Isn't that what you want?",
+			"log": "log_0909_nothing_lost"
+		},
+		"tideworks_truth_lockout": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "The Tideworks Reliquary, under the floor plate",
+			"blurb": "A dull cracked sphere. Labelled TRANSITION.",
+			"steward": "Old payroll. Long settled.",
+			"log": "log_0001_transition"
+		},
+		"tideworks_truth_strike_records": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "The dockworkers' union hall",
+			"blurb": "In a biscuit tin with the strike ledger, under the lockers.",
+			"steward": "A tin of old papers. Sentimental.",
+			"log": "log_strike_ledger"
 		}
 	}
 }

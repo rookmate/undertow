@@ -7,6 +7,10 @@
     "conductor_left": "Left track.",
     "conductor_middle": "Middle track. Move.",
     "conductor_right": "Right track.",
-    "conductor_vent": "It's venting. Now."
+    "conductor_vent": "It's venting. Now.",
+    "find_riot_drone": "A Warden's drone. I suppose you'd better have it.",
+    "crane_drop": "Drop. Get out from under it.",
+    "crane_swing": "Swing. Get in close to the tower.",
+    "crane_rest": "Its cab's down. Now."
   }
 }

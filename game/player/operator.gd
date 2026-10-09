@@ -88,6 +88,44 @@ func equip(weapon_ids: Array[String], modes: Array[Loadout.Mode]) -> void:
 		weapons.append(w)
 
 
+## What the Operator carries, in slot order, and each one's chosen mode.
+func carried() -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	for w: Weapon in weapons:
+		out.append({"id": w.weapon_id, "mode": w.chosen_mode})
+	return out
+
+
+func _re_equip(items: Array[Dictionary]) -> void:
+	var ids: Array[String] = []
+	var modes: Array[Loadout.Mode] = []
+	for item: Dictionary in items:
+		ids.append(str(item["id"]))
+		modes.append(item["mode"])
+	equip(ids, modes)
+
+
+## Takes the weapon in a slot away (a Salvager's snatch). Returns {id, mode}, or {} if the slot is empty.
+func take_weapon(slot: int) -> Dictionary:
+	var items := carried()
+	if slot < 0 or slot >= items.size():
+		return {}
+	var taken := items[slot]
+	items.remove_at(slot)
+	_re_equip(items)
+	return taken
+
+
+## Puts a weapon in the next free slot (a find, or one taken back). False if both slots are full.
+func add_weapon(weapon_id: String, mode: Loadout.Mode) -> bool:
+	var items := carried()
+	if items.size() >= Loadout.SLOTS or items.any(func(i: Dictionary) -> bool: return i["id"] == weapon_id):
+		return false
+	items.append({"id": weapon_id, "mode": mode})
+	_re_equip(items)
+	return true
+
+
 func _physics_process(delta: float) -> void:
 	dodge.update(delta)
 	_grace = maxf(0.0, _grace - delta)

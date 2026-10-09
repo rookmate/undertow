@@ -299,6 +299,10 @@ def build():
     # Steam out of a vent.
     write("vent_hiss", env(highpass(white(1.2, rng), 3000), 0.04, 0.5), -9)
     # A relay in the signal box snapping over.
+    # A container landing: a huge hollow boom and a ringing steel box.
+    boom = env(lowpass(mix((tone(1.1, lambda t: 70 - 30 * t), 1.0), (brown(1.1, rng), 0.8)), 400), 0.002, 0.3)
+    box = env(mix((tone(1.1, 143), 0.4), (tone(1.1, 229), 0.3), (tone(1.1, 371), 0.2)), 0.002, 0.25)
+    write("container_drop", mix((boom, 1.0), (box, 0.6), (env(highpass(white(0.05, rng), 1800), 0.0005, 0.01), 0.7)), -2)
     write("signal_zap", mix((env(tone(0.18, 1600, "square"), 0.001, 0.04), 0.4), (env(highpass(white(0.05, rng), 3000), 0.0005, 0.01), 0.8)), -8)
 
     # --- Ambience loops (seamless) ---

@@ -334,3 +334,14 @@ Asked of the user on 2026-10-09 and answered the same day.
      when a compile error emptied the list; they were restored from git.)
 107. **Things that never attack aren't threats** (`Enemy.is_threat`; the signal box): the autopilot
      doesn't stop to fight them.
+108. **The Tideworks** is Act 1's third district: a quay between container stacks under crane
+     gantries (the gilt climbs the legs), containers frozen mid-lift overhead, a side yard with the
+     dockworkers' union hall (off the Lattice: the strike ledger) and the Warden depot where the Riot
+     Drone is found (straight into the second hand). Salvagers snatch the second weapon (never the only
+     one: then a few scrap), and drop it when beaten. The Crane at the pier's end: three lifts and drops
+     on your spot (red-orange marker, called by the Steward), a swing round its ring (stay in by the
+     tower), then a rest with its cab down; the hoist brake thrown while it lifts stalls it. It restores
+     the Workshop; the Vellum opens after it.
+109. **Boss weak points share one base** (`WeakPoint`: struck while the boss is switching, it stalls;
+     never a threat, never aimed at by the Steward, retired when the boss falls). The autopilot fights
+     bosses only in their own fight loops.

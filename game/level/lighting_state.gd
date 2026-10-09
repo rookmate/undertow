@@ -45,7 +45,9 @@ func _apply_instantly(on: bool) -> void:
 	for lamp: LampPost in _lamps():
 		lamp.lit = on
 	for b: Node in get_tree().get_nodes_in_group(&"gilt"):
-		(b as BuildingCell).gilt_lit = on
+		# Anything carrying the gilt (buildings, crane legs) lights and dies with the Steward.
+		if "gilt_lit" in b:
+			b.set(&"gilt_lit", on)
 	if level.player != null:
 		level.player.set_carried_light(not on)
 
@@ -58,7 +60,9 @@ func _on_voice_changed(on: bool) -> void:
 	t.tween_property(ambient, "color", level.look.ambient_on if on else level.look.ambient_muted, FADE_SECONDS)
 	t.tween_method(_set_grade, _grade_amount, 0.0 if on else 1.0, FADE_SECONDS)
 	for b: Node in get_tree().get_nodes_in_group(&"gilt"):
-		(b as BuildingCell).gilt_lit = on
+		# Anything carrying the gilt (buildings, crane legs) lights and dies with the Steward.
+		if "gilt_lit" in b:
+			b.set(&"gilt_lit", on)
 	if level.player != null:
 		level.player.set_carried_light(not on)
 	# Lamps nearest the Operator change first; the rest follow down the street.

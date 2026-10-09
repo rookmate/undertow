@@ -21,15 +21,17 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	"B": Floor.TRACK, "1": Floor.TRACK, "2": Floor.TRACK, "3": Floor.TRACK, "Z": Floor.COBBLE, "y": Floor.TRACK,
 	# The Loop
 	"h": Floor.CARRIAGE, "r": Floor.CARRIAGE, "u": Floor.GANTRY, "x": Floor.CAB, "J": Floor.CAB, "*": Floor.PAVEMENT,
+	# The Tideworks
+	"[": Floor.COBBLE, "]": Floor.COBBLE, "^": Floor.COBBLE, "V": Floor.OLD_QUAY, "O": Floor.COBBLE,
 }
 ## Characters whose cell blocks movement.
 ## Lawns (and the hedges, planters and sprinklers on them) are the Steward's gardens: looked at, not
 ## walked on. The smart gate 'Q' is solid only while closed (SmartGate), so it isn't listed.
-const SOLID := " #dmgAlM~=-L|KtoRTvHjFbrJ*"
+const SOLID := " #dmgAlM~=-L|KtoRTvHjFbrJ*[^"
 ## People stand on these cells: walkable floor, but nothing should route through them.
 const OCCUPIED := "WwNY"
 ## Placed things that need a stable id from an '@' line (people, caches, logs).
-const NEEDS_ID := "WwTU"
+const NEEDS_ID := "WwTUV"
 
 var size: Vector2i = Vector2i.ZERO
 ## Stable ids of placed things, from the map's '@ x,y id' lines.
@@ -164,6 +166,9 @@ func content_problems() -> PackedStringArray:
 			"U":
 				if str(ContentDb.memory_log(id).get("kind", "")) != "unindexed":
 					problems.append("the slip at %s holds %s, which isn't an unindexed log" % [c, id])
+			"V":
+				if not WeaponDefs.is_playable(id):
+					problems.append("the find at %s is %s, which isn't a weapon in the game" % [c, id])
 	return problems
 
 

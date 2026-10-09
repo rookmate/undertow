@@ -54,6 +54,7 @@ const CUES: Dictionary[StringName, Dictionary] = {
 	&"carriage_run": {"files": ["carriage_run"], "bus": &"SFX", "db": -3.0, "pitch": 0.05},
 	&"vent_hiss": {"files": ["vent_hiss"], "bus": &"SFX", "db": -6.0, "pitch": 0.05},
 	&"signal_zap": {"files": ["signal_zap"], "bus": &"SFX", "db": -6.0, "pitch": 0.06},
+	&"container_drop": {"files": ["container_drop"], "bus": &"SFX", "db": -2.0, "pitch": 0.06},
 }
 
 ## Looping layers: name -> {file, db at full level}

@@ -42,7 +42,7 @@ func test_the_arena_is_built_from_the_map() -> void:
 	check(conductor != null, "the Conductor stands on its cell")
 	check_eq(conductor.lanes.size(), 3)
 	check_eq(conductor.lanes.map(func(l: ShuntLane) -> String: return l.side), ["left", "middle", "right"])
-	check(conductor.signal_box != null and not conductor.signal_box.steward_aims_at, "the box is there, and the Steward won't aim at it")
+	check(conductor.weak_point is SignalBox and not conductor.weak_point.steward_aims_at, "the signal box is there, and the Steward won't aim at it")
 	check_eq(get_tree().get_nodes_in_group(&"boss_barriers").filter(func(n: Node) -> bool: return level.is_ancestor_of(n)).size(), 2)
 	check_false(conductor.is_engaged, "it waits until you come")
 
@@ -84,16 +84,16 @@ func test_the_signal_box_stalls_it_while_switching() -> void:
 	await _stand(Vector2i(4, 7))
 	await wait_frames(2)
 	check(conductor.is_switching())
-	conductor.signal_box.take_hit(5.0, Vector2(1, 0), 0.0, 0.0)
+	conductor.weak_point.take_hit(5.0, Vector2(1, 0), 0.0, 0.0)
 	check_eq(conductor.phase, Conductor.Phase.STALLED, "it stalls")
 	check(conductor.is_vulnerable(), "and is open for a long moment")
 	check_eq(conductor.stalls, 1)
 	conductor.call(&"_enter_phase", Conductor.Phase.WARN)
-	conductor.signal_box.take_hit(5.0, Vector2(1, 0), 0.0, 0.0)
+	conductor.weak_point.take_hit(5.0, Vector2(1, 0), 0.0, 0.0)
 	check_eq(conductor.stalls, 1, "once a cycle")
 	conductor.call(&"_start_cycle")
 	conductor.call(&"_enter_phase", Conductor.Phase.GAP)
-	conductor.signal_box.take_hit(5.0, Vector2(1, 0), 0.0, 0.0)
+	conductor.weak_point.take_hit(5.0, Vector2(1, 0), 0.0, 0.0)
 	check_eq(conductor.stalls, 1, "and only while the points are moving")
 
 
@@ -101,7 +101,7 @@ func test_tuned_aim_never_picks_the_signal_box() -> void:
 	await _stand(Vector2i(3, 8))
 	level.player.face(Vector2(1, 0))
 	var baton := level.player.weapons[0]
-	check(Iso.ground_distance(level.player.global_position, conductor.signal_box.global_position) < 1.6, "the box is right there")
+	check(Iso.ground_distance(level.player.global_position, conductor.weak_point.global_position) < 1.6, "the box is right there")
 	check_eq(baton.tuned_direction(3.0), level.player.aim_ground(), "the Steward's aim ignores it")
 
 
@@ -117,4 +117,4 @@ func test_taking_it_apart_opens_the_way_and_pays() -> void:
 		if level.is_ancestor_of(n):
 			check((n as BossBarrier).open, "the buffer stops are gone")
 	check_eq(GameState.run.scrap, scrap + conductor.scrap_value, "and it gives up its parts")
-	check_false(level.living_enemies().has(conductor.signal_box), "its signal box is just a cabinet now")
+	check_false(level.living_enemies().has(conductor.weak_point), "its signal box is just a cabinet now")
