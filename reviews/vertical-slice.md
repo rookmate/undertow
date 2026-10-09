@@ -596,3 +596,11 @@ No files were edited. Godot checks were not rerun because they write files; the 
 ## Outcome
 
 Milestone closed after round 4. Round 1: 29 findings (28 fixed, 1 needs hardware). Round 2: 9 findings in the fixes (all fixed) plus one inference (fixed). Round 3: 1 remaining gap (fixed). Round 4: nothing open. Accepted reasons on record: hardware validation (Deck, controllers, Windows/macOS) and the content cache.
+
+### Found after closure
+
+While checking the final recording: `Controls.device` could be assigned directly (the autopilot does,
+to aim with the stick) without announcing the change, so the HUD (which polls) showed pad prompts
+while the control hints (which listen for `device_changed`) still showed keyboard ones. The property's
+setter now announces every change. Covered by `test_hints_follow_the_device_like_the_hud` (fails on
+the old code). Small and local, so it went through the gate rather than another review round.

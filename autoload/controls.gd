@@ -49,7 +49,13 @@ const PROMPTS: Dictionary[StringName, Array] = {
 	&"ui_cancel": ["ESC", "B"],
 }
 
-var device: Device = Device.KEYBOARD_MOUSE
+## The device prompts are shown for. Every change announces itself, however it's made (input, the
+## autopilot, tests), so nothing showing prompts can go stale.
+var device: Device = Device.KEYBOARD_MOUSE:
+	set(value):
+		if value != device:
+			device = value
+			device_changed.emit(device)
 
 
 func _enter_tree() -> void:
@@ -111,9 +117,7 @@ func _input(event: InputEvent) -> void:
 	elif event is InputEventMouseMotion:
 		if (event as InputEventMouseMotion).relative.length() > 2.0:
 			next = Device.KEYBOARD_MOUSE
-	if next != device:
-		device = next
-		device_changed.emit(device)
+	device = next
 	if event is InputEventJoypadButton and event.is_pressed():
 		var jb := event as InputEventJoypadButton
 		var chord := (jb.button_index == JOY_BUTTON_RIGHT_STICK and Input.is_joy_button_pressed(jb.device, JOY_BUTTON_BACK)) \
