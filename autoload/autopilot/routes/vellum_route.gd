@@ -113,8 +113,9 @@ func _toggle_voice_and_check(level: Level, player: Operator, gen: int) -> bool:
 
 
 ## The Steward's voice keeps its own clock, on the real audio path when the run has one (the gate's
-## windowed runs): mid-line, open the pause menu for a second; the recording plays on in real time, and
-## its subtitle with it, never ending before the voice does.
+## windowed runs): mid-line, open the pause menu for a second; the recording plays on, and its subtitle
+## with it, never ending before the voice does. Measured against the run's own unscaled clock: real time
+## live, the movie's time when recording.
 func _voice_keeps_time(level: Level, gen: int) -> bool:
 	var subs := level.hud.subtitles
 	var line := VoiceLines.log_line("log_0522_feed_adjustment")
@@ -123,17 +124,17 @@ func _voice_keeps_time(level: Level, gen: int) -> bool:
 		return false
 	var voice_before := Sound.voice_left()
 	var text_before: float = subs.get("_left")
-	var at := Time.get_ticks_msec()
+	var at := Autopilot.run_seconds()
 	Autopilot.tap(&"pause")
 	if not await Autopilot.wait(1.0, gen):
 		return false
 	var paused := Autopilot.get_tree().paused
-	var real := (Time.get_ticks_msec() - at) / 1000.0
+	var real := Autopilot.run_seconds() - at
 	var voice_ran := voice_before - Sound.voice_left()
 	var text_ran := text_before - float(subs.get("_left"))
 	var covers := float(subs.get("_left")) >= Sound.voice_left() + Subtitles.FADE - 0.05
 	Autopilot.tap(&"pause")
-	print("[autopilot] voice clock: %.2f s real, voice %.2f s, text %.2f s (audible: %s)" % [real, voice_ran, text_ran, Sound.audible])
+	print("[autopilot] voice clock: %.2f s run time, voice %.2f s, text %.2f s (audible: %s)" % [real, voice_ran, text_ran, Sound.audible])
 	check(paused and Sound.voice_line == line and absf(voice_ran - real) < 0.2 and absf(text_ran - real) < 0.2 and covers, "subtitles_keep_the_voice")
 	return await Autopilot.wait(0.5, gen)
 

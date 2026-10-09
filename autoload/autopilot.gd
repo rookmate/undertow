@@ -244,6 +244,12 @@ func finish_now() -> void:
 
 
 # --- Helpers for scenarios and routes --------------------------------------------------------------
+## Seconds since the run started, unscaled: real time in a live run, the movie's own time when recording
+## (Movie Maker renders slower than real time, and the sound is mixed to its frames).
+func run_seconds() -> float:
+	return _elapsed
+
+
 ## True once the scene this coroutine started in has gone (or the run ended): it should stop.
 func stale(gen: int) -> bool:
 	return gen != _generation or _finished
