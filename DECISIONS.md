@@ -169,3 +169,15 @@ brief and the user's answers didn't cover it.
 59. **The game's UI theme is merged into the engine default theme** (`UiTheme.install()`), because
     theme inheritance stops at CanvasLayers and Node2Ds; overlays (pause, Archive, end panel) need it.
 60. **End of the slice:** the dock on the Ark ("THE SKIFF ISN'T READY").
+61. **EndingRules:** Reboot and Unplug always; Rewrite needs Noor and Teo present, a voice ratio in
+    0.35–0.65 inclusive with some time tracked, and 5+ truth cores. Trust and power cores don't
+    matter to the unlock. One level gives at most two truth cores, so the slice alone can't unlock
+    Rewrite (tested); the end-of-slice panel and the debug overlay show the checklist.
+62. **Debug overlay (debug builds only):** every brief variable, assists, logs, loadout, location, the
+    ending checklist; while open, F5/F6 sign or revoke the two example overrides and F7/F8 toggle
+    Noor's and Teo's presence. Back+R3 opens it on a pad.
+63. **Saves happen** at level start, on opening the Reliquary, after the core choice, on reaching the
+    Ark, after each Archive replay, on Save-and-return from the pause menu or the dock, and when the
+    window is closed mid-run.
+64. **Start markers:** 'P' (lit street) on levels, 'p' (bare concrete) on hubs; the Ark has no Lattice
+    cells at all (tested), and the Steward's watch ignores Lattice transitions there.

@@ -246,7 +246,7 @@ func _spawn_player() -> void:
 	player = Operator.new()
 	player.name = "Operator"
 	player.level = self
-	checkpoint_cell = grid.first("P")
+	checkpoint_cell = grid.start_cell()
 	player.position = Iso.cell_center(checkpoint_cell)
 	world.add_child(player)
 	if not is_hub():

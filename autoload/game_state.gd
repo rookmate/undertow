@@ -8,6 +8,12 @@ signal run_replaced
 var run: RunState = RunState.new()
 
 
+## Closing the window mid-run saves first (brief: local saves), wherever the player is.
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST and run.location != "":
+		save()
+
+
 func new_run() -> void:
 	run = RunState.new()
 	run_replaced.emit()

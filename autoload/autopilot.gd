@@ -374,6 +374,15 @@ func _drive_ark(gen: int) -> void:
 		return
 	check(ark.end_panel != null, "end_of_slice_shown")
 	await snap("end_of_slice")
+	var rewrite := EndingRules.evaluate(GameState.run)
+	check(rewrite.reboot and rewrite.unplug and not rewrite.rewrite and rewrite.checklist.size() == 3, "endings_offered_with_rewrite_locked")
+	if not await _wait(1.0, gen):
+		return
+	DebugOverlay.toggle()
+	if not await _wait(0.5, gen):
+		return
+	await snap("debug_overlay_final")
+	DebugOverlay.toggle()
 
 
 ## Off the path: down the stair into the overflow stacks. Nothing there while the Steward listens;

@@ -4,7 +4,7 @@
 ;
 ;   n  concrete          G  concrete with a gold floor light     f  unbuilt plot (foundation)
 ;   A  the Archive (restored)    a  the Archive's door           D  the dock (end of the slice)
-;   N  Noor      Y  Teo      s  where woken survivors stand      P  start (off the skiff)
+;   N  Noor      Y  Teo      s  where woken survivors stand      p  start (off the skiff)
 ;   ~  water
 ~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,7 +25,7 @@
 ~~~~~nnnffnnffnsnn~~~~~~
 ~~~~~~nGnnnnnnsGnn~~~~~~
 ~~~~~~~~GnnnnnG~~nn~~~~~
-~~~~~~~~~~~G~~~~~~nP~~~~
+~~~~~~~~~~~G~~~~~~np~~~~
 ~~~~~~~~~~~~~~~~~~~nn~~~
 ~~~~~~~~~~~~~~~~~~~~Dn~~
 ~~~~~~~~~~~~~~~~~~~~~~~~

@@ -12,8 +12,8 @@ Milestone: **vertical slice** (design brief, "First milestone"). Plan and decisi
 | 5 | Adaptive narration from tagged line pools | done |
 | 6 | Level end with power-vs-truth core choice | done |
 | 7 | Ark hub with the Archive | done |
-| 8 | Tracking finished + debug overlay + save round-trip | next |
-| — | Sol analysis review (reviews/vertical-slice.md), fixes, re-check | |
+| 8 | Tracking finished + debug overlay + save round-trip | done |
+| — | Sol analysis review (reviews/vertical-slice.md), fixes, re-check | next |
 
 ## Done
 
@@ -70,11 +70,16 @@ Steward's present-day comment, Noor's and Teo's reactions with trust changes on 
 Talk to Noor and Teo (their lines follow their trust). The dock ends the slice. Continue resumes on
 the Ark.
 
+**Step 8.** `EndingRules` (Reboot / Unplug always, Rewrite's three conditions) with tests for every
+case and the band edges; the debug overlay finished (every brief variable, assists, the ending
+checklist, F5–F8 debug switches); the end of the slice shows a run summary and the three endings
+(Rewrite in truth cyan with its checklist); saves round-trip identically, every saved location routes
+to a real scene, closing the window saves; the Steam wrapper is a harmless no-op without Steam.
+
 ## Next
 
-Step 8: the debug overlay finished (every tracked variable, the ending checklist with Reboot / Unplug
-/ Rewrite, override signing), `EndingRules` with tests for every case, the run summary at the end of
-the slice, save round-trip and failure paths, the Steam wrapper running without Steam.
+Phase 5: Sol analysis review of the milestone (reviews/vertical-slice.md), fix the findings, re-run
+the gate and Sol again, then commit.
 
 ## How to run
 
@@ -82,6 +87,10 @@ the slice, save round-trip and failure paths, the Steam wrapper running without 
 godot --path .                       # play (title screen)
 godot --path . -- --debug-overlay    # start with the tracked-state overlay open (F3 toggles it)
 ```
+
+Controls: move WASD / left stick · aim mouse / right stick · weapon 1 LMB (or J) / RT · weapon 2 RMB
+(or K) / LT · dodge Space / A · interact E / X · voice V / Y · pause Esc / Start · overlay F3 /
+Back+R3 (debug builds; F5–F8 debug switches while it's open).
 
 ## How to test
 
