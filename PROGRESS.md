@@ -109,8 +109,8 @@ at the end. The user's answers (2026-10-09) are in DECISIONS.md 80–87.
 | 12c | New Game starts in Kestrel Heights with the baton; autopilot routes for Kestrel and the Vellum | done |
 | 13a | Bosses: the framework (armour and openings, HUD bar, voiced callouts, barriers) and the Conductor | done |
 | 13b | The Loop (north arc): stalled trains as bridges, the Waiting in carriages, the driver's cab; the Conductor at the junction; route and tour | done |
-| 14 | The Signal Room and the Overrides screen (mockup 6): six overrides with effects and Steward replies | next |
-| 15 | The Tideworks: cranes and containers, Salvagers, the union hall, finding the Riot Drone, the Crane | |
+| 14 | The Signal Room and the Overrides screen (mockup 6): six overrides with effects and Steward replies | done |
+| 15 | The Tideworks: cranes and containers, Salvagers, the union hall, finding the Riot Drone, the Crane | next |
 | 16 | The Workshop: scrap and weapon upgrades | |
 | — | Sol analysis review (reviews/act-1.md), fixes, re-check | |
 
@@ -138,6 +138,7 @@ Back+R3 (debug builds; F5–F8 debug switches while it's open).
 ```bash
 python3 -I tools/make_audio.py      # sound effects and ambience (needs ffmpeg)
 python3 -I tools/make_voice.py      # voices new or changed Steward lines (needs Piper, below)
+python3 -I tools/make_voice.py --prune   # ...and deletes recordings of lines that no longer exist
 ```
 
 Piper (placeholder text-to-speech) lives outside the repo. On this machine it was set up with:

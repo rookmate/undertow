@@ -155,6 +155,9 @@ func has_override(override_id: String) -> bool:
 
 
 func set_override(override_id: String, signed: bool) -> void:
+	if not Overrides.is_known(override_id):
+		Diagnostics.error("GameState.set_override: no such order %s" % override_id)
+		return
 	if signed == has_override(override_id):
 		return
 	if signed:

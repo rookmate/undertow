@@ -5,7 +5,7 @@ extends Node2D
 ## windows (human warmth), old-city neon, and the Steward's gilt threaded along the balcony ironwork,
 ## which dies when the voice is muted.
 
-enum Facade { PLAIN, DOOR, NEON_MAGENTA, NEON_LIME, ARCHIVE, LAUNDRY }
+enum Facade { PLAIN, DOOR, NEON_MAGENTA, NEON_LIME, ARCHIVE, LAUNDRY, SIGNAL_ROOM }
 
 const STORY := 74.0
 const STORIES := 3
@@ -89,6 +89,12 @@ func _build() -> void:
 		_face(bottom, right, h, true)
 	_base.poly(PackedVector2Array([top + up, right + up, bottom + up, left + up]), look.wall_top)
 	_base.polyline(PackedVector2Array([left + up, top + up, right + up]), Color(Palette.NEAR_BLACK, 0.5), 2.0)
+	if facade == Facade.SIGNAL_ROOM and show_left and show_right:
+		# A signal mast on the roof, its lamps the old cream ones people switched by hand.
+		var foot := up + Vector2(0, -4)
+		_base.line(foot, foot + Vector2(0, -90), Palette.IRON_DARK, 4.0)
+		for k: int in 3:
+			_glow.circle(foot + Vector2(0, -40 - k * 22), 5.0, Palette.HUMAN_CREAM)
 
 
 ## Point on a face: `a`→`b` is the face's bottom edge, u runs along it (0..1), v is height in px.
@@ -109,6 +115,10 @@ func _face(a: Vector2, b: Vector2, h: float, street_side: bool) -> void:
 		var base := story * STORY
 		if story == 0 and facade == Facade.DOOR and street_side:
 			_door(a, b)
+			continue
+		if facade == Facade.SIGNAL_ROOM:
+			# Restored and staffed by people: warm windows, and the signal lamps on its mast (below).
+			_window(a, b, base, true, rng)
 			continue
 		if facade == Facade.ARCHIVE:
 			# Restored and in use: every window warm, a rose of stained glass over the door.

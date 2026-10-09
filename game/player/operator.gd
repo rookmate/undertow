@@ -224,7 +224,11 @@ func take_hit(amount: float, from_position: Vector2) -> bool:
 		return false
 	if _grace > 0.0:
 		return false
-	var applied := integrity.take(amount * Steward.assists().damage_taken_mult)
+	var mult := Steward.assists().damage_taken_mult
+	# "Always protect the survivors first, even over me": near the Waiting it shields them, not you.
+	if GameState.has_override(Overrides.SURVIVORS_FIRST) and level != null and level.waiting_near(global_position, Overrides.SURVIVORS_FIRST_TILES):
+		mult *= Overrides.SURVIVORS_FIRST_DAMAGE
+	var applied := integrity.take(amount * mult)
 	_grace = HURT_GRACE
 	var away := Iso.ground_dir_between(from_position, global_position)
 	if away != Vector2.ZERO:

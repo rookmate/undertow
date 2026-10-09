@@ -29,6 +29,10 @@ var aim_assist: float = BASE_AIM_ASSIST
 var weapons_forced_manual: bool = false
 var damage_taken_mult: float = 1.0
 var narration: bool = true
+## Off because of a signed order (the Signal Room), not because the Steward is absent.
+var path_overridden: bool = false
+var slowmo_overridden: bool = false
+var aim_overridden: bool = false
 
 
 static func compute(voice: bool, cores_power: int, overrides: Array[String], covered: bool = true) -> Assists:
@@ -37,12 +41,15 @@ static func compute(voice: bool, cores_power: int, overrides: Array[String], cov
 	a.voice_on = voice
 	a.steward_present = present
 	a.signal_lost = voice and not covered
-	a.path_visible = present
+	a.path_overridden = present and overrides.has(Overrides.NO_PATH)
+	a.path_visible = present and not a.path_overridden
 	a.map_mode = MapMode.STEWARD if voice else MapMode.HAND_SCAN
 	a.threat_warnings_overridden = present and overrides.has(Overrides.NO_TRAP_WARNINGS)
 	a.threat_warnings = present and not a.threat_warnings_overridden
-	a.dodge_slowmo_seconds = (BASE_SLOWMO_SECONDS + SLOWMO_PER_POWER_CORE * cores_power) if present else 0.0
-	a.aim_assist = minf(MAX_AIM_ASSIST, BASE_AIM_ASSIST + AIM_ASSIST_PER_POWER_CORE * cores_power) if present else 0.0
+	a.slowmo_overridden = present and overrides.has(Overrides.NO_SLOWMO)
+	a.dodge_slowmo_seconds = (BASE_SLOWMO_SECONDS + SLOWMO_PER_POWER_CORE * cores_power) if present and not a.slowmo_overridden else 0.0
+	a.aim_overridden = present and overrides.has(Overrides.LET_ME_AIM)
+	a.aim_assist = minf(MAX_AIM_ASSIST, BASE_AIM_ASSIST + AIM_ASSIST_PER_POWER_CORE * cores_power) if present and not a.aim_overridden else 0.0
 	a.weapons_forced_manual = not present
 	a.damage_taken_mult = CombatMath.damage_taken(1.0, present)
 	a.narration = present

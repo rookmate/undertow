@@ -11,6 +11,7 @@ func _ready() -> void:
 	speed_tiles = 0.0
 	scrap_value = 0
 	steward_aims_at = false
+	is_threat = false
 	radius_tiles = 0.4
 
 

@@ -46,9 +46,10 @@ func _say(event: StringName) -> void:
 
 
 ## The Steward only profiles what it can perceive: voice on, Lattice in reach, and not on the Ark (where
-## rolling around is just walking, not a combat choice).
+## rolling around is just walking, not a combat choice). Under "Stop praising me" it stops learning what
+## you like to hear.
 func _record(event: StringName, weight: float = 1.0) -> void:
-	if Steward.assists().steward_present and not level.is_hub():
+	if Steward.assists().steward_present and not level.is_hub() and not GameState.has_override(Overrides.NO_PRAISE):
 		GameState.record_playstyle(event, weight)
 
 

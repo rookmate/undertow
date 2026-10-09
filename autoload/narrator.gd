@@ -57,7 +57,11 @@ func notify(event: StringName, level: String = "") -> String:
 		return ""
 	if _clock - _last_spoken_at < MIN_GAP and not selector.is_priority(event):
 		return ""
-	var line := selector.pick(event, GameState.run.playstyle_profile.lean(), _rng, level)
+	# "Stop praising me": no flattery, and no drift toward the voice you like to hear.
+	var plain := GameState.has_override(Overrides.NO_PRAISE)
+	if plain and selector.is_praise(event):
+		return ""
+	var line := selector.pick(event, 0.0 if plain else GameState.run.playstyle_profile.lean(), _rng, level, &"neutral" if plain else &"")
 	if line == null:
 		return ""
 	_last_event_at[event] = _clock

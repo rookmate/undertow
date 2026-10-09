@@ -34,7 +34,7 @@ func _process(_delta: float) -> void:
 	var a := Steward.assists()
 	var signature := "%d%d%d%d%d%d%d|%s|%d|%.1f" % [
 		int(Steward.voice_on), int(a.signal_lost), int(advising_only), int(a.path_visible), int(a.threat_warnings),
-		int(a.threat_warnings_overridden), int(a.weapons_forced_manual), Controls.prompt(&"voice_toggle"),
+		int(a.threat_warnings_overridden) + 2 * int(a.path_overridden) + 4 * int(a.slowmo_overridden) + 8 * int(a.aim_overridden), int(a.weapons_forced_manual), Controls.prompt(&"voice_toggle"),
 		-1 if Steward.voice_on else int(Steward.muted_for), a.damage_taken_mult]
 	if signature != _signature:
 		_signature = signature
@@ -68,7 +68,8 @@ func _draw() -> void:
 	var font := UiFonts.mono_medium()
 	for i: int in CHIPS.size():
 		var label := CHIPS[i]
-		if i == 2 and a.threat_warnings_overridden:
+		var by_order: Array[bool] = [a.path_overridden, false, a.threat_warnings_overridden, a.slowmo_overridden, a.aim_overridden, false]
+		if by_order[i]:
 			label += " · OVERRIDE"
 		var w := font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, 14).x + 20.0
 		var r := Rect2(Vector2(x, y), Vector2(w, 26))
