@@ -4,8 +4,10 @@ Reviewer: **sol_analyst** (Sol 6.1, xhigh, read-only) via the "Sol analysis" ski
 `codex exec -s read-only`. Scope: `git diff 911fb9c..499648a` (steps 0–8). Author of the code under
 review: Claude Code (Claude Opus 5.5).
 
-- Round 1: findings below (verbatim), then what was done about each.
-- Round 2: the re-review after the fixes (at the end of this file).
+- Round 1: 29 findings (verbatim), then what was done about each.
+- Round 2: re-review of the round 1 fixes: 9 findings, all fixed.
+- Round 3: confirmation: 1 remaining gap, fixed.
+- Round 4: closure check: resolved, milestone closed (see "Outcome" at the end).
 
 ## Round 1 findings (verbatim from sol_analyst)
 
@@ -573,3 +575,24 @@ The tests meaningfully cover the fixes overall. I found no additional confirmed 
 
 Tests that stand in broken content now read the real content back in `after_each`, so an aborted test
 can't leak patched content into later ones.
+
+## Round 4 (closure check, verbatim from sol_analyst)
+
+Scope: `git diff 1e5b28a..de3ca30`.
+
+The remaining finding is resolved at `de3ca30`. I would close the milestone under the stated acceptance criteria.
+
+Confirmed from code and stored evidence:
+
+- `offer_problem(level_id, offered)` checks catalog membership and the district’s own Reliquary before checking the combined offer. Missing or rejected definitions cannot borrow validity from found cores. `apply()` repeats validation before any progression mutation. [core/core_choice.gd:23](/home/homebox/Documents/rookmate/undertow/core/core_choice.gd:23), [core/core_choice.gd:51](/home/homebox/Documents/rookmate/undertow/core/core_choice.gd:51)
+- The regression test supplies three valid found cores with a missing definition, then an undersized definition. Both applications are refused; assertions cover cores, logs, completion, restoration, retained finds, and refusal to move to the Ark. Rejected definitions already become absent through content validation. [tests/unit/test_core_choice.gd:135](/home/homebox/Documents/rookmate/undertow/tests/unit/test_core_choice.gd:135), [core/content_db.gd:74](/home/homebox/Documents/rookmate/undertow/core/content_db.gd:74)
+- All affected callers use the updated signatures. Stored logs confirm 229 passing tests, 23/23 smoke checks, and 45/45 full-slice checks. I independently scanned all four gate logs and found no error or warning lines. [tests.log:241](/home/homebox/Documents/rookmate/undertow/reports/check/tests.log:241), [smoke.log:38](/home/homebox/Documents/rookmate/undertow/reports/check/smoke.log:38), [full.log:60](/home/homebox/Documents/rookmate/undertow/reports/check/full.log:60)
+
+Review judgment: I found no new bug, crash risk, brief violation, or material maintainability regression in `git diff 1e5b28a..de3ca30`. The shared validation remains the canonical progression check.
+
+Closure follows from this fix and the earlier recorded resolutions. Hardware validation and content caching retain their accepted written reasons; no open high-severity issue was found. [reviews/vertical-slice.md:515](/home/homebox/Documents/rookmate/undertow/reviews/vertical-slice.md:515), [reviews/vertical-slice.md:567](/home/homebox/Documents/rookmate/undertow/reviews/vertical-slice.md:567)
+
+No files were edited. Godot checks were not rerun because they write files; the mutation-test result remains reported evidence.
+## Outcome
+
+Milestone closed after round 4. Round 1: 29 findings (28 fixed, 1 needs hardware). Round 2: 9 findings in the fixes (all fixed) plus one inference (fixed). Round 3: 1 remaining gap (fixed). Round 4: nothing open. Accepted reasons on record: hardware validation (Deck, controllers, Windows/macOS) and the content cache.
