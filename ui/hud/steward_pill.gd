@@ -8,6 +8,8 @@ const CHIPS: Array[String] = ["PATH", "MAP", "THREAT WARNINGS", "DODGE SLOW-MO",
 
 var ring: StewardRing
 var speaking: bool = false
+## What was last drawn; the text and chips redraw only when this changes.
+var _signature: String = ""
 ## On the Ark the Steward may advise and may not act: no assists to show.
 var advising_only: bool = false
 
@@ -25,9 +27,18 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if not Steward.voice_on:
 		ring.state = StewardRing.State.MUTED
+	elif Steward.assists().signal_lost:
+		ring.state = StewardRing.State.GLITCH
 	else:
 		ring.state = StewardRing.State.SPEAKING if speaking else StewardRing.State.IDLE
-	queue_redraw()
+	var a := Steward.assists()
+	var signature := "%d%d%d%d%d%d%d|%s|%d|%.1f" % [
+		int(Steward.voice_on), int(a.signal_lost), int(advising_only), int(a.path_visible), int(a.threat_warnings),
+		int(a.threat_warnings_overridden), int(a.weapons_forced_manual), Controls.prompt(&"voice_toggle"),
+		-1 if Steward.voice_on else int(Steward.muted_for), a.damage_taken_mult]
+	if signature != _signature:
+		_signature = signature
+		queue_redraw()
 
 
 func _draw() -> void:
@@ -35,6 +46,9 @@ func _draw() -> void:
 	var a := Steward.assists()
 	var title := ("STEWARD · ADVISING ONLY" if advising_only else "STEWARD · LISTENING") if on else "STEWARD · MUTED"
 	var title_col := Palette.STEWARD_GOLD if on else Palette.GREY_COLD
+	if a.signal_lost:
+		title = "STEWARD · NO SIGNAL"
+		title_col = Palette.GREY_COLD
 	var heading := UiFonts.heading()
 	draw_string(heading, Vector2(76, 30), title, HORIZONTAL_ALIGNMENT_LEFT, -1, 28, title_col)
 	var title_w := heading.get_string_size(title, HORIZONTAL_ALIGNMENT_LEFT, -1, 28).x

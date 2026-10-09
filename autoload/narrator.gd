@@ -25,6 +25,8 @@ func _ready() -> void:
 	for e: String in selector.errors:
 		push_error("Narrator: %s" % e)
 	_rng.randomize()
+	# Cooldowns, recent lines and tone counts belong to one run.
+	GameState.run_replaced.connect(reset_session)
 
 
 func _process(delta: float) -> void:
@@ -45,8 +47,9 @@ func reset_session() -> void:
 		tone_counts[t] = 0
 
 
-## Something happened that the Steward might comment on. Returns the line spoken, or "".
-func notify(event: StringName) -> String:
+## Something happened that the Steward might comment on, in district `level` ("" anywhere). Returns the
+## line spoken, or "".
+func notify(event: StringName, level: String = "") -> String:
 	if not Steward.assists().narration:
 		return ""
 	var since_event := _clock - float(_last_event_at.get(event, -INF))
@@ -54,7 +57,7 @@ func notify(event: StringName) -> String:
 		return ""
 	if _clock - _last_spoken_at < MIN_GAP and not selector.is_priority(event):
 		return ""
-	var line := selector.pick(event, GameState.run.playstyle_profile.lean(), _rng)
+	var line := selector.pick(event, GameState.run.playstyle_profile.lean(), _rng, level)
 	if line == null:
 		return ""
 	_last_event_at[event] = _clock

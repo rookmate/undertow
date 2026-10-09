@@ -37,6 +37,9 @@ var input_enabled: bool = true
 var _body: OperatorBody
 var _carried_light: PointLight2D
 var _downed: bool = false
+## Knockback velocity, decaying; moved through physics with everything else so it can't push the
+## Operator into a wall.
+var _knock: Vector2 = Vector2.ZERO
 var _grace: float = 0.0
 
 
@@ -106,6 +109,8 @@ func _physics_process(delta: float) -> void:
 		velocity = Iso.ground_velocity(ground, WALK_TILES_PER_SECOND)
 		if ground.length_squared() > 0.01 and not _attacking():
 			facing_ground = ground.normalized()
+	velocity += _knock
+	_knock = _knock.move_toward(Vector2.ZERO, 1500.0 * delta)
 	move_and_slide()
 	_body.update_pose(facing_ground, velocity, dodge, delta)
 
@@ -165,7 +170,7 @@ func aim_ground() -> Vector2:
 		if stick.length() > 0.3:
 			aim = Iso.input_to_ground(stick).normalized()
 	else:
-		var to_mouse := Iso.ground_dir_between(global_position, get_global_mouse_position())
+		var to_mouse := cursor_aim(global_position, get_global_mouse_position())
 		if to_mouse != Vector2.ZERO:
 			aim = to_mouse
 	var strength := Steward.assists().aim_assist
@@ -177,6 +182,13 @@ func aim_ground() -> Vector2:
 	return aim
 
 
+## The cursor points at things where they are drawn: bodies and shots at chest height, not at their
+## feet. So the cursor's ground point is that much lower on screen, and aim runs from the Operator's
+## feet to it, parallel to where pellets actually fly.
+static func cursor_aim(origin: Vector2, cursor: Vector2) -> Vector2:
+	return Iso.ground_dir_between(origin, cursor + Vector2(0, Projectile.CHEST_HEIGHT))
+
+
 ## An enemy hit. Returns true if it landed. Ignored mid-roll (an evasion) and for a moment after a hit.
 func take_hit(amount: float, from_position: Vector2) -> bool:
 	if _downed:
@@ -186,11 +198,11 @@ func take_hit(amount: float, from_position: Vector2) -> bool:
 		return false
 	if _grace > 0.0:
 		return false
-	var applied := integrity.take(CombatMath.damage_taken(amount, Steward.voice_on))
+	var applied := integrity.take(amount * Steward.assists().damage_taken_mult)
 	_grace = HURT_GRACE
 	var away := Iso.ground_dir_between(from_position, global_position)
 	if away != Vector2.ZERO:
-		position += Iso.ground_velocity(away, 0.25)
+		_knock = Iso.ground_velocity(away, 3.0)
 	_body.flash()
 	hurt.emit(applied)
 	if integrity.is_depleted():

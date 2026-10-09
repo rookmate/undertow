@@ -104,3 +104,26 @@ func test_leaving_the_lattice_is_noticed() -> void:
 	await wait_frames(3)
 	check(GameState.run.playstyle_profile.risk > 0.0, "stepping off the path reads as risk")
 	check(Narrator.last_line_id.begins_with("OFFPATH"), "and the Steward says so (%s)" % Narrator.last_line_id)
+
+
+func test_a_new_run_starts_with_fresh_narration() -> void:
+	await _start_run()
+	Narrator.notify(&"kill")
+	check(Narrator.tone_counts.values().reduce(func(a: int, b: int) -> int: return a + b, 0) > 0)
+	GameState.new_run()
+	check_eq(Narrator.tone_counts.values().reduce(func(a: int, b: int) -> int: return a + b, 0), 0, "counts reset")
+	check(Narrator.selector.recent.is_empty(), "recent lines forgotten")
+	check(Narrator.notify(&"kill") != "", "and nothing from the last run's cooldowns blocks it")
+
+
+func test_the_muted_loadout_has_no_steward_line() -> void:
+	Steward.set_voice(false)
+	var screen := (load("res://ui/loadout/loadout.tscn") as PackedScene).instantiate() as Control
+	add_child(screen)
+	await wait_frames(2)
+	var steward_line := false
+	for n: Node in screen.find_children("*", "Label", true, false):
+		steward_line = steward_line or (n as Label).text == screen.get("STEWARD_LINE")
+	check_false(steward_line, "muted, the Steward says nothing on the loadout")
+	screen.queue_free()
+	Steward.set_voice(true)

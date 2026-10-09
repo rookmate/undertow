@@ -42,14 +42,16 @@ func _on_voice(on: bool) -> void:
 		_left = 0.0
 		text = ""
 		speaking_changed.emit(false)
+		queue_redraw()
 
 
 func _process(delta: float) -> void:
+	# Nothing to fade while nothing is shown; the line that ends still gets one last (empty) redraw.
 	if _left > 0.0:
 		_left -= delta
 		if _left <= 0.0:
 			speaking_changed.emit(false)
-	queue_redraw()
+		queue_redraw()
 
 
 func _draw() -> void:

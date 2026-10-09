@@ -7,12 +7,44 @@ extends Node
 ## Each scene script registers the checks it expects; at the end the autopilot prints
 ## "AUTOPILOT PASS" and exits 0 only if every expected check passed.
 
+## Everything a scenario must achieve, registered up front so a run that stops early can't pass.
+const SLICE_SHORT: Array[String] = [
+	"save_isolated", "title_shown", "title_ring_present", "loadout_shown", "loadout_applied",
+	"level_reached", "player_spawned", "walls_block", "path_three_tiles_ahead", "voice_muted_by_key",
+	"muted_lamps_dark", "muted_hand_lamp_on", "muted_cold_grade", "muted_path_and_map",
+	"muted_assists_off", "voice_restored_lamps", "voice_restored", "narration_heard",
+	"dodge_performed", "enemy_killed",
+]
+## Runs of LONG_RUN_SECONDS or more play the whole slice to the dock.
+const SLICE_LONG: Array[String] = [
+	"threat_warning_shown", "slowmo_on_dodge", "stacks_reached", "stacks_hidden_while_listening",
+	"steward_blind_in_stacks", "found_unindexed_log", "found_truth_core", "woke_survivor_in_stacks",
+	"woke_survivor_in_doorway", "route_completed", "arrived_by_reliquary", "playstyle_profiled",
+	"core_choice_shown", "four_cards_with_the_found_core", "cores_carried",
+	"level_completed_archive_restored", "saved_after_choice", "ark_reached",
+	"archive_restored_on_the_ark", "noor_and_teo_present", "survivors_on_the_ark", "archive_replayed",
+	"trust_changed", "end_of_slice_shown", "endings_offered_with_rewrite_locked",
+]
+const RING_GALLERY: Array[String] = ["save_isolated", "title_shown", "title_ring_present", "ring_gallery_shown"]
+const LONG_RUN_SECONDS := 55.0
+const AUTOPILOT_SAVES := "user://autopilot"
+
 var active: bool = false
 var seconds: float = 30.0
 var scenario: String = "slice"
 var shots_dir: String = ""
 
 var _elapsed: float = 0.0
+## Real frame times (ms) while a district is on screen, for the performance report.
+var _frame_ms: PackedFloat32Array = []
+## Where those frames went (ms): the game's own main-thread work (physics, scripts, _draw callbacks),
+## submitting the frame to the renderer, and the GPU.
+var _logic_ms: PackedFloat32Array = []
+var _submit_ms: PackedFloat32Array = []
+var _gpu_ms: PackedFloat32Array = []
+var _tick_start_us: int = 0
+var _pre_draw_us: int = 0
+var _last_frame_us: int = 0
 var _checks: Dictionary[String, bool] = {}
 var _generation: int = 0
 var _finished: bool = false
@@ -35,18 +67,71 @@ func _ready() -> void:
 		DirAccess.make_dir_recursive_absolute(shots_dir)
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	print("[autopilot] scenario=%s seconds=%.0f" % [scenario, seconds])
+	# Never touch the player's save: every automated run gets its own, emptied before it starts.
+	SaveService.use_directory(AUTOPILOT_SAVES.path_join(scenario))
+	SaveService.delete_save()
+	_register_expected()
+	check(SaveService.store.dir_path != SaveService.DEFAULT_DIR and not SaveService.has_save(), "save_isolated")
 	SceneRouter.scene_changed.connect(_on_scene_changed)
 	_on_scene_changed.call_deferred(SceneRouter.current_key)
+	RenderingServer.viewport_set_measure_render_time(get_viewport().get_viewport_rid(), true)
+	get_tree().physics_frame.connect(_on_tick_start)
+	get_tree().process_frame.connect(_on_tick_start)
+	RenderingServer.frame_pre_draw.connect(_on_pre_draw)
+	RenderingServer.frame_post_draw.connect(_on_post_draw)
 
 
 func _process(delta: float) -> void:
 	# Process delta is scaled by time_scale; undo that so slow-motion doesn't stretch the run.
 	_elapsed += delta / maxf(Engine.time_scale, 0.01)
+	var now := Time.get_ticks_usec()
+	if SceneRouter.current_key == SceneRouter.LEVEL_KEY and _last_frame_us > 0 and not SceneRouter.is_busy():
+		_frame_ms.append((now - _last_frame_us) / 1000.0)
+	_last_frame_us = now
 	if _elapsed >= seconds and not _finished:
 		_finish()
 
 
+func _measuring() -> bool:
+	return SceneRouter.current_key == SceneRouter.LEVEL_KEY and not SceneRouter.is_busy() and not _finished
+
+
+## The first physics or process tick after a frame was drawn starts the next frame's game work.
+func _on_tick_start() -> void:
+	if _tick_start_us == 0:
+		_tick_start_us = Time.get_ticks_usec()
+
+
+func _on_pre_draw() -> void:
+	_pre_draw_us = Time.get_ticks_usec()
+	if _tick_start_us > 0 and _measuring():
+		_logic_ms.append((_pre_draw_us - _tick_start_us) / 1000.0)
+
+
+func _on_post_draw() -> void:
+	if _pre_draw_us > 0 and _measuring():
+		_submit_ms.append((Time.get_ticks_usec() - _pre_draw_us) / 1000.0)
+		_gpu_ms.append(RenderingServer.viewport_get_measured_render_time_gpu(get_viewport().get_viewport_rid()))
+	_tick_start_us = 0
+
+
 # --- Checks -------------------------------------------------------------------------------------
+func _register_expected() -> void:
+	var required: Array[String] = []
+	match scenario:
+		"slice":
+			required = SLICE_SHORT.duplicate()
+			if seconds >= LONG_RUN_SECONDS:
+				required.append_array(SLICE_LONG)
+		"ring_gallery":
+			required = RING_GALLERY.duplicate()
+		_:
+			push_error("Autopilot: unknown scenario '%s'" % scenario)
+			required = ["known_scenario"]
+	for c: String in required:
+		expect(c)
+
+
 func expect(check_id: String) -> void:
 	if not _checks.has(check_id):
 		_checks[check_id] = false
@@ -65,6 +150,7 @@ func check(condition: bool, check_id: String) -> void:
 
 func _finish() -> void:
 	_finished = true
+	_report_performance()
 	var failed: PackedStringArray = []
 	for c: String in _checks:
 		if not _checks[c]:
@@ -75,6 +161,33 @@ func _finish() -> void:
 	else:
 		print("AUTOPILOT FAIL: ", ", ".join(failed))
 		get_tree().quit(1)
+
+
+## Frame times in the district: average and the slowest 1%, at whatever resolution and frame cap the
+## run used. Evidence only; the target (60 fps at 1080p on Steam Deck) needs the Deck itself.
+func _report_performance() -> void:
+	if _frame_ms.size() < 30:
+		return
+	var sorted := _frame_ms.duplicate()
+	sorted.sort()
+	var total := 0.0
+	for ms: float in sorted:
+		total += ms
+	var avg := total / sorted.size()
+	var worst := sorted[int(sorted.size() * 0.99)]
+	print("[perf] %d frames in the district at %s: avg %.2f ms (%.0f fps), 1%% low %.2f ms (%.0f fps)" % [
+		sorted.size(), get_viewport().get_visible_rect().size, avg, 1000.0 / avg, worst, 1000.0 / worst])
+	print("[perf] median / 1%% worst: game logic %.2f / %.2f ms, frame submit %.2f / %.2f ms, GPU %.2f / %.2f ms" % [
+		_pct(_logic_ms, 0.5), _pct(_logic_ms, 0.99), _pct(_submit_ms, 0.5), _pct(_submit_ms, 0.99),
+		_pct(_gpu_ms, 0.5), _pct(_gpu_ms, 0.99)])
+
+
+static func _pct(values: PackedFloat32Array, at: float) -> float:
+	if values.is_empty():
+		return 0.0
+	var sorted := values.duplicate()
+	sorted.sort()
+	return sorted[mini(int(sorted.size() * at), sorted.size() - 1)]
 
 
 # --- Helpers for scene scripts --------------------------------------------------------------------
@@ -109,6 +222,8 @@ func snap(shot_name: String) -> void:
 	if get_viewport().use_hdr_2d:
 		img = Screenshot.linear_to_srgb(img, 1600)
 	img.save_png(shots_dir.path_join(shot_name + ".png"))
+	# Converting and saving takes far longer than a frame; keep that out of the performance report.
+	_last_frame_us = 0
 
 
 # --- Movement helpers -------------------------------------------------------------------------------
@@ -175,7 +290,7 @@ func _on_scene_changed(key: StringName) -> void:
 			_drive_ring_gallery(gen)
 		&"loadout":
 			_drive_loadout(gen)
-		&"level_vellum":
+		SceneRouter.LEVEL_KEY:
 			_drive_level(gen)
 		&"core_choice":
 			_drive_core_choice(gen)
@@ -227,10 +342,10 @@ func _drive_loadout(gen: int) -> void:
 
 
 func _drive_level(gen: int) -> void:
-	pass_check("level_reached")
 	var level := get_tree().current_scene as Level
-	if level == null or level.player == null:
+	if level == null or level.player == null or level.level_id != LevelCatalog.FIRST_LEVEL:
 		return
+	pass_check("level_reached")
 	var player := level.player
 	pass_check("player_spawned")
 	var ids: Array[String] = []
@@ -257,7 +372,7 @@ func _drive_level(gen: int) -> void:
 	if not await _toggle_voice_and_check(level, player, gen):
 		return
 	var route: Array[Vector2i] = [Vector2i(12, 37), Vector2i(13, 33), Vector2i(14, 30), Vector2i(13, 26), Vector2i(12, 21), Vector2i(11, 15), Vector2i(9, 10), Vector2i(5, 9)]
-	var long_run := seconds >= 55.0
+	var long_run := seconds >= LONG_RUN_SECONDS
 	if long_run:
 		expect("route_completed")
 		expect("threat_warning_shown")
@@ -399,6 +514,8 @@ func _visit_stacks(level: Level, player: Operator, gen: int) -> bool:
 		if n is TruthCache:
 			cache = n
 	check(level.predicted_path.shown.is_empty() and cache != null and not cache.is_present(), "stacks_hidden_while_listening")
+	# Off the Lattice the voice is still on, but the Steward can't see the Operator.
+	check(await _until(func() -> bool: return Steward.voice_on and Steward.assists().signal_lost and level.hud.minimap.charted_label().ends_with("SIGNAL LOST"), 2.0, gen), "steward_blind_in_stacks")
 	await snap("stacks_listening")
 	tap(&"voice_toggle")
 	if not await _wait(1.2, gen):

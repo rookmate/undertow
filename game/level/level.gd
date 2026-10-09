@@ -31,10 +31,21 @@ var hud: Hud
 
 var _ambient: CanvasModulate
 var _enemies: Array[Enemy] = []
+var _off_lattice_for: float = 0.0
+
+## Seconds off the Lattice before the Steward loses the Operator (time for "there's nothing down there").
+const COVERAGE_GRACE := 0.6
 
 
 func _ready() -> void:
 	grid = LevelGrid.load_file(map_path)
+	var problems := grid.validate(is_hub())
+	if not problems.is_empty():
+		# A broken map never becomes a saved location: report it and go back to the title.
+		for p: String in problems:
+			push_error("Level %s: %s" % [map_path, p])
+		SceneRouter.goto(&"title")
+		return
 	_add_backdrop()
 	var floor_layer := FloorLayer.new()
 	floor_layer.name = "Floor"
@@ -73,10 +84,11 @@ func _ready() -> void:
 	hud = Hud.new()
 	add_child(hud)
 	Steward.voice_changed.connect(_on_voice_changed)
+	_apply_perf_flags.call_deferred()
 	add_child(PauseMenu.new())
 	add_child(LevelHints.new())
 	GameState.set_location(location_key())
-	GameState.save()
+	SaveFlow.checkpoint(get_tree())
 	_on_ready_extra()
 
 
@@ -89,7 +101,16 @@ func _process(delta: float) -> void:
 	if not is_hub():
 		GameState.add_voice_time(real_delta, Steward.voice_on)
 	exploration.observe(player.cell())
+	_update_coverage(real_delta)
 	_update_checkpoint()
+
+
+## The Lattice reaches the Operator on indexed cells. The Ark is the charter's exception: the Steward may
+## advise there (it can talk) though it may not act.
+func _update_coverage(delta: float) -> void:
+	var on_lattice := is_hub() or grid.is_indexed(player.cell())
+	_off_lattice_for = 0.0 if on_lattice else _off_lattice_for + delta
+	Steward.set_coverage(_off_lattice_for < COVERAGE_GRACE)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -107,6 +128,7 @@ func _exit_tree() -> void:
 	if Steward.voice_changed.is_connected(_on_voice_changed):
 		Steward.voice_changed.disconnect(_on_voice_changed)
 	Engine.time_scale = 1.0
+	Steward.set_coverage(true)
 
 
 # --- Hooks (the Ark overrides these) --------------------------------------------------------------
@@ -123,6 +145,11 @@ func location_key() -> String:
 func _populate() -> void:
 	_spawn_enemies()
 	_spawn_people_and_finds()
+
+
+## Whether a building cell's building exists yet (the Ark builds from progression).
+func _building_standing(_ch: String) -> bool:
+	return true
 
 
 func _on_ready_extra() -> void:
@@ -158,6 +185,11 @@ func _build_cells() -> void:
 	for cell: Vector2i in grid.all_cells():
 		var ch := grid.char_at(cell)
 		if grid.is_building(cell):
+			if not _building_standing(ch):
+				var plot := UnbuiltPlot.new()
+				plot.setup(cell)
+				world.add_child(plot)
+				continue
 			var b := BuildingCell.new()
 			var facade := BuildingCell.Facade.PLAIN
 			match ch:
@@ -274,21 +306,22 @@ func _spawn_people_and_finds() -> void:
 	fog.name = "Marrow"
 	add_child(fog)
 	fog.setup(grid)
+	# Every placed thing takes its stable id from the map's '@' lines.
 	for c: Vector2i in grid.cells_with("W"):
 		var w := TheWaiting.new()
-		w.setup(self, c, ContentIds.SURVIVOR_DOORWAY, false)
+		w.setup(self, c, grid.entity_id(c), false)
 		world.add_child(w)
 	for c: Vector2i in grid.cells_with("w"):
 		var w := TheWaiting.new()
-		w.setup(self, c, ContentIds.SURVIVOR_STACKS, true)
+		w.setup(self, c, grid.entity_id(c), true)
 		world.add_child(w)
 	for c: Vector2i in grid.cells_with("T"):
 		var cache := TruthCache.new()
-		cache.setup(self, c, ContentIds.CORE_TRUTH_STACKS)
+		cache.setup(self, c, grid.entity_id(c))
 		world.add_child(cache)
 	for c: Vector2i in grid.cells_with("U"):
 		var slip := UnindexedLog.new()
-		slip.setup(self, c, ContentIds.LOG_UNINDEXED_SLIP)
+		slip.setup(self, c, grid.entity_id(c))
 		world.add_child(slip)
 
 
@@ -300,6 +333,16 @@ func _add_steward_path() -> void:
 	predicted_path.predictor = predictor
 	predicted_path.player = player
 	add_child(predicted_path)
+
+
+## Cells of truth caches whose core has been taken (the hand-scan map marks them).
+func found_cache_cells() -> Array[Vector2i]:
+	var out: Array[Vector2i] = []
+	for n: Node in world.get_children():
+		var cache := n as TruthCache
+		if cache != null and cache.taken:
+			out.append(cache.cell)
+	return out
 
 
 ## The closest thing within reach the Operator could use (or is told not to), or null.
@@ -382,6 +425,43 @@ func _add_atmosphere() -> void:
 	var we := WorldEnvironment.new()
 	we.environment = env
 	add_child(we)
+
+
+## Developer profiling: `-- --perf-disable=lights,glow,grade,rain,reflections,fog,buildings,hdr,minimap,hud`
+## rendering features off so their cost can be measured with the autopilot's [perf] report.
+func _apply_perf_flags() -> void:
+	var off := PackedStringArray()
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--perf-disable="):
+			off = arg.get_slice("=", 1).split(",")
+	if off.is_empty():
+		return
+	print("[perf] disabled: ", ", ".join(off))
+	for n: Node in find_children("*", "", true, false):
+		if off.has("lights") and n is PointLight2D:
+			(n as PointLight2D).visible = false
+		if off.has("glow") and n is WorldEnvironment:
+			(n as WorldEnvironment).environment.glow_enabled = false
+		if off.has("grade") and n is CanvasLayer and n.name == "MuteGrade":
+			(n as CanvasLayer).visible = false
+		if off.has("rain") and n is Rain:
+			(n as Rain).emitting = false
+			(n as Rain).visible = false
+		if off.has("reflections") and n is WetReflections:
+			(n as WetReflections).visible = false
+		if off.has("fog") and n is OffPathFog:
+			(n as OffPathFog).visible = false
+		if off.has("buildings") and n is BuildingCell:
+			(n as BuildingCell).visible = false
+		if off.has("minimap") and n is Minimap:
+			(n as Minimap).visible = false
+			(n as Minimap).set_process(false)
+		if off.has("hud") and n is Hud:
+			(n as Hud).visible = false
+			for c: Node in n.get_children():
+				c.set_process(false)
+	if off.has("hdr"):
+		get_viewport().use_hdr_2d = false
 
 
 ## Current camera centre in world space (for the parallax backdrop).

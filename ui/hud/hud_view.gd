@@ -11,6 +11,9 @@ var level: Level
 
 var _hurt_flash: float = 0.0
 var _shown_integrity: float = 1.0
+## What was last drawn. The HUD redraws when this changes, or every frame while something on it is
+## pinned to the world (it has to follow the camera).
+var _signature: String = ""
 ## Threat callouts: enemy -> seconds left. Keys can be freed at any time (enemies die), so they are
 ## held as Variants and checked before use.
 var _threats: Dictionary = {}
@@ -53,7 +56,31 @@ func _process(delta: float) -> void:
 			_threats[key] = left
 	if level != null and level.player != null:
 		_shown_integrity = move_toward(_shown_integrity, level.player.integrity.ratio(), delta * 0.8)
-	queue_redraw()
+	var signature := _state_signature()
+	if signature != _signature or _world_anchored():
+		_signature = signature
+		queue_redraw()
+
+
+func _state_signature() -> String:
+	if level == null or level.player == null:
+		return ""
+	var p := level.player
+	var parts := PackedStringArray([str(roundi(p.integrity.value)), "%.3f" % _shown_integrity, "%.2f" % _hurt_flash])
+	for w: Weapon in p.weapons:
+		parts.append("%s%d%s%.2f" % [Controls.prompt(w.action()), int(w.is_tuned()), w.status(), snappedf(w.readiness(), 0.02)])
+	return "|".join(parts)
+
+
+func _world_anchored() -> bool:
+	if level == null or level.player == null:
+		return false
+	if not _threats.is_empty() or level.player.interact_target() != null:
+		return true
+	for n: Node in get_tree().get_nodes_in_group(&"interactables"):
+		if n.has_method(&"spoken_line") and str(n.call(&"spoken_line")) != "" and level.is_ancestor_of(n):
+			return true
+	return false
 
 
 func _draw() -> void:

@@ -1,7 +1,9 @@
 class_name Assists
 extends RefCounted
 ## What the Steward does for you right now (brief: the voice table). One pure function of the voice
-## switch, the power cores carried (stronger assistance) and the overrides signed.
+## switch, whether its hardware reaches you (world bible: "the Steward's light reaches exactly as far as
+## its hardware does"; off the Lattice it can't see you, so the voice being on buys you nothing), the
+## power cores carried (stronger assistance) and the overrides signed.
 
 enum MapMode { STEWARD, HAND_SCAN }
 
@@ -13,6 +15,10 @@ const SLOWMO_PER_POWER_CORE := 0.08
 const SLOWMO_TIME_SCALE := 0.35
 
 var voice_on: bool = true
+## The voice is on and the Lattice reaches the Operator: the Steward can actually help.
+var steward_present: bool = true
+## The voice is on but the Operator is off the Lattice: it is talking to no one.
+var signal_lost: bool = false
 var path_visible: bool = true
 var map_mode: MapMode = MapMode.STEWARD
 var threat_warnings: bool = true
@@ -25,16 +31,19 @@ var damage_taken_mult: float = 1.0
 var narration: bool = true
 
 
-static func compute(voice: bool, cores_power: int, overrides: Array[String]) -> Assists:
+static func compute(voice: bool, cores_power: int, overrides: Array[String], covered: bool = true) -> Assists:
 	var a := Assists.new()
+	var present := voice and covered
 	a.voice_on = voice
-	a.path_visible = voice
+	a.steward_present = present
+	a.signal_lost = voice and not covered
+	a.path_visible = present
 	a.map_mode = MapMode.STEWARD if voice else MapMode.HAND_SCAN
-	a.threat_warnings_overridden = voice and overrides.has(Overrides.NO_TRAP_WARNINGS)
-	a.threat_warnings = voice and not a.threat_warnings_overridden
-	a.dodge_slowmo_seconds = (BASE_SLOWMO_SECONDS + SLOWMO_PER_POWER_CORE * cores_power) if voice else 0.0
-	a.aim_assist = minf(MAX_AIM_ASSIST, BASE_AIM_ASSIST + AIM_ASSIST_PER_POWER_CORE * cores_power) if voice else 0.0
-	a.weapons_forced_manual = not voice
-	a.damage_taken_mult = CombatMath.damage_taken(1.0, voice)
-	a.narration = voice
+	a.threat_warnings_overridden = present and overrides.has(Overrides.NO_TRAP_WARNINGS)
+	a.threat_warnings = present and not a.threat_warnings_overridden
+	a.dodge_slowmo_seconds = (BASE_SLOWMO_SECONDS + SLOWMO_PER_POWER_CORE * cores_power) if present else 0.0
+	a.aim_assist = minf(MAX_AIM_ASSIST, BASE_AIM_ASSIST + AIM_ASSIST_PER_POWER_CORE * cores_power) if present else 0.0
+	a.weapons_forced_manual = not present
+	a.damage_taken_mult = CombatMath.damage_taken(1.0, present)
+	a.narration = present
 	return a

@@ -5,15 +5,17 @@ extends Interactable
 
 var core_id: String = ""
 var taken: bool = false
+var cell: Vector2i
 var _blink: float = 0.0
 var _glow: PointLight2D
 
 
-func setup(owner_level: Level, cell: Vector2i, id: String) -> void:
+func setup(owner_level: Level, at: Vector2i, id: String) -> void:
 	level = owner_level
 	core_id = id
 	off_path = true
-	position = Iso.cell_center(cell)
+	cell = at
+	position = Iso.cell_center(at)
 	taken = GameState.run.found_core_ids.has(id) or GameState.run.truth_core_ids.has(id)
 	_glow = PointLight2D.new()
 	_glow.texture = LightTextures.radial()

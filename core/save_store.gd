@@ -36,23 +36,52 @@ func has_save() -> bool:
 	return FileAccess.file_exists(path()) or FileAccess.file_exists(backup_path())
 
 
+## Writes the run. The new save only replaces the old one after it has been written, flushed and read
+## back intact, so a full disk or a short write can never cost the player their last good save. The
+## previous save becomes the backup only if it is itself readable; a corrupt main file is never rotated
+## over a good backup.
 func save(run: RunState) -> Error:
 	var err := DirAccess.make_dir_recursive_absolute(dir_path)
 	if err != OK:
 		return err
+	var text := JSON.stringify(run.to_dict(), "\t")
 	var tmp := path() + ".tmp"
-	var f := FileAccess.open(tmp, FileAccess.WRITE)
-	if f == null:
-		return FileAccess.get_open_error()
-	f.store_string(JSON.stringify(run.to_dict(), "\t"))
-	f.close()
-	if FileAccess.file_exists(path()):
-		if FileAccess.file_exists(backup_path()):
-			DirAccess.remove_absolute(backup_path())
+	err = _write_text(tmp, text)
+	if err == OK and FileAccess.get_file_as_string(tmp) != text:
+		err = ERR_FILE_CORRUPT
+	if err != OK:
+		_discard(tmp)
+		return err
+	if FileAccess.file_exists(path()) and _read(path()).status == Status.OK:
+		_discard(backup_path())
 		err = DirAccess.rename_absolute(path(), backup_path())
 		if err != OK:
+			_discard(tmp)
 			return err
-	return DirAccess.rename_absolute(tmp, path())
+	else:
+		_discard(path())
+	err = DirAccess.rename_absolute(tmp, path())
+	if err != OK and not FileAccess.file_exists(path()) and FileAccess.file_exists(backup_path()):
+		# Put the last good save back where Continue looks for it.
+		DirAccess.copy_absolute(backup_path(), path())
+	return err
+
+
+## The one place bytes hit the disk (tests override it to simulate failing writes).
+func _write_text(file_path: String, text: String) -> Error:
+	var f := FileAccess.open(file_path, FileAccess.WRITE)
+	if f == null:
+		return FileAccess.get_open_error()
+	f.store_string(text)
+	f.flush()
+	var err := f.get_error()
+	f.close()
+	return err
+
+
+static func _discard(file_path: String) -> void:
+	if FileAccess.file_exists(file_path):
+		DirAccess.remove_absolute(file_path)
 
 
 func load_run() -> Result:

@@ -23,8 +23,9 @@ func action() -> StringName:
 	return &"attack_primary" if slot == 0 else &"attack_secondary"
 
 
+## Tuned only while the Steward can actually run the tool (voice on and the Lattice reaching you).
 func mode() -> Loadout.Mode:
-	return Loadout.effective_mode(chosen_mode, Steward.voice_on)
+	return Loadout.effective_mode(chosen_mode, not Steward.assists().weapons_forced_manual)
 
 
 func is_tuned() -> bool:
@@ -74,13 +75,15 @@ func level() -> Level:
 	return player.level if player != null else null
 
 
+## Enemies within reach that nothing tall stands in front of: tuned targeting and close-range hits
+## both use this, so nothing is chosen or struck through a wall, the kiosk or the tram.
 func targets_in_range(max_tiles: float) -> Array[Node2D]:
 	var out: Array[Node2D] = []
 	var lv := level()
 	if lv == null:
 		return out
 	for e: Enemy in lv.living_enemies():
-		if Iso.ground_distance(player.global_position, e.global_position) <= max_tiles:
+		if Iso.ground_distance(player.global_position, e.global_position) <= max_tiles and lv.grid.line_clear(player.global_position, e.global_position):
 			out.append(e)
 	return out
 

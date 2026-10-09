@@ -5,6 +5,8 @@ extends Control
 
 const STEWARD_LINE := "I'd keep the tuning on. Let me carry the aim; you watch the street."
 
+## The district these weapons are for (from the saved location).
+var level_id: String = LevelCatalog.FIRST_LEVEL
 var picked: Array[String] = []
 var modes: Dictionary[String, Loadout.Mode] = {}
 
@@ -17,6 +19,9 @@ var _notice: Label
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var run := GameState.run
+	var saved_level := LevelCatalog.level_in(run.location)
+	if LevelCatalog.has_level(saved_level):
+		level_id = saved_level
 	picked = Loadout.from_run(run)
 	for id: String in WeaponDefs.SLICE_WEAPONS:
 		modes[id] = Loadout.chosen_mode(run, id)
@@ -38,7 +43,7 @@ func _build() -> void:
 	title.position = Vector2(96, 64)
 	add_child(title)
 	var sub := Label.new()
-	sub.text = "THE VELLUM · CARRY TWO"
+	sub.text = "%s · CARRY TWO" % LevelCatalog.name_of(level_id).to_upper()
 	sub.add_theme_font_override(&"font", UiFonts.mono())
 	sub.add_theme_font_size_override(&"font_size", 20)
 	sub.add_theme_color_override(&"font_color", Palette.IVORY_DIM)
@@ -69,13 +74,15 @@ func _build() -> void:
 		slots_box.add_child(slot)
 		_slots.append(slot)
 
-	var line := Label.new()
-	line.text = STEWARD_LINE
-	line.add_theme_font_override(&"font", UiFonts.narration())
-	line.add_theme_font_size_override(&"font_size", 28)
-	line.add_theme_color_override(&"font_color", Palette.STEWARD_GOLD)
-	line.position = Vector2(100, 900)
-	add_child(line)
+	# The Steward's nudge only while it is listening (muted, it isn't talking).
+	if Steward.voice_on:
+		var line := Label.new()
+		line.text = STEWARD_LINE
+		line.add_theme_font_override(&"font", UiFonts.narration())
+		line.add_theme_font_size_override(&"font_size", 28)
+		line.add_theme_color_override(&"font_color", Palette.STEWARD_GOLD)
+		line.position = Vector2(100, 900)
+		add_child(line)
 
 	_notice = Label.new()
 	_notice.add_theme_font_override(&"font", UiFonts.mono())
@@ -167,8 +174,7 @@ func _on_depart() -> void:
 	var mode_keys: Dictionary[String, String] = {}
 	for id: String in picked:
 		mode_keys[id] = Loadout.mode_key(modes[id])
-	GameState.set_loadout(picked, mode_keys)
-	SceneRouter.goto(&"level_vellum")
+	SceneRouter.goto_level(level_id, func() -> void: GameState.set_loadout(picked, mode_keys))
 
 
 func _unhandled_input(event: InputEvent) -> void:

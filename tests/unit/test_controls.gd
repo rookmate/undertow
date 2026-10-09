@@ -25,6 +25,20 @@ func test_aim_has_a_right_stick_binding() -> void:
 		check(pad, "%s on right stick" % action)
 
 
+func test_any_controller_drives_the_actions() -> void:
+	for device: int in [0, 1, 3]:
+		var ev := InputEventJoypadButton.new()
+		ev.device = device
+		ev.button_index = JOY_BUTTON_Y
+		ev.pressed = true
+		check(ev.is_action(&"voice_toggle"), "controller %d toggles the voice" % device)
+		var stick := InputEventJoypadMotion.new()
+		stick.device = device
+		stick.axis = JOY_AXIS_LEFT_X
+		stick.axis_value = 1.0
+		check(stick.is_action(&"move_right"), "controller %d moves" % device)
+
+
 func test_prompts_follow_last_used_device() -> void:
 	var was := Controls.device
 	Controls.device = Controls.Device.KEYBOARD_MOUSE

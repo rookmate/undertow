@@ -27,12 +27,20 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 
+## The ring is drawn once per state; breathing is a modulate change, not a redraw (the filigree is a
+## few thousand vertices). Only speaking (turning segments, filling petals) and glitching redraw.
 func _process(delta: float) -> void:
 	_t += delta
-	if state == State.GLITCH and Engine.get_process_frames() % 4 == 0:
-		_glitch_prev_seed = _glitch_seed
-		_glitch_seed = randi() % 100000
-	queue_redraw()
+	match state:
+		State.SPEAKING:
+			queue_redraw()
+		State.GLITCH:
+			if Engine.get_process_frames() % 4 == 0:
+				_glitch_prev_seed = _glitch_seed
+				_glitch_seed = randi() % 100000
+				queue_redraw()
+	var breathing := state == State.IDLE or state == State.WITHHOLDING or state == State.REWRITE
+	self_modulate.a = (0.84 + 0.16 * sin(TAU * _t / BREATH_SECONDS)) if breathing else 1.0
 
 
 ## Band outer radius that fits this control, leaving room for the ticks.
@@ -56,10 +64,8 @@ func _draw() -> void:
 func _look() -> RingPainter.Look:
 	var look := RingPainter.Look.new()
 	look.hdr = hdr
-	var breath := 0.84 + 0.16 * sin(TAU * _t / BREATH_SECONDS)
 	match state:
 		State.IDLE, State.WITHHOLDING:
-			look.alpha = breath
 			look.inlay_rotation_deg = WITHHOLD_DEG if state == State.WITHHOLDING else 0.0
 		State.SPEAKING:
 			look.alpha = 1.0
@@ -77,6 +83,5 @@ func _look() -> RingPainter.Look:
 			look.show_center = false
 			look.halo = 0.0
 		State.REWRITE:
-			look.alpha = breath
 			look.gap_fill = Palette.TRUTH_CYAN
 	return look

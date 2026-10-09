@@ -86,3 +86,23 @@ func test_bad_data_is_reported_not_crashed_on() -> void:
 	s.load_data({"lines": [{"id": "A", "event": "kill", "tone": "smug", "text": "x"}, {"id": "", "event": "kill", "text": "y"}, 5]})
 	check(s.errors.size() == 3, "three problems reported: %s" % [s.errors])
 	check(s.all_lines().is_empty())
+
+
+func test_a_new_district_never_hears_another_districts_lines() -> void:
+	var rng := _rng(5)
+	for i: int in 60:
+		var l := selector.pick(&"level_enter", 0.0, rng, "tideworks")
+		check(l != null and not l.text.contains("Vellum"), "tideworks heard %s" % (l.id if l != null else "nothing"))
+	var vellum_heard := false
+	for i: int in 60:
+		var l := selector.pick(&"level_enter", 0.0, rng, "vellum")
+		vellum_heard = vellum_heard or l.level == "vellum"
+	check(vellum_heard, "the Vellum still gets its own lines")
+
+
+func test_every_event_has_a_neutral_line_for_anywhere() -> void:
+	for event: StringName in selector.event_rules:
+		var generic := false
+		for l: LineSelector.Line in selector.lines_by_event.get(event, []):
+			generic = generic or (l.tone == &"neutral" and l.level == "")
+		check(generic, "%s works in any district" % event)

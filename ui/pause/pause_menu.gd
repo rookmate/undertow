@@ -4,6 +4,8 @@ extends CanvasLayer
 
 var _panel: PanelContainer
 var _resume: Button
+## Whatever had focus before the menu opened (another screen may still be open underneath).
+var _return_focus: Control
 
 
 func _ready() -> void:
@@ -40,28 +42,38 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"pause"):
-		if visible:
-			close()
-		else:
+		if not visible:
 			open()
+		elif Modals.is_top(self):
+			close()
 		get_viewport().set_input_as_handled()
-	elif visible and event.is_action_pressed(&"ui_cancel"):
+	elif visible and Modals.is_top(self) and event.is_action_pressed(&"ui_cancel"):
 		close()
 		get_viewport().set_input_as_handled()
 
 
 func open() -> void:
+	if visible:
+		return
+	_return_focus = get_viewport().gui_get_focus_owner()
 	visible = true
-	get_tree().paused = true
+	Modals.push(self)
 	_resume.grab_focus()
 
 
+## Closes the menu. The game stays paused if another screen still owns the pause (the Archive).
 func close() -> void:
+	if not visible:
+		return
 	visible = false
-	get_tree().paused = false
+	Modals.pop(self)
+	if is_instance_valid(_return_focus) and _return_focus.is_visible_in_tree():
+		_return_focus.grab_focus()
+	_return_focus = null
 
 
 func _to_title() -> void:
-	GameState.save()
+	if not await SaveFlow.before_leaving(get_tree()):
+		return
 	close()
 	SceneRouter.goto(&"title")

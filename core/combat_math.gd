@@ -3,10 +3,10 @@ extends RefCounted
 ## Pure combat rules shared by weapons, enemies and tests. Directions are grid-space ("ground") vectors;
 ## positions are screen positions converted with Iso.
 
-## Damage the Operator takes. With the voice off nothing warns you and enemies hit harder (brief: voice
-## table; HUD mock: "DMG TAKEN ×1.4").
-static func damage_taken(base: float, voice_on: bool) -> float:
-	return base * (1.0 if voice_on else Tunables.MUTED_DAMAGE_TAKEN_MULT)
+## Damage the Operator takes. Without the Steward (muted, or off the Lattice) nothing warns you and
+## enemies hit harder (brief: voice table; HUD mock: "DMG TAKEN ×1.4").
+static func damage_taken(base: float, steward_present: bool) -> float:
+	return base * (1.0 if steward_present else Tunables.MUTED_DAMAGE_TAKEN_MULT)
 
 
 ## Whether `target` (screen position) is within `range_tiles` of `origin` and inside an arc of
@@ -19,6 +19,26 @@ static func in_arc(origin: Vector2, facing: Vector2, target: Vector2, range_tile
 	if dist < 0.0001:
 		return true
 	return absf(rad_to_deg(facing.angle_to(to))) <= arc_deg * 0.5
+
+
+## Where a moving circle's path (`a`→`b`, grid space) first touches a circle at `c` of radius `r`: the
+## segment parameter 0..1, or -1 if it never does. Checking the whole swept segment (not just where a
+## projectile ends each tick) means fast shots can't skip over a target.
+static func segment_hit(a: Vector2, b: Vector2, c: Vector2, r: float) -> float:
+	var d := b - a
+	var f := a - c
+	var aa := d.dot(d)
+	var cc := f.dot(f) - r * r
+	if cc <= 0.0:
+		return 0.0
+	if aa < 1e-12:
+		return -1.0
+	var bb := 2.0 * f.dot(d)
+	var disc := bb * bb - 4.0 * aa * cc
+	if disc < 0.0:
+		return -1.0
+	var t := (-bb - sqrt(disc)) / (2.0 * aa)
+	return t if t >= 0.0 and t <= 1.0 else -1.0
 
 
 ## Nearest node within `max_tiles` of `origin`, or null.

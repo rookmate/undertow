@@ -56,7 +56,7 @@ func _think(delta: float) -> Vector2:
 		State.ATTACK:
 			if not _struck and _state_time >= LUNGE * 0.6 and player_ok:
 				_struck = true
-				if CombatMath.in_arc(global_position, facing_ground, p.global_position, REACH + 0.2, 130.0, Operator.RADIUS_TILES):
+				if CombatMath.in_arc(global_position, facing_ground, p.global_position, REACH + 0.2, 130.0, Operator.RADIUS_TILES) and level.grid.line_clear(global_position, p.global_position):
 					p.take_hit(DAMAGE, global_position)
 			if _state_time >= LUNGE:
 				_enter(State.RECOVER)

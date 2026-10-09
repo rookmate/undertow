@@ -13,6 +13,8 @@ class Line:
 	var event: StringName
 	var tone: StringName
 	var text: String
+	## District the line belongs to ("" = anywhere). A new district never hears another's lines.
+	var level: String = ""
 
 var lines_by_event: Dictionary[StringName, Array] = {}
 var event_rules: Dictionary[StringName, Dictionary] = {}
@@ -51,6 +53,7 @@ func load_data(data: Dictionary) -> void:
 		line.event = StringName(str(d.get("event", "")))
 		line.tone = StringName(str(d.get("tone", "neutral")))
 		line.text = str(d.get("text", ""))
+		line.level = str(d.get("level", ""))
 		if line.id == "" or line.text == "" or line.event == &"":
 			errors.append("line %s is missing id, event or text" % line.id)
 			continue
@@ -88,8 +91,11 @@ static func tone_weights(lean: float) -> Dictionary[StringName, float]:
 ## The next line for `event`, or null if there is none. The tone is chosen first (by the profile's
 ## lean); inside that tone the least recently heard line is used, so lines don't repeat back to back
 ## while the drift toward the flattering tone stays strong even with small pools.
-func pick(event: StringName, lean: float, rng: RandomNumberGenerator) -> Line:
-	var pool: Array = lines_by_event.get(event, [])
+func pick(event: StringName, lean: float, rng: RandomNumberGenerator, level: String = "") -> Line:
+	var pool: Array = []
+	for l: Line in lines_by_event.get(event, []):
+		if l.level == "" or l.level == level:
+			pool.append(l)
 	if pool.is_empty():
 		return null
 	var weights := tone_weights(lean)

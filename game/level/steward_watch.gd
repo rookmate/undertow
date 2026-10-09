@@ -42,11 +42,13 @@ func _say_later(event: StringName, seconds: float) -> void:
 
 
 func _say(event: StringName) -> void:
-	Narrator.notify(event)
+	Narrator.notify(event, level.level_id)
 
 
+## The Steward only profiles what it can perceive: voice on, Lattice in reach, and not on the Ark (where
+## rolling around is just walking, not a combat choice).
 func _record(event: StringName, weight: float = 1.0) -> void:
-	if Steward.voice_on:
+	if Steward.assists().steward_present and not level.is_hub():
 		GameState.record_playstyle(event, weight)
 
 
@@ -109,7 +111,7 @@ func _on_hurt(_amount: float) -> void:
 
 
 func _on_fired(w: Weapon) -> void:
-	if not Steward.voice_on:
+	if not Steward.assists().steward_present:
 		return
 	if _clock - float(_mode_reported.get(w.weapon_id, -INF)) < MODE_REPORT_EVERY:
 		return

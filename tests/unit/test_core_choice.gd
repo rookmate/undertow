@@ -82,3 +82,42 @@ func test_power_cores_strengthen_the_steward() -> void:
 	CoreChoice.apply(ContentIds.LEVEL_VELLUM, offer, picks)
 	var after := Steward.assists()
 	check(after.aim_assist > before.aim_assist and after.dodge_slowmo_seconds > before.dodge_slowmo_seconds)
+
+
+func test_broken_content_is_reported_not_crashed_on() -> void:
+	var problems := PackedStringArray()
+	var cores_doc := {
+		"cores": {
+			"ok": {"kind": "power", "name": "Fine", "steward": "Take it.", "log": "log_ok"},
+			"bad_kind": {"kind": "spare", "name": "X", "steward": "x", "log": "log_ok"},
+			"bad_log": {"kind": "truth", "name": "X", "steward": "x", "log": "missing"},
+			"not_a_core": "hello",
+		},
+		"reliquaries": {"somewhere": ["ok", "ghost"], "list_wanted": "ok"},
+	}
+	var logs_doc := {"logs": {
+		"log_ok": {"title": "T", "kind": "truth", "record": ["a"], "steward_now": "s", "noor": {"text": "n", "trust": 1}, "teo": {"text": "t", "trust": 0}},
+		"log_bad_reaction": {"title": "T", "kind": "truth", "record": ["a"], "steward_now": "s", "noor": "angry", "teo": {"text": "t", "trust": 0}},
+		"log_no_record": {"title": "T", "kind": "truth", "record": [], "steward_now": "s", "noor": {"text": "n", "trust": 1}, "teo": {"text": "t", "trust": 0}},
+	}}
+	var out := ContentDb.validate_documents(cores_doc, logs_doc, problems)
+	check_eq((out["cores"] as Dictionary).keys(), ["ok"], "only the valid core survives")
+	check_eq((out["logs"] as Dictionary).keys(), ["log_ok"], "only the valid log survives")
+	check(problems.size() >= 7, "every problem reported: %s" % [problems])
+	var not_dicts := PackedStringArray()
+	ContentDb.validate_documents({"cores": [], "reliquaries": 5}, {"logs": "x"}, not_dicts)
+	check(not_dicts.size() >= 3, "wrong top-level shapes are reported too")
+
+
+func test_shipped_content_is_valid() -> void:
+	ContentDb.ensure_loaded()
+	check(ContentDb.errors.is_empty(), "%s" % [ContentDb.errors])
+
+
+func test_carry_count_never_asks_for_more_than_offered() -> void:
+	var one: Array[String] = ["a"]
+	var many: Array[String] = ["a", "b", "c"]
+	check_eq(CoreChoice.carry_count(one), 1)
+	check_eq(CoreChoice.carry_count(many), Tunables.CORES_CARRIED_PER_LEVEL)
+	var pick_one: Array[String] = ["a"]
+	check_eq(CoreChoice.validate(one, pick_one), "")

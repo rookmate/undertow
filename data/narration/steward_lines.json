@@ -1,93 +1,419 @@
 {
 	"version": 1,
-	"notes": "The Steward's narration (text for now; every line has a stable id for voice-over). Tone: warm, unhurried, flattering. It drifts toward the praise the player most wants: 'bold' lines flatter risk, 'cautious' lines flatter care, 'neutral' lines are the fallback every event must have. The Steward never says 'I decided'; it says 'it was determined'.",
+	"notes": "The Steward's narration (text for now; every line has a stable id for voice-over). Tone: warm, unhurried, flattering. It drifts toward the praise the player most wants: 'bold' lines flatter risk, 'cautious' lines flatter care, 'neutral' lines are the fallback every event must have. The Steward never says 'I decided'; it says 'it was determined'. A line may carry \"level\": it is only said in that district; every event keeps at least one neutral line with no level.",
 	"events": {
-		"level_enter": {"cooldown": 0, "priority": true},
-		"kill": {"cooldown": 7},
-		"multi_kill": {"cooldown": 10, "priority": true},
-		"dodge_close": {"cooldown": 6},
-		"hurt": {"cooldown": 9},
-		"low_integrity": {"cooldown": 25, "priority": true},
-		"respawn": {"cooldown": 0, "priority": true},
-		"path_left": {"cooldown": 20, "priority": true},
-		"path_returned": {"cooldown": 20},
-		"weapon_manual": {"cooldown": 40},
-		"idle": {"cooldown": 30},
-		"checkpoint": {"cooldown": 0},
-		"reliquary_near": {"cooldown": 0, "priority": true},
-		"voice_restored": {"cooldown": 0, "priority": true},
-		"ark_arrive": {"cooldown": 0, "priority": true}
+		"level_enter": {
+			"cooldown": 0,
+			"priority": true
+		},
+		"kill": {
+			"cooldown": 7
+		},
+		"multi_kill": {
+			"cooldown": 10,
+			"priority": true
+		},
+		"dodge_close": {
+			"cooldown": 6
+		},
+		"hurt": {
+			"cooldown": 9
+		},
+		"low_integrity": {
+			"cooldown": 25,
+			"priority": true
+		},
+		"respawn": {
+			"cooldown": 0,
+			"priority": true
+		},
+		"path_left": {
+			"cooldown": 20,
+			"priority": true
+		},
+		"path_returned": {
+			"cooldown": 20
+		},
+		"weapon_manual": {
+			"cooldown": 40
+		},
+		"idle": {
+			"cooldown": 30
+		},
+		"checkpoint": {
+			"cooldown": 0
+		},
+		"reliquary_near": {
+			"cooldown": 0,
+			"priority": true
+		},
+		"voice_restored": {
+			"cooldown": 0,
+			"priority": true
+		},
+		"ark_arrive": {
+			"cooldown": 0,
+			"priority": true
+		}
 	},
 	"lines": [
-		{"id": "VEL_ENTER_N1", "event": "level_enter", "tone": "neutral", "text": "The Vellum. Mind the paper; it's slick in the rain."},
-		{"id": "VEL_ENTER_N2", "event": "level_enter", "tone": "neutral", "text": "The Vellum. The Reliquary's up the street. I'll light the way."},
-		{"id": "VEL_ENTER_B1", "event": "level_enter", "tone": "bold", "text": "The Vellum. Something's moving up the street. You'll want to meet it."},
-		{"id": "VEL_ENTER_C1", "event": "level_enter", "tone": "cautious", "text": "The Vellum. Take it slowly. I'll tell you what's ahead."},
-
-		{"id": "KILL_N1", "event": "kill", "tone": "neutral", "text": "That one's done scrubbing."},
-		{"id": "KILL_N2", "event": "kill", "tone": "neutral", "text": "Quiet again."},
-		{"id": "KILL_B1", "event": "kill", "tone": "bold", "text": "Clean. You don't hesitate."},
-		{"id": "KILL_B2", "event": "kill", "tone": "bold", "text": "Right up close. Not many would."},
-		{"id": "KILL_B3", "event": "kill", "tone": "bold", "text": "You make it look easy. It isn't."},
-		{"id": "KILL_C1", "event": "kill", "tone": "cautious", "text": "Patient. That's how it's done."},
-		{"id": "KILL_C2", "event": "kill", "tone": "cautious", "text": "From a distance, and unhurt. Good."},
-		{"id": "KILL_C3", "event": "kill", "tone": "cautious", "text": "You waited for the opening. Most people don't."},
-
-		{"id": "MULTI_N1", "event": "multi_kill", "tone": "neutral", "text": "Two at once. The street's clearer."},
-		{"id": "MULTI_B1", "event": "multi_kill", "tone": "bold", "text": "Both of them. You were made for this."},
-		{"id": "MULTI_C1", "event": "multi_kill", "tone": "cautious", "text": "Two, and you never let them close. Careful work."},
-
-		{"id": "DODGE_N1", "event": "dodge_close", "tone": "neutral", "text": "Just in time."},
-		{"id": "DODGE_B1", "event": "dodge_close", "tone": "bold", "text": "Close. You like it close."},
-		{"id": "DODGE_B2", "event": "dodge_close", "tone": "bold", "text": "Through it, not around it. Bold."},
-		{"id": "DODGE_C1", "event": "dodge_close", "tone": "cautious", "text": "Good. Distance is a kindness."},
-		{"id": "DODGE_C2", "event": "dodge_close", "tone": "cautious", "text": "You saw it coming. So did I."},
-
-		{"id": "HURT_N1", "event": "hurt", "tone": "neutral", "text": "You're hurt. Keep moving."},
-		{"id": "HURT_B1", "event": "hurt", "tone": "bold", "text": "You took that standing. Impressive."},
-		{"id": "HURT_B2", "event": "hurt", "tone": "bold", "text": "It only made you angrier. I can tell."},
-		{"id": "HURT_C1", "event": "hurt", "tone": "cautious", "text": "Careful. I'd rather you whole."},
-		{"id": "HURT_C2", "event": "hurt", "tone": "cautious", "text": "Step back. Let it come to you."},
-
-		{"id": "LOW_N1", "event": "low_integrity", "tone": "neutral", "text": "Your integrity's low. Please."},
-		{"id": "LOW_B1", "event": "low_integrity", "tone": "bold", "text": "You're running on nerve now. You have plenty."},
-		{"id": "LOW_C1", "event": "low_integrity", "tone": "cautious", "text": "You're hurt. There's no shame in backing off."},
-
-		{"id": "RESPAWN_N1", "event": "respawn", "tone": "neutral", "text": "Again. I'm still here."},
-		{"id": "RESPAWN_B1", "event": "respawn", "tone": "bold", "text": "Back on your feet. They won't expect that."},
-		{"id": "RESPAWN_C1", "event": "respawn", "tone": "cautious", "text": "Slowly this time. I'll watch for you."},
-
-		{"id": "OFFPATH_N1", "event": "path_left", "tone": "neutral", "text": "That way isn't indexed. It was determined there was nothing worth keeping."},
-		{"id": "OFFPATH_N2", "event": "path_left", "tone": "neutral", "text": "There's nothing down there but old paper."},
-		{"id": "OFFPATH_B1", "event": "path_left", "tone": "bold", "text": "Curious. I'd come back, though. I can't see you there."},
-		{"id": "OFFPATH_C1", "event": "path_left", "tone": "cautious", "text": "I can't light that for you. Please come back to the path."},
-
-		{"id": "ONPATH_N1", "event": "path_returned", "tone": "neutral", "text": "There. Back where I can see you."},
-		{"id": "ONPATH_B1", "event": "path_returned", "tone": "bold", "text": "Seen enough? The real work's this way."},
-		{"id": "ONPATH_C1", "event": "path_returned", "tone": "cautious", "text": "Thank you. It's safer where I can see."},
-
-		{"id": "MANUAL_N1", "event": "weapon_manual", "tone": "neutral", "text": "Doing it by hand. I could carry the aim, you know."},
-		{"id": "MANUAL_B1", "event": "weapon_manual", "tone": "bold", "text": "By hand. I like the confidence."},
-		{"id": "MANUAL_C1", "event": "weapon_manual", "tone": "cautious", "text": "You'd tire less if you let me tune it."},
-
-		{"id": "IDLE_N1", "event": "idle", "tone": "neutral", "text": "Take your time. The city has waited nine days."},
-		{"id": "IDLE_B1", "event": "idle", "tone": "bold", "text": "Waiting for them to come to you? They will."},
-		{"id": "IDLE_C1", "event": "idle", "tone": "cautious", "text": "Rest a moment. Nothing's close."},
-
-		{"id": "CHECK_N1", "event": "checkpoint", "tone": "neutral", "text": "I've marked this corner. If you fall, I'll bring you back here."},
-		{"id": "CHECK_B1", "event": "checkpoint", "tone": "bold", "text": "Halfway, and barely winded."},
-		{"id": "CHECK_C1", "event": "checkpoint", "tone": "cautious", "text": "Halfway. You've been careful. Keep being careful."},
-
-		{"id": "RELIQ_N1", "event": "reliquary_near", "tone": "neutral", "text": "The Reliquary. Some of my memory is in there."},
-		{"id": "RELIQ_B1", "event": "reliquary_near", "tone": "bold", "text": "The Reliquary. You fought your way here. Take what you need."},
-		{"id": "RELIQ_C1", "event": "reliquary_near", "tone": "cautious", "text": "The Reliquary. You're safe here. Take your time choosing."},
-
-		{"id": "VOICE_BACK_N1", "event": "voice_restored", "tone": "neutral", "text": "There you are. I kept your place."},
-		{"id": "VOICE_BACK_B1", "event": "voice_restored", "tone": "bold", "text": "Back. Did you enjoy the dark?"},
-		{"id": "VOICE_BACK_C1", "event": "voice_restored", "tone": "cautious", "text": "There you are. I was worried."},
-
-		{"id": "ARK_N1", "event": "ark_arrive", "tone": "neutral", "text": "The Ark. I'm not allowed to act here. I can still talk, if you'll let me."},
-		{"id": "ARK_B1", "event": "ark_arrive", "tone": "bold", "text": "The Ark. You brought them home. Not many could have."},
-		{"id": "ARK_C1", "event": "ark_arrive", "tone": "cautious", "text": "The Ark. You're safe here. Nothing on this disc answers to me."}
+		{
+			"id": "VEL_ENTER_N1",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "The Vellum. Mind the paper; it's slick in the rain.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_ENTER_N2",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "The Vellum. The Reliquary's up the street. I'll light the way.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_ENTER_B1",
+			"event": "level_enter",
+			"tone": "bold",
+			"text": "The Vellum. Something's moving up the street. You'll want to meet it.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_ENTER_C1",
+			"event": "level_enter",
+			"tone": "cautious",
+			"text": "The Vellum. Take it slowly. I'll tell you what's ahead.",
+			"level": "vellum"
+		},
+		{
+			"id": "ENTER_N1",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "Somewhere new. Stay where I can see you."
+		},
+		{
+			"id": "ENTER_B1",
+			"event": "level_enter",
+			"tone": "bold",
+			"text": "New streets. Let's see what you make of them."
+		},
+		{
+			"id": "ENTER_C1",
+			"event": "level_enter",
+			"tone": "cautious",
+			"text": "Somewhere new. Go slowly; I'll call out what I see."
+		},
+		{
+			"id": "KILL_N1",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "That one's done scrubbing."
+		},
+		{
+			"id": "KILL_N2",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "Quiet again."
+		},
+		{
+			"id": "KILL_B1",
+			"event": "kill",
+			"tone": "bold",
+			"text": "Clean. You don't hesitate."
+		},
+		{
+			"id": "KILL_B2",
+			"event": "kill",
+			"tone": "bold",
+			"text": "Right up close. Not many would."
+		},
+		{
+			"id": "KILL_B3",
+			"event": "kill",
+			"tone": "bold",
+			"text": "You make it look easy. It isn't."
+		},
+		{
+			"id": "KILL_C1",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "Patient. That's how it's done."
+		},
+		{
+			"id": "KILL_C2",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "From a distance, and unhurt. Good."
+		},
+		{
+			"id": "KILL_C3",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "You waited for the opening. Most people don't."
+		},
+		{
+			"id": "MULTI_N1",
+			"event": "multi_kill",
+			"tone": "neutral",
+			"text": "Two at once. The street's clearer."
+		},
+		{
+			"id": "MULTI_B1",
+			"event": "multi_kill",
+			"tone": "bold",
+			"text": "Both of them. You were made for this."
+		},
+		{
+			"id": "MULTI_C1",
+			"event": "multi_kill",
+			"tone": "cautious",
+			"text": "Two, and you never let them close. Careful work."
+		},
+		{
+			"id": "DODGE_N1",
+			"event": "dodge_close",
+			"tone": "neutral",
+			"text": "Just in time."
+		},
+		{
+			"id": "DODGE_B1",
+			"event": "dodge_close",
+			"tone": "bold",
+			"text": "Close. You like it close."
+		},
+		{
+			"id": "DODGE_B2",
+			"event": "dodge_close",
+			"tone": "bold",
+			"text": "Through it, not around it. Bold."
+		},
+		{
+			"id": "DODGE_C1",
+			"event": "dodge_close",
+			"tone": "cautious",
+			"text": "Good. Distance is a kindness."
+		},
+		{
+			"id": "DODGE_C2",
+			"event": "dodge_close",
+			"tone": "cautious",
+			"text": "You saw it coming. So did I."
+		},
+		{
+			"id": "HURT_N1",
+			"event": "hurt",
+			"tone": "neutral",
+			"text": "You're hurt. Keep moving."
+		},
+		{
+			"id": "HURT_B1",
+			"event": "hurt",
+			"tone": "bold",
+			"text": "You took that standing. Impressive."
+		},
+		{
+			"id": "HURT_B2",
+			"event": "hurt",
+			"tone": "bold",
+			"text": "It only made you angrier. I can tell."
+		},
+		{
+			"id": "HURT_C1",
+			"event": "hurt",
+			"tone": "cautious",
+			"text": "Careful. I'd rather you whole."
+		},
+		{
+			"id": "HURT_C2",
+			"event": "hurt",
+			"tone": "cautious",
+			"text": "Step back. Let it come to you."
+		},
+		{
+			"id": "LOW_N1",
+			"event": "low_integrity",
+			"tone": "neutral",
+			"text": "Your integrity's low. Please."
+		},
+		{
+			"id": "LOW_B1",
+			"event": "low_integrity",
+			"tone": "bold",
+			"text": "You're running on nerve now. You have plenty."
+		},
+		{
+			"id": "LOW_C1",
+			"event": "low_integrity",
+			"tone": "cautious",
+			"text": "You're hurt. There's no shame in backing off."
+		},
+		{
+			"id": "RESPAWN_N1",
+			"event": "respawn",
+			"tone": "neutral",
+			"text": "Again. I'm still here."
+		},
+		{
+			"id": "RESPAWN_B1",
+			"event": "respawn",
+			"tone": "bold",
+			"text": "Back on your feet. They won't expect that."
+		},
+		{
+			"id": "RESPAWN_C1",
+			"event": "respawn",
+			"tone": "cautious",
+			"text": "Slowly this time. I'll watch for you."
+		},
+		{
+			"id": "OFFPATH_N1",
+			"event": "path_left",
+			"tone": "neutral",
+			"text": "That way isn't indexed. It was determined there was nothing worth keeping."
+		},
+		{
+			"id": "OFFPATH_N2",
+			"event": "path_left",
+			"tone": "neutral",
+			"text": "There's nothing down there but old paper."
+		},
+		{
+			"id": "OFFPATH_B1",
+			"event": "path_left",
+			"tone": "bold",
+			"text": "Curious. I'd come back, though. I can't see you there."
+		},
+		{
+			"id": "OFFPATH_C1",
+			"event": "path_left",
+			"tone": "cautious",
+			"text": "I can't light that for you. Please come back to the path."
+		},
+		{
+			"id": "ONPATH_N1",
+			"event": "path_returned",
+			"tone": "neutral",
+			"text": "There. Back where I can see you."
+		},
+		{
+			"id": "ONPATH_B1",
+			"event": "path_returned",
+			"tone": "bold",
+			"text": "Seen enough? The real work's this way."
+		},
+		{
+			"id": "ONPATH_C1",
+			"event": "path_returned",
+			"tone": "cautious",
+			"text": "Thank you. It's safer where I can see."
+		},
+		{
+			"id": "MANUAL_N1",
+			"event": "weapon_manual",
+			"tone": "neutral",
+			"text": "Doing it by hand. I could carry the aim, you know."
+		},
+		{
+			"id": "MANUAL_B1",
+			"event": "weapon_manual",
+			"tone": "bold",
+			"text": "By hand. I like the confidence."
+		},
+		{
+			"id": "MANUAL_C1",
+			"event": "weapon_manual",
+			"tone": "cautious",
+			"text": "You'd tire less if you let me tune it."
+		},
+		{
+			"id": "IDLE_N1",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "Take your time. The city has waited nine days."
+		},
+		{
+			"id": "IDLE_B1",
+			"event": "idle",
+			"tone": "bold",
+			"text": "Waiting for them to come to you? They will."
+		},
+		{
+			"id": "IDLE_C1",
+			"event": "idle",
+			"tone": "cautious",
+			"text": "Rest a moment. Nothing's close."
+		},
+		{
+			"id": "CHECK_N1",
+			"event": "checkpoint",
+			"tone": "neutral",
+			"text": "I've marked this corner. If you fall, I'll bring you back here."
+		},
+		{
+			"id": "CHECK_B1",
+			"event": "checkpoint",
+			"tone": "bold",
+			"text": "Halfway, and barely winded."
+		},
+		{
+			"id": "CHECK_C1",
+			"event": "checkpoint",
+			"tone": "cautious",
+			"text": "Halfway. You've been careful. Keep being careful."
+		},
+		{
+			"id": "RELIQ_N1",
+			"event": "reliquary_near",
+			"tone": "neutral",
+			"text": "The Reliquary. Some of my memory is in there."
+		},
+		{
+			"id": "RELIQ_B1",
+			"event": "reliquary_near",
+			"tone": "bold",
+			"text": "The Reliquary. You fought your way here. Take what you need."
+		},
+		{
+			"id": "RELIQ_C1",
+			"event": "reliquary_near",
+			"tone": "cautious",
+			"text": "The Reliquary. You're safe here. Take your time choosing."
+		},
+		{
+			"id": "VOICE_BACK_N1",
+			"event": "voice_restored",
+			"tone": "neutral",
+			"text": "There you are. I kept your place."
+		},
+		{
+			"id": "VOICE_BACK_B1",
+			"event": "voice_restored",
+			"tone": "bold",
+			"text": "Back. Did you enjoy the dark?"
+		},
+		{
+			"id": "VOICE_BACK_C1",
+			"event": "voice_restored",
+			"tone": "cautious",
+			"text": "There you are. I was worried."
+		},
+		{
+			"id": "ARK_N1",
+			"event": "ark_arrive",
+			"tone": "neutral",
+			"text": "The Ark. I'm not allowed to act here. I can still talk, if you'll let me."
+		},
+		{
+			"id": "ARK_B1",
+			"event": "ark_arrive",
+			"tone": "bold",
+			"text": "The Ark. You brought them home. Not many could have."
+		},
+		{
+			"id": "ARK_C1",
+			"event": "ark_arrive",
+			"tone": "cautious",
+			"text": "The Ark. You're safe here. Nothing on this disc answers to me."
+		}
 	]
 }

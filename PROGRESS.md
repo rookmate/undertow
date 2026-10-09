@@ -13,7 +13,7 @@ Milestone: **vertical slice** (design brief, "First milestone"). Plan and decisi
 | 6 | Level end with power-vs-truth core choice | done |
 | 7 | Ark hub with the Archive | done |
 | 8 | Tracking finished + debug overlay + save round-trip | done |
-| — | Sol analysis review (reviews/vertical-slice.md), fixes, re-check | next |
+| — | Sol analysis review (reviews/vertical-slice.md), fixes, re-check | in progress: round 1 fixed, round 2 next |
 
 ## Done
 
@@ -76,10 +76,15 @@ checklist, F5–F8 debug switches); the end of the slice shows a run summary and
 (Rewrite in truth cyan with its checklist); saves round-trip identically, every saved location routes
 to a real scene, closing the window saves; the Steam wrapper is a harmless no-op without Steam.
 
+**Review fixes (round 1).** All 29 Sol findings acted on (see reviews/vertical-slice.md): the
+Steward only reaches as far as the Lattice, saves are verified and failures are shown, one pause
+stack, atomic scene navigation, line of sight and swept projectiles, map-file ids and validation,
+content validation, the Ark built from progression, the Archive scrolls, any controller works,
+export presets, frame-time work (60 fps capped on this machine), a stricter test runner.
+
 ## Next
 
-Phase 5: Sol analysis review of the milestone (reviews/vertical-slice.md), fix the findings, re-run
-the gate and Sol again, then commit.
+Phase 5: Sol analysis round 2 on the fixes, fix anything serious it finds, re-run the gate, commit.
 
 ## How to run
 
@@ -92,10 +97,31 @@ Controls: move WASD / left stick · aim mouse / right stick · weapon 1 LMB (or 
 (or K) / LT · dodge Space / A · interact E / X · voice V / Y · pause Esc / Start · overlay F3 /
 Back+R3 (debug builds; F5–F8 debug switches while it's open).
 
+## How to export
+
+```bash
+tools/export.sh                      # Linux, Windows, macOS into build/, then runs the Linux build 30 s
+```
+
+## How to measure
+
+```bash
+godot --path . --disable-vsync --max-fps 0 -- --autopilot --autopilot-seconds=24   # prints [perf]
+godot --path . -- --autopilot --perf-disable=minimap,lights   # switch features off to cost them
+```
+
+## What only hardware can confirm
+
+- Steam Deck: 60 fps in the Vellum street (the `[perf]` line), readable text at 1280×800, the
+  controller layout, focus in every screen, the voice toggle on Y.
+- A second controller and unplugging/replugging one mid-run.
+- Windows and macOS: launch, New Game, save, quit, Continue. macOS will say the app is from an
+  unidentified developer (ad-hoc signed): right-click → Open.
+
 ## How to test
 
 ```bash
-tools/check.sh                       # the full gate: import, tests, 30 s run, 90 s full-slice run
+tools/check.sh                       # the full gate: import, tests, 30 s run, 150 s full-slice run
 godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn            # tests only
 godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn -- --filter=save   # some tests
 tools/record.sh <name> [seconds] [scenario]   # progress video -> ../undertow-recordings/<name>.mp4
