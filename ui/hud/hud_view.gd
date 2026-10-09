@@ -31,10 +31,49 @@ func _draw() -> void:
 	if level == null or level.player == null:
 		return
 	var p := level.player
+	_draw_interaction(p)
+	_draw_woken_lines()
 	var bottom := size.y - MARGIN
 	_draw_integrity(Vector2(MARGIN, bottom - CHIP_H - 64.0), p)
 	for i: int in p.weapons.size():
 		_draw_weapon(Rect2(MARGIN + i * (CHIP_W + 14.0), bottom - CHIP_H, CHIP_W, CHIP_H), p.weapons[i])
+
+
+func _to_screen(world_pos: Vector2) -> Vector2:
+	return level.get_viewport().get_canvas_transform() * world_pos
+
+
+## "[E] WAKE" over the thing in reach; or, if the Steward forbids it, its reason in its own voice.
+func _draw_interaction(p: Operator) -> void:
+	var target := p.interact_target()
+	if target == null:
+		return
+	var at := _to_screen(target.global_position + Vector2(0, -175))
+	var reason := target.blocked_reason()
+	if not target.can_interact() and reason != "":
+		var font := UiFonts.narration()
+		var w := font.get_string_size(reason, HORIZONTAL_ALIGNMENT_LEFT, -1, 24).x
+		draw_rect(Rect2(at + Vector2(-w * 0.5 - 14, -30), Vector2(w + 28, 42)), Palette.PANEL)
+		draw_string(font, at + Vector2(-w * 0.5, 0), reason, HORIZONTAL_ALIGNMENT_LEFT, -1, 24, Palette.STEWARD_GOLD)
+		return
+	var text := "%s  %s" % [Controls.prompt(&"interact"), target.prompt_verb()]
+	var label_font := UiFonts.heading()
+	var tw := label_font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 26).x
+	draw_rect(Rect2(at + Vector2(-tw * 0.5 - 14, -30), Vector2(tw + 28, 42)), Palette.PANEL)
+	draw_rect(Rect2(at + Vector2(-tw * 0.5 - 14, -30), Vector2(tw + 28, 42)), Palette.IVORY_FAINT, false, 1.0)
+	draw_string(label_font, at + Vector2(-tw * 0.5, 0), text, HORIZONTAL_ALIGNMENT_LEFT, -1, 26, Palette.IVORY)
+
+
+## What a woken survivor says, in plain type and human cream (the serif belongs to the Steward).
+func _draw_woken_lines() -> void:
+	for n: Node in get_tree().get_nodes_in_group(&"interactables"):
+		var w := n as TheWaiting
+		if w == null or w.spoken_line() == "" or not level.is_ancestor_of(w):
+			continue
+		var at := _to_screen(w.global_position + Vector2(0, -170))
+		var font := UiFonts.label()
+		var tw := font.get_string_size(w.spoken_line(), HORIZONTAL_ALIGNMENT_LEFT, -1, 26).x
+		draw_string(font, at + Vector2(-tw * 0.5, 0), w.spoken_line(), HORIZONTAL_ALIGNMENT_LEFT, -1, 26, Palette.HUMAN_CREAM)
 
 
 func _draw_integrity(at: Vector2, p: Operator) -> void:

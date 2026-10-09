@@ -16,6 +16,9 @@ const STEWARD_ALLOWED: Dictionary[String, String] = {
 	"res://ui/hud/hud_view.gd": "the TUNED tag marks a weapon the Steward is running",
 	"res://ui/loadout/loadout.gd": "the Steward's line on the loadout screen (its narration)",
 	"res://game/enemies/custodian.gd": "a Custodian's lamp dome is Steward hardware",
+	"res://game/path/predicted_path.gd": "the predicted path is the Steward's light",
+	"res://game/path/path_tile_painter.gd": "the gilded path tiles are the Steward's",
+	"res://game/props/the_waiting.gd": "the Lanyard at a Waiting resident's ear is a sliver of the Steward",
 }
 
 const SCAN_ROOTS: Array[String] = ["res://autoload", "res://core", "res://game", "res://ui", "res://data"]

@@ -17,6 +17,9 @@ var player: Operator
 var camera: Camera2D
 ## A* over every walkable cell, for enemies.
 var enemy_nav: GridNav
+## The Steward's view of the level: routes over Lattice cells only.
+var predictor: PathPredictor
+var predicted_path: PredictedPath
 var checkpoint_cell: Vector2i
 
 var _ambient: CanvasModulate
@@ -46,6 +49,8 @@ func _ready() -> void:
 	_build_collision()
 	_spawn_player()
 	_spawn_enemies()
+	_spawn_people_and_finds()
+	_add_steward_path()
 	_add_atmosphere()
 	add_child(Hud.new())
 	add_child(PauseMenu.new())
@@ -193,6 +198,57 @@ func _spawn_player() -> void:
 	player.add_child(camera)
 	camera.make_current()
 	player_spawned.emit(player)
+
+
+## The Waiting ('W' on the street, 'w' in the stacks), the truth cache ('T') and the unindexed log ('U').
+func _spawn_people_and_finds() -> void:
+	var fog := OffPathFog.new()
+	fog.name = "Marrow"
+	add_child(fog)
+	fog.setup(grid)
+	for c: Vector2i in grid.cells_with("W"):
+		var w := TheWaiting.new()
+		w.setup(self, c, ContentIds.SURVIVOR_DOORWAY, false)
+		world.add_child(w)
+	for c: Vector2i in grid.cells_with("w"):
+		var w := TheWaiting.new()
+		w.setup(self, c, ContentIds.SURVIVOR_STACKS, true)
+		world.add_child(w)
+	for c: Vector2i in grid.cells_with("T"):
+		var cache := TruthCache.new()
+		cache.setup(self, c, ContentIds.CORE_TRUTH_STACKS)
+		world.add_child(cache)
+	for c: Vector2i in grid.cells_with("U"):
+		var slip := UnindexedLog.new()
+		slip.setup(self, c, ContentIds.LOG_UNINDEXED_SLIP)
+		world.add_child(slip)
+
+
+func _add_steward_path() -> void:
+	predictor = PathPredictor.new(grid)
+	predictor.aim_at(grid.first("R"), grid.first("P"))
+	predicted_path = PredictedPath.new()
+	predicted_path.name = "PredictedPath"
+	predicted_path.predictor = predictor
+	predicted_path.player = player
+	add_child(predicted_path)
+
+
+## The closest thing within reach the Operator could use (or is told not to), or null.
+func nearest_interactable(at: Vector2) -> Interactable:
+	var best: Interactable = null
+	var best_d := Interactable.REACH_TILES
+	for n: Node in get_tree().get_nodes_in_group(&"interactables"):
+		var it := n as Interactable
+		if it == null or not it.is_present() or not is_ancestor_of(it):
+			continue
+		if not it.can_interact() and it.blocked_reason() == "":
+			continue
+		var d := Iso.ground_distance(at, it.global_position)
+		if d <= best_d:
+			best = it
+			best_d = d
+	return best
 
 
 ## Custodians scrub in pairs ('c'); one Clerk ('k').
