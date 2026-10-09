@@ -11,6 +11,30 @@
   "hash": "b78b005dd08f4ceda7d5a651ee4659956c97144a",
   "text": "The Ark. I'm not allowed to act here. I can still talk, if you'll let me."
  },
+ "BOSS_DOWN_B1": {
+  "hash": "7242e85ae50cb55262ce69126972c9d20feaf69f",
+  "text": "That's it down. I knew you would."
+ },
+ "BOSS_DOWN_C1": {
+  "hash": "01f9f756ae4b0537ebfeb84c7012b301adf09db5",
+  "text": "It's still. Take a breath before you go on."
+ },
+ "BOSS_DOWN_N1": {
+  "hash": "f55db78c06861255224ab57c6e29a62deee65fcd",
+  "text": "It's stopped. The way on is yours."
+ },
+ "BOSS_ENGAGE_B1": {
+  "hash": "995362aed1166ca469b4c717a817608328a9b30f",
+  "text": "It's big. You've handled worse. I'll call it; you hit it."
+ },
+ "BOSS_ENGAGE_C1": {
+  "hash": "140c1021ea2d9fb4825f32ddbfb95be70e116e40",
+  "text": "Stay off its lines. I'll tell you where it's going before it goes."
+ },
+ "BOSS_ENGAGE_N1": {
+  "hash": "e4b393540b69a8cd663572a377ea4b8b48b21a70",
+  "text": "It's only doing what it was told. Listen to me and you'll get past it."
+ },
  "CHECK_B1": {
   "hash": "9abf12a4d3fd60a81420da1b419d04c98c82ec6b",
   "text": "Halfway, and barely winded."
@@ -258,6 +282,22 @@
  "VOICE_BACK_N1": {
   "hash": "6c6843d48396bfc531ad1fea705828e17a153376",
   "text": "There you are. I kept your place."
+ },
+ "conductor_left": {
+  "hash": "deaaffc4f05ca9d48d57f4ba2fe6f05f52687b6c",
+  "text": "Left track."
+ },
+ "conductor_middle": {
+  "hash": "a7fc50ec44d1cf9a17252eb1fb28d81e161ed531",
+  "text": "Middle track. Move."
+ },
+ "conductor_right": {
+  "hash": "79a71f958ac98609c4c929540c70e05a451a26d1",
+  "text": "Right track."
+ },
+ "conductor_vent": {
+  "hash": "1df9039a0474eb303e278910d2bb6d389ce65e5b",
+  "text": "It's venting. Now."
  },
  "core_kestrel_power_day": {
   "hash": "066ffa4dc2d1df9ef2c5c089be76efe455d728d2",

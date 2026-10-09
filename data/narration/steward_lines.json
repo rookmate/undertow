@@ -54,6 +54,14 @@
 		"ark_arrive": {
 			"cooldown": 0,
 			"priority": true
+		},
+		"boss_engaged": {
+			"cooldown": 0,
+			"priority": true
+		},
+		"boss_down": {
+			"cooldown": 0,
+			"priority": true
 		}
 	},
 	"lines": [
@@ -456,6 +464,42 @@
 			"tone": "neutral",
 			"text": "The Kestrel Reliquary. The Heights' memory. Take what helps.",
 			"level": "kestrel"
+		},
+		{
+			"id": "BOSS_ENGAGE_N1",
+			"event": "boss_engaged",
+			"tone": "neutral",
+			"text": "It's only doing what it was told. Listen to me and you'll get past it."
+		},
+		{
+			"id": "BOSS_ENGAGE_B1",
+			"event": "boss_engaged",
+			"tone": "bold",
+			"text": "It's big. You've handled worse. I'll call it; you hit it."
+		},
+		{
+			"id": "BOSS_ENGAGE_C1",
+			"event": "boss_engaged",
+			"tone": "cautious",
+			"text": "Stay off its lines. I'll tell you where it's going before it goes."
+		},
+		{
+			"id": "BOSS_DOWN_N1",
+			"event": "boss_down",
+			"tone": "neutral",
+			"text": "It's stopped. The way on is yours."
+		},
+		{
+			"id": "BOSS_DOWN_B1",
+			"event": "boss_down",
+			"tone": "bold",
+			"text": "That's it down. I knew you would."
+		},
+		{
+			"id": "BOSS_DOWN_C1",
+			"event": "boss_down",
+			"tone": "cautious",
+			"text": "It's still. Take a breath before you go on."
 		}
 	]
 }

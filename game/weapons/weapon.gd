@@ -88,9 +88,12 @@ func targets_in_range(max_tiles: float) -> Array[Node2D]:
 	return out
 
 
-## Tuned weapons pick their own target: the nearest one in reach. Falls back to the player's aim.
+## Tuned weapons pick their own target: the nearest one in reach the Steward is willing to aim at (it
+## never aims at a boss's weak point it would rather you didn't know about). Falls back to the player's
+## aim.
 func tuned_direction(max_tiles: float) -> Vector2:
-	var target := CombatMath.nearest(player.global_position, targets_in_range(max_tiles), max_tiles)
+	var willing := targets_in_range(max_tiles).filter(func(e: Node2D) -> bool: return (e as Enemy).steward_aims_at)
+	var target := CombatMath.nearest(player.global_position, willing, max_tiles)
 	if target != null:
 		return Iso.ground_dir_between(player.global_position, target.global_position)
 	return player.aim_ground()

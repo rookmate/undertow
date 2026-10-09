@@ -304,3 +304,12 @@ Asked of the user on 2026-10-09 and answered the same day.
     the Loop and the Tideworks exist). Kestrel restores no Ark building, so the Ark is bare after it.
 99. **The gate's long runs** play New Game through Kestrel Heights to the Loop map (`slice`) and, from a
     prepared run with all three weapons, the Vellum's whole route to the Archive (`vellum`).
+100. **Bosses** are set pieces built on the enemy base so weapons can hit them: armoured except in
+     their openings (blows ring off), a bar on the HUD once engaged, barriers ('y') that open when they
+     fall, 20 scrap. Two solutions each (world bible): with the voice on the Steward calls each move
+     before it comes (voiced); the manual one is a weakness the Steward never mentions and its tuned
+     aim never picks (`Enemy.steward_aims_at`).
+101. **The Conductor** (the Loop): sends runaway carriages down three lanes ('1'–'3'), three runs a
+     cycle, each warned by red-orange lane lights (muted, they flicker 0.35 s sooner) and called by the
+     Steward ("Left track."); the lane you stand on goes first. Then it vents for 3 s. The signal box
+     ('Z') struck while the points are moving stalls it for 6 s, once a cycle. 360 integrity.

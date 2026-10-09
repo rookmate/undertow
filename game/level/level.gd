@@ -14,6 +14,10 @@ signal enemy_died(enemy: Enemy)
 var grid: LevelGrid
 ## The district's materials, sky and light (DistrictLook.for_district(level_id)).
 var look: DistrictLook
+## The district's boss, once spawned (null if it has none).
+var boss: Boss
+## Test fixtures with their own map name the boss to spawn here.
+@export var boss_override: String = ""
 var world: Node2D
 ## Effects that lie on the ground (swing arcs, shock rings), above the floor and below the world.
 var fx_ground: Node2D
@@ -169,6 +173,7 @@ func location_key() -> String:
 
 func _populate() -> void:
 	_spawn_enemies()
+	_spawn_boss()
 	_spawn_people_and_finds()
 
 
@@ -422,6 +427,46 @@ func _spawn_enemies() -> void:
 		_add_enemy(Clerk.new(), k, Clerk.MAX_INTEGRITY)
 	for x: Vector2i in grid.cells_with("X"):
 		_add_enemy(Lamplighter.new(), x, Lamplighter.MAX_INTEGRITY)
+
+
+## The district's boss on its 'B' cell, with what its fight needs: lanes ('1', '2', '3'), a signal box
+## ('Z'), and barriers ('y') that open when it falls.
+func _spawn_boss() -> void:
+	for c: Vector2i in grid.cells_with("y"):
+		var barrier := BossBarrier.new()
+		barrier.setup(c)
+		world.add_child(barrier)
+	var b := grid.first("B")
+	if b.x < 0:
+		return
+	var boss_id := boss_override if boss_override != "" else LevelCatalog.boss_of(level_id)
+	match boss_id:
+		"conductor":
+			var conductor := Conductor.new()
+			add_enemy(conductor, b, Conductor.MAX_INTEGRITY)
+			boss = conductor
+			var lanes: Array[ShuntLane] = []
+			for digit: String in ["1", "2", "3"]:
+				var cells := grid.cells_with(digit)
+				if cells.is_empty():
+					continue
+				cells.sort_custom(func(p: Vector2i, q: Vector2i) -> bool: return p.x < q.x if p.x != q.x else p.y < q.y)
+				var lane := ShuntLane.new()
+				lanes.append(lane)
+				lane.cells = cells
+			# As the Operator sees them: the lane furthest down-left on screen is the left track.
+			lanes.sort_custom(func(p: ShuntLane, q: ShuntLane) -> bool: return p.cells[0].y > q.cells[0].y)
+			var sides := ["left", "middle", "right"]
+			for i: int in lanes.size():
+				lanes[i].setup(self, lanes[i].cells, sides[mini(i, 2)])
+				fx_ground.add_child(lanes[i])
+			conductor.lanes = lanes
+			var z := grid.first("Z")
+			if z.x >= 0:
+				var box := SignalBox.new()
+				add_enemy(box, z, 1.0)
+				box.conductor = conductor
+				conductor.signal_box = box
 
 
 func _add_enemy(e: Enemy, cell: Vector2i, max_integrity: float) -> void:

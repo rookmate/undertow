@@ -107,7 +107,8 @@ at the end. The user's answers (2026-10-09) are in DECISIONS.md 80–87.
 | 12a | Kestrel Heights: the district (terraces, lawns, hedges, planters, sprinklers, smart gates, laundry, blue-hour look), its cores, logs and voiced lines | done |
 | 12b | Kestrel Heights: Lamplighters, the child's room, the gardener, the voice tutorial | done |
 | 12c | New Game starts in Kestrel Heights with the baton; autopilot routes for Kestrel and the Vellum | done |
-| 13 | Bosses and the Loop: boss framework (tuned and manual solutions), stalled trains, the Conductor | next |
+| 13a | Bosses: the framework (armour and openings, HUD bar, voiced callouts, barriers) and the Conductor | done |
+| 13b | The Loop (north arc): stalled trains as bridges, the Waiting in carriages, the driver's cab; the Conductor at the junction; route and tour | next |
 | 14 | The Signal Room and the Overrides screen (mockup 6): six overrides with effects and Steward replies | |
 | 15 | The Tideworks: cranes and containers, Salvagers, the union hall, finding the Riot Drone, the Crane | |
 | 16 | The Workshop: scrap and weapon upgrades | |

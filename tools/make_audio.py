@@ -284,6 +284,22 @@ def build():
     snap = env(highpass(white(0.05, rng), 2000), 0.0005, 0.01)
     hold = env(mix((tone(1.2, lambda t: 220 + 60 * min(t, 0.3)), 0.5), (tone(1.2, lambda t: 440 + 120 * min(t, 0.3), "tri"), 0.25)), 0.02, None, 0.3)
     write("lamp_hook", mix((snap, 0.9), (hold, 0.8, 0.03)), -6)
+    # A blow off heavy armour: a dull ring, no give.
+    ring = env(mix((tone(0.5, 180), 0.5), (tone(0.5, 287), 0.35), (tone(0.5, 461), 0.2)), 0.001, 0.12)
+    write("armour_clang", mix((ring, 1.0), (env(highpass(white(0.03, rng), 2500), 0.0005, 0.006), 0.6)), -5)
+    # A runaway carriage: wheels on rail joints, a rush of air, rising then gone.
+    rush = swell(lowpass(brown(0.9, rng), 700))
+    clacks = [0.0] * len(rush)
+    for k in range(6):
+        at = int((0.08 + k * 0.13) * RATE)
+        for i in range(800):
+            if at + i < len(clacks):
+                clacks[at + i] += math.exp(-i / 120.0) * rng.uniform(-1, 1)
+    write("carriage_run", mix((rush, 1.0), (highpass(clacks, 600), 0.8)), -3)
+    # Steam out of a vent.
+    write("vent_hiss", env(highpass(white(1.2, rng), 3000), 0.04, 0.5), -9)
+    # A relay in the signal box snapping over.
+    write("signal_zap", mix((env(tone(0.18, 1600, "square"), 0.001, 0.04), 0.4), (env(highpass(white(0.05, rng), 3000), 0.0005, 0.01), 0.8)), -8)
 
     # --- Ambience loops (seamless) ---
     # Rain on stone: pink noise shaped bright, with a slow wash.
