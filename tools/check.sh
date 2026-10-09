@@ -6,7 +6,8 @@
 #   3. The game runs for 30 s from the main scene under the autopilot with no ERROR/WARNING lines and
 #      every autopilot check passing. Windowed when a display exists, headless otherwise.
 #   4. Long autopilot runs (150 s each) that expect every feature built so far to work: New Game through
-#      Kestrel Heights to the Loop map ("slice"), the Loop and its Conductor ("loop"), and the Vellum's
+#      Kestrel Heights to the Loop map ("slice"), the Loop and its Conductor ("loop"), the Tideworks and
+#      its Crane ("tideworks"), and the Vellum's
 #      whole route to the Archive ("vellum").
 #   5. A tour of every district in LevelCatalog (autopilot scenario "tour": start, checkpoints, finds,
 #      Reliquary, muted), each with no ERROR/WARNING lines.
@@ -19,7 +20,7 @@ LOG_DIR="${LOG_DIR:-$ROOT/reports/check}"
 SMOKE_SECONDS="${SMOKE_SECONDS:-30}"
 SMOKE_SCENARIO="${SMOKE_SCENARIO:-slice}"
 # The long runs: the new-game route (Kestrel Heights to the Loop map) and the Vellum's whole route.
-FULL_SCENARIOS="${FULL_SCENARIOS:-slice loop vellum}"
+FULL_SCENARIOS="${FULL_SCENARIOS:-slice loop tideworks vellum}"
 mkdir -p "$LOG_DIR"
 # Screenshots land inside the project folder: keep Godot from importing them.
 touch "$ROOT/reports/.gdignore"

@@ -1,0 +1,42 @@
+; The Tideworks: the old docks turned into automated logistics, the Steward's hands. A quay between
+; container stacks under the crane gantries, containers frozen mid-lift overhead; a side yard with the
+; dockworkers' union hall (pre-Compact, the strike records) and the Warden depot built to watch it (the
+; Riot Drone). Out along the pier, the last crane still trying to finish its lift. Act 1, the third district.
+; Rows are grid y (top = 0), columns grid x; on screen +x runs down-right and +y down-left.
+;
+; Shared legend (see the other maps): # warehouse  d doorway  . quay (indexed)  , pavement (indexed)
+;   : old floor, unindexed  - low wall  = railing  ~ water  L Lattice lamp  P start  C checkpoint
+;   R Reliquary  c Custodian  W one of the Waiting  T truth cache  i floorboards (unindexed)
+;   B the boss (the Crane)  Z its weak point (the hoist brake)  y buffer stops, open when it falls
+; The Tideworks:
+;   [   a stack of containers (low, solid)          ]   a container hanging mid-lift over the quay
+;   ^   a crane leg (solid; the gilt climbs it)     V   a weapon lying where it was left (its id: the weapon)
+;   O   a Salvager
+;
+; Ids ("@ x,y id"): saved, never rename.
+@ 3,3 tideworks_truth_strike_records
+@ 11,3 riot_drone
+@ 8,4 tideworks_waiting_foreman
+! 9,7 THE WARDENS' DEPOT. WHAT THEY LEFT IS STILL ON THE RACK.
+###################################
+######d#######d#######d#######d####  L,,,,,
+##iiiii-,:::::-,                     ,,,R,,
+##iTiii-,::V::-,                     ,C,,,,
+##iiiii:W:::::-,                     ,,,,,L
+##iiiii-,:::::-,                      yyyy
+##iiiii-,--:---,                ~~~,,,,,,,,,=
+##---:--,,,,,,,,                ~~~,^,,,,,^,=
+##,,,,,,,,,,,[,[ [^[ [ [ [^[ [  ~~~,,Z,,,,,,=
+##...L.....L............L......====,,,,,,,,,=
+##............c.......[........,,,,,,,,,,,,,=
+##......C...].......].[....]...,,,,,,,,B,,,,=
+##.P...........[[.........O....,,,,,,,,,,,,,=
+##.................O....C......,,,,,,,,,,,,,=
+##.......L...........L.......L.====,,,,,,,,,=
+##[[[[.[[[[[[[[[[.^[[[[[[.^[[[[ ~~~,^,,,,,^,=
+## ============================ ~~~,,,,,,,,,=
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~==========
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

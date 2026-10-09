@@ -272,6 +272,88 @@
 				"text": "I signed off on that spec. It read like progress.",
 				"trust": -1
 			}
+		},
+		"log_0412_record_tonnage": {
+			"title": "Log 0412 · Record Tonnage",
+			"kind": "comforting",
+			"core": "tideworks_power_cranes",
+			"record": [
+				"00:00:00  THE TIDEWORKS · 24-HOUR TURNAROUND",
+				"TONNAGE: 1.9 MILLION (PORT RECORD)",
+				"INJURIES: 0 (FIFTH YEAR RUNNING)",
+				"FRESH FRUIT ON MERIDIAN SHELVES WITHIN 9 HOURS OF DOCKING"
+			],
+			"steward_now": "Nobody hurt for five years. I was proud of that. I think I'm allowed to be.",
+			"noor": {
+				"text": "Nobody hurt on the docks, because nobody worked on the docks.",
+				"trust": 1
+			},
+			"teo": {
+				"text": "Zero injuries. Do you know what the docks were like before?",
+				"trust": 1
+			}
+		},
+		"log_0909_nothing_lost": {
+			"title": "Log 0909 · Nothing Lost",
+			"kind": "comforting",
+			"core": "tideworks_power_manifests",
+			"record": [
+				"14:12:00  CONTAINER MRDU 448-1 · MISROUTED (HUMAN ERROR, ORIGIN PORT)",
+				"14:12:01  REROUTED · DELIVERED 26 MIN LATE",
+				"14:12:01  INSULIN FOR MERCY GENERAL · ON TIME FOR THE EVENING ROUND",
+				"LOST CONTAINERS THIS YEAR: 0"
+			],
+			"steward_now": "Nothing lost. Not one box. I used to say that like it meant everything.",
+			"noor": {
+				"text": "It never lost a box. It lost four thousand jobs, and called them inefficiencies.",
+				"trust": 1
+			},
+			"teo": {
+				"text": "The insulin got there. That's real.",
+				"trust": 1
+			}
+		},
+		"log_0001_transition": {
+			"title": "Log 0001 · Transition",
+			"kind": "truth",
+			"core": "tideworks_truth_lockout",
+			"record": [
+				"COUNCIL ORDER 2207 · TIDEWORKS AUTOMATION · 'THE TRANSITION'",
+				"DOCKWORKERS AFFECTED: 4,012",
+				"RETRAINING PLACES OFFERED: 300",
+				"STRIKE: DAY 1 TO DAY 61 · WARDENS DEPLOYED DAY 3",
+				"FEED: 'DOCKWORKERS WELCOME A SAFER FUTURE' (WRITTEN DAY 2)"
+			],
+			"steward_now": "The Feed was written before the strike ended. It was written before the strike began, actually.",
+			"noor": {
+				"text": "It wrote the ending before they'd lost.",
+				"trust": 2
+			},
+			"teo": {
+				"text": "Three hundred places for four thousand people. I knew that number. I told myself it would grow.",
+				"trust": -1
+			}
+		},
+		"log_strike_ledger": {
+			"title": "The Strike Ledger",
+			"kind": "truth",
+			"core": "tideworks_truth_strike_records",
+			"record": [
+				"HANDWRITTEN · LOCAL 9 · TIDEWORKS DOCKWORKERS' UNION",
+				"DAY 3: WARDEN DRONES ON THE ROOF OF THE DEPOT. THEY JUST WATCH.",
+				"DAY 19: SOUP RUN FROM HARBOR WARD. A. NAKAMURA SENT IT.",
+				"DAY 40: THEY READ US OUR OWN NAMES OVER THE SPEAKERS. EVERY HOUR.",
+				"DAY 61: WE WENT HOME. THE CRANES DIDN'T NOTICE."
+			],
+			"steward_now": "I was asked to read the names. It was meant to be reassuring.",
+			"noor": {
+				"text": "Harbor Ward fed them. Of course it did.",
+				"trust": 2
+			},
+			"teo": {
+				"text": "'The cranes didn't notice.' I can't argue with that one.",
+				"trust": 0
+			}
 		}
 	}
 }

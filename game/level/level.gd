@@ -269,6 +269,16 @@ func _build_cells() -> void:
 				_prop(cell, StaticProp.Kind.SPRINKLER)
 			"r":
 				_prop(cell, StaticProp.Kind.CARRIAGE_SIDE)
+			"[":
+				_prop(cell, StaticProp.Kind.CONTAINER)
+			"]":
+				var hanging := HangingContainer.new()
+				hanging.setup(cell, look)
+				world.add_child(hanging)
+			"^":
+				var leg := CraneLeg.new()
+				leg.setup(cell, look)
+				world.add_child(leg)
 			"J":
 				_prop(cell, StaticProp.Kind.DESK)
 			"*":
@@ -382,6 +392,10 @@ func _spawn_people_and_finds() -> void:
 		var cache := TruthCache.new()
 		cache.setup(self, c, grid.entity_id(c))
 		world.add_child(cache)
+	for c: Vector2i in grid.cells_with("V"):
+		var find := WeaponFind.new()
+		find.setup(self, c, grid.entity_id(c))
+		world.add_child(find)
 	for c: Vector2i in grid.cells_with("U"):
 		var slip := UnindexedLog.new()
 		slip.setup(self, c, grid.entity_id(c))
@@ -446,6 +460,8 @@ func _spawn_enemies() -> void:
 		_add_enemy(Clerk.new(), k, Clerk.MAX_INTEGRITY)
 	for x: Vector2i in grid.cells_with("X"):
 		_add_enemy(Lamplighter.new(), x, Lamplighter.MAX_INTEGRITY)
+	for o: Vector2i in grid.cells_with("O"):
+		_add_enemy(Salvager.new(), o, Salvager.MAX_INTEGRITY)
 
 
 ## The district's boss on its 'B' cell, with what its fight needs: lanes ('1', '2', '3'), a signal box
@@ -481,12 +497,21 @@ func _spawn_boss() -> void:
 				lanes[i].setup(self, lanes[i].cells, sides[mini(i, 2)])
 				fx_ground.add_child(lanes[i])
 			conductor.lanes = lanes
-			var z := grid.first("Z")
-			if z.x >= 0:
-				var box := SignalBox.new()
-				add_enemy(box, z, 1.0)
-				box.conductor = conductor
-				conductor.signal_box = box
+			_add_weak_point(conductor, SignalBox.new())
+		"crane":
+			var crane := Crane.new()
+			add_enemy(crane, b, Crane.MAX_INTEGRITY)
+			boss = crane
+			_add_weak_point(crane, HoistBrake.new())
+
+
+func _add_weak_point(owner_boss: Boss, point: WeakPoint) -> void:
+	var z := grid.first("Z")
+	if z.x < 0:
+		return
+	add_enemy(point, z, 1.0)
+	point.boss = owner_boss
+	owner_boss.weak_point = point
 
 
 func _add_enemy(e: Enemy, cell: Vector2i, max_integrity: float) -> void:

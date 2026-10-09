@@ -24,9 +24,23 @@ func _ready() -> void:
 	add_to_group(&"bosses")
 
 
+## Its weak point (WeakPoint), if it has one.
+var weak_point: WeakPoint
+
+
 ## Only true in its openings; otherwise blows ring off its armour.
 func is_vulnerable() -> bool:
 	return false
+
+
+## The window for its weak point.
+func is_switching() -> bool:
+	return false
+
+
+## Its weak point was struck (only matters while switching).
+func on_weak_point_hit() -> void:
+	pass
 
 
 func take_hit(amount: float, from_dir: Vector2, _knock_tiles: float, _stun_seconds: float) -> void:
@@ -80,6 +94,8 @@ func call_out(line_id: String) -> void:
 
 
 func _die() -> void:
+	if weak_point != null:
+		weak_point.retire()
 	super()
 	defeated.emit()
 	for n: Node in get_tree().get_nodes_in_group(&"boss_barriers"):

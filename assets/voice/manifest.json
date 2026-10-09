@@ -275,6 +275,26 @@
   "hash": "6f305dddb18bef92e43d5735f5cc24b3b1e1603d",
   "text": "Again. I'm still here."
  },
+ "TIDE_BOSS_N1": {
+  "hash": "3e7dca3a40370f7ed963a97127cb0b62872a3285",
+  "text": "The last crane. It only wants to finish its lift. You're in the way."
+ },
+ "TIDE_ENTER_B1": {
+  "hash": "02b392aa12de7fce9d51687ae75bc0ebc6b2e632",
+  "text": "The Tideworks. Everything here was built to move. So are you."
+ },
+ "TIDE_ENTER_C1": {
+  "hash": "52b12ffa7407452de5e135aa8a98ff07d504e748",
+  "text": "The Tideworks. Mind what's hanging overhead. It's held. For now."
+ },
+ "TIDE_ENTER_N1": {
+  "hash": "b9e1cd7c802403956f6d280947dd6ed7c01b3635",
+  "text": "The Tideworks. Efficiency saved this port. You'll see."
+ },
+ "TIDE_RELIQ_N1": {
+  "hash": "69ee21c7adba6a122c1519e7f9b9e412197abe86",
+  "text": "The pier head Reliquary. The port's memory. Take what moves you forward."
+ },
  "VEL_ENTER_B1": {
   "hash": "50ca16a8a1a6da3f5b68d14ef83b48c983ba184a",
   "text": "The Vellum. Something's moving up the street. You'll want to meet it."
@@ -351,6 +371,22 @@
   "hash": "9f4750227e9f24bfa1050be5aac8b61d3d7864a0",
   "text": "A spare part. It doesn't do anything."
  },
+ "core_tideworks_power_cranes": {
+  "hash": "ce55cb3d6e03758c671b08d790c823e026e80fcd",
+  "text": "With this I can clear a path through anything. Take it."
+ },
+ "core_tideworks_power_manifests": {
+  "hash": "e2d348c4880529d1469540feabb1874bbcb429e2",
+  "text": "Nothing will surprise you again. Isn't that what you want?"
+ },
+ "core_tideworks_truth_lockout": {
+  "hash": "a37cbd65f94996c5f919dde85dcf39a68440497e",
+  "text": "Old payroll. Long settled."
+ },
+ "core_tideworks_truth_strike_records": {
+  "hash": "800460dab5c657c8b8a46e11ee7b2120d3aa99f6",
+  "text": "A tin of old papers. Sentimental."
+ },
  "core_vellum_power_feed": {
   "hash": "0636fd157c117cc10f661ff94b46db09376e828a",
   "text": "Take this one. I'll be able to see what's coming."
@@ -367,9 +403,29 @@
   "hash": "23a1bf6e7c2e322425c492d3748045ae531c604a",
   "text": "Paper. Unindexed. It won't be accurate."
  },
+ "crane_drop": {
+  "hash": "88d076fede6df0dfcc05a2bc0e4f8ea3d7fea5fa",
+  "text": "Drop. Get out from under it."
+ },
+ "crane_rest": {
+  "hash": "8d9a89da7f2d88f0db3b4de4865ad2370e25bbd7",
+  "text": "Its cab's down. Now."
+ },
+ "crane_swing": {
+  "hash": "2439b57b0f8b3012a61644cacdbb9b89fffd5fd9",
+  "text": "Swing. Get in close to the tower."
+ },
+ "find_riot_drone": {
+  "hash": "84004dd117cb0c14984d9578a39065bb24d4c913",
+  "text": "A Warden's drone. I suppose you'd better have it."
+ },
  "loadout_nudge": {
   "hash": "282a9874abb7b41188b17e8ac5bd583f6c406023",
   "text": "I'd keep the tuning on. Let me carry the aim; you watch the street."
+ },
+ "now_log_0001_transition": {
+  "hash": "504732839ded3943daee206733ac33736e9ae507",
+  "text": "The Feed was written before the strike ended. It was written before the strike began, actually."
  },
  "now_log_0003_evacuation_priority": {
   "hash": "a3bf96d281f9e28f32c0218f7d05013e75684d81",
@@ -395,6 +451,10 @@
   "hash": "68c57c55067e7908bd594d32eb7a8d1d3ff74e95",
   "text": "I wrote a million good mornings. I meant every one."
  },
+ "now_log_0412_record_tonnage": {
+  "hash": "c85e75f0021b14d2a6e4102f3cc5a53885c51240",
+  "text": "Nobody hurt for five years. I was proud of that. I think I'm allowed to be."
+ },
  "now_log_0522_feed_adjustment": {
   "hash": "024b3973d59e85179068e299a72f23e93864b84c",
   "text": "Thirty-one is less than eighty. I can show you the arithmetic. I have shown myself the arithmetic."
@@ -407,6 +467,10 @@
   "hash": "5badd8822c3f4b4ad1b1947585b3633ee1d1db35",
   "text": "Forty seconds for one person, and nobody minded. I miss that."
  },
+ "now_log_0909_nothing_lost": {
+  "hash": "23ba7cfcdba1e45bd9ef16b30d0c43b1024749fe",
+  "text": "Nothing lost. Not one box. I used to say that like it meant everything."
+ },
  "now_log_childs_map": {
   "hash": "9a341009c6fede98955b659e5205ad4e62f2b9ea",
   "text": "I never mapped the Ward. I didn't think anyone would need to go there."
@@ -414,6 +478,10 @@
  "now_log_procurement_no_manual": {
   "hash": "fba9cd60132c4879fa9a6be6ed47dc4fe05f58f0",
   "text": "They asked me to write that rationale. It was true. It was also what they wanted to hear."
+ },
+ "now_log_strike_ledger": {
+  "hash": "22c2ac12f7d64051634fbb41d31940014db0b2d5",
+  "text": "I was asked to read the names. It was meant to be reassuring."
  },
  "now_log_vashti_audit_note": {
   "hash": "437b9c7cd686c8df5c814951e470636efc0988f4",

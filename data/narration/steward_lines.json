@@ -542,6 +542,41 @@
 			"tone": "neutral",
 			"text": "The Conductor. It's only trying to clear the line. Stay off the track it's on.",
 			"level": "loop"
+		},
+		{
+			"id": "TIDE_ENTER_N1",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "The Tideworks. Efficiency saved this port. You'll see.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_ENTER_B1",
+			"event": "level_enter",
+			"tone": "bold",
+			"text": "The Tideworks. Everything here was built to move. So are you.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_ENTER_C1",
+			"event": "level_enter",
+			"tone": "cautious",
+			"text": "The Tideworks. Mind what's hanging overhead. It's held. For now.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_RELIQ_N1",
+			"event": "reliquary_near",
+			"tone": "neutral",
+			"text": "The pier head Reliquary. The port's memory. Take what moves you forward.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_BOSS_N1",
+			"event": "boss_engaged",
+			"tone": "neutral",
+			"text": "The last crane. It only wants to finish its lift. You're in the way.",
+			"level": "tideworks"
 		}
 	]
 }

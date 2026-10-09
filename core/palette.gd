@@ -83,6 +83,20 @@ const SKY_FOG_LOW := Color("#2A3540")
 const AMBIENT_FOG_ON := Color(0.33, 0.36, 0.46)
 const AMBIENT_FOG_MUTED := Color(0.22, 0.24, 0.27)
 
+# --- The Tideworks (rust and black water, desaturated containers, wet steel) ---------------------------
+const RUST := Color("#7A3B26")
+const RUST_DARK := Color("#4E2619")
+const CONTAINER_TEAL := Color("#2F5B5E")
+const CONTAINER_RED := Color("#6E2A22")
+const CONTAINER_GREY := Color("#5A5E62")
+const STEEL_WET := Color("#3A4248")
+const DOCK_CONCRETE := Color("#4A4D50")
+const DOCK_CONCRETE_B := Color("#53575A")
+const SKY_STORM_TOP := Color("#121A24")
+const SKY_STORM_LOW := Color("#222A33")
+const AMBIENT_STORM_ON := Color(0.31, 0.33, 0.43)
+const AMBIENT_STORM_MUTED := Color(0.21, 0.22, 0.25)
+
 # --- Characters ---------------------------------------------------------------------------------
 const COVERALL := Color("#39424A")
 const COVERALL_LIGHT := Color("#4B565E")

@@ -66,7 +66,12 @@ func test_continue_routes_every_saved_location() -> void:
 		check_eq(SceneRouter.destination_for("reliquary:" + id), &"core_choice")
 		check(ResourceLoader.exists(LevelCatalog.scene_of(id)), "%s's scene exists" % id)
 	check_eq(SceneRouter.destination_for("ark"), &"ark")
-	check_eq(SceneRouter.destination_for("level:tideworks"), &"", "districts this build doesn't have are refused")
+	var unbuilt := ""
+	for d: Dictionary in LevelCatalog.CITY:
+		if not LevelCatalog.has_level(str(d["id"])):
+			unbuilt = str(d["id"])
+	check(unbuilt != "", "the city map still has a district this build doesn't")
+	check_eq(SceneRouter.destination_for("level:" + unbuilt), &"", "districts this build doesn't have are refused")
 	check_eq(SceneRouter.destination_for("somewhere"), &"")
 	for key: StringName in SceneRouter.SCENES:
 		check(ResourceLoader.exists(SceneRouter.SCENES[key]), "%s exists" % SceneRouter.SCENES[key])
