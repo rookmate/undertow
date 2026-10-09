@@ -65,29 +65,38 @@ static func register_actions() -> void:
 			InputMap.action_add_event(action, _make_event(binding))
 
 
+## Bindings answer every device (-1, Godot's "all devices"): a second controller, a reconnected one, or
+## the Deck's own pad with a different id all work. A binding made in code otherwise defaults to device 0.
+const ALL_DEVICES := -1
+
+
 static func _make_event(binding: Array) -> InputEvent:
 	var kind: String = binding[0]
+	var event: InputEvent
 	match kind:
 		"key":
 			var k := InputEventKey.new()
 			k.physical_keycode = binding[1]
-			return k
+			event = k
 		"mouse":
 			var m := InputEventMouseButton.new()
 			m.button_index = binding[1]
-			return m
+			event = m
 		"pad_button":
 			var b := InputEventJoypadButton.new()
 			b.button_index = binding[1]
-			return b
+			event = b
 		"pad_axis":
 			var spec: Array = binding[1]
 			var a := InputEventJoypadMotion.new()
 			a.axis = spec[0]
 			a.axis_value = spec[1]
-			return a
-	push_error("Controls: unknown binding kind %s" % kind)
-	return InputEventAction.new()
+			event = a
+		_:
+			push_error("Controls: unknown binding kind %s" % kind)
+			event = InputEventAction.new()
+	event.device = ALL_DEVICES
+	return event
 
 
 func _input(event: InputEvent) -> void:

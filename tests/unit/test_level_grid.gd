@@ -95,3 +95,34 @@ func test_the_ark_has_no_lattice() -> void:
 	for c: Vector2i in ark.all_cells():
 		check_false(ark.is_indexed(c), "%s on the Ark is indexed" % c)
 	check(ark.reachable_from(ark.start_cell()).has(ark.first("a") + Vector2i(1, 0)), "the Archive door is reachable from the dock")
+
+
+func test_every_placed_thing_has_a_unique_id_from_the_map() -> void:
+	check(grid.validate(false).is_empty(), "the Vellum validates: %s" % [grid.validate(false)])
+	check_eq(grid.entity_id(grid.first("W")), ContentIds.SURVIVOR_DOORWAY)
+	check_eq(grid.entity_id(grid.first("w")), ContentIds.SURVIVOR_STACKS)
+	check_eq(grid.entity_id(grid.first("T")), ContentIds.CORE_TRUTH_STACKS)
+	check_eq(grid.entity_id(grid.first("U")), ContentIds.LOG_UNINDEXED_SLIP)
+
+
+func test_map_ids_point_at_real_content() -> void:
+	for c: Vector2i in grid.cells_with("T"):
+		check(ContentDb.is_truth(grid.entity_id(c)), "the cache at %s holds a known truth core" % c)
+	for c: Vector2i in grid.cells_with("U"):
+		check_eq(str(ContentDb.memory_log(grid.entity_id(c)).get("kind")), "unindexed", "the slip at %s is an unindexed log" % c)
+
+
+func test_validation_catches_broken_maps() -> void:
+	var no_start := LevelGrid.parse("#####\n#..R#\n#####")
+	check(no_start.validate(false).size() > 0, "no start")
+	var unknown := LevelGrid.parse("#####\n#Px.#\n#.R.#\n#####")
+	check(unknown.validate(false).size() > 0, "unknown character reported")
+	check(unknown.is_solid(Vector2i(2, 1)), "and treated as solid, not invisible floor")
+	var no_id := LevelGrid.parse("#####\n#P.W#\n#.R.#\n#####")
+	check(no_id.validate(false).size() > 0, "a resident without an id")
+	var dup := LevelGrid.parse("@ 3,1 same\n@ 1,2 same\n#####\n#P.W#\n#WR.#\n#####")
+	check(dup.validate(false).size() > 0, "two things sharing an id")
+	var bad_line := LevelGrid.parse("@ nonsense\n#####\n#P.R#\n#####")
+	check(bad_line.validate(false).size() > 0, "a malformed id line")
+	var ok := LevelGrid.parse("@ 3,1 someone\n#####\n#P.W#\n#.R.#\n#####")
+	check(ok.validate(false).is_empty(), "a good little map passes: %s" % [ok.validate(false)])

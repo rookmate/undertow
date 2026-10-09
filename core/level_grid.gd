@@ -19,8 +19,14 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 const SOLID := " #dmgA~=-L|KtoRT"
 ## People stand on these cells: walkable floor, but nothing should route through them.
 const OCCUPIED := "WwNY"
+## Placed things that need a stable id from an '@' line (people, caches, logs).
+const NEEDS_ID := "WwTU"
 
 var size: Vector2i = Vector2i.ZERO
+## Stable ids of placed things, from the map's '@ x,y id' lines.
+var entity_ids: Dictionary[Vector2i, String] = {}
+## Problems found while parsing (bad '@' lines); validate() adds the rest.
+var parse_errors: PackedStringArray = []
 var _rows: PackedStringArray = []
 
 
@@ -37,6 +43,9 @@ static func parse(text: String) -> LevelGrid:
 		var row := line.trim_suffix("\r")
 		if row.begins_with(";"):
 			continue
+		if row.begins_with("@"):
+			grid._parse_id_line(row)
+			continue
 		grid._rows.append(row)
 	while grid._rows.size() > 0 and grid._rows[grid._rows.size() - 1].strip_edges() == "":
 		grid._rows.remove_at(grid._rows.size() - 1)
@@ -47,6 +56,61 @@ static func parse(text: String) -> LevelGrid:
 		grid._rows[i] = grid._rows[i].rpad(width)
 	grid.size = Vector2i(width, grid._rows.size())
 	return grid
+
+
+func _parse_id_line(line: String) -> void:
+	var parts := line.substr(1).strip_edges().split(" ", false)
+	var xy := parts[0].split(",") if parts.size() == 2 else PackedStringArray()
+	if xy.size() != 2 or not xy[0].is_valid_int() or not xy[1].is_valid_int():
+		parse_errors.append("bad id line '%s' (expected '@ x,y id')" % line)
+		return
+	entity_ids[Vector2i(xy[0].to_int(), xy[1].to_int())] = parts[1]
+
+
+func entity_id(cell: Vector2i) -> String:
+	return entity_ids.get(cell, "")
+
+
+## Everything wrong with this map, or nothing. A level refuses to load (and saves nothing) unless this
+## is empty. `hub` maps start on 'p' and have no Reliquary; level maps start on 'P' and need one.
+func validate(hub: bool) -> PackedStringArray:
+	var problems := PackedStringArray(parse_errors)
+	if size.x == 0 or size.y == 0:
+		problems.append("the map is empty")
+		return problems
+	for c: Vector2i in all_cells():
+		var ch := char_at(c)
+		if not FLOOR_OF.has(ch):
+			problems.append("unknown map character '%s' at %s" % [ch, c])
+	var start_marker := "p" if hub else "P"
+	if cells_with(start_marker).size() != 1:
+		problems.append("needs exactly one start '%s', found %d" % [start_marker, cells_with(start_marker).size()])
+	var seen: Dictionary[String, Vector2i] = {}
+	for c: Vector2i in all_cells():
+		if not NEEDS_ID.contains(char_at(c)):
+			continue
+		var id := entity_id(c)
+		if id == "":
+			problems.append("'%s' at %s has no '@' id line" % [char_at(c), c])
+		elif seen.has(id):
+			problems.append("id %s used at %s and %s" % [id, seen[id], c])
+		else:
+			seen[id] = c
+	for c: Vector2i in entity_ids:
+		if not NEEDS_ID.contains(char_at(c)):
+			problems.append("'@' id line for %s, but nothing there needs an id" % c)
+	if not hub and problems.is_empty():
+		var reliquaries := cells_with("R")
+		if reliquaries.size() != 1:
+			problems.append("needs exactly one Reliquary 'R', found %d" % reliquaries.size())
+		else:
+			var reach := reachable_from(start_cell(), true)
+			var door := false
+			for d: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]:
+				door = door or reach.has(reliquaries[0] + d)
+			if not door:
+				problems.append("the Reliquary can't be reached along the Lattice from the start")
+	return problems
 
 
 func in_bounds(cell: Vector2i) -> bool:
@@ -63,8 +127,10 @@ func floor_at(cell: Vector2i) -> Floor:
 	return FLOOR_OF.get(char_at(cell), Floor.VOID)
 
 
+## Unknown characters fail closed: solid, never accidental invisible floor.
 func is_solid(cell: Vector2i) -> bool:
-	return SOLID.contains(char_at(cell))
+	var ch := char_at(cell)
+	return not FLOOR_OF.has(ch) or SOLID.contains(ch)
 
 
 func is_walkable(cell: Vector2i) -> bool:
@@ -81,11 +147,31 @@ func is_indexed(cell: Vector2i) -> bool:
 	return f == Floor.COBBLE or f == Floor.PAVEMENT
 
 
-## Thrown and fired things stop at buildings and tall props, and fly over water, rails and low walls.
-func blocks_projectiles(cell: Vector2i) -> bool:
+## Tall things stop sight, swings and shots: buildings and tall props. Water, rails and low walls don't.
+func blocks_line(cell: Vector2i) -> bool:
 	if not in_bounds(cell):
 		return true
 	return is_building(cell) or "Kt|R".contains(char_at(cell))
+
+
+## Grid-space parameter (0..1) along `from`→`to` where the line first enters a blocking cell, or -1 if it
+## doesn't. The cells at either end don't count (whoever stands there isn't hiding behind themselves).
+func first_block(from: Vector2, to: Vector2) -> float:
+	var start := Vector2i(floori(from.x), floori(from.y))
+	var end := Vector2i(floori(to.x), floori(to.y))
+	var steps := maxi(1, ceili(from.distance_to(to) / 0.05))
+	for i: int in range(1, steps + 1):
+		var t := float(i) / steps
+		var p := from.lerp(to, t)
+		var c := Vector2i(floori(p.x), floori(p.y))
+		if c != start and c != end and blocks_line(c):
+			return float(i - 1) / steps
+	return -1.0
+
+
+## Nothing tall between two screen positions on the ground.
+func line_clear(a: Vector2, b: Vector2) -> bool:
+	return first_block(Iso.world_to_grid(a), Iso.world_to_grid(b)) < 0.0
 
 
 func is_building(cell: Vector2i) -> bool:

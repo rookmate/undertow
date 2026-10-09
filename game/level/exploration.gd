@@ -6,6 +6,9 @@ extends Node
 
 const SIGHT_TILES := 3
 
+## Newly seen cells, so the map can redraw just the part that changed.
+signal discovered(cells: Array[Vector2i])
+
 var grid: LevelGrid
 var explored: Dictionary[Vector2i, bool] = {}
 var total_walkable: int = 0
@@ -23,13 +26,17 @@ func observe(cell: Vector2i) -> void:
 	if cell == _last_cell:
 		return
 	_last_cell = cell
+	var fresh: Array[Vector2i] = []
 	for dy: int in range(-SIGHT_TILES, SIGHT_TILES + 1):
 		for dx: int in range(-SIGHT_TILES, SIGHT_TILES + 1):
 			if absi(dx) + absi(dy) > SIGHT_TILES + 1:
 				continue
 			var c := cell + Vector2i(dx, dy)
-			if grid.is_walkable(c):
+			if grid.is_walkable(c) and not explored.has(c):
 				explored[c] = true
+				fresh.append(c)
+	if not fresh.is_empty():
+		discovered.emit(fresh)
 
 
 func charted_ratio() -> float:

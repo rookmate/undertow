@@ -34,6 +34,7 @@ func _ready() -> void:
 	_back.pressed.connect(_to_title)
 	box.add_child(_back)
 	_back.grab_focus()
+	Modals.push(self)
 
 
 ## The run so far, and the three endings the city will offer (brief, mockup 7): Reboot and Unplug are
@@ -93,6 +94,6 @@ func _ending_card(title: String, text: String, open: bool, checklist: Array[Endi
 
 
 func _to_title() -> void:
-	GameState.save()
-	get_tree().paused = false
+	if not await SaveFlow.before_leaving(get_tree()):
+		return
 	SceneRouter.goto(&"title")

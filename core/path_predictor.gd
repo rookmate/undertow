@@ -44,25 +44,47 @@ func aim_at(target: Vector2i, from: Vector2i) -> void:
 	route = []
 
 
+## The Lattice reaches this cell. Coverage is about hardware, not about whether a route can pass through
+## the cell: a lamp post's cell is lit even though the route goes round the post.
 func covers(cell: Vector2i) -> bool:
-	return nav.is_open(cell)
+	return grid.is_indexed(cell)
 
 
-## The next tiles ahead of an Operator standing at `world_position` (screen space).
+## The next tiles ahead of an Operator standing at `world_position` (screen space). Never the cell
+## under their feet, never one within UNDERFOOT_TILES of them, never more than `count`.
 func predict(world_position: Vector2, count: int = Tunables.PATH_TILES_AHEAD) -> Array[Vector2i]:
 	var out: Array[Vector2i] = []
 	var here := Iso.world_to_cell(world_position)
 	if goal.x < 0 or not covers(here):
 		return out
-	var at := route.find(here)
+	var start := here if nav.is_open(here) else _nearest_open(here, world_position)
+	if start.x < 0:
+		return out
+	var at := route.find(start)
 	if at == -1:
-		route = nav.path(here, goal)
+		route = nav.path(start, goal)
 		at = 0
 	for i: int in range(at, route.size()):
 		var c := route[i]
-		if Iso.ground_distance(world_position, Iso.cell_center(c)) < UNDERFOOT_TILES:
+		if c == here or Iso.ground_distance(world_position, Iso.cell_center(c)) < UNDERFOOT_TILES:
 			continue
 		out.append(c)
 		if out.size() >= count:
 			break
 	return out
+
+
+## Standing in the open part of a cell the route can't use (a lamp post's corner, beside a resident):
+## start from the open neighbour nearest the feet.
+func _nearest_open(cell: Vector2i, world_position: Vector2) -> Vector2i:
+	var best := Vector2i(-1, -1)
+	var best_d := INF
+	for d: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP, Vector2i(1, 1), Vector2i(-1, -1), Vector2i(1, -1), Vector2i(-1, 1)]:
+		var n := cell + d
+		if not nav.is_open(n):
+			continue
+		var dist := Iso.ground_distance(world_position, Iso.cell_center(n))
+		if dist < best_d:
+			best_d = dist
+			best = n
+	return best

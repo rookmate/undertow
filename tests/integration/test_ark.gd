@@ -17,6 +17,7 @@ func before_each() -> void:
 
 
 func after_each() -> void:
+	Modals.clear()
 	get_tree().paused = false
 	if not Steward.voice_on:
 		Steward.set_voice(true)
@@ -92,3 +93,60 @@ func test_the_dock_ends_the_slice() -> void:
 	var panel := ark.open_end_panel()
 	await wait_frames(2)
 	check(panel != null and get_tree().paused)
+
+
+func test_buildings_stand_only_once_restored() -> void:
+	ark.queue_free()
+	await wait_frames(1)
+	GameState.new_run()
+	var bare := (load("res://game/ark/ark.tscn") as PackedScene).instantiate() as ArkLevel
+	add_child(bare)
+	await wait_frames(2)
+	var archive := 0
+	var plots := 0
+	var doors := 0
+	for c: Node in bare.world.get_children():
+		if c is BuildingCell and (c as BuildingCell).facade == BuildingCell.Facade.ARCHIVE:
+			archive += 1
+		if c is UnbuiltPlot:
+			plots += 1
+		if c is ArkFixture and (c as ArkFixture).kind == ArkFixture.Kind.ARCHIVE_DOOR:
+			doors += 1
+	check_eq(archive, 0, "no Archive before the Vellum's core comes home")
+	check(plots > 0, "just its plot")
+	check_eq(doors, 0, "and no door into it")
+	ark = bare
+
+
+func test_every_survivor_has_a_place_on_the_ark() -> void:
+	ark.queue_free()
+	await wait_frames(1)
+	for i: int in 7:
+		GameState.add_survivor("survivor_%d" % i)
+	var crowded := (load("res://game/ark/ark.tscn") as PackedScene).instantiate() as ArkLevel
+	add_child(crowded)
+	await wait_frames(2)
+	check_eq(_count_in(crowded, ArkFigure.Who.SURVIVOR), GameState.run.survivors_found(), "all %d survivors are there" % GameState.run.survivors_found())
+	var cells := crowded.survivor_cells(GameState.run.survivors_found())
+	var unique: Dictionary[Vector2i, bool] = {}
+	for c: Vector2i in cells:
+		unique[c] = true
+	check_eq(unique.size(), cells.size(), "nobody stands on anybody")
+	ark = crowded
+
+
+func _count_in(level: ArkLevel, who: ArkFigure.Who) -> int:
+	var n := 0
+	for c: Node in level.world.get_children():
+		if c is ArkFigure and (c as ArkFigure).who == who:
+			n += 1
+	return n
+
+
+func test_the_archive_list_scrolls() -> void:
+	var screen := ark.open_archive()
+	await wait_frames(2)
+	var list: VBoxContainer = screen.get("_list")
+	check(list.get_parent() is ScrollContainer, "the log list lives in a scroll container")
+	check((list.get_parent() as ScrollContainer).follow_focus, "and follows controller focus")
+	screen.close()

@@ -38,7 +38,7 @@ func _build() -> void:
 	title.position = Vector2(96, 64)
 	add_child(title)
 	var sub := Label.new()
-	sub.text = "%d CORES · YOU CAN CARRY %d" % [offered.size(), Tunables.CORES_CARRIED_PER_LEVEL]
+	sub.text = "%d CORES · YOU CAN CARRY %d" % [offered.size(), CoreChoice.carry_count(offered)]
 	sub.add_theme_font_override(&"font", UiFonts.mono())
 	sub.add_theme_font_size_override(&"font_size", 20)
 	sub.add_theme_color_override(&"font_color", Palette.IVORY_DIM)
@@ -137,9 +137,9 @@ func _toggle(id: String) -> void:
 		return
 	if picked.has(id):
 		picked.erase(id)
-	elif picked.size() < Tunables.CORES_CARRIED_PER_LEVEL:
+	elif picked.size() < CoreChoice.carry_count(offered):
 		picked.append(id)
-	else:
+	elif not picked.is_empty():
 		picked[picked.size() - 1] = id
 	_refresh()
 
@@ -149,14 +149,14 @@ func _refresh() -> void:
 		var card := _cards[id]
 		var badge := card.get_node(^"Badge") as Label
 		var carried := picked.has(id)
-		badge.text = "CARRY" if carried else ("LEAVE" if picked.size() == Tunables.CORES_CARRIED_PER_LEVEL else "")
+		badge.text = "CARRY" if carried else ("LEAVE" if picked.size() == CoreChoice.carry_count(offered) else "")
 		badge.add_theme_color_override(&"font_color", Palette.IVORY if carried else Palette.GREY_COLD)
 		var style := UiTheme.panel_style(0.92)
 		if carried:
 			style.border_color = Palette.IVORY
 			style.set_border_width_all(3)
 		card.add_theme_stylebox_override(&"normal", style)
-	_count.text = "%d / %d CHOSEN" % [picked.size(), Tunables.CORES_CARRIED_PER_LEVEL]
+	_count.text = "%d / %d CHOSEN" % [picked.size(), CoreChoice.carry_count(offered)]
 	_confirm.disabled = CoreChoice.validate(offered, picked) != ""
 
 
@@ -169,17 +169,19 @@ func _on_confirm() -> void:
 		_summary.text = problem
 		return
 	_done = true
-	GameState.save()
+	var saved := SaveFlow.checkpoint(get_tree())
 	var names := PackedStringArray()
 	for id: String in picked:
 		var kind := "truth" if ContentDb.is_truth(id) else "power"
 		names.append("the %s %s" % [str(ContentDb.core(id).get("name", id)).to_lower(), kind])
 	_summary.text = "You carry %s. The rest stays in the dark." % " and ".join(names)
+	if not saved:
+		_summary.text += " (Not saved yet: the Ark will try again.)"
 	_confirm.text = "TO THE ARK"
 	_confirm.disabled = false
 	_confirm.grab_focus()
 
 
 func _continue() -> void:
-	var target := SceneRouter.key_for_location(GameState.run.location)
-	SceneRouter.goto(target if target != &"" else &"title")
+	if not SceneRouter.resume(GameState.run.location):
+		SceneRouter.goto(&"title")

@@ -37,7 +37,7 @@ func test_opening_the_reliquary_saves_and_points_continue_at_the_choice() -> voi
 	# Interact without leaving the test scene: what SceneRouter would do is checked separately.
 	GameState.set_location("reliquary:vellum")
 	GameState.save()
-	check_eq(SceneRouter.key_for_location(SaveService.load_run().run.location), &"core_choice")
+	check_eq(SceneRouter.destination_for(SaveService.load_run().run.location), &"core_choice")
 	level.queue_free()
 
 

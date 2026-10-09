@@ -83,22 +83,24 @@ func _ready() -> void:
 	_play_quiet_line()
 
 
+## The new run only replaces the current one if the transition is accepted (one operation).
 func _start_new_game() -> void:
-	GameState.new_run()
-	SceneRouter.goto(&"loadout")
+	SceneRouter.goto(&"loadout", func() -> void:
+		GameState.new_run()
+		GameState.set_location("loadout:" + LevelCatalog.FIRST_LEVEL))
 
 
 func _continue_game() -> void:
+	if SceneRouter.is_busy():
+		return
 	var result := SaveService.load_run()
 	if result.status != SaveStore.Status.OK:
 		_show_notice(result.note)
 		return
-	var target := SceneRouter.key_for_location(result.run.location)
-	if target == &"":
+	if SceneRouter.destination_for(result.run.location) == &"":
 		_show_notice("The save points somewhere this build doesn't have yet (%s)." % result.run.location)
 		return
-	GameState.replace_run(result.run)
-	SceneRouter.goto(target)
+	SceneRouter.resume(result.run.location, func() -> void: GameState.replace_run(result.run))
 
 
 func _show_notice(text: String) -> void:

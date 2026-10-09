@@ -26,12 +26,23 @@ func interact(_player: Operator) -> void:
 		return
 	opened = true
 	GameState.set_location("reliquary:" + level_id)
-	GameState.save()
+	SaveFlow.checkpoint(get_tree())
 	SceneRouter.goto(&"core_choice")
 
 
 func _process(_delta: float) -> void:
 	queue_redraw()
+
+
+func _ring_look() -> RingPainter.Look:
+	var look := RingPainter.Look.new()
+	look.hdr = 1.3
+	look.halo = 0.0
+	if not Steward.voice_on:
+		look.thin = true
+		look.color = Palette.GREY_COLD
+		look.show_center = false
+	return look
 
 
 func _draw() -> void:
@@ -46,14 +57,11 @@ func _draw() -> void:
 	draw_colored_polygon(PackedVector2Array([left, bottom, bottom + up, left + up]), Palette.STONE_OLD.darkened(0.2))
 	draw_colored_polygon(PackedVector2Array([bottom, right, right + up, bottom + up]), Palette.STONE_OLD)
 	draw_colored_polygon(PackedVector2Array([top + up, right + up, bottom + up, left + up]), Palette.STONE_OLD.lightened(0.15))
-	# The ring inlaid in the lid, flattened onto it.
+	# The canonical ring inlaid in the lid, laid flat onto it. Lit while the Steward listens; muted, the
+	# thin grey ring without a centre.
 	var c := up
-	var col := Palette.STEWARD_GOLD_HOT if Steward.voice_on else Palette.GREY_DEEP
-	var pts := PackedVector2Array()
-	for i: int in 33:
-		var a := RingPainter.clock_to_rad(lerpf(RingPainter.band_start_deg(), RingPainter.band_end_deg(), i / 32.0))
-		pts.append(c + Vector2(cos(a) * hw * 0.55, sin(a) * hh * 0.55))
-	draw_polyline(pts, col, 3.0, true)
-	draw_circle(c, 4.0, col, true, -1.0, true)
+	draw_set_transform(c, 0.0, Vector2(1.0, Iso.SQUASH))
+	RingPainter.paint(self, Vector2.ZERO, hw * 0.4, _ring_look())
+	draw_set_transform(Vector2.ZERO)
 	if opened:
 		draw_colored_polygon(PackedVector2Array([c + Vector2(-hw * 0.3, 0), c + Vector2(0, -hh * 0.3), c + Vector2(hw * 0.3, 0), c + Vector2(0, hh * 0.3)]), Palette.NEAR_BLACK)

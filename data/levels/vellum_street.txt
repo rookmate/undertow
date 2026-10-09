@@ -16,6 +16,13 @@
 ;   ~   canal water   =  railing   -  low wall
 ;
 ; "Indexed" means the Lattice reaches it: lit, on the Steward's map, and routable by its path.
+;
+; Lines starting with '@' give each placed person, cache and log its stable id ("@ x,y id"). Ids are
+; saved, so never rename one; every W, w, T and U on the map needs exactly one.
+@ 9,25 vellum_waiting_doorway
+@ 18,31 vellum_waiting_stacks
+@ 20,24 vellum_truth_vashti_note
+@ 18,27 log_vellum_pulped_page
 #################
 #################
 #################

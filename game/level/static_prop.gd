@@ -82,8 +82,14 @@ func _kiosk() -> void:
 	var hh := Iso.HALF_H * 0.7
 	var screen := PackedVector2Array([Vector2(hw * 0.15, hh * 0.85 - 30.0), Vector2(hw * 0.85, hh * 0.15 - 30.0), Vector2(hw * 0.85, hh * 0.15 - 80.0), Vector2(hw * 0.15, hh * 0.85 - 80.0)])
 	draw_colored_polygon(screen, Palette.BLACK_MIRROR)
-	var c := (screen[0] + screen[2]) * 0.5
-	draw_arc(c, 13.0, -PI * 0.25 + 0.6, -PI * 0.25 + TAU - 0.6, 24, Color(Palette.GREY_COLD, 0.35), 2.0, true)
+	# The canonical ring, faint and grey: an afterimage on a dead screen.
+	var look := RingPainter.Look.new()
+	look.thin = true
+	look.color = Palette.GREY_COLD
+	look.alpha = 0.45
+	look.show_center = false
+	look.halo = 0.0
+	RingPainter.paint(self, (screen[0] + screen[2]) * 0.5, 11.0, look)
 	# Awning in old-city magenta.
 	draw_colored_polygon(PackedVector2Array([Vector2(-hw - 6, -100), Vector2(0, hh - 100 + 6), Vector2(hw + 6, -100), Vector2(0, -hh - 100 - 6)]), Palette.NEON_MAGENTA.darkened(0.55))
 

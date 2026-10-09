@@ -181,3 +181,32 @@ brief and the user's answers didn't cover it.
     window is closed mid-run.
 64. **Start markers:** 'P' (lit street) on levels, 'p' (bare concrete) on hubs; the Ark has no Lattice
     cells at all (tested), and the Steward's watch ignores Lattice transitions there.
+
+### From the milestone review (reviews/vertical-slice.md)
+
+65. **The Steward's reach is its hardware.** It is present only on or next to Lattice cells (with a
+    0.6 s grace so brushing an edge doesn't flicker). Off the Lattice, voice on buys nothing: no path,
+    warnings, slow-mo or aim assist, forced manual weapons, ×1.4 damage, no narration, no profiling.
+    The map reads "SIGNAL LOST" and can't place you; the pill reads "STEWARD · NO SIGNAL" with the ring
+    glitching. The switch itself stays on. The Ark is the exception: it may advise there.
+66. **Levels are listed in `LevelCatalog`** (scene, display name, the Ark building each restores).
+    Saved locations route through `SceneRouter.destination_for`; new levels are one catalog entry plus
+    a map file.
+67. **Map files name the things placed on them:** `@ x,y id` lines give each Waiting, cache and log
+    slip its content id; maps are validated on load (unknown characters, start marker, ids, a
+    reachable Reliquary) and a broken map returns to the title before anything is saved. Unknown
+    cells are solid.
+68. **Narration lines can be scoped to a level** (`"level": "vellum"`); every event keeps at least one
+    unscoped line so a new district is never silent.
+69. **One stack owns the pause (`Modals`).** The game unpauses only when the last screen closes; only
+    the top screen takes input.
+70. **Saving:** checkpoints that fail show a notice and play goes on (the run is still in memory);
+    leaving the run with a failed save asks TRY AGAIN / LEAVE WITHOUT SAVING / STAY. The warning is
+    ivory, not red-orange (red-orange means danger in the world).
+71. **Controller bindings listen to every device**, so any connected pad works.
+72. **Exports:** presets for Linux, Windows and macOS (`export_presets.cfg`, output in `build/`, not
+    committed). The macOS build is ad-hoc signed (Gatekeeper will still warn; a Developer ID and
+    notarization are needed to ship) and uses ETC2/ASTC textures for Apple Silicon.
+73. **Performance evidence comes from the autopilot's `[perf]` report**; `--perf-disable=…` is a
+    developer flag for measuring feature costs. The 60 fps-on-Deck target can only be confirmed on a
+    Deck.

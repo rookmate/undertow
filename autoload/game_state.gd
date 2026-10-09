@@ -8,10 +8,27 @@ signal run_replaced
 var run: RunState = RunState.new()
 
 
-## Closing the window mid-run saves first (brief: local saves), wherever the player is.
+## How the game quits once a close request is settled (tests replace it).
+var quit_handler: Callable
+
+
+func _ready() -> void:
+	# Closing the window mid-run saves first; if that fails the player is asked, not silently dropped.
+	get_tree().auto_accept_quit = false
+	quit_handler = func() -> void: get_tree().quit()
+
+
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_CLOSE_REQUEST and run.location != "":
-		save()
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		_close_requested()
+
+
+func _close_requested() -> void:
+	if run.location != "":
+		var safe: bool = await SaveFlow.before_leaving(get_tree())
+		if not safe:
+			return
+	quit_handler.call()
 
 
 func new_run() -> void:

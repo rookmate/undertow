@@ -40,10 +40,16 @@ func _ready() -> void:
 	var sub := _label("RECOVERED MEMORIES · THE VELLUM", UiFonts.mono(), 18, Palette.IVORY_DIM)
 	sub.position = Vector2(84, 132)
 	add_child(sub)
+	# The list grows with every district: it scrolls, and follows controller focus.
+	var scroll := ScrollContainer.new()
+	scroll.position = Vector2(80, 190)
+	scroll.size = Vector2(590, 760)
+	scroll.follow_focus = true
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	add_child(scroll)
 	_list = VBoxContainer.new()
-	_list.position = Vector2(80, 190)
 	_list.add_theme_constant_override(&"separation", 8)
-	add_child(_list)
+	scroll.add_child(_list)
 	_title = _label("", UiFonts.heading(), 44, Palette.IVORY)
 	_title.position = Vector2(700, 180)
 	add_child(_title)
@@ -52,11 +58,14 @@ func _ready() -> void:
 	add_child(_kind)
 	var box := PanelContainer.new()
 	box.position = Vector2(700, 274)
-	box.custom_minimum_size = Vector2(1140, 290)
+	box.size = Vector2(1140, 290)
 	add_child(box)
+	# A long record scrolls inside its box instead of pushing everything below it down.
 	_record = RichTextLabel.new()
 	_record.bbcode_enabled = false
-	_record.fit_content = true
+	_record.fit_content = false
+	_record.scroll_active = true
+	_record.scroll_following = true
 	_record.custom_minimum_size = Vector2(1100, 250)
 	_record.add_theme_font_override(&"normal_font", UiFonts.mono())
 	_record.add_theme_font_size_override(&"normal_font_size", 20)
@@ -85,6 +94,7 @@ func _ready() -> void:
 	_back.pressed.connect(close)
 	add_child(_back)
 	_build_list()
+	Modals.push(self)
 
 
 func _label(text: String, font: Font, font_size: int, col: Color) -> Label:
@@ -202,7 +212,7 @@ func _on_replay() -> void:
 		_shown_lines = i + 1
 		_render_record()
 	last_replay = ArchiveModel.replay(selected)
-	GameState.save()
+	SaveFlow.checkpoint(get_tree())
 	replaying = false
 	_show_aftermath(true, last_replay)
 	_replay.text = "REPLAY AGAIN"
@@ -219,6 +229,8 @@ func _refresh_list_marks() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if not Modals.is_top(self):
+		return
 	if event.is_action_pressed(&"ui_cancel") and not replaying:
 		get_viewport().set_input_as_handled()
 		close()
@@ -227,5 +239,6 @@ func _unhandled_input(event: InputEvent) -> void:
 func close() -> void:
 	if replaying:
 		return
+	Modals.pop(self)
 	closed.emit()
 	queue_free()

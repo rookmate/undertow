@@ -6,8 +6,12 @@ extends Node
 signal voice_changed(voice_on: bool)
 ## An enemy is about to strike and the Steward is warning you (threat warnings on).
 signal threat_warned(enemy: Node2D, seconds: float)
+## The Lattice started or stopped reaching the Operator.
+signal coverage_changed(covered: bool)
 
 var voice_on: bool = true
+## Whether the Steward's hardware reaches the Operator right now (levels set this; menus leave it on).
+var covered: bool = true
 ## Seconds since the voice was last muted (for the HUD's muted timer).
 var muted_for: float = 0.0
 
@@ -35,8 +39,15 @@ func toggle_voice() -> void:
 	set_voice(not voice_on)
 
 
+func set_coverage(on: bool) -> void:
+	if on == covered:
+		return
+	covered = on
+	coverage_changed.emit(covered)
+
+
 func assists() -> Assists:
-	return Assists.compute(voice_on, GameState.run.cores_power(), GameState.run.active_overrides)
+	return Assists.compute(voice_on, GameState.run.cores_power(), GameState.run.active_overrides, covered)
 
 
 ## Called by enemies as they wind up. Passed on to the HUD only while threat warnings are on.

@@ -60,20 +60,29 @@ func test_played_state_survives_a_save_and_load() -> void:
 
 
 func test_continue_routes_every_saved_location() -> void:
-	check_eq(SceneRouter.key_for_location("level:vellum"), &"loadout", "levels resume at the loadout")
-	check_eq(SceneRouter.key_for_location("reliquary:vellum"), &"core_choice")
-	check_eq(SceneRouter.key_for_location("ark"), &"ark")
-	check_eq(SceneRouter.key_for_location("somewhere:else"), &"", "unknown places are refused, not guessed")
-	for key: StringName in SceneRouter.LOCATIONS.values():
-		check(SceneRouter.SCENES.has(key), "%s is a real scene" % key)
+	for id: String in LevelCatalog.LEVELS:
+		check_eq(SceneRouter.destination_for("loadout:" + id), &"loadout")
+		check_eq(SceneRouter.destination_for("level:" + id), &"loadout", "levels resume at the loadout")
+		check_eq(SceneRouter.destination_for("reliquary:" + id), &"core_choice")
+		check(ResourceLoader.exists(LevelCatalog.scene_of(id)), "%s's scene exists" % id)
+	check_eq(SceneRouter.destination_for("ark"), &"ark")
+	check_eq(SceneRouter.destination_for("level:tideworks"), &"", "districts this build doesn't have are refused")
+	check_eq(SceneRouter.destination_for("somewhere"), &"")
+	for key: StringName in SceneRouter.SCENES:
 		check(ResourceLoader.exists(SceneRouter.SCENES[key]), "%s exists" % SceneRouter.SCENES[key])
 
 
-func test_closing_the_window_saves() -> void:
+func test_closing_the_window_saves_then_quits() -> void:
 	SaveService.delete_save()
 	GameState.set_location("ark")
+	var quit_called := [false]
+	var real_quit := GameState.quit_handler
+	GameState.quit_handler = func() -> void: quit_called[0] = true
 	GameState.notification(Node.NOTIFICATION_WM_CLOSE_REQUEST)
+	await wait_frames(2)
+	GameState.quit_handler = real_quit
 	check(SaveService.has_save(), "saved on close")
+	check(quit_called[0], "and then quit")
 
 
 func test_steam_wrapper_runs_without_steam() -> void:

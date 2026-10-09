@@ -139,3 +139,23 @@ func test_hand_scan_charts_what_you_walk_past() -> void:
 	level.player.position = Iso.cell_center(Vector2i(12, 24))
 	await wait_frames(3)
 	check(level.exploration.charted_ratio() > before)
+
+
+func test_the_hand_scan_hears_only_about_cells_it_had_not_seen() -> void:
+	var heard: Array[Vector2i] = []
+	var collect := func(cells: Array[Vector2i]) -> void: heard.append_array(cells)
+	level.exploration.discovered.connect(collect)
+	var seen_before := level.exploration.explored.duplicate()
+	level.player.position = Iso.cell_center(Vector2i(12, 24))
+	await wait_frames(3)
+	check_false(heard.is_empty(), "walking somewhere new reveals cells")
+	for c: Vector2i in heard:
+		check_false(seen_before.has(c), "%s was already charted" % c)
+	check_eq(heard.size(), level.exploration.explored.size() - seen_before.size(), "each new cell reported once")
+	heard.clear()
+	level.player.position = Iso.cell_center(level.grid.start_cell())
+	await wait_frames(3)
+	level.player.position = Iso.cell_center(Vector2i(12, 24))
+	await wait_frames(3)
+	check(heard.is_empty(), "walking back over charted ground reveals nothing: %s" % [heard])
+	level.exploration.discovered.disconnect(collect)

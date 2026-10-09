@@ -158,3 +158,40 @@ func test_tiles_hold_steady_while_the_operator_jitters_at_a_cell_edge() -> void:
 		for c: Vector2i in level.predicted_path.shown:
 			seen[c] = true
 	check(seen.size() <= Tunables.PATH_TILES_AHEAD + 1, "a stable prediction, not two alternating routes (saw %d cells)" % seen.size())
+
+
+func test_never_more_than_three_painted_and_never_underfoot_while_walking() -> void:
+	var start := Iso.world_to_grid(level.player.global_position)
+	for k: int in 90:
+		# Walk up the street (below the stalled tram) in small steps, including positions near cell corners.
+		level.player.position = Iso.grid_to_world(start + Vector2(0.37 * sin(k * 0.5), -k * 0.08))
+		await wait_frames(1)
+		var painted := level.predicted_path.painted_cells()
+		check(painted.size() <= Tunables.PATH_TILES_AHEAD, "frame %d: %d tiles painted" % [k, painted.size()])
+		check_false(painted.has(level.player.cell()), "frame %d: a tile under the feet" % k)
+
+
+func test_corner_of_a_cell_still_excludes_it() -> void:
+	# 0.05 tiles from a cell corner is ~0.64 tiles from its centre: still the cell underfoot.
+	level.player.position = Iso.grid_to_world(Vector2(13.05, 34.05))
+	await wait_frames(3)
+	check_false(level.predicted_path.shown.has(level.player.cell()))
+	check_false(level.predicted_path.painted_cells().has(level.player.cell()))
+
+
+func test_muting_removes_the_tiles_at_once() -> void:
+	check(level.predicted_path.painted_cells().size() > 0)
+	Steward.set_voice(false)
+	await wait_frames(1)
+	check(level.predicted_path.painted_cells().is_empty(), "the gilt dies with the voice")
+	Steward.set_voice(true)
+
+
+func test_standing_in_a_lamp_cells_open_corner_keeps_the_path() -> void:
+	var lamp := Vector2i(15, 32)
+	check_eq(level.grid.char_at(lamp), "L")
+	level.player.position = Iso.grid_to_world(Vector2(lamp.x + 0.15, lamp.y + 0.15))
+	await wait_frames(3)
+	check_eq(level.player.cell(), lamp)
+	check_eq(level.predicted_path.shown.size(), Tunables.PATH_TILES_AHEAD, "still lit, still routed")
+	check_false(level.predicted_path.shown.has(lamp))

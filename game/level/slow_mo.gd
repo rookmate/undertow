@@ -18,9 +18,26 @@ func setup(owner_level: Level) -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	level.player.dodged.connect(_on_dodged)
 	level.player.evaded.connect(_on_evaded)
+	Steward.voice_changed.connect(_on_steward_changed)
+	Steward.coverage_changed.connect(_on_steward_changed)
 
 
 func _exit_tree() -> void:
+	Engine.time_scale = 1.0
+	if Steward.voice_changed.is_connected(_on_steward_changed):
+		Steward.voice_changed.disconnect(_on_steward_changed)
+	if Steward.coverage_changed.is_connected(_on_steward_changed):
+		Steward.coverage_changed.disconnect(_on_steward_changed)
+
+
+## Slowed time is the Steward's assist: it stops the moment the Steward can't give it.
+func _on_steward_changed(_value: bool) -> void:
+	if is_active() and Steward.assists().dodge_slowmo_seconds <= 0.0:
+		cancel()
+
+
+func cancel() -> void:
+	_left = 0.0
 	Engine.time_scale = 1.0
 
 

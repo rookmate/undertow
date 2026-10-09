@@ -1,8 +1,10 @@
 class_name PredictedPath
 extends Node2D
 ## Draws the Steward's predicted path: three gilded floor tiles ahead of the Operator with the
-## four-petal inlay of image 10, nearest brightest, each fading in and out as the prediction moves.
-## Gold is the Steward's colour; this is the Steward's light. Only shown while the voice is on.
+## four-petal inlay of image 10, nearest brightest. Tiles fade in as the prediction reaches them; a tile
+## that stops being predicted goes at once, so no more than three are ever painted (the brief: always
+## exactly three ahead). Gold is the Steward's colour; this is the Steward's light. Only while it can
+## see you (voice on, on the Lattice).
 
 const FADE_SPEED := 6.0
 const BRIGHTNESS: Array[float] = [1.0, 0.68, 0.42]
@@ -36,10 +38,11 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	shown = []
-	if predictor != null and player != null and player.is_alive() and Steward.voice_on:
+	if predictor != null and player != null and player.is_alive() and Steward.assists().path_visible:
 		shown = predictor.predict(player.global_position)
-	for t: Tile in _tiles.values():
-		t.target = 0.0
+	for c: Vector2i in _tiles.keys():
+		if not shown.has(c):
+			_tiles.erase(c)
 	for i: int in shown.size():
 		var c := shown[i]
 		if not _tiles.has(c):
@@ -48,17 +51,23 @@ func _process(delta: float) -> void:
 			_tiles[c] = t
 		_tiles[c].target = BRIGHTNESS[mini(i, BRIGHTNESS.size() - 1)]
 		_tiles[c].rank = i
-	for c: Vector2i in _tiles.keys():
-		var t := _tiles[c]
+	for t: Tile in _tiles.values():
 		t.alpha = move_toward(t.alpha, t.target, FADE_SPEED * delta)
-		if t.alpha <= 0.0 and t.target <= 0.0:
-			_tiles.erase(c)
 	if shown.is_empty():
 		_light.energy = move_toward(_light.energy, 0.0, delta * 4.0)
 	else:
 		_light.position = Iso.cell_center(shown[0])
 		_light.energy = move_toward(_light.energy, 0.9, delta * 4.0)
 	queue_redraw()
+
+
+## Cells with a tile painted right now (tests check this, not just the prediction).
+func painted_cells() -> Array[Vector2i]:
+	var out: Array[Vector2i] = []
+	for c: Vector2i in _tiles:
+		if _tiles[c].alpha > 0.0:
+			out.append(c)
+	return out
 
 
 func _draw() -> void:
