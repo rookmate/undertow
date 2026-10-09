@@ -246,6 +246,8 @@ func _drive_level(gen: int) -> void:
 	if not await hold_ground(Vector2(-1, 0), 1.0, gen):
 		return
 	check(level.grid.is_walkable(player.cell()) and player.cell().x >= 9, "walls_block")
+	check(level.predicted_path.shown.size() == Tunables.PATH_TILES_AHEAD, "path_three_tiles_ahead")
+	await snap("path")
 	var route: Array[Vector2i] = [Vector2i(12, 37), Vector2i(13, 33), Vector2i(14, 30), Vector2i(13, 26), Vector2i(12, 21), Vector2i(11, 15), Vector2i(9, 10), Vector2i(5, 9)]
 	var long_run := seconds >= 55.0
 	if long_run:
@@ -259,9 +261,60 @@ func _drive_level(gen: int) -> void:
 		if not shot_fight and level.living_enemies().size() < start_count:
 			shot_fight = true
 			await snap("level_after_fight")
+		if long_run and i == 1:
+			if not await _visit_stacks(level, player, gen):
+				return
 	pass_check("route_completed")
 	check(player.cell().distance_to(Vector2(5, 9)) <= 1.5, "arrived_by_reliquary")
 	await snap("level_plaza")
+
+
+## Off the path: down the stair into the overflow stacks. Nothing there while the Steward listens;
+## muted, read the slip, take the truth core, wake the resident there and the one in the doorway.
+func _visit_stacks(level: Level, player: Operator, gen: int) -> bool:
+	for c: String in ["stacks_reached", "stacks_hidden_while_listening", "found_unindexed_log", "found_truth_core", "woke_survivor_in_stacks", "woke_survivor_in_doorway"]:
+		expect(c)
+	for cell: Vector2i in [Vector2i(15, 27), Vector2i(15, 26), Vector2i(16, 26), Vector2i(17, 26), Vector2i(18, 28)]:
+		if not await advance_to(level, player, cell, 20.0, gen):
+			return false
+	pass_check("stacks_reached")
+	var cache: TruthCache = null
+	for n: Node in get_tree().get_nodes_in_group(&"interactables"):
+		if n is TruthCache:
+			cache = n
+	check(level.predicted_path.shown.is_empty() and cache != null and not cache.is_present(), "stacks_hidden_while_listening")
+	await snap("stacks_listening")
+	Steward.set_voice(false)
+	if not await _wait(1.2, gen):
+		return false
+	await snap("stacks_muted")
+	if not await _use_at(level, player, Vector2i(18, 28), gen):
+		return false
+	check(GameState.run.logs_unlocked.has(ContentIds.LOG_UNINDEXED_SLIP), "found_unindexed_log")
+	if not await _use_at(level, player, Vector2i(19, 24), gen):
+		return false
+	check(GameState.run.found_core_ids.has(ContentIds.CORE_TRUTH_STACKS), "found_truth_core")
+	await snap("stacks_truth_core")
+	if not await _use_at(level, player, Vector2i(18, 30), gen):
+		return false
+	check(GameState.run.survivor_ids.has(ContentIds.SURVIVOR_STACKS), "woke_survivor_in_stacks")
+	await snap("stacks_woken")
+	for cell: Vector2i in [Vector2i(17, 26), Vector2i(16, 26), Vector2i(15, 26)]:
+		if not await advance_to(level, player, cell, 20.0, gen):
+			return false
+	if not await _use_at(level, player, Vector2i(10, 25), gen):
+		return false
+	check(GameState.run.survivor_ids.has(ContentIds.SURVIVOR_DOORWAY), "woke_survivor_in_doorway")
+	Steward.set_voice(true)
+	return true
+
+
+## Walks to `cell` and presses Interact.
+func _use_at(level: Level, player: Operator, cell: Vector2i, gen: int) -> bool:
+	if not await advance_to(level, player, cell, 20.0, gen):
+		return false
+	tap(&"interact")
+	return await _wait(0.8, gen)
 
 
 ## Walks toward `cell`, stopping to fight anything that comes within reach. Returns false on timeout
@@ -270,6 +323,8 @@ func advance_to(level: Level, player: Operator, cell: Vector2i, timeout: float, 
 	var target := Iso.cell_center(cell)
 	var spent := 0.0
 	var frame := 0
+	var route: Array[Vector2i] = []
+	var repath := 0.0
 	while true:
 		if gen != _generation or _finished or not is_instance_valid(player):
 			_release_all()
@@ -278,12 +333,22 @@ func advance_to(level: Level, player: Operator, cell: Vector2i, timeout: float, 
 		var threat := _nearest_threat(level, player, 3.4)
 		if threat != null and player.is_alive():
 			_fight(player, threat, frame)
+			repath = 0.0
 		else:
 			_release_attacks()
-			if Iso.ground_distance(player.global_position, target) < 0.3:
+			if Iso.ground_distance(player.global_position, target) < 0.15:
 				press_move(Vector2.ZERO)
 				return true
-			press_move(input_for_ground(Iso.ground_dir_between(player.global_position, target)))
+			repath -= get_physics_process_delta_time()
+			if repath <= 0.0:
+				repath = 0.5
+				route = level.enemy_nav.path(player.cell(), cell)
+			while route.size() > 1 and route[0] == player.cell():
+				route.remove_at(0)
+			var next := target
+			if route.size() > 1 and Iso.ground_distance(player.global_position, target) > 1.2:
+				next = Iso.cell_center(route[0])
+			press_move(input_for_ground(Iso.ground_dir_between(player.global_position, next)))
 		await get_tree().physics_frame
 		spent += get_physics_process_delta_time()
 		if spent > timeout:

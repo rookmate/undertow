@@ -102,3 +102,19 @@ brief and the user's answers didn't cover it.
     this part of the voice toggle).
 40. **Continue resumes at the loadout** for a run saved inside a level (weapons are picked before each
     level).
+41. **Predicted path:** A* over Lattice cells only (indexed, walkable, not occupied), no diagonal steps
+    so tiles meet edge to edge. The Steward commits to a route and keeps it while the Operator stays
+    on it (no flicker between equal-cost routes); stepping off it re-plans. Tiles within 0.6 tiles of
+    the feet are skipped, so all three are ahead. Brightness 1.0 / 0.68 / 0.42, nearest first; tiles
+    fade in and out as the prediction moves. Off the Lattice, and with the voice muted, there is no
+    path. Destination: the open cell beside the Reliquary that is quickest to reach from the start.
+42. **Off-path content is absent while the Steward listens:** unindexed finds and the stacks' Waiting
+    resident are invisible and unusable with the voice on, and the Marrow darkens the unindexed cells.
+    Muted, the fog thins and they appear. The doorway resident on the lit street is visible either way,
+    but can only be woken muted; with the voice on the Steward says "They're resting. Leave them."
+43. **Interact** reaches 1.4 tiles. Woken residents speak in Barlow Condensed and cream (Fraunces
+    Italic is reserved for the Steward), then walk off toward the Ark and count as survivors.
+44. **Off-path truth core** is held in `RunState.found_core_ids` until the Reliquary offers it as the
+    fourth card (step 6).
+45. **The gate has a fourth stage:** a 90 s full-slice autopilot run that must pass every check for
+    the features built so far (the 30 s run stays as the brief's required check).

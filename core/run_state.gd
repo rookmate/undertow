@@ -20,6 +20,8 @@ var truth_core_ids: Array[String] = []
 var survivor_ids: Array[String] = []
 var logs_unlocked: Array[String] = []
 var logs_replayed: Array[String] = []
+## Cores picked up in the current level and not yet chosen at the Reliquary (off-path truth cores).
+var found_core_ids: Array[String] = []
 
 # --- Companions ----------------------------------------------------------------------------------------
 var noor_trust: int = 0
@@ -87,6 +89,7 @@ func to_dict() -> Dictionary:
 		"survivor_ids": survivor_ids.duplicate(),
 		"logs_unlocked": logs_unlocked.duplicate(),
 		"logs_replayed": logs_replayed.duplicate(),
+		"found_core_ids": found_core_ids.duplicate(),
 		"noor_trust": noor_trust,
 		"teo_trust": teo_trust,
 		"noor_present": noor_present,
@@ -117,6 +120,7 @@ static func from_dict(d: Dictionary) -> RunState:
 	s.survivor_ids = _strings(d.get("survivor_ids", []))
 	s.logs_unlocked = _strings(d.get("logs_unlocked", []))
 	s.logs_replayed = _strings(d.get("logs_replayed", []))
+	s.found_core_ids = _strings(d.get("found_core_ids", []))
 	s.noor_trust = clampi(_int(d.get("noor_trust", 0)), Tunables.TRUST_MIN, Tunables.TRUST_MAX)
 	s.teo_trust = clampi(_int(d.get("teo_trust", 0)), Tunables.TRUST_MIN, Tunables.TRUST_MAX)
 	s.noor_present = _bool(d.get("noor_present", true))

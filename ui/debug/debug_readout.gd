@@ -17,6 +17,7 @@ static func text_for(run: RunState, voice_on: bool) -> String:
 	var p := run.playstyle_profile
 	lines.append("playstyle       risk %.1f  caution %.1f  lean %+.2f (%s)" % [p.risk, p.caution, p.lean(), p.dominant_tone()])
 	lines.append("logs            unlocked %s  replayed %s" % [_list(run.logs_unlocked), _list(run.logs_replayed)])
+	lines.append("found cores     %s" % _list(run.found_core_ids))
 	lines.append("loadout         %s" % _loadout(run))
 	lines.append("restored        %s   completed %s" % [_list(run.buildings_restored), _list(run.levels_completed)])
 	lines.append("location        %s   play %.0fs" % [run.location if run.location != "" else "—", run.play_seconds])

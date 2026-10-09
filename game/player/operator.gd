@@ -80,6 +80,10 @@ func _physics_process(delta: float) -> void:
 		return
 	var input := Controls.move_vector() if input_enabled else Vector2.ZERO
 	var ground := Iso.input_to_ground(input)
+	if input_enabled and Input.is_action_just_pressed(&"interact"):
+		var target := interact_target()
+		if target != null and target.can_interact():
+			target.interact(self)
 	if input_enabled and Input.is_action_just_pressed(&"dodge"):
 		var dir := ground if ground.length_squared() > 0.01 else facing_ground
 		if dodge.try_start(dir):
@@ -94,6 +98,13 @@ func _physics_process(delta: float) -> void:
 			facing_ground = ground.normalized()
 	move_and_slide()
 	_body.update_pose(facing_ground, velocity, dodge, delta)
+
+
+## What Interact would act on (or explain), if anything is close enough.
+func interact_target() -> Interactable:
+	if level == null or _downed:
+		return null
+	return level.nearest_interactable(global_position)
 
 
 func cell() -> Vector2i:

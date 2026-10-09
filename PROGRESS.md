@@ -7,8 +7,8 @@ Milestone: **vertical slice** (design brief, "First milestone"). Plan and decisi
 | 0 | Skeleton: settings, input map, autoloads, tracked state + saves, test runner, gate, palette, fonts, title with canonical ring | done |
 | 1 | Isometric movement, dodge, greybox Vellum street | done |
 | 2 | Combat with two-weapon loadout, tuned/manual modes | done |
-| 3 | Predictive path, hidden off-path area | next |
-| 4 | Voice toggle: assists, map, narration, lighting | |
+| 3 | Predictive path, hidden off-path area | done |
+| 4 | Voice toggle: assists, map, narration, lighting | next |
 | 5 | Adaptive narration from tagged line pools | |
 | 6 | Level end with power-vs-truth core choice | |
 | 7 | Ark hub with the Archive | |
@@ -37,10 +37,17 @@ Defib Gauntlet, each with a tuned and a manual mode (see DECISIONS 35–36). Cus
 red-orange windups; Integrity, hit grace, downed and respawned at the checkpoint; HUD with Integrity
 and both weapon slots (mode tag gold when tuned, ivory when manual). Aim by mouse or right stick.
 
+**Step 3.** The Steward's predicted path: three gilded quatrefoil tiles ahead of the Operator (as in
+image 10), routed over Lattice cells only, re-planned when you stray, gone off the Lattice and when
+muted. The overflow stacks: the Marrow over the unindexed cells; one of the Waiting, a truth cache
+(Prem Vashti's note) and an unindexed slip, all absent while the Steward listens. Interact (E / X):
+wake the Waiting (muted only; the Steward objects otherwise), take the core, read the slip.
+
 ## Next
 
-Step 3: the Steward's predicted path (three gold tiles ahead, routed over the Lattice's cells only),
-and the off-path stacks hidden from it (the Waiting, a truth cache, an unindexed log).
+Step 4: the voice toggle (V / Y) and everything it switches: lighting state (gilt and Lattice die,
+cold greys), minimap (Steward map vs hand scan), assists (threat warnings, dodge slow-mo, aim assist),
+forced manual, ×1.4 damage, narration on/off, voice-time tracking; HUD pill "STEWARD · LISTENING".
 
 ## How to run
 
@@ -52,7 +59,7 @@ godot --path . -- --debug-overlay    # start with the tracked-state overlay open
 ## How to test
 
 ```bash
-tools/check.sh                       # the full gate: import, tests, 30 s autopilot run
+tools/check.sh                       # the full gate: import, tests, 30 s run, 90 s full-slice run
 godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn            # tests only
 godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn -- --filter=save   # some tests
 tools/record.sh <name> [seconds] [scenario]   # progress video -> ../undertow-recordings/<name>.mp4

@@ -51,6 +51,14 @@ func take_core(core_id: String, is_truth: bool) -> void:
 	state_changed.emit(&"cores_truth" if is_truth else &"cores_power")
 
 
+## A core picked up during a level (off the path). It is offered at the Reliquary with the others.
+func find_core(core_id: String) -> void:
+	if run.found_core_ids.has(core_id):
+		return
+	run.found_core_ids.append(core_id)
+	state_changed.emit(&"found_core_ids")
+
+
 ## Returns false if this survivor was already counted.
 func add_survivor(survivor_id: String) -> bool:
 	if run.survivor_ids.has(survivor_id):
