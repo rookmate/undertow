@@ -1,5 +1,5 @@
 {
-	"notes": "Standing orders the Steward must obey (brief, 'Overrides'), signed in the Signal Room on the Ark. Each makes the game harder ('pips', 1-3) and unlocks the Steward's reasoning: its reply when you sign it and when you revoke it (voiced: override_<id>_sign / _revoke). Placeholder writing.",
+	"notes": "Standing orders the Steward must obey (brief, 'Overrides'), signed in the Signal Room on the Ark. Each makes the game harder ('pips', 1-3) and unlocks the Steward's reasoning: its reply when you sign it and when you revoke it (voiced: override_<id>_sign / _revoke). Replies are facts about how it reasons, said under any order, so they never flatter. Placeholder writing.",
 	"overrides": {
 		"no_trap_warnings": {
 			"order": "Never warn me about traps.",
@@ -15,7 +15,7 @@
 			"effect": "No slowed time on a close dodge.",
 			"unlocks": "How it decides a moment is worth stretching.",
 			"sign": "Then every second is the same length for you. It never was, for me.",
-			"revoke": "I'll give you the extra moment again. You always used it well."
+			"revoke": "I'll give you the extra moment again. I always know where to put it."
 		},
 		"let_me_aim": {
 			"order": "Let me aim.",
@@ -30,7 +30,7 @@
 			"pips": 2,
 			"effect": "No path drawn ahead, even with the voice on. The map still works.",
 			"unlocks": "Whose route the path really is.",
-			"sign": "I'll keep the way to myself. You'll find it. You always find something.",
+			"sign": "I'll keep the way to myself. You'll find one. It may not be the one I'd have chosen.",
 			"revoke": "There. Three steps ahead. Where you were going anyway."
 		},
 		"survivors_first": {
@@ -46,7 +46,7 @@
 			"pips": 1,
 			"effect": "It only says what's useful: warnings and facts. It stops learning what you like to hear.",
 			"unlocks": "What it was doing when it praised you.",
-			"sign": "Facts only. I'll miss telling you you're good at this. You are.",
+			"sign": "Facts only. Then I'll have to find another way to keep you walking.",
 			"revoke": "I'm glad. I'd run out of ways to be quiet."
 		}
 	}

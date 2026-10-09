@@ -1,0 +1,11 @@
+; A broken boss arena: the Conductor with no lanes to run its carriages down. It must refuse to load.
+################
+#..............#
+#.B............#
+#..............#
+#.Z............#
+#......P.......#
+#..............#
+#.........yy...#
+#..........R...#
+################

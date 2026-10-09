@@ -12,14 +12,17 @@ const NOTICE_SECONDS := 6.0
 
 var asking: bool = false
 var error_code: Error = OK
+## What didn't get saved, said plainly ("" for the run's progress).
+var body_text: String = ""
 var _answered: bool = false
 
 var _first_button: Button
 
 
-static func notice(tree: SceneTree, err: Error) -> SaveFailure:
+static func notice(tree: SceneTree, err: Error, body: String = "") -> SaveFailure:
 	var s := SaveFailure.new()
 	s.error_code = err
+	s.body_text = body
 	tree.root.add_child(s)
 	return s
 
@@ -49,7 +52,9 @@ func _ready() -> void:
 	var body := Label.new()
 	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	body.custom_minimum_size = Vector2(640, 0)
-	body.text = ("Your progress is still here in this session. If you leave now, the last save is what you'll come back to. (%s)" if asking else "Your progress is kept in this session; the next checkpoint will try again. (%s)") % error_string(error_code)
+	if body_text == "":
+		body_text = "Your progress is still here in this session. If you leave now, the last save is what you'll come back to." if asking else "Your progress is kept in this session; the next checkpoint will try again."
+	body.text = "%s (%s)" % [body_text, error_string(error_code)]
 	box.add_child(body)
 	if asking:
 		var row := HBoxContainer.new()

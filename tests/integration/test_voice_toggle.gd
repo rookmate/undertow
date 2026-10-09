@@ -70,7 +70,7 @@ func test_muting_switches_every_system_and_unmuting_restores_them() -> void:
 	var muted_talk: Array[String] = []
 	var listener := func(_id: String, t: String) -> void: muted_talk.append(t)
 	Narrator.line_spoken.connect(listener)
-	Narrator.speak_text("test", "should not be heard")
+	Narrator.speak_text("test", "should not be heard", LineSelector.FACT)
 	check(muted_talk.is_empty(), "narration silent")
 	await _press_voice()
 	await wait_seconds(1.6)

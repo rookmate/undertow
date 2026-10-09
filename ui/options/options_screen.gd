@@ -1,9 +1,10 @@
 class_name OptionsScreen
 extends CanvasLayer
 ## Options, from the title and the pause menu: volumes, display, subtitle size, and controls. Every
-## change takes effect and is saved at once. Works with a mouse, the keyboard or a pad throughout:
-## sliders move with left/right, and a binding is changed by selecting it and pressing the new input
-## (Esc or Start cancels).
+## change takes effect and is saved at once (if the save fails, a notice says the change lasts this
+## session only). Works with a mouse, the keyboard or a pad throughout: sliders move with left/right, and
+## a binding is changed by selecting it and pressing the new input (Esc or Start cancels). An input
+## another action keeps (an arrow key, J/K, the d-pad, F3) is refused, and the screen says whose it is.
 
 signal closed
 
@@ -11,7 +12,10 @@ const ACTION_NAMES: Dictionary[StringName, String] = {
 	&"move_up": "MOVE UP", &"move_down": "MOVE DOWN", &"move_left": "MOVE LEFT", &"move_right": "MOVE RIGHT",
 	&"attack_primary": "WEAPON 1", &"attack_secondary": "WEAPON 2", &"dodge": "DODGE",
 	&"interact": "INTERACT", &"voice_toggle": "STEWARD ON / OFF",
+	&"pause": "PAUSE", &"debug_overlay": "THE DEBUG OVERLAY",
+	&"aim_left": "AIM", &"aim_right": "AIM", &"aim_up": "AIM", &"aim_down": "AIM",
 }
+const NOT_SAVED := "Your settings are in effect now, but couldn't be saved: next time they'll be as they were."
 const BUS_NAMES: Dictionary[StringName, String] = {
 	&"Master": "MASTER", &"Music": "MUSIC", &"Ambience": "AMBIENCE", &"SFX": "EFFECTS",
 	&"Steward": "THE STEWARD'S VOICE", &"UI": "INTERFACE",
@@ -28,6 +32,9 @@ var _window_button: Button
 var _vsync_button: Button
 var _subtitle_button: Button
 var _back: Button
+## Why the last rebind didn't happen, or "".
+var _status: Label
+var _not_saved: SaveFailure
 
 
 func _ready() -> void:
@@ -81,6 +88,9 @@ func _ready() -> void:
 	_back.custom_minimum_size = Vector2(240, 56)
 	_back.pressed.connect(close)
 	add_child(_back)
+	_status = _label("", UiFonts.mono_medium(), 18, Palette.IVORY)
+	_status.position = Vector2(440, 976)
+	add_child(_status)
 	_refresh()
 	Modals.push(self)
 	(_sliders[&"Master"] as Control).grab_focus()
@@ -123,7 +133,7 @@ func _volume_row(column: VBoxContainer, bus: StringName) -> void:
 		value.text = "%d%%" % roundi(v * 100.0)
 		if not is_equal_approx(Options.volumes[bus], v):
 			Options.set_volume(bus, v)
-			Options.save_settings())
+			_save())
 	row.add_child(slider)
 	row.add_child(_cell(value, 120))
 	column.add_child(row)
@@ -193,8 +203,15 @@ func _reset_controls() -> void:
 
 func _changed() -> void:
 	Options.apply()
-	Options.save_settings()
+	_save()
 	_refresh()
+
+
+## Saves the settings; if that fails, one notice says so.
+func _save() -> void:
+	var err := Options.save_settings()
+	if err != OK and not is_instance_valid(_not_saved):
+		_not_saved = SaveFailure.notice(get_tree(), err, NOT_SAVED)
 
 
 ## Waits for the next input of the slot's kind and binds it.
@@ -232,8 +249,13 @@ func _input(event: InputEvent) -> void:
 		return
 	get_viewport().set_input_as_handled()
 	if not cancel:
-		Controls.set_binding(listening["action"], binding)
-		Options.save_settings()
+		var action: StringName = listening["action"]
+		var keeper := Controls.blocker_for(action, binding)
+		if keeper != &"":
+			_status.text = "%s STAYS ON %s." % [Controls.label_of(binding), ACTION_NAMES.get(keeper, String(keeper).to_upper())]
+		elif Controls.set_binding(action, binding):
+			_status.text = ""
+			_save()
 	_stop_listening()
 
 
@@ -265,7 +287,7 @@ func close() -> void:
 	if not listening.is_empty():
 		return
 	Sound.play(&"ui_back")
-	Options.save_settings()
+	_save()
 	Modals.pop(self)
 	closed.emit()
 	queue_free()

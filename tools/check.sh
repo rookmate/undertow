@@ -5,13 +5,15 @@
 #      test loads every script, so script errors and warnings fail here too.
 #   3. The game runs for 30 s from the main scene under the autopilot with no ERROR/WARNING lines and
 #      every autopilot check passing. Windowed when a display exists, headless otherwise.
-#   4. Long autopilot runs (150 s each) that expect every feature built so far to work: New Game through
-#      Kestrel Heights to the Loop map ("slice"), the Loop and its Conductor ("loop"), the Tideworks and
-#      its Crane ("tideworks"), and the Vellum's
-#      whole route to the Archive ("vellum").
+#   4. The long autopilot run that expects every feature built so far to work, as a player meets them,
+#      in one run ("campaign"): New Game, Kestrel Heights, the Loop and its Conductor, a save and
+#      Continue, the Tideworks and its Crane, the Vellum's whole route to the Archive. It ends when it's
+#      done (at most CAMPAIGN_SECONDS). Prepared single-district runs ("loop", "tideworks", "vellum") and
+#      the long "slice" can be added with FULL_SCENARIOS; they run FULL_SECONDS each.
 #   5. A tour of every district in LevelCatalog (autopilot scenario "tour": start, checkpoints, finds,
-#      Reliquary, muted), each with no ERROR/WARNING lines.
-# Env: SMOKE_SECONDS (30), FULL_SECONDS (150), SMOKE_SCENARIO (slice), HEADLESS=1 to force headless, LOG_DIR.
+#      Reliquary, muted), each with no ERROR/WARNING lines. The district listing is checked first.
+# Env: SMOKE_SECONDS (30), FULL_SCENARIOS (campaign), CAMPAIGN_SECONDS (900), FULL_SECONDS (150),
+#      SMOKE_SCENARIO (slice), HEADLESS=1 to force headless, LOG_DIR.
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -19,8 +21,9 @@ cd "$ROOT"
 LOG_DIR="${LOG_DIR:-$ROOT/reports/check}"
 SMOKE_SECONDS="${SMOKE_SECONDS:-30}"
 SMOKE_SCENARIO="${SMOKE_SCENARIO:-slice}"
-# The long runs: the new-game route (Kestrel Heights to the Loop map) and the Vellum's whole route.
-FULL_SCENARIOS="${FULL_SCENARIOS:-slice loop tideworks vellum}"
+# The long runs: the whole game so far in one run, and any single-district runs asked for.
+FULL_SCENARIOS="${FULL_SCENARIOS:-campaign}"
+seconds_for() { if [ "$1" = campaign ]; then echo "${CAMPAIGN_SECONDS:-900}"; else echo "${FULL_SECONDS:-150}"; fi; }
 mkdir -p "$LOG_DIR"
 # Screenshots land inside the project folder: keep Godot from importing them.
 touch "$ROOT/reports/.gdignore"
@@ -66,11 +69,12 @@ if [ $code -ne 0 ]; then echo "  FAIL run exited with $code"; status=1; fi
 grep -q '^AUTOPILOT PASS' "$LOG_DIR/smoke.log" || { echo "  FAIL autopilot did not pass"; status=1; }
 scan_log "$LOG_DIR/smoke.log" run && [ $code -eq 0 ] && echo "  ok"
 
-echo "== 4/5 full runs (${FULL_SECONDS:-150}s each: ${FULL_SCENARIOS})"
+echo "== 4/5 full runs (${FULL_SCENARIOS})"
 for scenario in $FULL_SCENARIOS; do
   log="$LOG_DIR/full_$scenario.log"
-  timeout $(( ${FULL_SECONDS:-150} + 90 )) godot "${MODE[@]}" --path . -- --autopilot \
-    --autopilot-seconds="${FULL_SECONDS:-150}" --autopilot-scenario="$scenario" \
+  run_seconds=$(seconds_for "$scenario")
+  timeout $(( run_seconds + 90 )) godot "${MODE[@]}" --path . -- --autopilot \
+    --autopilot-seconds="$run_seconds" --autopilot-scenario="$scenario" \
     --autopilot-shots="$LOG_DIR/shots_full_$scenario" > "$log" 2>&1
   code=$?
   grep -E '^AUTOPILOT' "$log" | sed "s/^/  $scenario: /"
@@ -80,7 +84,18 @@ for scenario in $FULL_SCENARIOS; do
 done
 
 echo "== 5/5 district tours"
-for district in $(timeout 120 godot --headless --path . -- --list-districts 2>/dev/null | sed -n 's/^DISTRICT //p'); do
+# The listing itself is checked (tools/district_listing.sh, which tests itself first): a failed,
+# timed-out, noisy or incomplete listing fails the gate rather than silently touring nothing.
+if ! tools/test_district_listing.sh > "$LOG_DIR/district_listing_test.log" 2>&1; then
+  echo "  FAIL the listing check's own test:"; sed 's/^/    /' "$LOG_DIR/district_listing_test.log"; status=1
+fi
+timeout 120 godot --headless --path . -- --list-districts > "$LOG_DIR/districts.log" 2>&1
+code=$?
+if ! districts=$(tools/district_listing.sh "$LOG_DIR/districts.log" "$code" 2> "$LOG_DIR/districts.why"); then
+  echo "  FAIL listing districts: $(cat "$LOG_DIR/districts.why") (see districts.log)"; status=1; districts=""
+fi
+scan_log "$LOG_DIR/districts.log" "district listing"
+for district in $districts; do
   log="$LOG_DIR/tour_$district.log"
   timeout 150 godot "${MODE[@]}" --path . -- --autopilot --autopilot-seconds=40 --autopilot-scenario=tour \
     --autopilot-level="$district" --autopilot-shots="$LOG_DIR/shots_tour_$district" > "$log" 2>&1

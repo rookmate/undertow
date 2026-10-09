@@ -83,6 +83,12 @@ var _layers: Dictionary[StringName, AudioStreamPlayer] = {}
 var _voice: AudioStreamPlayer
 ## The Steward line being spoken now ("" if none).
 var voice_line: String = ""
+## The length of that line, and (when nothing can be heard: headless runs) how far into it the voice is:
+## the same real-time advance a playing recording makes, through a pause and through slowed time.
+var _voice_length: float = 0.0
+var _voice_at: float = 0.0
+## Quitting: nothing new may start (a sound begun after the silence would leak at exit).
+var closing: bool = false
 ## Wanted level (0..1) of each ambience layer, and where it is now.
 var _layer_target: Dictionary[StringName, float] = {}
 var _layer_level: Dictionary[StringName, float] = {}
@@ -142,6 +148,8 @@ func _ready() -> void:
 ## The way out of the game: everything falls silent, the audio thread gets a moment to let go of what
 ## was playing (otherwise its playbacks leak at exit), then the game quits. Every quit goes through here.
 func quit(exit_code: int = 0) -> void:
+	# The game runs on for a moment yet (a respawn's sound, the Steward's word on it); none of it starts.
+	closing = true
 	_silence()
 	await get_tree().create_timer(0.15, true, false, true).timeout
 	get_tree().quit(exit_code)
@@ -165,6 +173,8 @@ func _silence() -> void:
 ## Plays a cue: at a ground position in the world if `at` is a Vector2, otherwise flat (UI, the Steward).
 ## Returns the player used, or null if the cue doesn't exist.
 func play(cue: StringName, at: Variant = null) -> Node:
+	if closing:
+		return null
 	if not CUES.has(cue):
 		Diagnostics.error("Sound: unknown cue %s" % cue)
 		return null
@@ -206,6 +216,8 @@ func play(cue: StringName, at: Variant = null) -> Node:
 ## Speaks a Steward line in its voice, cutting off whatever it was saying. Returns the line's length in
 ## seconds, or 0.0 if it has no voice yet. Callers decide whether the Steward may speak (narration rules).
 func say(line_id: String) -> float:
+	if closing:
+		return 0.0
 	var path := VoiceLines.clip_path(line_id)
 	if not ResourceLoader.exists(path):
 		return 0.0
@@ -215,6 +227,8 @@ func say(line_id: String) -> float:
 	_voice.stop()
 	_voice.stream = stream
 	voice_line = line_id
+	_voice_length = stream.get_length()
+	_voice_at = 0.0
 	history.append({"cue": &"voice", "bus": &"Steward", "at": line_id})
 	if history.size() > 64:
 		history.pop_front()
@@ -230,6 +244,15 @@ func hush() -> void:
 	voice_line = ""
 
 
+## Seconds left of the line being spoken, on the recording's own clock (0.0 if it's saying nothing).
+## Subtitles keep to this, so a line's text lasts exactly as long as its voice.
+func voice_left() -> float:
+	if voice_line == "":
+		return 0.0
+	var at := _voice.get_playback_position() if audible else _voice_at
+	return maxf(0.0, _voice_length - at)
+
+
 ## Seconds a line takes to say (0.0 if not voiced).
 func voice_length(line_id: String) -> float:
 	var path := VoiceLines.clip_path(line_id)
@@ -241,6 +264,8 @@ func voice_length(line_id: String) -> float:
 
 ## The ambience a scene wants: each named layer fades to its level (0..1); layers not named fade out.
 func set_ambience(levels: Dictionary) -> void:
+	if closing:
+		return
 	for layer: StringName in _layer_target:
 		_layer_target[layer] = clampf(float(levels.get(layer, 0.0)), 0.0, 1.0)
 	for layer: StringName in levels:
@@ -250,6 +275,8 @@ func set_ambience(levels: Dictionary) -> void:
 
 ## One layer's wanted level, leaving the others as they are.
 func set_layer(layer: StringName, level: float) -> void:
+	if closing:
+		return
 	if not AMBIENCE.has(layer):
 		Diagnostics.error("Sound: unknown ambience layer %s" % layer)
 		return
@@ -278,6 +305,11 @@ func volume(bus: StringName) -> float:
 
 
 func _process(delta: float) -> void:
+	# With nothing to hear, the voice still runs its course, as a recording would (then it's finished).
+	if voice_line != "" and not audible:
+		_voice_at += delta / maxf(Engine.time_scale, 0.01)
+		if _voice_at >= _voice_length:
+			voice_line = ""
 	for layer: StringName in _layers:
 		var p := _layers[layer]
 		var level := move_toward(_layer_level[layer], _layer_target[layer], delta / AMBIENCE_FADE)

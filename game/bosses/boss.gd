@@ -84,13 +84,10 @@ func _fight(_delta: float) -> void:
 	pass
 
 
-## The Steward calls a move: only if it's with you (voice on and on its hardware), voiced, subtitled.
+## The Steward calls a move: only if it's with you (voice on and on its hardware) and no signed order
+## forbids it (its warnings fall silent under "Never warn me about traps"). Voiced, subtitled.
 func call_out(line_id: String) -> void:
-	if not Steward.assists().steward_present:
-		return
-	var text := VoiceLines.fixed(line_id)
-	if text != "":
-		Narrator.speak_text(line_id, text)
+	Narrator.say_fixed(line_id)
 
 
 func _die() -> void:

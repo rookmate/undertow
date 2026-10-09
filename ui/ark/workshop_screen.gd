@@ -95,9 +95,7 @@ func buy(weapon_id: String, mode: String) -> void:
 	Sound.play(&"core_take")
 	SaveFlow.checkpoint(get_tree())
 	var line := "workshop_" + mode
-	if Steward.assists().narration:
-		_reply.text = VoiceLines.fixed(line)
-		Narrator.speak_text(line, VoiceLines.fixed(line))
+	_reply.text = VoiceLines.fixed(line) if Narrator.say_fixed(line) else ""
 	_refresh()
 
 

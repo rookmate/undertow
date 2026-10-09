@@ -42,6 +42,7 @@ func _ready() -> void:
 	add_child(_hint)
 	_refresh()
 	Controls.device_changed.connect(func(_d: int) -> void: _refresh())
+	Controls.bindings_changed.connect(_refresh)
 	var t := create_tween()
 	t.tween_interval(SHOW_SECONDS)
 	t.tween_property(_label, "modulate:a", 0.0, 1.5)
@@ -77,5 +78,4 @@ static func with_keys(text: String) -> String:
 
 
 func _refresh() -> void:
-	var move := "LEFT STICK" if Controls.using_pad() else "WASD"
-	_label.text = "%s  MOVE    %s  DODGE    %s  PAUSE" % [move, Controls.prompt(&"dodge"), Controls.prompt(&"pause")]
+	_label.text = "%s  MOVE    %s  DODGE    %s  PAUSE" % [Controls.move_prompt(), Controls.prompt(&"dodge"), Controls.prompt(&"pause")]

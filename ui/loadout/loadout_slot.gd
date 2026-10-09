@@ -46,6 +46,7 @@ func _ready() -> void:
 	_bars.custom_minimum_size = Vector2(760, 64)
 	box.add_child(_bars)
 	Controls.device_changed.connect(func(_d: int) -> void: _update_header())
+	Controls.bindings_changed.connect(_update_header)
 	_update_header()
 
 

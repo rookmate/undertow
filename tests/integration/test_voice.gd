@@ -29,6 +29,7 @@ func test_every_steward_line_has_a_current_recording() -> void:
 	check(lines.size() >= 70, "the narration pools, cores, logs and fixed lines (%d)" % lines.size())
 	for id: String in lines:
 		check(safe.search(id) != null, "%s can be a file name" % id)
+		check(LineSelector.PURPOSES.has(VoiceLines.purpose_of(id)), "%s has a purpose the orders can judge" % id)
 		check(VoiceLines.has_clip(id), "%s is voiced (run tools/make_voice.py)" % id)
 		var recorded := str((manifest.get(id, {}) as Dictionary).get("text", ""))
 		check_eq(recorded, lines[id], "%s's recording says the current text (run tools/make_voice.py)" % id)
@@ -41,24 +42,24 @@ func test_every_steward_line_has_a_current_recording() -> void:
 func test_narration_is_spoken_not_chimed() -> void:
 	var voices := Sound.heard(&"voice")
 	var chimes := Sound.heard(&"steward_chime")
-	Narrator.speak_text("VOICE_BACK_N1", "There you are. I kept your place.")
+	Narrator.speak_text("VOICE_BACK_N1", "There you are. I kept your place.", LineSelector.FACT)
 	check_eq(Sound.heard(&"voice"), voices + 1, "said aloud")
 	check_eq(Sound.voice_line, "VOICE_BACK_N1")
 	check_eq(Sound.heard(&"steward_chime"), chimes, "no chime when there's a voice")
-	Narrator.speak_text("not_voiced_yet", "A line nobody recorded.")
+	Narrator.speak_text("not_voiced_yet", "A line nobody recorded.", LineSelector.FACT)
 	check_eq(Sound.heard(&"steward_chime"), chimes + 1, "the chime stands in for a line not voiced yet")
 
 
 func test_muting_or_losing_the_signal_cuts_it_off_mid_word() -> void:
-	Narrator.speak_text("VOICE_BACK_N1", "There you are. I kept your place.")
+	Narrator.speak_text("VOICE_BACK_N1", "There you are. I kept your place.", LineSelector.FACT)
 	check_eq(Sound.voice_line, "VOICE_BACK_N1")
 	Steward.set_voice(false)
 	check_eq(Sound.voice_line, "", "muted, it stops")
 	var voices := Sound.heard(&"voice")
-	Narrator.speak_text("VOICE_BACK_N1", "There you are. I kept your place.")
+	Narrator.speak_text("VOICE_BACK_N1", "There you are. I kept your place.", LineSelector.FACT)
 	check_eq(Sound.heard(&"voice"), voices, "and says nothing while muted")
 	Steward.set_voice(true)
-	Narrator.speak_text("VOICE_BACK_N1", "There you are. I kept your place.")
+	Narrator.speak_text("VOICE_BACK_N1", "There you are. I kept your place.", LineSelector.FACT)
 	Steward.set_coverage(false)
 	check_eq(Sound.voice_line, "", "out of its reach, it stops too")
 
@@ -69,11 +70,52 @@ func test_subtitles_last_as_long_as_the_voice() -> void:
 	level.remove_all_enemies()
 	await wait_frames(3)
 	var id := VoiceLines.log_line("log_0522_feed_adjustment")
-	Narrator.speak_text(id, VoiceLines.all()[id])
+	Narrator.speak_text(id, VoiceLines.all()[id], LineSelector.FACT)
 	var subs := level.hud.subtitles
 	check(subs.get("_left") >= Sound.voice_length(id), "on screen for the whole %.1f s line" % Sound.voice_length(id))
 	Steward.set_coverage(false)
 	check_false(subs.is_speaking(), "and gone when it loses you")
+
+
+## A voiced line's text keeps the recording's own clock: up exactly as long as the voice has left, plus
+## the fade, through a pause and through the slowed time of a perfect dodge (a blow evaded mid-roll).
+func test_subtitles_keep_the_voices_clock_through_pause_and_slow_time() -> void:
+	level = (load("res://game/level/vellum_street.tscn") as PackedScene).instantiate() as Level
+	add_child(level)
+	level.remove_all_enemies()
+	# Nothing else to say meanwhile: its line on arriving said, its remarks on how you play stopped.
+	await wait_seconds(1.6)
+	level.watch.process_mode = Node.PROCESS_MODE_DISABLED
+	var subs := level.hud.subtitles
+	var id := VoiceLines.log_line("log_0522_feed_adjustment")
+	Narrator.speak_text(id, VoiceLines.all()[id], LineSelector.FACT)
+	var in_step := func() -> bool: return absf(float(subs.get("_left")) - (Sound.voice_left() + Subtitles.FADE)) < 0.03
+	check(Sound.voice_left() > 3.0 and in_step.call(), "a long line, its text up for as long as it has left")
+	var left := Sound.voice_left()
+	get_tree().paused = true
+	await wait_frames(30)
+	get_tree().paused = false
+	check_near(left - Sound.voice_left(), 0.5, 0.05, "paused, the recording plays on")
+	check(in_step.call(), "and its text keeps time with it")
+	Input.action_press(&"dodge")
+	await wait_physics_frames(2)
+	Input.action_release(&"dodge")
+	level.player.take_hit(5.0, level.player.global_position + Vector2(40, 0))
+	check(level.slow_mo.is_active() and Engine.time_scale < 1.0, "a blow evaded mid-roll slows time")
+	left = Sound.voice_left()
+	await wait_frames(30)
+	check_near(left - Sound.voice_left(), 0.5, 0.05, "the recording doesn't slow with it")
+	check(in_step.call(), "nor does its text")
+	level.slow_mo.cancel()
+	var waited := 0
+	while Sound.voice_line == id and waited < 1200:
+		await wait_frames(1)
+		waited += 1
+	check_eq(subs.text, VoiceLines.all()[id], "still this line")
+	check(subs.is_speaking(), "when the voice ends the text is still up, fading")
+	# Then gone, once the fade and any reading time still owed are spent.
+	await wait_seconds(maxf(float(subs.get("_floor")), Subtitles.FADE) + 0.1)
+	check_false(subs.is_speaking(), "and then gone")
 
 
 func test_trying_to_wake_the_waiting_while_it_listens_is_refused_aloud() -> void:

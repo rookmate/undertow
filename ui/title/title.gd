@@ -166,6 +166,7 @@ static func _glow_environment() -> WorldEnvironment:
 	return we
 
 
+## The title sequence's own line (before any run or order): not narration, so not through the Narrator.
 func _say_quiet() -> void:
 	await get_tree().create_timer(1.4).timeout
 	if is_inside_tree():

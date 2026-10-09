@@ -112,7 +112,18 @@ at the end. The user's answers (2026-10-09) are in DECISIONS.md 80–87.
 | 14 | The Signal Room and the Overrides screen (mockup 6): six overrides with effects and Steward replies | done |
 | 15 | The Tideworks: cranes and containers, Salvagers, the union hall, finding the Riot Drone, the Crane | done |
 | 16 | The Workshop: scrap and weapon upgrades | done |
-| — | Sol analysis review (reviews/act-1.md), fixes, re-check | next |
+| — | Sol analysis review (reviews/act-1.md), fixes, re-check | done (3 rounds; closed) |
+
+**Review (reviews/act-1.md).** Sol found 13 problems in round 1, all fixed over three rounds (decisions
+111–123): weapons and aim assist now respect who may be struck (friendly Lamplighters, weak points);
+weapons survive finds and snatches; every Steward line has a purpose that the standing orders
+govern; the Vellum offers the Defib Gauntlet; rebinding checks every binding; damaged settings and saves
+are normalized; boss maps must be playable; the autopilot is split into infrastructure, scenarios and
+district routes, with a campaign (New Game to the Archive, save and Continue in between) as the gate's
+long run; subtitles keep the voice's own clock; the gate checks its own district listing. The gate also
+caught a leak at exit (sounds started while quitting), now fixed. 317 tests.
+
+**Milestone status: Act 1 is done and reviewed.**
 
 ## Later milestones (planned)
 
@@ -177,17 +188,21 @@ godot --path . -- --autopilot --perf-disable=minimap,lights   # switch features 
 ## How to test
 
 ```bash
-tools/check.sh                       # the full gate: import, tests, 30 s run, four 150 s routes, district tours (~25 min)
+tools/check.sh                       # the full gate: import, tests, 30 s run, the campaign, district tours
 godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn            # tests only
 godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn -- --filter=save   # some tests
 tools/record.sh <name> [seconds] [scenario]   # progress video -> ../undertow-recordings/<name>.mp4
 ```
 
 Autopilot scenarios (`-- --autopilot --autopilot-scenario=NAME`): `slice` (default: New Game →
-Kestrel Heights → the Reliquary → the bare Ark → the Loop map), `loop` (a prepared run: the Loop's
-trains, the cab, the Conductor, the Reliquary), `tideworks` (a prepared run: the depot's Riot Drone,
-the union hall, Salvagers, the Crane), `vellum` (a prepared run: the Vellum's
-whole route to the Archive and the dock), `ring_gallery`, `options` (the options screen: a volume, a rebinding),
-`tour` with `--autopilot-level=ID` (straight into a district: photographs its start, checkpoints, finds,
-Reliquary, muted). Runs of 55 s or more also expect the route to finish.
+Kestrel Heights → the Reliquary → the bare Ark → the Loop map), `campaign` (one run as a player plays
+it: New Game, Kestrel Heights, the Loop and an order signed in the Signal Room, save and return to the
+title, Continue, the Tideworks and a Workshop upgrade, the Vellum to the Archive; ends when done; give
+it `--autopilot-seconds=900`), `loop`, `tideworks`, `vellum` (a prepared run straight to that district
+and the Ark after it, carrying only what the districts before gave), `ring_gallery`, `options` (the
+options screen: a volume, a rebinding), `tour` with `--autopilot-level=ID` (straight into a district:
+photographs its start, checkpoints, finds, Reliquary, muted). Runs of 55 s or more also expect the
+route to finish. Screenshots (`--autopilot-shots=DIR`) need a window: a headless run never draws.
+The autopilot is `autoload/autopilot.gd` (its hands and checklist), `autoload/autopilot/scenarios/`
+and one route per district in `autoload/autopilot/routes/`.
 Gate logs and screenshots land in `reports/check/` (ignored by git).

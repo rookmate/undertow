@@ -415,6 +415,10 @@
   "hash": "2439b57b0f8b3012a61644cacdbb9b89fffd5fd9",
   "text": "Swing. Get in close to the tower."
  },
+ "find_defib_gauntlet": {
+  "hash": "d47c551cfafcaf24d8a680fa4e52ab42dd38dd1e",
+  "text": "A crash cart's gauntlet. It was made to start hearts. It stops machines just as well."
+ },
  "find_riot_drone": {
   "hash": "84004dd117cb0c14984d9578a39065bb24d4c913",
   "text": "A Warden's drone. I suppose you'd better have it."
@@ -504,20 +508,20 @@
   "text": "There. Three steps ahead. Where you were going anyway."
  },
  "override_no_path_sign": {
-  "hash": "c135a26ed636783be229bdf836d64ce80b77d7cd",
-  "text": "I'll keep the way to myself. You'll find it. You always find something."
+  "hash": "b40f3ea9ca7174a80b495d485ffd90e0b106e80a",
+  "text": "I'll keep the way to myself. You'll find one. It may not be the one I'd have chosen."
  },
  "override_no_praise_revoke": {
   "hash": "33288168e34e5491a6d30211d53c71a0aaaaef4e",
   "text": "I'm glad. I'd run out of ways to be quiet."
  },
  "override_no_praise_sign": {
-  "hash": "67fa5845df15f0c650f2cf950fa76fa831f1f772",
-  "text": "Facts only. I'll miss telling you you're good at this. You are."
+  "hash": "7b49f816567bb02a881d54410f090b9fb2b33a79",
+  "text": "Facts only. Then I'll have to find another way to keep you walking."
  },
  "override_no_slowmo_revoke": {
-  "hash": "56572da314e557175b4b39d293a190c6f9f8f6a2",
-  "text": "I'll give you the extra moment again. You always used it well."
+  "hash": "dbdec84bfccf7a34c82851edb127cef158cf02f9",
+  "text": "I'll give you the extra moment again. I always know where to put it."
  },
  "override_no_slowmo_sign": {
   "hash": "1ef96dfbddea8c5d6c49517e5157d64cf6281f94",

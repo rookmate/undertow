@@ -90,6 +90,56 @@ func test_stop_praising_me_leaves_only_facts() -> void:
 	check_eq(tone, "neutral", "and only plainly")
 
 
+## The orders govern everything the Steward says, not just its pooled narration: a boss's warnings, its
+## fixed lines, its screens' voice-overs.
+func test_the_orders_govern_every_line_by_purpose() -> void:
+	check(Narrator.say_fixed("crane_drop"), "a warning, while nothing forbids it")
+	GameState.set_override(Overrides.NO_TRAP_WARNINGS, true)
+	for id: String in ["conductor_left", "conductor_middle", "conductor_right", "crane_drop", "crane_swing"]:
+		check_eq(VoiceLines.purpose(id), LineSelector.WARNING, "%s is a warning" % id)
+		check_false(Narrator.say_fixed(id), "%s is not said with 'Never warn me' signed" % id)
+	check(Narrator.say_fixed("crane_rest"), "an opening is a fact, still said")
+	GameState.set_override(Overrides.NO_PRAISE, true)
+	check_false(Narrator.say_fixed("workshop_tuned"), "praise, not said")
+	check(Narrator.say_fixed("workshop_manual"))
+	check_false(Narrator.voice_over("workshop_tuned"), "nor on a screen: the line's own purpose decides")
+	check_false(Narrator.speak_text("workshop_tuned", VoiceLines.fixed("workshop_tuned"), LineSelector.FACT), "whatever the caller calls it")
+	check(Narrator.speak_text("ad_hoc", "Something said once.", LineSelector.FACT), "text that isn't one of its lines goes by the purpose given")
+	check(Narrator.speak_text(Overrides.reply_line(Overrides.NO_PRAISE, true), Overrides.field(Overrides.NO_PRAISE, "sign"), LineSelector.PRAISE), "its reasoning is a fact, whatever it's called")
+	Diagnostics.capture()
+	check_false(Narrator.voice_over("no_such_line"))
+	check_eq(Diagnostics.release().size(), 1, "a voice-over that isn't a line is reported")
+
+
+func test_with_never_warn_me_signed_the_crane_drops_in_silence() -> void:
+	GameState.set_override(Overrides.NO_TRAP_WARNINGS, true)
+	var level := (load("res://tests/fixtures/crane_arena.tscn") as PackedScene).instantiate() as Level
+	add_child(level)
+	await wait_frames(3)
+	level.player.position = Iso.cell_center(Vector2i(9, 7))
+	level.player.set_physics_process(false)
+	await wait_physics_frames(4)
+	check((level.boss as Crane).is_engaged)
+	await wait_seconds(Crane.LIFT_SECONDS + 0.1)
+	check_eq((level.boss as Crane).phase, Crane.Phase.AIM)
+	check(Sound.voice_line != "crane_drop", "no call: it watches the load come down and says nothing")
+	level.queue_free()
+	await wait_frames(2)
+
+
+func test_a_fixed_line_needs_text_and_a_purpose() -> void:
+	var problems := PackedStringArray()
+	var out := VoiceLines.validate_fixed({
+		"fine": {"text": "Fine.", "purpose": "fact"},
+		"no_purpose": {"text": "Hm."},
+		"odd_purpose": {"text": "Hm.", "purpose": "flattery"},
+		"empty": {"text": "", "purpose": "fact"},
+		"bad id!": {"text": "Hm.", "purpose": "fact"},
+	}, problems)
+	check_eq(out.keys(), ["fine"])
+	check_eq(problems.size(), 4, "%s" % [problems])
+
+
 func test_the_signal_room_stands_once_the_loop_is_done() -> void:
 	GameState.restore_building("archive")
 	var bare := (load("res://game/ark/ark.tscn") as PackedScene).instantiate() as ArkLevel

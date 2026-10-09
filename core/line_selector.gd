@@ -6,6 +6,11 @@ extends RefCounted
 ## care. Recent lines aren't repeated.
 
 const TONES: Array[StringName] = [&"bold", &"cautious", &"neutral"]
+## What a line is for. Signed orders silence by purpose (Narrator.allows()).
+const FACT := &"fact"
+const WARNING := &"warning"
+const PRAISE := &"praise"
+const PURPOSES: Array[StringName] = [FACT, WARNING, PRAISE]
 const RECENT_MEMORY := 8
 
 class Line:
@@ -38,6 +43,8 @@ func load_data(data: Dictionary) -> void:
 		for key: Variant in rules:
 			var rule: Variant = rules[key]
 			event_rules[StringName(str(key))] = rule if rule is Dictionary else {}
+			if not PURPOSES.has(purpose_of(StringName(str(key)))):
+				errors.append("event %s has unknown purpose %s" % [key, purpose_of(StringName(str(key)))])
 	var raw: Variant = data.get("lines", [])
 	if not raw is Array:
 		errors.append("'lines' must be an array")
@@ -73,9 +80,9 @@ func cooldown_for(event: StringName) -> float:
 	return float(event_rules.get(event, {}).get("cooldown", 6.0))
 
 
-## Flattery and comfort, as opposed to facts and warnings (silent under "Stop praising me").
-func is_praise(event: StringName) -> bool:
-	return bool(event_rules.get(event, {}).get("praise", false))
+## What an event's lines are for (Narrator.FACT, WARNING or PRAISE): signed orders silence by purpose.
+func purpose_of(event: StringName) -> StringName:
+	return StringName(str(event_rules.get(event, {}).get("purpose", "fact")))
 
 
 func is_priority(event: StringName) -> bool:

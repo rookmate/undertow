@@ -1,74 +1,32 @@
 extends Node
-## Scripted player for the gate's 30-second run and for progress recordings. Does nothing unless the
-## game is launched with `-- --autopilot`. Options (after `--`):
-##   --autopilot-seconds=N      stop after N seconds (default 30)
-##   --autopilot-scenario=NAME  what to do: "slice" (default: New Game, Kestrel Heights, the Ark, the
-##                              Loop map), "vellum" (a prepared run straight to the Vellum and its whole
-##                              route to the Archive), "loop" (a prepared run: the Loop's trains, the
-##                              cab, the Conductor, the Reliquary), "tideworks" (a prepared run: the
-##                              depot's drone, the union hall, Salvagers, the Crane), "ring_gallery",
-##                              "options" (the options
-##                              screen from the title: volume, display, a rebinding, back) or "tour"
+## Scripted player for the gate's runs and for progress recordings. Does nothing unless the game is
+## launched with `-- --autopilot`. Options (after `--`):
+##   --autopilot-seconds=N      stop after N seconds (default 30); a scenario that reaches its end sooner
+##                              (the campaign) stops there
+##   --autopilot-scenario=NAME  what to do (see make_scenario): "slice" (default: New Game, Kestrel
+##                              Heights, the Ark, the Loop map), "campaign" (New Game through Kestrel
+##                              Heights, the Loop, a save and Continue, the Tideworks and the Vellum to
+##                              the Archive, one run throughout), "loop", "tideworks", "vellum" (a
+##                              prepared run straight to that district and the Ark after it),
+##                              "ring_gallery", "options" (the options screen from the title) or "tour"
 ##                              (straight into --autopilot-level=ID: photographs its start, checkpoints,
 ##                              finds and Reliquary, voice on and muted; for looking at a district)
 ##   --autopilot-shots=DIR      save screenshots at named moments into DIR
-## Each scene script registers the checks it expects; at the end the autopilot prints
-## "AUTOPILOT PASS" and exits 0 only if every expected check passed.
+## This node is the pilot's hands and its checklist: arguments, save isolation, checks, timing, input,
+## walking and fighting. What happens in each scene is the scenario's (autoload/autopilot/scenarios/);
+## how each district is played is its route's (autoload/autopilot/routes/). Every check a scenario
+## needs is registered up front; at the end the autopilot prints "AUTOPILOT PASS" and exits 0 only if
+## every one passed.
 
-## Everything a scenario must achieve, registered up front so a run that stops early can't pass.
-## New Game into Kestrel Heights (the 30 s run from the main scene).
-const KESTREL_SHORT: Array[String] = [
-	"save_isolated", "title_shown", "title_ring_present", "loadout_shown", "loadout_one_weapon",
-	"level_reached", "player_spawned", "path_three_tiles_ahead", "lamplighters_light_the_way",
-	"narration_heard", "enemy_killed",
-]
-## Runs of LONG_RUN_SECONDS or more play Kestrel Heights through to the Loop map.
-const KESTREL_LONG: Array[String] = [
-	"dodge_performed", "gate_open_while_listening", "muted_at_the_hedge", "gate_shut_behind",
-	"lamplighter_hooked", "lamplighter_beaten", "childs_map_found", "gardener_woken", "voice_restored",
-	"route_completed", "core_choice_shown", "kestrel_cores_carried", "ark_reached", "ark_bare",
-	"loop_map_shown", "the_loop_open_on_map",
-]
-## The Vellum, from a prepared run (Kestrel done, all three weapons).
-const VELLUM_SHORT: Array[String] = [
-	"save_isolated", "title_shown", "title_ring_present", "loadout_shown", "loadout_applied",
-	"level_reached", "player_spawned", "walls_block", "path_three_tiles_ahead", "voice_muted_by_key",
-	"muted_lamps_dark", "muted_hand_lamp_on", "muted_cold_grade", "muted_path_and_map",
-	"muted_assists_off", "voice_restored_lamps", "voice_restored", "narration_heard",
-	"dodge_performed", "enemy_killed",
-]
-## Runs of LONG_RUN_SECONDS or more play the whole Vellum to the Archive and the dock.
-const VELLUM_LONG: Array[String] = [
-	"threat_warning_shown", "slowmo_on_dodge", "stacks_reached", "stacks_hidden_while_listening",
-	"steward_blind_in_stacks", "found_unindexed_log", "found_truth_core", "woke_survivor_in_stacks",
-	"woke_survivor_in_doorway", "route_completed", "arrived_by_reliquary", "playstyle_profiled",
-	"core_choice_shown", "four_cards_with_the_found_core", "cores_carried",
-	"level_completed_archive_restored", "saved_after_choice", "ark_reached",
-	"archive_restored_on_the_ark", "noor_and_teo_present", "survivors_on_the_ark", "archive_replayed",
-	"trust_changed", "loop_map_shown", "endings_offered_with_rewrite_locked",
-]
-const RING_GALLERY: Array[String] = ["save_isolated", "title_shown", "title_ring_present", "ring_gallery_shown"]
 const LONG_RUN_SECONDS := 55.0
 const AUTOPILOT_SAVES := "user://autopilot"
-## The Loop from a prepared run (Kestrel done, the baton): always the whole route.
-const LOOP_ROUTE: Array[String] = [
-	"save_isolated", "title_shown", "title_ring_present", "loadout_shown", "loadout_one_weapon",
-	"level_reached", "player_spawned", "path_three_tiles_ahead", "enemy_killed", "cab_truth_found",
-	"conductor_engaged", "conductor_called_a_lane", "conductor_vented", "conductor_beaten",
-	"barriers_opened", "route_completed", "core_choice_shown", "loop_cores_carried", "ark_reached",
-	"signal_room_restored", "signal_room_standing", "override_signed", "steward_answered_the_order",
-]
-## The Tideworks from a prepared run (Kestrel and the Loop done, the baton): always the whole route.
-const TIDEWORKS_ROUTE: Array[String] = [
-	"save_isolated", "title_shown", "title_ring_present", "loadout_shown", "loadout_one_weapon",
-	"level_reached", "player_spawned", "riot_drone_found", "strike_records_found", "enemy_killed",
-	"crane_engaged", "crane_called_a_drop", "crane_rested", "crane_beaten", "barriers_opened",
-	"route_completed", "core_choice_shown", "tideworks_cores_carried", "ark_reached", "workshop_restored",
-	"workshop_standing", "upgrade_bought",
-]
-const SCENARIOS: Array[String] = ["slice", "vellum", "loop", "tideworks", "ring_gallery", "options", "tour"]
-const TOUR: Array[String] = ["save_isolated", "title_shown", "tour_level_reached", "tour_done"]
-const OPTIONS_TOUR: Array[String] = ["save_isolated", "title_shown", "title_ring_present", "options_opened", "options_volume", "options_rebind", "options_closed"]
+const SCENARIOS: Array[String] = ["slice", "campaign", "loop", "tideworks", "vellum", "ring_gallery", "options", "tour"]
+
+const DistrictRun := preload("res://autoload/autopilot/scenarios/district_run.gd")
+const Campaign := preload("res://autoload/autopilot/scenarios/campaign.gd")
+const RingGallery := preload("res://autoload/autopilot/scenarios/ring_gallery.gd")
+const OptionsTour := preload("res://autoload/autopilot/scenarios/options_tour.gd")
+const Tour := preload("res://autoload/autopilot/scenarios/tour.gd")
 
 var active: bool = false
 var seconds: float = 30.0
@@ -76,6 +34,8 @@ var scenario: String = "slice"
 var shots_dir: String = ""
 ## The district a "tour" visits.
 var tour_level: String = ""
+## What this run does (null until the run starts).
+var plan: AutopilotScenario
 
 var _elapsed: float = 0.0
 ## Real frame times (ms) while a district is on screen, for the performance report.
@@ -99,6 +59,8 @@ func _ready() -> void:
 	if args.has("--list-districts"):
 		for id: String in LevelCatalog.LEVELS:
 			print("DISTRICT ", id)
+		# The count last: tools/check.sh fails a listing cut short.
+		print("DISTRICTS ", LevelCatalog.LEVELS.size())
 		set_process(false)
 		Sound.quit.call_deferred(0)
 		return
@@ -117,12 +79,20 @@ func _ready() -> void:
 			shots_dir = arg.get_slice("=", 1)
 	# The scenario names a save folder, so it is checked before anything touches the disk.
 	var save_dir := save_dir_for(scenario)
-	if save_dir == "":
+	plan = make_scenario(scenario, tour_level)
+	if save_dir == "" or plan == null:
 		push_error("Autopilot: unknown scenario '%s' (known: %s)" % [scenario, ", ".join(SCENARIOS)])
 		print("AUTOPILOT FAIL: known_scenario")
 		set_process(false)
 		Sound.quit.call_deferred(1)
 		return
+	if plan.problem() != "":
+		push_error("Autopilot: scenario '%s' can't run: %s" % [scenario, plan.problem()])
+		print("AUTOPILOT FAIL: scenario_ready")
+		set_process(false)
+		Sound.quit.call_deferred(1)
+		return
+	plan.long_run = seconds >= LONG_RUN_SECONDS
 	if shots_dir != "":
 		DirAccess.make_dir_recursive_absolute(shots_dir)
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -132,7 +102,8 @@ func _ready() -> void:
 	SaveService.delete_save()
 	# Default settings (bindings, volumes) whatever the player chose: runs must be repeatable.
 	Options.use_path(save_dir.path_join("settings.cfg"))
-	_register_expected()
+	for c: String in plan.expected():
+		expect(c)
 	check(is_isolated(SaveService.store.dir_path) and not SaveService.has_save(), "save_isolated")
 	SceneRouter.scene_changed.connect(_on_scene_changed)
 	_on_scene_changed.call_deferred(SceneRouter.current_key)
@@ -141,6 +112,24 @@ func _ready() -> void:
 	get_tree().process_frame.connect(_on_tick_start)
 	RenderingServer.frame_pre_draw.connect(_on_pre_draw)
 	RenderingServer.frame_post_draw.connect(_on_post_draw)
+
+
+## The scenario a name stands for, or null if there's no such scenario (the run is refused).
+func make_scenario(scenario_name: String, level_id: String = "") -> AutopilotScenario:
+	match scenario_name:
+		"slice":
+			return DistrictRun.new("kestrel", true)
+		"loop", "tideworks", "vellum":
+			return DistrictRun.new(scenario_name, false)
+		"campaign":
+			return Campaign.new()
+		"ring_gallery":
+			return RingGallery.new()
+		"options":
+			return OptionsTour.new()
+		"tour":
+			return Tour.new(level_id)
+	return null
 
 
 func _process(delta: float) -> void:
@@ -191,33 +180,6 @@ func is_isolated(dir: String) -> bool:
 
 
 # --- Checks -------------------------------------------------------------------------------------
-func _register_expected() -> void:
-	var required: Array[String] = []
-	match scenario:
-		"slice":
-			required = KESTREL_SHORT.duplicate()
-			if seconds >= LONG_RUN_SECONDS:
-				required.append_array(KESTREL_LONG)
-		"vellum":
-			required = VELLUM_SHORT.duplicate()
-			if seconds >= LONG_RUN_SECONDS:
-				required.append_array(VELLUM_LONG)
-		"loop":
-			required = LOOP_ROUTE.duplicate()
-		"tideworks":
-			required = TIDEWORKS_ROUTE.duplicate()
-		"ring_gallery":
-			required = RING_GALLERY.duplicate()
-		"options":
-			required = OPTIONS_TOUR.duplicate()
-		"tour":
-			required = TOUR.duplicate()
-		_:
-			required = ["known_scenario"]
-	for c: String in required:
-		expect(c)
-
-
 func expect(check_id: String) -> void:
 	if not _checks.has(check_id):
 		_checks[check_id] = false
@@ -275,13 +237,42 @@ static func _pct(values: PackedFloat32Array, at: float) -> float:
 	sorted.sort()
 	return sorted[mini(int(sorted.size() * at), sorted.size() - 1)]
 
+## Ends the run now (a scenario that has reached its end): passes only if every check has.
+func finish_now() -> void:
+	if not _finished:
+		_finish()
 
-# --- Helpers for scene scripts --------------------------------------------------------------------
+
+# --- Helpers for scenarios and routes --------------------------------------------------------------
+## True once the scene this coroutine started in has gone (or the run ended): it should stop.
+func stale(gen: int) -> bool:
+	return gen != _generation or _finished
+
+
 ## Waits `duration` seconds (unscaled). Returns false if the scene changed meanwhile, so callers can
-## stop: `if not await _wait(1.0, gen): return`.
-func _wait(duration: float, gen: int) -> bool:
+## stop: `if not await Autopilot.wait(1.0, gen): return`.
+func wait(duration: float, gen: int) -> bool:
 	await get_tree().create_timer(duration, true, false, true).timeout
-	return gen == _generation and not _finished
+	return not stale(gen)
+
+
+## Waits until `condition` holds (true) or `timeout` real seconds pass (false).
+func until(condition: Callable, timeout: float, gen: int) -> bool:
+	var spent := 0.0
+	while spent < timeout:
+		if stale(gen):
+			return false
+		if condition.call():
+			return true
+		await get_tree().process_frame
+		spent += get_process_delta_time() / maxf(Engine.time_scale, 0.01)
+	return bool(condition.call())
+
+
+## One physics frame; returns its (game-time) length.
+func physics_step() -> float:
+	await get_tree().physics_frame
+	return get_physics_process_delta_time()
 
 
 ## Presses and releases an action through the input pipeline, so UI focus navigation sees it too.
@@ -312,6 +303,11 @@ func snap(shot_name: String) -> void:
 	_last_frame_us = 0
 
 
+## Every boss barrier in the scene is open.
+func barriers_open() -> bool:
+	return get_tree().get_nodes_in_group(&"boss_barriers").all(func(n: Node) -> bool: return (n as BossBarrier).open)
+
+
 # --- Movement helpers -------------------------------------------------------------------------------
 const MOVE_ACTIONS: Array[StringName] = [&"move_left", &"move_right", &"move_up", &"move_down"]
 
@@ -331,7 +327,7 @@ func press_move(input: Vector2) -> void:
 
 
 ## Stick input that walks along grid direction `ground` (inverse of Iso.input_to_ground).
-static func input_for_ground(ground: Vector2) -> Vector2:
+func input_for_ground(ground: Vector2) -> Vector2:
 	return Vector2(ground.x - ground.y, ground.x + ground.y).normalized()
 
 
@@ -340,7 +336,7 @@ func walk_to(player: Node2D, cell: Vector2i, timeout: float, gen: int) -> bool:
 	var target := Iso.cell_center(cell)
 	var spent := 0.0
 	while true:
-		if gen != _generation or _finished or not is_instance_valid(player):
+		if stale(gen) or not is_instance_valid(player):
 			press_move(Vector2.ZERO)
 			return false
 		if Iso.ground_distance(player.global_position, target) < 0.3:
@@ -359,892 +355,65 @@ func walk_to(player: Node2D, cell: Vector2i, timeout: float, gen: int) -> bool:
 ## Holds a ground direction for `duration` seconds.
 func hold_ground(ground: Vector2, duration: float, gen: int) -> bool:
 	press_move(input_for_ground(ground))
-	var ok := await _wait(duration, gen)
+	var ok := await wait(duration, gen)
 	press_move(Vector2.ZERO)
 	return ok
 
 
-# --- Scenario ---------------------------------------------------------------------------------------
+# --- Scenes -----------------------------------------------------------------------------------------
+## Each scene hands over to the scenario. Coroutines from the scene before see stale() and stop.
 func _on_scene_changed(key: StringName) -> void:
 	_generation += 1
 	var gen := _generation
 	press_move(Vector2.ZERO)
+	var scene := get_tree().current_scene
 	match key:
 		&"title":
-			_drive_title(gen)
+			_at_title(scene, gen)
 		&"ring_gallery":
-			_drive_ring_gallery(gen)
+			plan.on_ring_gallery(gen)
 		&"loadout":
-			_drive_loadout(gen)
+			plan.on_loadout(scene, gen)
 		SceneRouter.LEVEL_KEY:
-			_drive_level(gen)
+			var level := scene as Level
+			if level != null and level.player != null:
+				plan.on_level(level, gen)
 		&"core_choice":
-			_drive_core_choice(gen)
+			plan.on_core_choice(scene, gen)
 		&"ark":
-			_drive_ark(gen)
+			var ark := scene as ArkLevel
+			if ark != null:
+				plan.on_ark(ark, gen)
 
 
-func _drive_title(gen: int) -> void:
+## Every scenario starts here: the title and its ring, photographed, then the scenario's choice.
+func _at_title(title: Node, gen: int) -> void:
 	check(true, "title_shown")
-	expect("title_ring_present")
-	if not await _wait(0.5, gen):
+	if not await wait(0.5, gen):
 		return
 	if get_tree().get_nodes_in_group(&"steward_ring").size() > 0:
 		pass_check("title_ring_present")
-	if not await _wait(3.0, gen):
+	if not await wait(3.0, gen):
 		return
 	await snap("title")
-	if scenario == "ring_gallery":
-		expect("ring_gallery_shown")
-		SceneRouter.goto(&"ring_gallery")
-	elif scenario == "options":
-		_tour_options(gen)
-	elif scenario == "tour":
-		if not LevelCatalog.has_level(tour_level):
-			push_error("Autopilot: tour needs --autopilot-level=<district id> (got '%s')" % tour_level)
-			return
-		var target := tour_level
-		SceneRouter.goto_level(target, func() -> void:
-			GameState.new_run()
-			GameState.set_location("level:" + target))
-	elif scenario == "slice":
-		expect("level_reached")
-		# New Game has focus; accept it the way a controller or keyboard would.
-		tap(&"ui_accept")
-	elif scenario == "loop":
-		SceneRouter.goto(&"loadout", func() -> void:
-			GameState.new_run()
-			GameState.complete_level("kestrel")
-			GameState.set_location("loadout:loop"))
-	elif scenario == "tideworks":
-		SceneRouter.goto(&"loadout", func() -> void:
-			GameState.new_run()
-			GameState.complete_level("kestrel")
-			GameState.complete_level("loop")
-			GameState.set_location("loadout:tideworks"))
-	elif scenario == "vellum":
-		expect("level_reached")
-		SceneRouter.goto(&"loadout", func() -> void:
-			GameState.new_run()
-			GameState.complete_level("kestrel")
-			GameState.complete_level("loop")
-			GameState.complete_level("tideworks")
-			for id: String in WeaponDefs.PLAYABLE:
-				GameState.give_weapon(id)
-			GameState.set_location("loadout:vellum"))
+	plan.on_title(title, gen)
 
 
-## A look round a district: its start, each checkpoint, each find and the Reliquary, then muted.
-func _drive_tour(gen: int) -> void:
-	var level := get_tree().current_scene as Level
-	if level == null or level.player == null:
-		return
-	check(level.level_id == tour_level, "tour_level_reached")
-	if not await _wait(2.5, gen):
-		return
-	await snap("tour_start")
-	var spots: Array[Vector2i] = []
-	for marker: String in ["C", "W", "T", "U", "R"]:
-		for c: Vector2i in level.grid.cells_with(marker):
-			spots.append(c)
-	for c: Vector2i in spots:
-		level.player.position = Iso.cell_center(_beside(level, c))
-		if not await _wait(1.8, gen):
-			return
-		await snap("tour_%s_%d_%d" % [level.grid.char_at(c), c.x, c.y])
-	level.player.position = Iso.cell_center(level.grid.start_cell())
-	tap(&"voice_toggle")
-	if not await _wait(2.5, gen):
-		return
-	await snap("tour_muted")
-	tap(&"voice_toggle")
-	check(true, "tour_done")
-
-
-## A walkable cell next to `c` (or `c` itself) to stand on.
-func _beside(level: Level, c: Vector2i) -> Vector2i:
-	if level.grid.is_walkable(c) and not level.grid.is_occupied(c):
-		return c
-	for d: Vector2i in [Vector2i(1, 1), Vector2i(0, 1), Vector2i(1, 0), Vector2i(-1, 1), Vector2i(1, -1), Vector2i(-1, 0), Vector2i(0, -1)]:
-		if level.grid.is_walkable(c + d) and not level.grid.is_occupied(c + d):
-			return c + d
-	return c
-
-
-## Opens Options from the title with the keyboard/pad, turns a volume down, rebinds dodge, and goes back.
-func _tour_options(gen: int) -> void:
-	var title := get_tree().current_scene
-	var open: Button = null
-	for b: Node in title.find_children("*", "Button", true, false):
-		if (b as Button).text == "OPTIONS":
-			open = b
-	if open == null:
-		return
-	open.grab_focus()
-	tap(&"ui_accept")
-	if not await _wait(1.0, gen):
-		return
-	var screen: OptionsScreen = null
-	for c: Node in title.get_children():
-		if c is OptionsScreen:
-			screen = c
-	check(screen != null, "options_opened")
-	if screen == null:
-		return
-	await snap("options")
-	var sliders: Dictionary = screen.get("_sliders")
-	(sliders[&"Music"] as Control).grab_focus()
-	for i: int in 4:
-		tap(&"ui_left")
-		if not await _wait(0.3, gen):
-			return
-	check(Options.volumes[&"Music"] < Options.VOLUME_DEFAULTS[&"Music"], "options_volume")
-	var dodge_kb: Button = (screen.get("_binding_buttons") as Dictionary)["dodge/kb"]
-	dodge_kb.grab_focus()
-	if not await _wait(0.8, gen):
-		return
-	tap(&"ui_accept")
-	if not await _wait(0.8, gen):
-		return
-	var key := InputEventKey.new()
-	key.physical_keycode = KEY_R
-	key.pressed = true
-	Input.parse_input_event(key)
-	if not await _wait(0.8, gen):
-		return
-	check(Controls.primary(&"dodge", "kb") == ["key", KEY_R], "options_rebind")
-	await snap("options_rebound")
-	if not await _wait(1.0, gen):
-		return
-	screen.close()
-	if not await _wait(0.5, gen):
-		return
-	check(not is_instance_valid(screen) or screen.is_queued_for_deletion(), "options_closed")
-
-
-func _drive_ring_gallery(gen: int) -> void:
-	pass_check("ring_gallery_shown")
-	if not await _wait(1.5, gen):
-		return
-	await snap("ring_gallery")
-
-
-func _drive_loadout(gen: int) -> void:
-	pass_check("loadout_shown")
-	var screen := get_tree().current_scene
-	if not await _wait(1.5, gen):
-		return
-	await snap("loadout")
-	if Loadout.slots_for(GameState.run.weapons_owned) == 1:
-		var picked: Array[String] = screen.get("picked")
-		check(picked == [WeaponDefs.BATON] and Loadout.slots_for(GameState.run.weapons_owned) == 1, "loadout_one_weapon")
-		var go := screen.get("_depart") as Button
-		go.grab_focus()
-		tap(&"ui_accept")
-		return
-	# Run the baton by hand, the way a player clicking the slot's toggle would.
-	screen.call("_on_mode_toggled", 0)
-	if not await _wait(1.0, gen):
-		return
-	await snap("loadout_manual_baton")
-	var depart := screen.get("_depart") as Button
-	expect("loadout_applied")
-	depart.grab_focus()
-	tap(&"ui_accept")
-
-
-func _drive_level(gen: int) -> void:
-	if scenario == "tour":
-		_drive_tour(gen)
-		return
-	var level := get_tree().current_scene as Level
-	if level == null or level.player == null:
-		return
-	if level.level_id == "kestrel":
-		_drive_kestrel(level, gen)
-		return
-	if level.level_id == "loop":
-		_drive_loop(level, gen)
-		return
-	if level.level_id == "tideworks":
-		_drive_tideworks(level, gen)
-		return
-	if level.level_id != "vellum":
-		return
-	pass_check("level_reached")
-	var player := level.player
-	pass_check("player_spawned")
-	var ids: Array[String] = []
-	for w: Weapon in player.weapons:
-		ids.append(w.weapon_id)
-	check(ids == [WeaponDefs.BATON, WeaponDefs.RIOT_DRONE] and player.weapons[0].chosen_mode == Loadout.Mode.MANUAL, "loadout_applied")
-	# Aim with the right stick from here on, like a controller player.
-	Controls.device = Controls.Device.PAD
-	expect("dodge_performed")
-	player.dodged.connect(func(_d: Vector2) -> void: pass_check("dodge_performed"), CONNECT_ONE_SHOT)
-	expect("enemy_killed")
-	expect("narration_heard")
-	Narrator.line_spoken.connect(func(_id: String, _t: String) -> void: pass_check("narration_heard"), CONNECT_ONE_SHOT)
-	var start_count := level.living_enemies().size()
-	if not await _wait(1.2, gen):
-		return
-	await snap("level_start")
-	expect("walls_block")
-	if not await hold_ground(Vector2(-1, 0), 1.0, gen):
-		return
-	check(level.grid.is_walkable(player.cell()) and player.cell().x >= 9, "walls_block")
-	check(level.predicted_path.shown.size() == Tunables.PATH_TILES_AHEAD, "path_three_tiles_ahead")
-	await snap("path")
-	if not await _toggle_voice_and_check(level, player, gen):
-		return
-	var route: Array[Vector2i] = [Vector2i(12, 37), Vector2i(13, 33), Vector2i(14, 30), Vector2i(13, 26), Vector2i(12, 21), Vector2i(11, 15), Vector2i(9, 10), Vector2i(5, 9)]
-	var long_run := seconds >= LONG_RUN_SECONDS
-	if long_run:
-		expect("route_completed")
-		expect("threat_warning_shown")
-		expect("slowmo_on_dodge")
-		level.slow_mo.started.connect(func(_s: float) -> void: pass_check("slowmo_on_dodge"), CONNECT_ONE_SHOT)
-		_watch_threats(level, gen)
-	var shot_fight := false
-	for i: int in route.size():
-		if not await advance_to(level, player, route[i], 25.0, gen):
-			return
-		if level.living_enemies().size() < start_count:
-			pass_check("enemy_killed")
-		if not shot_fight and level.living_enemies().size() < start_count:
-			shot_fight = true
-			await snap("level_after_fight")
-		if long_run and i == 1:
-			if not await _visit_stacks(level, player, gen):
-				return
-	pass_check("route_completed")
-	check(player.cell().distance_to(Vector2(5, 9)) <= 1.5, "arrived_by_reliquary")
-	var p := GameState.run.playstyle_profile
-	check(p.risk + p.caution > 0.0, "playstyle_profiled")
-	if long_run:
-		expect("core_choice_shown")
-		if not await advance_to(level, player, Vector2i(4, 8), 15.0, gen):
-			return
-		tap(&"interact")
-	await snap("level_plaza")
-
-
-## The Reliquary's cards: carry one of each, the off-path truth core and the Lattice power core.
-func _drive_core_choice(gen: int) -> void:
-	pass_check("core_choice_shown")
-	var screen := get_tree().current_scene
-	if str(screen.get("level_id")) == "kestrel":
-		_choose_in_kestrel(screen, gen)
-		return
-	if str(screen.get("level_id")) == "loop":
-		_choose_in_loop(screen, gen)
-		return
-	if str(screen.get("level_id")) == "tideworks":
-		_choose_in_tideworks(screen, gen)
-		return
-	var offered: Array[String] = screen.get("offered")
-	check(offered.size() == 4 and offered.has(ContentIds.CORE_TRUTH_STACKS), "four_cards_with_the_found_core")
-	if not await _wait(1.5, gen):
-		return
-	await snap("core_choice")
-	screen.call("_toggle", ContentIds.CORE_TRUTH_STACKS)
-	screen.call("_toggle", "vellum_power_lattice")
-	if not await _wait(0.8, gen):
-		return
-	await snap("core_choice_picked")
-	var confirm := screen.get("_confirm") as Button
-	confirm.grab_focus()
-	tap(&"ui_accept")
-	if not await _wait(1.0, gen):
-		return
-	var r := GameState.run
-	check(r.cores_power() == 1 and r.cores_truth() == 1 and r.found_core_ids.is_empty(), "cores_carried")
-	check(r.levels_completed.has(ContentIds.LEVEL_VELLUM) and r.buildings_restored.has("archive") and r.logs_unlocked.has("log_vashti_audit_note"), "level_completed_archive_restored")
-	check(SaveService.has_save(), "saved_after_choice")
-	await snap("core_choice_done")
-	expect("ark_reached")
-	confirm.grab_focus()
-	tap(&"ui_accept")
-
-
-## The Ark: the restored Archive, Noor and Teo, the survivors; replay two memories, talk, take the skiff.
-func _drive_ark(gen: int) -> void:
-	pass_check("ark_reached")
-	var ark := get_tree().current_scene as ArkLevel
-	if ark == null:
-		return
-	var player := ark.player
-	if scenario == "slice":
-		_ark_after_kestrel(ark, gen)
-		return
-	if scenario == "tideworks":
-		check(GameState.run.buildings_restored.has("workshop"), "workshop_restored")
-		var standing := 0
-		for n: Node in ark.world.get_children():
-			if n is BuildingCell and (n as BuildingCell).facade == BuildingCell.Facade.WORKSHOP:
-				standing += 1
-		check(standing > 0, "workshop_standing")
-		if not await _wait(1.5, gen):
-			return
-		await snap("ark_after_tideworks")
-		if not await _use_at(ark, player, Vector2i(6, 9), gen):
-			return
-		var shop := ark.workshop_screen
-		if shop == null:
-			return
-		await snap("workshop")
-		var scrap := GameState.run.scrap
-		shop.buy(WeaponDefs.RIOT_DRONE, "tuned")
-		check(GameState.run.scrap == scrap - Upgrades.COSTS[0] and Upgrades.level(GameState.run, WeaponDefs.RIOT_DRONE, "tuned") == 1, "upgrade_bought")
-		if not await _wait(2.5, gen):
-			return
-		await snap("workshop_bought")
-		shop.close()
-		return
-	if scenario == "loop":
-		check(GameState.run.buildings_restored.has("signal_room"), "signal_room_restored")
-		var standing := 0
-		for n: Node in ark.world.get_children():
-			if n is BuildingCell and (n as BuildingCell).facade == BuildingCell.Facade.SIGNAL_ROOM:
-				standing += 1
-		check(standing > 0, "signal_room_standing")
-		if not await _wait(1.5, gen):
-			return
-		await snap("ark_after_loop")
-		if not await _use_at(ark, player, Vector2i(12, 5), gen):
-			return
-		var orders := ark.overrides_screen
-		if orders == null:
-			return
-		await snap("signal_room")
-		orders.toggle(Overrides.NO_SLOWMO)
-		check(GameState.has_override(Overrides.NO_SLOWMO), "override_signed")
-		check(Sound.voice_line == Overrides.reply_line(Overrides.NO_SLOWMO, true), "steward_answered_the_order")
-		if not await _wait(2.5, gen):
-			return
-		await snap("signal_room_signed")
-		orders.close()
-		return
-	var archive_cells := 0
-	var figures: Dictionary[String, int] = {}
-	for n: Node in ark.world.get_children():
-		if n is BuildingCell and (n as BuildingCell).facade == BuildingCell.Facade.ARCHIVE:
-			archive_cells += 1
-		if n is ArkFigure:
-			var key := (n as ArkFigure).display_name()
-			figures[key] = int(figures.get(key, 0)) + 1
-	check(archive_cells > 0, "archive_restored_on_the_ark")
-	check(figures.get("NOOR", 0) == 1 and figures.get("TEO", 0) == 1, "noor_and_teo_present")
-	check(int(figures.get("SURVIVOR", 0)) == GameState.run.survivors_found(), "survivors_on_the_ark")
-	if not await _wait(1.5, gen):
-		return
-	await snap("ark")
-	for c: String in ["archive_replayed", "trust_changed", "loop_map_shown"]:
-		expect(c)
-	if not await advance_to(ark, player, Vector2i(10, 7), 20.0, gen):
-		return
-	tap(&"interact")
-	if not await _wait(0.8, gen):
-		return
-	var screen := ark.archive_screen
-	if screen == null:
-		return
-	await snap("archive")
-	var noor_before := GameState.run.noor_trust
-	var teo_before := GameState.run.teo_trust
-	for log_id: String in ["log_0311_morning_feed", "log_vashti_audit_note"]:
-		screen.select(log_id)
-		screen.call("_on_replay")
-		var lines := (ContentDb.memory_log(log_id).get("record", []) as Array).size()
-		if not await _wait(lines * ArchiveScreen.LINE_SECONDS + 1.2, gen):
-			return
-		await snap("archive_" + log_id)
-	check(GameState.run.logs_replayed.size() >= 2, "archive_replayed")
-	check(GameState.run.noor_trust != noor_before or GameState.run.teo_trust != teo_before, "trust_changed")
-	tap(&"ui_cancel")
-	if not await _wait(0.8, gen):
-		return
-	if not await _use_at(ark, player, Vector2i(12, 9), gen):
-		return
-	await snap("ark_noor")
-	for cell: Vector2i in [Vector2i(17, 17), Vector2i(19, 19), Vector2i(20, 20)]:
-		if not await advance_to(ark, player, cell, 20.0, gen):
-			return
-	tap(&"interact")
-	if not await _wait(1.0, gen):
-		return
-	check(ark.city_map != null, "loop_map_shown")
-	await snap("loop_map")
-	if not await _wait(1.5, gen):
-		return
-	if ark.city_map != null:
-		ark.city_map.open_summary()
-	if not await _wait(1.0, gen):
-		return
-	await snap("run_summary")
-	var rewrite := EndingRules.evaluate(GameState.run)
-	check(rewrite.reboot and rewrite.unplug and not rewrite.rewrite and rewrite.checklist.size() == 3, "endings_offered_with_rewrite_locked")
-	if not await _wait(1.0, gen):
-		return
-	DebugOverlay.toggle()
-	if not await _wait(0.5, gen):
-		return
-	await snap("debug_overlay_final")
-	DebugOverlay.toggle()
-
-
-# --- Kestrel Heights ----------------------------------------------------------------------------------
-func _lamplighters(level: Level) -> Array[Lamplighter]:
-	var out: Array[Lamplighter] = []
-	for n: Node in level.world.get_children():
-		if n is Lamplighter:
-			out.append(n as Lamplighter)
-	return out
-
-
-func _gates(level: Level) -> Array[SmartGate]:
-	var out: Array[SmartGate] = []
-	for n: Node in level.world.get_children():
-		if n is SmartGate:
-			out.append(n as SmartGate)
-	return out
-
-
-## The switchback climb: terrace 1's Custodians, through the gate while it listens, mute at the hedge,
-## let a Lamplighter take hold and put it down, the child's map, wake the gardener (muted), the Steward
-## back, the Reliquary.
-func _drive_kestrel(level: Level, gen: int) -> void:
-	pass_check("level_reached")
-	var player := level.player
-	pass_check("player_spawned")
-	Controls.device = Controls.Device.PAD
-	var long_run := seconds >= LONG_RUN_SECONDS
-	player.dodged.connect(func(_d: Vector2) -> void: pass_check("dodge_performed"), CONNECT_ONE_SHOT)
-	Narrator.line_spoken.connect(func(_id: String, _t: String) -> void: pass_check("narration_heard"), CONNECT_ONE_SHOT)
-	var start_count := level.living_enemies().size()
-	if not await _wait(1.2, gen):
-		return
-	await snap("kestrel_start")
-	check(level.predicted_path.shown.size() == Tunables.PATH_TILES_AHEAD, "path_three_tiles_ahead")
-	check(_lamplighters(level).all(func(l: Lamplighter) -> bool: return not l.hunting and not l.is_in_group(&"enemies")), "lamplighters_light_the_way")
-	for cell: Vector2i in [Vector2i(12, 23), Vector2i(20, 23), Vector2i(27, 23), Vector2i(28, 20), Vector2i(28, 18)]:
-		if not await advance_to(level, player, cell, 25.0, gen):
-			return
-		if level.living_enemies().size() < start_count:
-			pass_check("enemy_killed")
-	if level.living_enemies().size() < start_count:
-		pass_check("enemy_killed")
-	await snap("kestrel_terrace_1")
-	if not long_run:
-		return
-	check(_gates(level).all(func(g: SmartGate) -> bool: return g.open), "gate_open_while_listening")
-	for cell: Vector2i in [Vector2i(28, 16), Vector2i(28, 15), Vector2i(24, 14), Vector2i(18, 14), Vector2i(12, 14), Vector2i(10, 14)]:
-		if not await advance_to(level, player, cell, 25.0, gen):
-			return
-	await snap("kestrel_hedge_hint")
-	tap(&"voice_toggle")
-	check(await _until(func() -> bool: return not Steward.voice_on, 1.0, gen), "muted_at_the_hedge")
-	check(await _until(func() -> bool: return _gates(level).all(func(g: SmartGate) -> bool: return not g.open), 3.0, gen), "gate_shut_behind")
-	# Muted, a Lamplighter comes for you: let it take hold, then put it down.
-	check(await _until(func() -> bool: return _lamplighters(level).any(func(l: Lamplighter) -> bool: return l.hooking), 8.0, gen), "lamplighter_hooked")
-	await snap("kestrel_hooked")
-	var lamp: Lamplighter = null
-	for l: Lamplighter in _lamplighters(level):
-		if l.hooking or (lamp == null and l.is_alive()):
-			lamp = l
-	var frame := 0
-	var spent := 0.0
-	while lamp != null and lamp.is_alive() and spent < 15.0:
-		if gen != _generation or _finished:
-			return
-		frame += 1
-		_fight(player, lamp, frame)
-		await get_tree().physics_frame
-		spent += get_physics_process_delta_time()
-	_release_all()
-	check(lamp != null and not lamp.is_alive(), "lamplighter_beaten")
-	for cell: Vector2i in [Vector2i(10, 14), Vector2i(8, 15), Vector2i(6, 15), Vector2i(5, 14)]:
-		if not await advance_to(level, player, cell, 20.0, gen):
-			return
-	if not await _use_at(level, player, Vector2i(3, 12), gen):
-		return
-	check(GameState.run.found_core_ids.has("kestrel_truth_childs_map"), "childs_map_found")
-	await snap("kestrel_childs_room")
-	for cell: Vector2i in [Vector2i(5, 14), Vector2i(8, 15), Vector2i(10, 14), Vector2i(10, 12), Vector2i(10, 9), Vector2i(10, 6), Vector2i(15, 5)]:
-		if not await advance_to(level, player, cell, 25.0, gen):
-			return
-	if not await _use_at(level, player, Vector2i(18, 5), gen):
-		return
-	check(GameState.run.survivor_ids.has("kestrel_waiting_gardener"), "gardener_woken")
-	await snap("kestrel_gardener")
-	tap(&"voice_toggle")
-	check(await _until(func() -> bool: return Steward.voice_on and level.predicted_path.shown.size() == Tunables.PATH_TILES_AHEAD, 3.0, gen), "voice_restored")
-	for cell: Vector2i in [Vector2i(22, 5), Vector2i(26, 5), Vector2i(28, 4)]:
-		if not await advance_to(level, player, cell, 25.0, gen):
-			return
-	pass_check("route_completed")
-	await snap("kestrel_reliquary")
-	tap(&"interact")
-
-
-## Carry the child's map and the Day core.
-func _choose_in_kestrel(screen: Node, gen: int) -> void:
-	var offered: Array[String] = screen.get("offered")
-	if not await _wait(1.5, gen):
-		return
-	await snap("kestrel_core_choice")
-	screen.call("_toggle", "kestrel_truth_childs_map")
-	screen.call("_toggle", "kestrel_power_day")
-	if not await _wait(0.8, gen):
-		return
-	var confirm := screen.get("_confirm") as Button
-	confirm.grab_focus()
-	tap(&"ui_accept")
-	if not await _wait(1.0, gen):
-		return
-	var r := GameState.run
-	check(offered.size() == 4 and r.cores_truth() == 1 and r.cores_power() == 1 and r.levels_completed.has("kestrel"), "kestrel_cores_carried")
-	await snap("kestrel_core_choice_done")
-	confirm.grab_focus()
-	tap(&"ui_accept")
-
-
-## After Kestrel Heights the Ark is bare (nothing restored yet); the dock's map shows the Loop open.
-func _ark_after_kestrel(ark: ArkLevel, gen: int) -> void:
-	var archive := 0
-	for n: Node in ark.world.get_children():
-		if n is BuildingCell and (n as BuildingCell).facade == BuildingCell.Facade.ARCHIVE:
-			archive += 1
-	check(archive == 0 and GameState.run.buildings_restored.is_empty(), "ark_bare")
-	if not await _wait(1.5, gen):
-		return
-	await snap("ark_bare")
+## Walks to the dock and opens the map of the city. Returns false if that didn't happen.
+func open_city_map(ark: ArkLevel, gen: int) -> bool:
 	for cell: Vector2i in [Vector2i(17, 17), Vector2i(19, 19), Vector2i(20, 20)]:
 		if not await advance_to(ark, ark.player, cell, 20.0, gen):
-			return
+			return false
 	tap(&"interact")
-	if not await _wait(1.0, gen):
-		return
-	check(ark.city_map != null, "loop_map_shown")
-	check(CityMap.state_of(GameState.run, "loop") == "open" and CityMap.state_of(GameState.run, "kestrel") == "done" and CityMap.state_of(GameState.run, "vellum") == "locked", "the_loop_open_on_map")
-	await snap("loop_map_after_kestrel")
-
-
-# --- The Loop -----------------------------------------------------------------------------------------
-## Train to train over the drop: the first carriage's Custodians, the driver's cab (muted), the gantries,
-## the platforms, the second train, then the Conductor (the Steward's way: off the called lane, hit it
-## while it vents) and the Reliquary past the buffer stops.
-func _drive_loop(level: Level, gen: int) -> void:
-	pass_check("level_reached")
-	var player := level.player
-	pass_check("player_spawned")
-	Controls.device = Controls.Device.PAD
-	var start_count := level.living_enemies().size()
-	if not await _wait(1.2, gen):
-		return
-	await snap("loop_start")
-	check(level.predicted_path.shown.size() == Tunables.PATH_TILES_AHEAD, "path_three_tiles_ahead")
-	for cell: Vector2i in [Vector2i(8, 16), Vector2i(14, 16), Vector2i(19, 16), Vector2i(22, 16)]:
-		if not await advance_to(level, player, cell, 25.0, gen):
-			return
-	if level.living_enemies().size() < start_count:
-		pass_check("enemy_killed")
-	tap(&"voice_toggle")
-	if not await _wait(0.6, gen):
-		return
-	if not await _use_at(level, player, Vector2i(23, 18), gen):
-		return
-	check(GameState.run.found_core_ids.has("loop_truth_no_manual"), "cab_truth_found")
-	await snap("loop_cab")
-	tap(&"voice_toggle")
-	for cell: Vector2i in [Vector2i(20, 16), Vector2i(20, 15), Vector2i(20, 12), Vector2i(20, 9), Vector2i(26, 8), Vector2i(30, 8), Vector2i(37, 8), Vector2i(39, 7), Vector2i(39, 5), Vector2i(39, 4)]:
-		if not await advance_to(level, player, cell, 25.0, gen):
-			return
-	if level.living_enemies().size() < start_count:
-		pass_check("enemy_killed")
-	var boss := level.boss as Conductor
-	if boss == null:
-		return
-	check(await _until(func() -> bool: return boss.is_engaged, 3.0, gen), "conductor_engaged")
-	await snap("loop_conductor")
-	if not await _fight_conductor(player, boss, gen):
-		return
-	check(not boss.is_alive(), "conductor_beaten")
-	await snap("loop_conductor_down")
-	check(await _until(func() -> bool: return get_tree().get_nodes_in_group(&"boss_barriers").all(func(n: Node) -> bool: return (n as BossBarrier).open), 2.0, gen), "barriers_opened")
-	for cell: Vector2i in [Vector2i(36, 3), Vector2i(30, 3), Vector2i(27, 3), Vector2i(25, 3)]:
-		if not await advance_to(level, player, cell, 25.0, gen):
-			return
-	pass_check("route_completed")
-	tap(&"interact")
-
-
-## The Steward's solution: keep off the lane it calls, wait out the runs, close in and hit it while it
-## vents. Gives up after 90 s.
-func _fight_conductor(player: Operator, boss: Conductor, gen: int) -> bool:
-	var spent := 0.0
-	var frame := 0
-	var lane_rows: Array[int] = [2, 3, 4]
-	while boss.is_alive() and spent < 90.0:
-		if gen != _generation or _finished:
-			_release_all()
-			return false
-		frame += 1
-		if Sound.voice_line.begins_with("conductor_"):
-			pass_check("conductor_called_a_lane")
-		if boss.phase == Conductor.Phase.VENT:
-			pass_check("conductor_vented")
-		var row := player.cell().y
-		var danger: ShuntLane = boss.get("_lane") if boss.phase == Conductor.Phase.WARN or boss.phase == Conductor.Phase.RUN else null
-		if boss.is_vulnerable():
-			_fight(player, boss, frame)
-		elif danger != null and danger.has_cell(player.cell()):
-			# Step to the next lane over, away from the one that's about to run.
-			var safe := row - 1 if row > 2 else row + 1
-			for r: int in lane_rows:
-				if not danger.has_cell(Vector2i(player.cell().x, r)) and absi(r - row) == 1:
-					safe = r
-			_release_attacks()
-			press_move(input_for_ground(Iso.ground_dir_between(player.global_position, Iso.cell_center(Vector2i(clampi(player.cell().x, 36, 41), safe)))))
-		else:
-			_release_attacks()
-			var hold := Vector2i(clampi(player.cell().x, 39, 41), row if lane_rows.has(row) else 3)
-			if Iso.ground_distance(player.global_position, Iso.cell_center(hold)) > 0.3:
-				press_move(input_for_ground(Iso.ground_dir_between(player.global_position, Iso.cell_center(hold))))
-			else:
-				press_move(Vector2.ZERO)
-		await get_tree().physics_frame
-		spent += get_physics_process_delta_time()
-	_release_all()
-	return true
-
-
-# --- The Tideworks ------------------------------------------------------------------------------------
-## The side yard first (the Riot Drone off the depot's rack; muted, the union hall's strike ledger), then
-## the quay's Salvagers, the pier, the last Crane (the Steward's way), and the Reliquary on the pier head.
-func _drive_tideworks(level: Level, gen: int) -> void:
-	pass_check("level_reached")
-	var player := level.player
-	pass_check("player_spawned")
-	Controls.device = Controls.Device.PAD
-	var start_count := level.living_enemies().size()
-	if not await _wait(1.2, gen):
-		return
-	await snap("tideworks_start")
-	for cell: Vector2i in [Vector2i(8, 11), Vector2i(10, 9), Vector2i(10, 7), Vector2i(11, 6), Vector2i(11, 5)]:
-		if not await advance_to(level, player, cell, 25.0, gen):
-			return
-	if not await _use_at(level, player, Vector2i(11, 4), gen):
-		return
-	check(GameState.run.weapons_owned.has(WeaponDefs.RIOT_DRONE) and player.weapons.size() == 2, "riot_drone_found")
-	await snap("tideworks_depot")
-	tap(&"voice_toggle")
-	for cell: Vector2i in [Vector2i(11, 6), Vector2i(9, 7), Vector2i(8, 5), Vector2i(7, 4), Vector2i(5, 4)]:
-		if not await advance_to(level, player, cell, 25.0, gen):
-			return
-	if not await _use_at(level, player, Vector2i(3, 4), gen):
-		return
-	check(GameState.run.found_core_ids.has("tideworks_truth_strike_records"), "strike_records_found")
-	await snap("tideworks_union_hall")
-	tap(&"voice_toggle")
-	for cell: Vector2i in [Vector2i(7, 4), Vector2i(8, 6), Vector2i(10, 8), Vector2i(12, 10), Vector2i(19, 11), Vector2i(26, 11), Vector2i(30, 11), Vector2i(33, 11), Vector2i(36, 11)]:
-		if not await advance_to(level, player, cell, 25.0, gen):
-			return
-	if level.living_enemies().filter(func(e: Enemy) -> bool: return e.is_threat).size() < start_count:
-		pass_check("enemy_killed")
-	var crane := level.boss as Crane
-	if crane == null:
-		return
-	check(await _until(func() -> bool: return crane.is_engaged, 3.0, gen), "crane_engaged")
-	await snap("tideworks_crane")
-	if not await _fight_crane(player, crane, gen):
-		return
-	check(not crane.is_alive(), "crane_beaten")
-	await snap("tideworks_crane_down")
-	check(await _until(func() -> bool: return get_tree().get_nodes_in_group(&"boss_barriers").all(func(n: Node) -> bool: return (n as BossBarrier).open), 2.0, gen), "barriers_opened")
-	for cell: Vector2i in [Vector2i(39, 7), Vector2i(39, 5), Vector2i(40, 3)]:
-		if not await advance_to(level, player, cell, 25.0, gen):
-			return
-	pass_check("route_completed")
-	tap(&"interact")
-
-
-## The Steward's way with the Crane: out from under the drop, in by the tower for the swing, hit it while
-## its cab is down. Gives up after 100 s.
-func _fight_crane(player: Operator, crane: Crane, gen: int) -> bool:
-	var spent := 0.0
-	var frame := 0
-	while crane.is_alive() and spent < 100.0:
-		if gen != _generation or _finished:
-			_release_all()
-			return false
-		frame += 1
-		if Sound.voice_line == "crane_drop":
-			pass_check("crane_called_a_drop")
-		if crane.phase == Crane.Phase.REST:
-			pass_check("crane_rested")
-		var at := player.global_position
-		var to_tower := Iso.ground_dir_between(at, crane.global_position)
-		var d := Iso.ground_distance(at, crane.global_position)
-		if crane.is_vulnerable():
-			_fight(player, crane, frame)
-		elif crane.phase == Crane.Phase.SWING_WARN or crane.phase == Crane.Phase.SWING:
-			_release_attacks()
-			press_move(input_for_ground(to_tower) if d > 1.6 else Vector2.ZERO)
-		elif crane.phase == Crane.Phase.AIM or crane.phase == Crane.Phase.DROP:
-			_release_attacks()
-			var mark: Vector2 = crane.get("_mark")
-			if Iso.ground_distance(at, mark) < Crane.DROP_RADIUS + 0.8:
-				var away := Iso.ground_dir_between(mark, at)
-				press_move(input_for_ground(Vector2(-away.y, away.x) if d > 3.5 else away))
-			else:
-				press_move(Vector2.ZERO)
-		else:
-			_release_attacks()
-			press_move(input_for_ground(to_tower) if d > 3.0 else Vector2.ZERO)
-		await get_tree().physics_frame
-		spent += get_physics_process_delta_time()
-	_release_all()
-	return true
-
-
-## Carry the strike ledger and the Crane core.
-func _choose_in_tideworks(screen: Node, gen: int) -> void:
-	if not await _wait(1.5, gen):
-		return
-	await snap("tideworks_core_choice")
-	screen.call("_toggle", "tideworks_truth_strike_records")
-	screen.call("_toggle", "tideworks_power_cranes")
-	if not await _wait(0.8, gen):
-		return
-	var confirm := screen.get("_confirm") as Button
-	confirm.grab_focus()
-	tap(&"ui_accept")
-	if not await _wait(1.0, gen):
-		return
-	var r := GameState.run
-	check(r.levels_completed.has("tideworks") and r.cores_truth() == 1 and r.cores_power() == 1, "tideworks_cores_carried")
-	expect("ark_reached")
-	confirm.grab_focus()
-	tap(&"ui_accept")
-
-
-## Carry the procurement order and the Route core.
-func _choose_in_loop(screen: Node, gen: int) -> void:
-	if not await _wait(1.5, gen):
-		return
-	await snap("loop_core_choice")
-	screen.call("_toggle", "loop_truth_no_manual")
-	screen.call("_toggle", "loop_power_routes")
-	if not await _wait(0.8, gen):
-		return
-	var confirm := screen.get("_confirm") as Button
-	confirm.grab_focus()
-	tap(&"ui_accept")
-	if not await _wait(1.0, gen):
-		return
-	var r := GameState.run
-	check(r.levels_completed.has("loop") and r.cores_truth() == 1 and r.cores_power() == 1, "loop_cores_carried")
-	expect("ark_reached")
-	confirm.grab_focus()
-	tap(&"ui_accept")
-
-
-## Off the path: down the stair into the overflow stacks. Nothing there while the Steward listens;
-## muted, read the slip, take the truth core, wake the resident there and the one in the doorway.
-func _visit_stacks(level: Level, player: Operator, gen: int) -> bool:
-	for c: String in ["stacks_reached", "stacks_hidden_while_listening", "found_unindexed_log", "found_truth_core", "woke_survivor_in_stacks", "woke_survivor_in_doorway"]:
-		expect(c)
-	for cell: Vector2i in [Vector2i(15, 27), Vector2i(15, 26), Vector2i(16, 26), Vector2i(17, 26), Vector2i(18, 28)]:
-		if not await advance_to(level, player, cell, 20.0, gen):
-			return false
-	pass_check("stacks_reached")
-	var cache: TruthCache = null
-	for n: Node in get_tree().get_nodes_in_group(&"interactables"):
-		if n is TruthCache:
-			cache = n
-	check(level.predicted_path.shown.is_empty() and cache != null and not cache.is_present(), "stacks_hidden_while_listening")
-	# Off the Lattice the voice is still on, but the Steward can't see the Operator.
-	check(await _until(func() -> bool: return Steward.voice_on and Steward.assists().signal_lost and level.hud.minimap.charted_label().ends_with("SIGNAL LOST"), 2.0, gen), "steward_blind_in_stacks")
-	await snap("stacks_listening")
-	tap(&"voice_toggle")
-	if not await _wait(1.2, gen):
-		return false
-	await snap("stacks_muted")
-	if not await _use_at(level, player, Vector2i(18, 28), gen):
-		return false
-	check(GameState.run.logs_unlocked.has(ContentIds.LOG_UNINDEXED_SLIP), "found_unindexed_log")
-	if not await _use_at(level, player, Vector2i(19, 24), gen):
-		return false
-	check(GameState.run.found_core_ids.has(ContentIds.CORE_TRUTH_STACKS), "found_truth_core")
-	await snap("stacks_truth_core")
-	if not await _use_at(level, player, Vector2i(18, 30), gen):
-		return false
-	check(GameState.run.survivor_ids.has(ContentIds.SURVIVOR_STACKS), "woke_survivor_in_stacks")
-	await snap("stacks_woken")
-	for cell: Vector2i in [Vector2i(17, 26), Vector2i(16, 26), Vector2i(15, 26)]:
-		if not await advance_to(level, player, cell, 20.0, gen):
-			return false
-	if not await _use_at(level, player, Vector2i(10, 25), gen):
-		return false
-	check(GameState.run.survivor_ids.has(ContentIds.SURVIVOR_DOORWAY), "woke_survivor_in_doorway")
-	tap(&"voice_toggle")
-	return await _wait(0.5, gen)
-
-
-## Mutes the Steward with the voice key and checks everything the brief's voice table says changes,
-## then turns it back on.
-func _toggle_voice_and_check(level: Level, player: Operator, gen: int) -> bool:
-	var toggles := GameState.run.voice_toggle_count
-	tap(&"voice_toggle")
-	var all_lamps := func(lit: bool) -> bool:
-		for n: Node in get_tree().get_nodes_in_group(&"lattice_lamps"):
-			if (n as LampPost).lit != lit:
-				return false
-		return true
-	check(await _until(func() -> bool: return not Steward.voice_on and GameState.run.voice_toggle_count == toggles + 1, 1.0, gen), "voice_muted_by_key")
-	check(await _until(func() -> bool: return all_lamps.call(false), 3.0, gen), "muted_lamps_dark")
-	check(player.carried_light_on(), "muted_hand_lamp_on")
-	check(await _until(func() -> bool: return level.lighting.grade_amount() > 0.95, 3.0, gen), "muted_cold_grade")
-	var a := Steward.assists()
-	check(level.predicted_path.shown.is_empty() and level.hud.minimap.mode() == Assists.MapMode.HAND_SCAN, "muted_path_and_map")
-	check(not a.threat_warnings and a.aim_assist == 0.0 and a.dodge_slowmo_seconds == 0.0 and not player.weapons[1].is_tuned() and a.damage_taken_mult > 1.0, "muted_assists_off")
-	await snap("muted_street")
-	tap(&"voice_toggle")
-	check(await _until(func() -> bool: return Steward.voice_on and all_lamps.call(true), 3.0, gen), "voice_restored_lamps")
-	check(await _until(func() -> bool: return level.predicted_path.shown.size() == Tunables.PATH_TILES_AHEAD and level.hud.subtitles.is_speaking(), 3.0, gen), "voice_restored")
-	await snap("voice_restored")
-	return gen == _generation
-
-
-## Waits until `condition` holds (true) or `timeout` seconds pass (false).
-func _until(condition: Callable, timeout: float, gen: int) -> bool:
-	var spent := 0.0
-	while spent < timeout:
-		if gen != _generation or _finished:
-			return false
-		if condition.call():
-			return true
-		await get_tree().process_frame
-		spent += get_process_delta_time() / maxf(Engine.time_scale, 0.01)
-	return bool(condition.call())
-
-
-func _watch_threats(level: Level, gen: int) -> void:
-	while gen == _generation and not _finished:
-		if not level.hud.view.active_threats().is_empty():
-			pass_check("threat_warning_shown")
-			await snap("threat_warning")
-			return
-		await get_tree().physics_frame
+	return await wait(1.0, gen) and ark.city_map != null
 
 
 ## Walks to `cell` and presses Interact.
-func _use_at(level: Level, player: Operator, cell: Vector2i, gen: int) -> bool:
+func use_at(level: Level, player: Operator, cell: Vector2i, gen: int) -> bool:
 	if not await advance_to(level, player, cell, 20.0, gen):
 		return false
 	tap(&"interact")
-	return await _wait(0.8, gen)
+	return await wait(0.8, gen)
 
 
 ## Walks toward `cell`, stopping to fight anything that comes within reach. Returns false on timeout
@@ -1256,16 +425,16 @@ func advance_to(level: Level, player: Operator, cell: Vector2i, timeout: float, 
 	var route: Array[Vector2i] = []
 	var repath := 0.0
 	while true:
-		if gen != _generation or _finished or not is_instance_valid(player):
-			_release_all()
+		if stale(gen) or not is_instance_valid(player):
+			release_all()
 			return false
 		frame += 1
-		var threat := _nearest_threat(level, player, 3.4)
+		var threat := nearest_threat(level, player, 3.4)
 		if threat != null and player.is_alive():
-			_fight(player, threat, frame)
+			fight(player, threat, frame)
 			repath = 0.0
 		else:
-			_release_attacks()
+			release_attacks()
 			if Iso.ground_distance(player.global_position, target) < 0.15:
 				press_move(Vector2.ZERO)
 				return true
@@ -1282,19 +451,19 @@ func advance_to(level: Level, player: Operator, cell: Vector2i, timeout: float, 
 		await get_tree().physics_frame
 		spent += get_physics_process_delta_time()
 		if spent > timeout:
-			_release_all()
-			var near := _nearest_threat(level, player, 3.4)
+			release_all()
+			var near := nearest_threat(level, player, 3.4)
 			print("[autopilot] advance_to %s timed out at %s%s" % [cell, player.cell(), " (fighting %s at %s)" % [near.get_class(), near.grid_cell()] if near != null else ""])
 			return false
 	return false
 
 
-func _nearest_threat(level: Level, player: Operator, reach: float) -> Enemy:
+func nearest_threat(level: Level, player: Operator, reach: float) -> Enemy:
 	var best: Enemy = null
 	var best_d := reach
 	for e: Enemy in level.living_enemies():
-		# Weak points aren't threats; bosses have their own fight (_fight_conductor, _fight_crane).
-		if not e.is_threat or e is Boss:
+		# Weak points aren't threats; bosses have their own fight (their district's route).
+		if not e.is_threat or not e.is_hittable() or e is Boss:
 			continue
 		var d := Iso.ground_distance(player.global_position, e.global_position)
 		if d <= best_d:
@@ -1305,10 +474,10 @@ func _nearest_threat(level: Level, player: Operator, reach: float) -> Enemy:
 
 ## One frame of fighting: aim at the threat with the right stick, close in for the baton (pressed on
 ## the beat, every ~0.3 s), keep the drone firing, and roll away from a red-orange windup.
-func _fight(player: Operator, threat: Enemy, frame: int) -> void:
+func fight(player: Operator, threat: Enemy, frame: int) -> void:
 	var to := Iso.ground_dir_between(player.global_position, threat.global_position)
 	var dist := Iso.ground_distance(player.global_position, threat.global_position)
-	_press_aim(input_for_ground(to))
+	press_aim(input_for_ground(to))
 	if threat.state == Enemy.State.WINDUP and dist < 1.6 and player.dodge.can_start():
 		press_move(input_for_ground(Vector2(-to.y, to.x)))
 		tap(&"dodge")
@@ -1324,7 +493,7 @@ func _fight(player: Operator, threat: Enemy, frame: int) -> void:
 		Input.action_release(&"attack_secondary")
 
 
-func _press_aim(input: Vector2) -> void:
+func press_aim(input: Vector2) -> void:
 	var strengths := {
 		&"aim_right": maxf(input.x, 0.0), &"aim_left": maxf(-input.x, 0.0),
 		&"aim_down": maxf(input.y, 0.0), &"aim_up": maxf(-input.y, 0.0),
@@ -1337,12 +506,12 @@ func _press_aim(input: Vector2) -> void:
 			Input.action_release(action)
 
 
-func _release_attacks() -> void:
+func release_attacks() -> void:
 	Input.action_release(&"attack_primary")
 	Input.action_release(&"attack_secondary")
-	_press_aim(Vector2.ZERO)
+	press_aim(Vector2.ZERO)
 
 
-func _release_all() -> void:
+func release_all() -> void:
 	press_move(Vector2.ZERO)
-	_release_attacks()
+	release_attacks()

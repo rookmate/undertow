@@ -1,18 +1,61 @@
 {
-  "notes": "Lines the Steward speaks outside the narration pools. Each id is also its voice file name (assets/voice/<id>.ogg). Placeholder writing.",
+  "notes": "Lines the Steward speaks outside the narration pools. Each id is also its voice file name (assets/voice/<id>.ogg). Each line has a purpose: 'fact', 'warning' (a threat: silent under 'Never warn me about traps') or 'praise' (flattery and comfort: silent under 'Stop praising me'). Placeholder writing.",
   "lines": {
-    "title_quiet": "Good morning, Meridian. Today will be—",
-    "waiting_refusal": "They're resting. Leave them.",
-    "loadout_nudge": "I'd keep the tuning on. Let me carry the aim; you watch the street.",
-    "conductor_left": "Left track.",
-    "conductor_middle": "Middle track. Move.",
-    "conductor_right": "Right track.",
-    "conductor_vent": "It's venting. Now.",
-    "find_riot_drone": "A Warden's drone. I suppose you'd better have it.",
-    "crane_drop": "Drop. Get out from under it.",
-    "crane_swing": "Swing. Get in close to the tower.",
-    "crane_rest": "Its cab's down. Now.",
-    "workshop_tuned": "Good. Let me make it sing for you.",
-    "workshop_manual": "You'd rather do it yourself. All right. I'll watch."
+    "title_quiet": {
+      "text": "Good morning, Meridian. Today will be—",
+      "purpose": "fact"
+    },
+    "waiting_refusal": {
+      "text": "They're resting. Leave them.",
+      "purpose": "fact"
+    },
+    "loadout_nudge": {
+      "text": "I'd keep the tuning on. Let me carry the aim; you watch the street.",
+      "purpose": "fact"
+    },
+    "conductor_left": {
+      "text": "Left track.",
+      "purpose": "warning"
+    },
+    "conductor_middle": {
+      "text": "Middle track. Move.",
+      "purpose": "warning"
+    },
+    "conductor_right": {
+      "text": "Right track.",
+      "purpose": "warning"
+    },
+    "conductor_vent": {
+      "text": "It's venting. Now.",
+      "purpose": "fact"
+    },
+    "find_riot_drone": {
+      "text": "A Warden's drone. I suppose you'd better have it.",
+      "purpose": "fact"
+    },
+    "find_defib_gauntlet": {
+      "text": "A crash cart's gauntlet. It was made to start hearts. It stops machines just as well.",
+      "purpose": "fact"
+    },
+    "crane_drop": {
+      "text": "Drop. Get out from under it.",
+      "purpose": "warning"
+    },
+    "crane_swing": {
+      "text": "Swing. Get in close to the tower.",
+      "purpose": "warning"
+    },
+    "crane_rest": {
+      "text": "Its cab's down. Now.",
+      "purpose": "fact"
+    },
+    "workshop_tuned": {
+      "text": "Good. Let me make it sing for you.",
+      "purpose": "praise"
+    },
+    "workshop_manual": {
+      "text": "You'd rather do it yourself. All right. I'll watch.",
+      "purpose": "fact"
+    }
   }
 }

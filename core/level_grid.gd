@@ -277,15 +277,16 @@ func all_cells() -> Array[Vector2i]:
 	return out
 
 
-## Cells reachable on foot from `start` (4-neighbour flood fill), optionally only through indexed cells.
-func reachable_from(start: Vector2i, indexed_only: bool = false) -> Dictionary[Vector2i, bool]:
+## Cells reachable on foot from `start` (4-neighbour flood fill), optionally only through indexed cells,
+## with the map characters in `closed` treated as shut (a boss's barriers 'y' before it falls).
+func reachable_from(start: Vector2i, indexed_only: bool = false, closed: String = "") -> Dictionary[Vector2i, bool]:
 	var seen: Dictionary[Vector2i, bool] = {start: true}
 	var queue: Array[Vector2i] = [start]
 	while not queue.is_empty():
 		var c: Vector2i = queue.pop_back()
 		for d: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]:
 			var n := c + d
-			if seen.has(n) or not is_walkable(n):
+			if seen.has(n) or not is_walkable(n) or (closed != "" and closed.contains(char_at(n))):
 				continue
 			if indexed_only and not is_indexed(n):
 				continue

@@ -21,7 +21,7 @@ var leash_tiles: float = 9.0
 var facing_ground: Vector2 = Vector2(0, 1)
 ## Parts a machine gives up when taken apart (spent at the Workshop).
 var scrap_value: int = 1
-## Whether the Steward's tuned aim will pick this as a target.
+## Whether the Steward will aim at this (tuned targeting and aim assist), when it can be struck at all.
 var steward_aims_at: bool = true
 ## False for things that never attack (a boss's weak point): something to hit, nothing to fear.
 var is_threat: bool = true
@@ -54,6 +54,17 @@ func setup(owner_level: Level, cell: Vector2i, max_integrity: float) -> void:
 
 func is_alive() -> bool:
 	return state != State.DEAD
+
+
+## Whether the Operator's weapons can strike it now. Every hit query goes through this (Level.
+## hittable_enemies()), so a thing that isn't a target can't be chosen, assisted toward, or struck.
+func is_hittable() -> bool:
+	return is_alive()
+
+
+## Whether the Steward's aim (tuned targeting, aim assist) may bend toward it.
+func steward_will_aim() -> bool:
+	return is_hittable() and steward_aims_at
 
 
 func grid_cell() -> Vector2i:

@@ -250,8 +250,7 @@ func _on_replay() -> void:
 	SaveFlow.checkpoint(get_tree())
 	replaying = false
 	_show_aftermath(true, last_replay)
-	if Steward.voice_on:
-		Sound.say(VoiceLines.log_line(selected))
+	Narrator.voice_over(VoiceLines.log_line(selected))
 	_replay.text = "REPLAY AGAIN"
 	_refresh_list_marks()
 

@@ -52,9 +52,10 @@ func windup_seconds() -> float:
 	return WINDUP
 
 
-## Voice on: a lamp that walks with you (not a target). Muted: it hunts.
+## Voice on: a lamp that walks with you (not a target, nothing to fear). Muted: it hunts.
 func _on_voice(on: bool) -> void:
 	hunting = not on
+	is_threat = hunting
 	if hunting:
 		add_to_group(&"enemies")
 	else:
@@ -62,6 +63,11 @@ func _on_voice(on: bool) -> void:
 		_release()
 		if state != State.DEAD:
 			_enter(State.IDLE)
+
+
+## Walking with you it isn't a target: nothing aims at it and no blow lands on it.
+func is_hittable() -> bool:
+	return super() and hunting
 
 
 func take_hit(amount: float, from_dir: Vector2, knock_tiles: float, stun_seconds: float) -> void:
