@@ -6,8 +6,8 @@ Milestone: **vertical slice** (design brief, "First milestone"). Plan and decisi
 |---|---|---|
 | 0 | Skeleton: settings, input map, autoloads, tracked state + saves, test runner, gate, palette, fonts, title with canonical ring | done |
 | 1 | Isometric movement, dodge, greybox Vellum street | done |
-| 2 | Combat with two-weapon loadout, tuned/manual modes | next |
-| 3 | Predictive path, hidden off-path area | |
+| 2 | Combat with two-weapon loadout, tuned/manual modes | done |
+| 3 | Predictive path, hidden off-path area | next |
 | 4 | Voice toggle: assists, map, narration, lighting | |
 | 5 | Adaptive narration from tagged line pools | |
 | 6 | Level end with power-vs-truth core choice | |
@@ -31,10 +31,16 @@ off-path overflow stacks island, rain, a parallax skyline. The Operator walks (g
 3.2 tiles/s) and dodges (roll with i-frames and cooldown), collides with the world, depth-sorts with
 buildings and props; the camera follows. Pause menu (Esc / Start). New Game and Continue work.
 
+**Step 2.** Loadout screen (2×2 grid with the fourth tool locked, two slots with a Tuned/Manual toggle
+and ease vs skill-ceiling bars, the Steward's nudge toward tuning). Traffic Baton, Riot Drone and
+Defib Gauntlet, each with a tuned and a manual mode (see DECISIONS 35–36). Custodians and a Clerk with
+red-orange windups; Integrity, hit grace, downed and respawned at the checkpoint; HUD with Integrity
+and both weapon slots (mode tag gold when tuned, ivory when manual). Aim by mouse or right stick.
+
 ## Next
 
-Step 2: two-weapon loadout screen (Traffic Baton, Riot Drone, Defib Gauntlet, each Tuned/Manual);
-Custodians and a Clerk; Integrity, attack warnings in red-orange, respawn at the checkpoint.
+Step 3: the Steward's predicted path (three gold tiles ahead, routed over the Lattice's cells only),
+and the off-path stacks hidden from it (the Waiting, a truth cache, an unindexed log).
 
 ## How to run
 
@@ -52,5 +58,6 @@ godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn -- --filte
 tools/record.sh <name> [seconds] [scenario]   # progress video -> ../undertow-recordings/<name>.mp4
 ```
 
-Autopilot scenarios (`-- --autopilot --autopilot-scenario=NAME`): `slice` (default), `ring_gallery`.
+Autopilot scenarios (`-- --autopilot --autopilot-scenario=NAME`): `slice` (default: title → loadout
+→ level, fighting up the street), `ring_gallery`. Runs of 55 s or more also expect the route to finish.
 Gate logs and screenshots land in `reports/check/` (ignored by git).

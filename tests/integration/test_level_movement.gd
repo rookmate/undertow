@@ -9,6 +9,8 @@ func before_each() -> void:
 	level = (load("res://game/level/vellum_street.tscn") as PackedScene).instantiate() as Level
 	add_child(level)
 	await wait_physics_frames(2)
+	# Movement only: no Custodians bumping into the Operator.
+	level.remove_all_enemies()
 
 
 func after_each() -> void:

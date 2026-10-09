@@ -173,6 +173,8 @@ func _on_scene_changed(key: StringName) -> void:
 			_drive_title(gen)
 		&"ring_gallery":
 			_drive_ring_gallery(gen)
+		&"loadout":
+			_drive_loadout(gen)
 		&"level_vellum":
 			_drive_level(gen)
 
@@ -203,6 +205,23 @@ func _drive_ring_gallery(gen: int) -> void:
 	await snap("ring_gallery")
 
 
+func _drive_loadout(gen: int) -> void:
+	pass_check("loadout_shown")
+	var screen := get_tree().current_scene
+	if not await _wait(1.5, gen):
+		return
+	await snap("loadout")
+	# Run the baton by hand, the way a player clicking the slot's toggle would.
+	screen.call("_on_mode_toggled", 0)
+	if not await _wait(1.0, gen):
+		return
+	await snap("loadout_manual_baton")
+	var depart := screen.get("_depart") as Button
+	expect("loadout_applied")
+	depart.grab_focus()
+	tap(&"ui_accept")
+
+
 func _drive_level(gen: int) -> void:
 	pass_check("level_reached")
 	var level := get_tree().current_scene as Level
@@ -210,26 +229,121 @@ func _drive_level(gen: int) -> void:
 		return
 	var player := level.player
 	pass_check("player_spawned")
+	var ids: Array[String] = []
+	for w: Weapon in player.weapons:
+		ids.append(w.weapon_id)
+	check(ids == [WeaponDefs.BATON, WeaponDefs.RIOT_DRONE] and player.weapons[0].chosen_mode == Loadout.Mode.MANUAL, "loadout_applied")
+	# Aim with the right stick from here on, like a controller player.
+	Controls.device = Controls.Device.PAD
 	expect("dodge_performed")
 	player.dodged.connect(func(_d: Vector2) -> void: pass_check("dodge_performed"), CONNECT_ONE_SHOT)
+	expect("enemy_killed")
+	var start_count := level.living_enemies().size()
 	if not await _wait(1.2, gen):
 		return
 	await snap("level_start")
-	# Walk into the building band on the left (grid -x): the walls must hold.
 	expect("walls_block")
-	if not await hold_ground(Vector2(-1, 0), 1.6, gen):
+	if not await hold_ground(Vector2(-1, 0), 1.0, gen):
 		return
 	check(level.grid.is_walkable(player.cell()) and player.cell().x >= 9, "walls_block")
-	# Up the street, round the stalled tram, into the plaza by the Reliquary.
 	var route: Array[Vector2i] = [Vector2i(12, 37), Vector2i(13, 33), Vector2i(14, 30), Vector2i(13, 26), Vector2i(12, 21), Vector2i(11, 15), Vector2i(9, 10), Vector2i(5, 9)]
-	expect("route_completed")
+	var long_run := seconds >= 55.0
+	if long_run:
+		expect("route_completed")
+	var shot_fight := false
 	for i: int in route.size():
-		if i == 2 or i == 5:
-			tap(&"dodge")
-		if not await walk_to(player, route[i], 9.0, gen):
+		if not await advance_to(level, player, route[i], 25.0, gen):
 			return
-		if i == 3:
-			await snap("level_mid")
+		if level.living_enemies().size() < start_count:
+			pass_check("enemy_killed")
+		if not shot_fight and level.living_enemies().size() < start_count:
+			shot_fight = true
+			await snap("level_after_fight")
 	pass_check("route_completed")
 	check(player.cell().distance_to(Vector2(5, 9)) <= 1.5, "arrived_by_reliquary")
 	await snap("level_plaza")
+
+
+## Walks toward `cell`, stopping to fight anything that comes within reach. Returns false on timeout
+## or scene change.
+func advance_to(level: Level, player: Operator, cell: Vector2i, timeout: float, gen: int) -> bool:
+	var target := Iso.cell_center(cell)
+	var spent := 0.0
+	var frame := 0
+	while true:
+		if gen != _generation or _finished or not is_instance_valid(player):
+			_release_all()
+			return false
+		frame += 1
+		var threat := _nearest_threat(level, player, 3.4)
+		if threat != null and player.is_alive():
+			_fight(player, threat, frame)
+		else:
+			_release_attacks()
+			if Iso.ground_distance(player.global_position, target) < 0.3:
+				press_move(Vector2.ZERO)
+				return true
+			press_move(input_for_ground(Iso.ground_dir_between(player.global_position, target)))
+		await get_tree().physics_frame
+		spent += get_physics_process_delta_time()
+		if spent > timeout:
+			_release_all()
+			print("[autopilot] advance_to %s timed out at %s" % [cell, player.cell()])
+			return false
+	return false
+
+
+func _nearest_threat(level: Level, player: Operator, reach: float) -> Enemy:
+	var best: Enemy = null
+	var best_d := reach
+	for e: Enemy in level.living_enemies():
+		var d := Iso.ground_distance(player.global_position, e.global_position)
+		if d <= best_d:
+			best = e
+			best_d = d
+	return best
+
+
+## One frame of fighting: aim at the threat with the right stick, close in for the baton (pressed on
+## the beat, every ~0.3 s), keep the drone firing, and roll away from a red-orange windup.
+func _fight(player: Operator, threat: Enemy, frame: int) -> void:
+	var to := Iso.ground_dir_between(player.global_position, threat.global_position)
+	var dist := Iso.ground_distance(player.global_position, threat.global_position)
+	_press_aim(input_for_ground(to))
+	if threat.state == Enemy.State.WINDUP and dist < 1.6 and player.dodge.can_start():
+		press_move(input_for_ground(Vector2(-to.y, to.x)))
+		tap(&"dodge")
+		return
+	press_move(input_for_ground(to) if dist > 1.2 else Vector2.ZERO)
+	if dist <= 1.7 and frame % 18 < 2:
+		Input.action_press(&"attack_primary")
+	else:
+		Input.action_release(&"attack_primary")
+	if dist > 1.4:
+		Input.action_press(&"attack_secondary")
+	else:
+		Input.action_release(&"attack_secondary")
+
+
+func _press_aim(input: Vector2) -> void:
+	var strengths := {
+		&"aim_right": maxf(input.x, 0.0), &"aim_left": maxf(-input.x, 0.0),
+		&"aim_down": maxf(input.y, 0.0), &"aim_up": maxf(-input.y, 0.0),
+	}
+	for action: StringName in strengths:
+		var v: float = strengths[action]
+		if v > 0.01:
+			Input.action_press(action, v)
+		else:
+			Input.action_release(action)
+
+
+func _release_attacks() -> void:
+	Input.action_release(&"attack_primary")
+	Input.action_release(&"attack_secondary")
+	_press_aim(Vector2.ZERO)
+
+
+func _release_all() -> void:
+	press_move(Vector2.ZERO)
+	_release_attacks()

@@ -11,10 +11,16 @@ signal player_spawned(player: Operator)
 
 var grid: LevelGrid
 var world: Node2D
+## Effects that lie on the ground (swing arcs, shock rings), above the floor and below the world.
+var fx_ground: Node2D
 var player: Operator
 var camera: Camera2D
+## A* over every walkable cell, for enemies.
+var enemy_nav: GridNav
+var checkpoint_cell: Vector2i
 
 var _ambient: CanvasModulate
+var _enemies: Array[Enemy] = []
 
 
 func _ready() -> void:
@@ -27,14 +33,21 @@ func _ready() -> void:
 	var reflections := WetReflections.new()
 	reflections.name = "WetReflections"
 	add_child(reflections)
+	fx_ground = Node2D.new()
+	fx_ground.name = "GroundFx"
+	fx_ground.z_index = -14
+	add_child(fx_ground)
 	world = Node2D.new()
 	world.name = "World"
 	world.y_sort_enabled = true
 	add_child(world)
+	enemy_nav = GridNav.new(grid, func(c: Vector2i) -> bool: return grid.is_walkable(c) and not grid.is_occupied(c))
 	_build_cells()
 	_build_collision()
 	_spawn_player()
+	_spawn_enemies()
 	_add_atmosphere()
+	add_child(Hud.new())
 	add_child(PauseMenu.new())
 	add_child(LevelHints.new())
 	GameState.set_location("level:" + level_id)
@@ -42,8 +55,34 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if not get_tree().paused:
-		GameState.add_play_time(delta)
+	if get_tree().paused:
+		return
+	GameState.add_play_time(delta)
+	_update_checkpoint()
+
+
+func living_enemies() -> Array[Enemy]:
+	var out: Array[Enemy] = []
+	for e: Enemy in _enemies:
+		if is_instance_valid(e) and e.is_alive():
+			out.append(e)
+	return out
+
+
+func _update_checkpoint() -> void:
+	if player == null or not player.is_alive():
+		return
+	for c: Vector2i in grid.cells_with("C"):
+		if c != checkpoint_cell and Iso.ground_distance(player.global_position, Iso.cell_center(c)) < 1.3:
+			checkpoint_cell = c
+
+
+## Back on your feet at the last checkpoint, at full Integrity.
+func respawn_player() -> void:
+	if player == null:
+		return
+	player.revive_at(Iso.cell_center(checkpoint_cell))
+	camera.reset_smoothing()
 
 
 # --- Construction ----------------------------------------------------------------------------------
@@ -134,8 +173,15 @@ func _borders_walkable(cell: Vector2i) -> bool:
 func _spawn_player() -> void:
 	player = Operator.new()
 	player.name = "Operator"
-	player.position = Iso.cell_center(grid.first("P"))
+	player.level = self
+	checkpoint_cell = grid.first("P")
+	player.position = Iso.cell_center(checkpoint_cell)
 	world.add_child(player)
+	var ids := Loadout.from_run(GameState.run)
+	var modes: Array[Loadout.Mode] = []
+	for id: String in ids:
+		modes.append(Loadout.chosen_mode(GameState.run, id))
+	player.equip(ids, modes)
 	camera = Camera2D.new()
 	camera.position_smoothing_enabled = true
 	camera.position_smoothing_speed = 6.0
@@ -147,6 +193,38 @@ func _spawn_player() -> void:
 	player.add_child(camera)
 	camera.make_current()
 	player_spawned.emit(player)
+
+
+## Custodians scrub in pairs ('c'); one Clerk ('k').
+func _spawn_enemies() -> void:
+	for c: Vector2i in grid.cells_with("c"):
+		_add_enemy(Custodian.new(), c, Custodian.MAX_INTEGRITY)
+		for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			if grid.is_walkable(c + d) and not grid.is_occupied(c + d) and grid.char_at(c + d) == ".":
+				_add_enemy(Custodian.new(), c + d, Custodian.MAX_INTEGRITY)
+				break
+	for k: Vector2i in grid.cells_with("k"):
+		_add_enemy(Clerk.new(), k, Clerk.MAX_INTEGRITY)
+
+
+func _add_enemy(e: Enemy, cell: Vector2i, max_integrity: float) -> void:
+	add_enemy(e, cell, max_integrity)
+
+
+## Places an enemy in the level (also used by tests to stage fights).
+func add_enemy(e: Enemy, cell: Vector2i, max_integrity: float) -> Enemy:
+	e.setup(self, cell, max_integrity)
+	world.add_child(e)
+	_enemies.append(e)
+	return e
+
+
+## Removes every enemy at once (tests and debug).
+func remove_all_enemies() -> void:
+	for e: Enemy in _enemies:
+		if is_instance_valid(e):
+			e.queue_free()
+	_enemies.clear()
 
 
 func _add_backdrop() -> void:

@@ -78,6 +78,13 @@ func is_indexed(cell: Vector2i) -> bool:
 	return f == Floor.COBBLE or f == Floor.PAVEMENT
 
 
+## Thrown and fired things stop at buildings and tall props, and fly over water, rails and low walls.
+func blocks_projectiles(cell: Vector2i) -> bool:
+	if not in_bounds(cell):
+		return true
+	return is_building(cell) or "Kt|R".contains(char_at(cell))
+
+
 func is_building(cell: Vector2i) -> bool:
 	return floor_at(cell) == Floor.BUILDING
 

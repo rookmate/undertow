@@ -84,3 +84,21 @@ brief and the user's answers didn't cover it.
     reflections are additive streaks under lamps and neon.
 34. **Data files outside Godot's import** (`data/**/*.txt`, `*.json`) must be added to export filters
     when export presets are created.
+35. **Weapon light follows the mode:** a Steward-tuned tool glows gold, a manual one glows ivory
+    (`WeaponGlow`). With the voice off every weapon is manual (`Loadout.effective_mode`).
+36. **Weapon designs:** Traffic Baton (tuned: auto-target, wide 150° arc, hold to chain; manual:
+    aimed 105° arc, press within 0.16–0.45 s of a swing to chain, third hit on the beat ×1.6).
+    Riot Drone (tuned: auto-target, holds fire before overheating; manual: aimed, harder pellets that
+    pierce one, overheats after ~3.5 s of held fire for 1.4 s). Defib Gauntlet (tuned: auto-charges
+    0.6 s, 1.8-tile shock; manual: release between 0.5–0.8 s for a 2.3-tile, 30-damage shock, early
+    release is weak, holding past 1.1 s shocks the Operator for 8).
+37. **Enemies of the slice:** Custodians in pairs (26 integrity, melee lunge 8 damage after a 0.55 s
+    red-orange windup) and one Clerk (40 integrity, keeps 3.5–5.5 tiles away, throws paper bales for
+    10 after a 0.75 s windup). Red-orange appears only on danger: windups, Integrity loss, overheat.
+38. **Integrity 100**, a 0.35 s grace after each hit, downed at 0 and back at the last checkpoint
+    (the start, then the 'C' cell) after 1.6 s at full Integrity. Killed enemies stay dead.
+39. **Aim:** mouse on keyboard/mouse, right stick on a pad, facing otherwise. While the Steward is
+    listening, aim assist bends manual aim up to 55% toward a threat inside a 24° cone (step 4 makes
+    this part of the voice toggle).
+40. **Continue resumes at the loadout** for a run saved inside a level (weapons are picked before each
+    level).
