@@ -5,6 +5,7 @@ extends Node2D
 ## palette at image 10's camera angle and scale.
 
 signal player_spawned(player: Operator)
+signal enemy_died(enemy: Enemy)
 
 @export var level_id: String = "vellum"
 @export_file("*.txt") var map_path: String = "res://data/levels/vellum_street.txt"
@@ -25,6 +26,7 @@ var checkpoint_cell: Vector2i
 var exploration: Exploration
 var lighting: LightingState
 var slow_mo: SlowMo
+var watch: StewardWatch
 var hud: Hud
 
 var _ambient: CanvasModulate
@@ -66,6 +68,9 @@ func _ready() -> void:
 	slow_mo = SlowMo.new()
 	add_child(slow_mo)
 	slow_mo.setup(self)
+	watch = StewardWatch.new()
+	add_child(watch)
+	watch.setup(self)
 	hud = Hud.new()
 	add_child(hud)
 	Steward.voice_changed.connect(_on_voice_changed)
@@ -94,7 +99,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _on_voice_changed(on: bool) -> void:
 	if on:
-		Narrator.speak_text("steward_voice_restored", "There you are. I kept your place.")
+		Narrator.notify(&"voice_restored")
 
 
 func _exit_tree() -> void:
@@ -309,6 +314,7 @@ func add_enemy(e: Enemy, cell: Vector2i, max_integrity: float) -> Enemy:
 	e.setup(self, cell, max_integrity)
 	world.add_child(e)
 	_enemies.append(e)
+	e.died.connect(func(dead: Enemy) -> void: enemy_died.emit(dead))
 	return e
 
 

@@ -53,7 +53,6 @@ func trigger() -> void:
 	_left = seconds
 	Engine.time_scale = Assists.SLOWMO_TIME_SCALE
 	started.emit(seconds)
-	GameState.record_playstyle(&"perfect_dodge")
 
 
 func _threat_near() -> bool:
