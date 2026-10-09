@@ -229,20 +229,31 @@ brief and the user's answers didn't cover it.
 
 ## Milestone 2: Act 1
 
-Asked of the user on 2026-10-09; these defaults hold until answered.
+Asked of the user on 2026-10-09 and answered the same day.
 
-80. **Pushing to GitHub waits for the user** (their account blocks pushes that expose their email:
-    rewrite to the noreply address, or turn the setting off). Work continues on local `main`.
-81. **Art stays drawn in code**, district by district, in each district's palette from the world
+80. **Commits are authored as rookmate** with the GitHub noreply address (the user's choice; their
+    account blocks pushes that expose their email). Every earlier commit was rewritten the same way;
+    the old history is only on the local branch `backup/pre-noreply-rewrite`. `main` is pushed to
+    github.com/rookmate/undertow (private).
+81. **Art stays drawn in code** (confirmed), district by district, in each district's palette from the world
     bible and the `port-city` images, until painted art exists. A prompt pack and import spec come
     later so painted sprites can replace the drawing code piece by piece.
-82. **Audio is synthesized placeholder**: `tools/make_audio.sh` builds every sound effect and ambience
+82. **Audio is synthesized placeholder** (confirmed): `tools/make_audio.sh` builds every sound effect and ambience
     loop with ffmpeg from formulas (no recordings, nothing to license); the generated .ogg files are
     committed. No music until there is a soundtrack direction.
-83. **GodotSteam isn't added yet**; `SteamService` stays a no-op.
-84. **Placeholder writing** (story beats, dialogue, logs, narration) is written from the world bible
+83. **GodotSteam isn't added yet** (confirmed: skip for now); `SteamService` stays a no-op.
+84. **Placeholder writing** (confirmed) (story beats, dialogue, logs, narration) is written from the world bible
     into the editable JSON files and marked placeholder.
-85. **Narration stays text; the title stays "Undertow"** (the brief's open decisions, still open).
+85. **Narration is voiced; the title is "Undertow"** (the user's answers to the brief's open
+    decisions). Until there's a voice actor, every Steward line is voiced with offline text-to-speech
+    (placeholder), and subtitles stay on.
 86. **Act order from the world bible:** Act 1 is Kestrel Heights → the Loop → the Tideworks; Act 2
     (Mercy General, the Vellum, Greywater in any order) opens after the Tideworks. New Game starts in
     Kestrel Heights; the Vellum keeps everything built for the slice and becomes an Act 2 district.
+87. **Sound rules.** Gameplay asks `Sound` for a named cue; each cue has variations and a little pitch
+    spread. Buses: Music, Ambience, SFX, Steward, UI (volumes come from the options). The Steward's
+    chime comes with its words (so never while muted); the Lattice hum plays only while the Steward is
+    with you (voice on and on its hardware), so muting is heard as well as seen. The stacks sound
+    underground. Machines wind up audibly whatever the voice (the sound is physical; the warning is
+    the Steward's). Headless runs record cues without starting them (the dummy driver never releases
+    them); every quit goes through `Sound.quit()` so nothing leaks at exit. Recordings carry sound.

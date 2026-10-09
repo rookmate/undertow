@@ -58,9 +58,10 @@ func _idle(delta: float) -> void:
 	queue_redraw()
 
 
-func _discharge(radius: float, damage: float, stun: float) -> void:
+func _discharge(radius: float, damage: float, stun: float, cue: StringName = &"gauntlet_zap") -> void:
 	charge = -1.0
 	_cooldown = COOLDOWN
+	Sound.play(cue, player.global_position)
 	for e: Node2D in targets_in_range(radius + 0.6):
 		var enemy := e as Enemy
 		if Iso.ground_distance(player.global_position, enemy.global_position) <= radius + enemy.radius_tiles:
@@ -74,7 +75,7 @@ func _discharge(radius: float, damage: float, stun: float) -> void:
 
 
 func _overload() -> void:
-	_discharge(OVERLOAD_RADIUS, OVERLOAD_DAMAGE, 0.2)
+	_discharge(OVERLOAD_RADIUS, OVERLOAD_DAMAGE, 0.2, &"gauntlet_overload")
 	player.self_damage(OVERLOAD_SELF_DAMAGE)
 	var lv := level()
 	if lv != null:

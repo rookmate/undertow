@@ -66,6 +66,7 @@ func interact(_player: Operator) -> void:
 		return
 	woken = true
 	_leave = 0.0
+	Sound.play(&"wake", global_position)
 	if _body != null:
 		_body.queue_free()
 		_body = null

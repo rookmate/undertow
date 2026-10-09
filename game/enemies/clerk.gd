@@ -64,6 +64,7 @@ func _think(delta: float) -> Vector2:
 
 func _throw() -> void:
 	_since_attack = 0.0
+	Sound.play(&"bale_throw", global_position)
 	var p := player()
 	if p == null or level == null:
 		return

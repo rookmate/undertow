@@ -35,8 +35,10 @@ func set_voice(on: bool) -> void:
 	voice_changed.emit(voice_on)
 
 
+## The player's own switch (the earpiece clicks); loading a save just sets the voice quietly.
 func toggle_voice() -> void:
 	set_voice(not voice_on)
+	Sound.play(&"voice_on" if voice_on else &"voice_off")
 
 
 func set_coverage(on: bool) -> void:

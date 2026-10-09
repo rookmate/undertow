@@ -48,7 +48,7 @@ func _process(_delta: float) -> void:
 		print("  FAIL  %s: still running after %.0f s" % [_running_test, TEST_TIMEOUT_MSEC / 1000.0])
 		print("")
 		print("RESULT: FAIL  %s timed out" % _running_test)
-		get_tree().quit(1)
+		Sound.quit(1)
 
 
 func _run() -> void:
@@ -124,7 +124,7 @@ func _run() -> void:
 		for line: String in failures:
 			print("  - ", line)
 	OS.remove_logger(_errors)
-	get_tree().quit(0 if failed_tests == 0 else 1)
+	Sound.quit(0 if failed_tests == 0 else 1)
 
 
 func _reset_engine_state() -> void:

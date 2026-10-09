@@ -70,7 +70,7 @@ func _ready() -> void:
 		push_error("Autopilot: unknown scenario '%s' (known: %s)" % [scenario, ", ".join(SCENARIOS)])
 		print("AUTOPILOT FAIL: known_scenario")
 		set_process(false)
-		get_tree().quit.call_deferred(1)
+		Sound.quit.call_deferred(1)
 		return
 	if shots_dir != "":
 		DirAccess.make_dir_recursive_absolute(shots_dir)
@@ -178,10 +178,10 @@ func _finish() -> void:
 			failed.append(c)
 	if failed.is_empty():
 		print("AUTOPILOT PASS (%d checks, %.1fs)" % [_checks.size(), _elapsed])
-		get_tree().quit(0)
+		Sound.quit(0)
 	else:
 		print("AUTOPILOT FAIL: ", ", ".join(failed))
-		get_tree().quit(1)
+		Sound.quit(1)
 
 
 ## Frame times in the district: average and the slowest 1%, at whatever resolution and frame cap the

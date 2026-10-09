@@ -181,6 +181,7 @@ func _on_confirm() -> void:
 		_summary.text = problem
 		return
 	_done = true
+	Sound.play(&"core_take")
 	var saved := SaveFlow.checkpoint(get_tree())
 	var names := PackedStringArray()
 	for id: String in picked:

@@ -73,6 +73,8 @@ func _on_voice_changed(on: bool) -> void:
 			return
 		if is_instance_valid(lamp):
 			lamp.lit = on
+			if not on:
+				Sound.play(&"lamp_off", lamp.global_position)
 
 
 func _set_grade(value: float) -> void:

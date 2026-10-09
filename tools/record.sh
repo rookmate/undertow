@@ -19,5 +19,5 @@ timeout $((SECS * 6 + 120)) godot --path . --write-movie "$TMP/$NAME.avi" --fixe
   -- --autopilot --autopilot-seconds="$SECS" --autopilot-scenario="$SCENARIO" "$@" > "$TMP/run.log" 2>&1 || {
   echo "recording run failed:"; tail -30 "$TMP/run.log"; exit 1; }
 ffmpeg -loglevel error -y -i "$TMP/$NAME.avi" -c:v libx264 -preset medium -crf 22 -pix_fmt yuv420p \
-  -movflags +faststart -an "$OUT_DIR/$NAME.mp4"
+  -movflags +faststart -c:a aac -b:a 160k "$OUT_DIR/$NAME.mp4"
 echo "$OUT_DIR/$NAME.mp4"
