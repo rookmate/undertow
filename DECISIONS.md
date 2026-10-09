@@ -226,3 +226,23 @@ brief and the user's answers didn't cover it.
 78. **Archive text stays in its boxes** (ellipsis), and the record scrolls with up/down from a pad.
 79. **Deliberate errors in tests** go through `Diagnostics` and are captured and checked; any other
     engine or script error still fails the test and the gate.
+
+## Milestone 2: Act 1
+
+Asked of the user on 2026-10-09; these defaults hold until answered.
+
+80. **Pushing to GitHub waits for the user** (their account blocks pushes that expose their email:
+    rewrite to the noreply address, or turn the setting off). Work continues on local `main`.
+81. **Art stays drawn in code**, district by district, in each district's palette from the world
+    bible and the `port-city` images, until painted art exists. A prompt pack and import spec come
+    later so painted sprites can replace the drawing code piece by piece.
+82. **Audio is synthesized placeholder**: `tools/make_audio.sh` builds every sound effect and ambience
+    loop with ffmpeg from formulas (no recordings, nothing to license); the generated .ogg files are
+    committed. No music until there is a soundtrack direction.
+83. **GodotSteam isn't added yet**; `SteamService` stays a no-op.
+84. **Placeholder writing** (story beats, dialogue, logs, narration) is written from the world bible
+    into the editable JSON files and marked placeholder.
+85. **Narration stays text; the title stays "Undertow"** (the brief's open decisions, still open).
+86. **Act order from the world bible:** Act 1 is Kestrel Heights → the Loop → the Tideworks; Act 2
+    (Mercy General, the Vellum, Greywater in any order) opens after the Tideworks. New Game starts in
+    Kestrel Heights; the Vellum keeps everything built for the slice and becomes an Act 2 district.
