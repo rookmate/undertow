@@ -93,10 +93,31 @@ Sol's closure check found nothing open. 229 tests.
 
 **Milestone status: the vertical slice is done and reviewed.**
 
-## Next
+## Milestone 2: Act 1 (in progress)
 
-Waiting for direction on the next milestone (the brief's later districts and systems). Open items that
-need hardware or accounts are listed under "What only hardware can confirm".
+Following the world bible's order. Same gates per step, a video per visible step, Sol analysis review
+at the end. Questions asked of the user on 2026-10-09 (push email, art, music, GodotSteam, writing,
+open decisions); defaults in DECISIONS.md 80–86 until answered.
+
+| Step | What | Status |
+|---|---|---|
+| 9 | Audio: buses, `Sound` service, synthesized placeholder SFX and ambience, hooks in play and UI | next |
+| 10 | Options: volumes, display, subtitle size, key and pad rebinding, saved settings | |
+| 11 | District structure: acts and unlocks, New Game starts in Kestrel Heights, the Loop map from the Ark dock, per-district look | |
+| 12 | Kestrel Heights: terraces, smart gates, sprinklers, Lamplighters, the child's map (first truth core), voice tutorial | |
+| 13 | Bosses and the Loop: boss framework (tuned and manual solutions), stalled trains, the Conductor | |
+| 14 | The Signal Room and the Overrides screen (mockup 6): six overrides with effects and Steward replies | |
+| 15 | The Tideworks: cranes and containers, Salvagers, the union hall, finding the Riot Drone, the Crane | |
+| 16 | The Workshop: scrap and weapon upgrades | |
+| — | Sol analysis review (reviews/act-1.md), fixes, re-check | |
+
+## Later milestones (planned)
+
+- **Act 2:** Mercy General (Sterilizers, the Surgeon, the Clinic and healing items), the Vellum
+  expanded (the Editor), Greywater (tide, kelp, the Marrow, the Lung, the Pumphouse).
+- **Act 3:** Harbor Ward (no Lattice, Wardens that hunt, Warden-Prime, the Signal Jammer, Noor's turn,
+  the Commons and the Mast), the Spire (no combat), the Council Chamber, the final choice and the three
+  epilogues; companions who can leave.
 
 ## How to run
 
