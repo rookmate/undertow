@@ -134,3 +134,15 @@ brief and the user's answers didn't cover it.
 50. **Minimap:** voice on, the Steward's map in gold, "STEWARD MAP · 100% CHARTED", without the
     unindexed stacks. Muted, a hand scan of cells within 3 tiles of where you've walked, with the
     real percentage of all walkable cells (including off-path ones).
+51. **Narration pools** (`data/narration/steward_lines.json`): 14 events, 53 lines, tones bold /
+    cautious / neutral, every event has a neutral fallback, per-event cooldowns and priorities, a 2.8 s
+    minimum gap between lines. The Steward never says "I decided" (tested).
+52. **Selection:** the tone is drawn first from weights set by the profile's lean (lean 0 is mostly
+    neutral; at ±0.9 the matching tone is about 4× everything else), then the least recently heard
+    line in that tone. Tested: a risky replay is >60% bold lines, a cautious replay >60% careful
+    lines, and the two differ by more than 45 points each way.
+53. **Profiling** (`StewardWatch`) only while the voice is on ("STEWARD · LISTENING"; muted, it isn't
+    listening). Risk: close kills, kills under 35% Integrity, close double kills, hits taken without
+    rolling, manual weapon use, leaving the Lattice. Caution: dodges, retreating rolls, slow-mo dodges,
+    kills from 3+ tiles, tuned weapon use, returning to the Lattice. Weapon-mode use counts at most
+    once per 4 s per weapon.

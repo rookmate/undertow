@@ -238,6 +238,8 @@ func _drive_level(gen: int) -> void:
 	expect("dodge_performed")
 	player.dodged.connect(func(_d: Vector2) -> void: pass_check("dodge_performed"), CONNECT_ONE_SHOT)
 	expect("enemy_killed")
+	expect("narration_heard")
+	Narrator.line_spoken.connect(func(_id: String, _t: String) -> void: pass_check("narration_heard"), CONNECT_ONE_SHOT)
 	var start_count := level.living_enemies().size()
 	if not await _wait(1.2, gen):
 		return
@@ -272,6 +274,8 @@ func _drive_level(gen: int) -> void:
 				return
 	pass_check("route_completed")
 	check(player.cell().distance_to(Vector2(5, 9)) <= 1.5, "arrived_by_reliquary")
+	var p := GameState.run.playstyle_profile
+	check(p.risk + p.caution > 0.0, "playstyle_profiled")
 	await snap("level_plaza")
 
 

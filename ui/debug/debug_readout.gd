@@ -16,6 +16,8 @@ static func text_for(run: RunState, voice_on: bool) -> String:
 	lines.append("active_overrides %s" % _list(run.active_overrides))
 	var p := run.playstyle_profile
 	lines.append("playstyle       risk %.1f  caution %.1f  lean %+.2f (%s)" % [p.risk, p.caution, p.lean(), p.dominant_tone()])
+	var heard := Narrator.tone_counts
+	lines.append("narration       bold %d  cautious %d  neutral %d   last %s" % [heard.get(&"bold", 0), heard.get(&"cautious", 0), heard.get(&"neutral", 0), Narrator.last_line_id if Narrator.last_line_id != "" else "—"])
 	lines.append("logs            unlocked %s  replayed %s" % [_list(run.logs_unlocked), _list(run.logs_replayed)])
 	lines.append("found cores     %s" % _list(run.found_core_ids))
 	lines.append("loadout         %s" % _loadout(run))

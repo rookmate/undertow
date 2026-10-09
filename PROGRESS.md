@@ -9,8 +9,8 @@ Milestone: **vertical slice** (design brief, "First milestone"). Plan and decisi
 | 2 | Combat with two-weapon loadout, tuned/manual modes | done |
 | 3 | Predictive path, hidden off-path area | done |
 | 4 | Voice toggle: assists, map, narration, lighting | done |
-| 5 | Adaptive narration from tagged line pools | next |
-| 6 | Level end with power-vs-truth core choice | |
+| 5 | Adaptive narration from tagged line pools | done |
+| 6 | Level end with power-vs-truth core choice | next |
 | 7 | Ark hub with the Archive | |
 | 8 | Tracking finished + debug overlay + save round-trip | |
 | — | Sol analysis review (reviews/vertical-slice.md), fixes, re-check | |
@@ -50,10 +50,17 @@ narration (silent when muted). HUD: "STEWARD · LISTENING [V]" pill with the rin
 through when muted), muted timer, DMG TAKEN ×1.4, subtitles in Fraunces gold. Voice time is tracked in
 level play only, and the toggle count.
 
+**Step 5.** Adaptive narration: tagged JSON line pools (event × tone), `LineSelector` picking a tone
+from the playstyle profile's lean and the least recently heard line in it, `Narrator` with cooldowns
+and silence when muted, `StewardWatch` profiling play while the Steward listens (kills by distance,
+dodges, retreats, slow-mo dodges, weapon modes, leaving and returning to the Lattice) and calling out
+level entry, kills, hurts, low Integrity, respawns, the checkpoint, the Reliquary and more. The debug
+overlay shows the lean and how many lines of each tone were heard.
+
 ## Next
 
-Step 5: adaptive narration. Tagged line pools in JSON (event × tone), a playstyle profile fed by play,
-weighted selection without repeats; a risky run and a cautious run should sound noticeably different.
+Step 6: the Reliquary at the end of the street and the core choice: four cards when the off-path core
+was found (two power, two truth), carry two; the Steward pushes power and dismisses truth.
 
 ## How to run
 
