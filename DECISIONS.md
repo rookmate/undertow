@@ -64,3 +64,23 @@ brief and the user's answers didn't cover it.
     import cache and out of builds.
 27. **Progress videos** are written to `../undertow-recordings/` (outside the repo) by `tools/record.sh`.
 28. **Step 0 title screen:** New Game and Continue stay disabled until there is a level to start.
+    (Step 1: both enabled. New Game starts the Vellum street; Continue resumes `RunState.location`.)
+29. **Input maps onto the ground diamond** (Bastion-style): up-right walks straight along the street
+    (grid -y), right walks straight across the screen, and the Operator covers ground at the same speed
+    in every direction (so vertical screen motion is 0.5625× horizontal). Walk 3.2 tiles/s; the dodge
+    rolls about 2 tiles in 0.3 s, invulnerable for the first 0.24 s, 0.55 s cooldown.
+30. **Levels are text maps** (`data/levels/*.txt`, legend in the file) built into nodes at runtime:
+    one floor canvas item, one depth-sorted node per building cell / prop / lamp, one static body.
+31. **Occlusion rule:** tall buildings only on the back edges of walkable ground; a test
+    (`test_no_building_hides_walkable_ground`) fails if a building would hide a walkable cell. The
+    Vellum plaza got a canal inlet instead of a building block on its camera side for this reason.
+32. **Off-path area of the slice:** the Vellum's overflow stacks on the old loading quay, an island
+    reached only by a stair through a gap in the canal railing. Unindexed (no lamps, not on the
+    Steward's map). It sits on the camera side so nothing hides it.
+33. **Lighting:** "paint first, then light". Near-neutral stone albedo, a dark violet-blue
+    CanvasModulate for the night, gold PointLight2D pools from Lattice lamps. Light sources (lamp
+    lenses, lit windows, neon, the gilt, reflections) are drawn by unshaded `Emissive` child nodes so
+    the night doesn't dim them; their HDR colours bloom through a 2D glow environment. Wet-street
+    reflections are additive streaks under lamps and neon.
+34. **Data files outside Godot's import** (`data/**/*.txt`, `*.json`) must be added to export filters
+    when export presets are created.

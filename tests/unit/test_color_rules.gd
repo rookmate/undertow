@@ -9,6 +9,9 @@ extends TestCase
 const STEWARD_ALLOWED: Dictionary[String, String] = {
 	"res://ui/common/ring_painter.gd": "the Steward's ring",
 	"res://ui/title/title.gd": "the Steward's last words before the Quiet (its narration)",
+	"res://game/level/lamp_post.gd": "Lattice lamps are the Steward's hardware",
+	"res://game/level/building_cell.gd": "the gilt on the ironwork is the Steward's overlay",
+	"res://game/player/operator_body.gd": "the earpiece glows when the Steward is on",
 }
 
 const SCAN_ROOTS: Array[String] = ["res://autoload", "res://core", "res://game", "res://ui", "res://data"]

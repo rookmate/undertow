@@ -37,8 +37,9 @@ func _ready() -> void:
 	_new_game = _menu_button("NEW GAME", column)
 	_continue = _menu_button("CONTINUE", column)
 	_quit = _menu_button("QUIT", column)
-	_new_game.disabled = true
-	_continue.disabled = true
+	_continue.disabled = not SaveService.has_save()
+	_new_game.pressed.connect(_start_new_game)
+	_continue.pressed.connect(_continue_game)
 	_quit.pressed.connect(func() -> void: get_tree().quit())
 
 	_quiet = Label.new()
@@ -80,6 +81,28 @@ func _ready() -> void:
 
 	_focus_first()
 	_play_quiet_line()
+
+
+func _start_new_game() -> void:
+	GameState.new_run()
+	SceneRouter.goto(&"level_vellum")
+
+
+func _continue_game() -> void:
+	var result := SaveService.load_run()
+	if result.status != SaveStore.Status.OK:
+		_show_notice(result.note)
+		return
+	var target := SceneRouter.key_for_location(result.run.location)
+	if target == &"":
+		_show_notice("The save points somewhere this build doesn't have yet (%s)." % result.run.location)
+		return
+	GameState.replace_run(result.run)
+	SceneRouter.goto(target)
+
+
+func _show_notice(text: String) -> void:
+	_prompt.text = text
 
 
 func _menu_button(text: String, parent: Control) -> Button:
