@@ -4,7 +4,7 @@ extends Node2D
 ## shelves, a Feed kiosk, a stalled tram segment and bollards; in Kestrel Heights, trimmed hedges, stone
 ## planters of white blossom, and lawn sprinklers that still come on.
 
-enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD, HEDGE, PLANTER, SPRINKLER, BED }
+enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD, HEDGE, PLANTER, SPRINKLER, BED, CARRIAGE_SIDE, DESK }
 
 const SPRAY_PERIOD := 6.0
 
@@ -59,6 +59,14 @@ func _draw() -> void:
 			_sprinkler()
 		Kind.BED:
 			_bed()
+		Kind.CARRIAGE_SIDE:
+			# Cut away to the window line so the carriage's inside (and who sits in it) shows.
+			_prism(30.0, look.wall, look.wall_shade, look.wall_top, 1.0)
+			draw_line(Vector2(-Iso.HALF_W, -30), Vector2(0, Iso.HALF_H - 30), Color(Palette.BLACK_MIRROR, 0.8), 3.0)
+		Kind.DESK:
+			_prism(36.0, Palette.IRON_DARK.lightened(0.15), Palette.IRON_DARK, Palette.GREY_DEEP, 0.7)
+			# The manual override: welded over at installation.
+			draw_line(Vector2(-14, -40), Vector2(10, -46), Palette.GREY_COLD, 4.0, true)
 
 
 ## A stone urn of white blossom.

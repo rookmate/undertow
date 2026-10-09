@@ -120,6 +120,8 @@ func on_signal_box_hit() -> void:
 func _die() -> void:
 	for l: ShuntLane in lanes:
 		l.warn(-1.0)
+	if signal_box != null:
+		signal_box.retire()
 	super()
 	Narrator.notify(&"boss_down", level.level_id if level != null else "")
 

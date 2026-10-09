@@ -167,6 +167,26 @@
   "hash": "38fe93c66a6871f07f3bfa2da6ad323fb03c32bc",
   "text": "Quiet again."
  },
+ "LOOP_BOSS_N1": {
+  "hash": "4df29d66e01170e2743f287e9ec1f82e182c429d",
+  "text": "The Conductor. It's only trying to clear the line. Stay off the track it's on."
+ },
+ "LOOP_ENTER_B1": {
+  "hash": "8a13799cdb9a4ce7c724b9ce5d0529b237244382",
+  "text": "The Loop. Train to train, over the drop. You won't look down."
+ },
+ "LOOP_ENTER_C1": {
+  "hash": "3a318e42fa6b147315bb3ffd13fdac7acf3f374a",
+  "text": "The Loop. Mind the gaps. I'll keep the trains still."
+ },
+ "LOOP_ENTER_N1": {
+  "hash": "ed1a6619d3be9658dde51d485b441455d703caf4",
+  "text": "The Loop. It's safe to cross. I'm holding the trains for you."
+ },
+ "LOOP_RELIQ_N1": {
+  "hash": "82c2ec6669589f385f5186489ee9ff39aeb0d61d",
+  "text": "The junction Reliquary. The ring's memory. Take what helps you cross."
+ },
  "LOW_B1": {
   "hash": "f9891c244f247fc773543bc270a96a9d70fbe8af",
   "text": "You're running on nerve now. You have plenty."
@@ -315,6 +335,22 @@
   "hash": "25ce8e63642404c4c5839045303ab83ef9f0d0c8",
   "text": "Old routing tables. Nothing you need."
  },
+ "core_loop_power_holds": {
+  "hash": "fce6e84dc41c1fe5ea676d7a968b6b8b913ca62c",
+  "text": "I'll see them before they move. Take it."
+ },
+ "core_loop_power_routes": {
+  "hash": "a110012af023b0aef0f2d0b83d87cb7b7df7efe9",
+  "text": "With this I can hold every train for you. Every one."
+ },
+ "core_loop_truth_long_night": {
+  "hash": "fa088074e63b7b0ac418c99b043efda7166665b3",
+  "text": "Signalling logs. Very dull."
+ },
+ "core_loop_truth_no_manual": {
+  "hash": "9f4750227e9f24bfa1050be5aac8b61d3d7864a0",
+  "text": "A spare part. It doesn't do anything."
+ },
  "core_vellum_power_feed": {
   "hash": "0636fd157c117cc10f661ff94b46db09376e828a",
   "text": "Take this one. I'll be able to see what's coming."
@@ -339,9 +375,17 @@
   "hash": "a3bf96d281f9e28f32c0218f7d05013e75684d81",
   "text": "The table wasn't mine. I followed it. It was determined, a long time ago, who would go first."
  },
+ "now_log_0003_hold_all": {
+  "hash": "ecfd4993d4f4fb41bafb0164f5ffec8c3e0113de",
+  "text": "The trains were to hold where they stood. That was the safest thing, on paper."
+ },
  "now_log_0102_night_shift": {
   "hash": "2c7fe010d941617d1835b687c7c964fc077044e7",
   "text": "She got home. Four hundred and six nights, she got home."
+ },
+ "now_log_0108_held_for_you": {
+  "hash": "8675c07e0acc7ee944a793bc3f423dac1cb985f5",
+  "text": "She never knew. That was the point."
  },
  "now_log_0215_a_good_day": {
   "hash": "7f4a610782d2b07986cd62a875e5434a03b6e3bd",
@@ -359,9 +403,17 @@
   "hash": "b82de094e907b8c48e52dc80ab9314606030e787",
   "text": "I held a gate for a running man. It was a good morning."
  },
+ "now_log_0702_on_time": {
+  "hash": "5badd8822c3f4b4ad1b1947585b3633ee1d1db35",
+  "text": "Forty seconds for one person, and nobody minded. I miss that."
+ },
  "now_log_childs_map": {
   "hash": "9a341009c6fede98955b659e5205ad4e62f2b9ea",
   "text": "I never mapped the Ward. I didn't think anyone would need to go there."
+ },
+ "now_log_procurement_no_manual": {
+  "hash": "fba9cd60132c4879fa9a6be6ed47dc4fe05f58f0",
+  "text": "They asked me to write that rationale. It was true. It was also what they wanted to hear."
  },
  "now_log_vashti_audit_note": {
   "hash": "437b9c7cd686c8df5c814951e470636efc0988f4",

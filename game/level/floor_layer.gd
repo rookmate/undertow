@@ -48,10 +48,18 @@ func _draw() -> void:
 				_gravel(cell)
 			LevelGrid.Floor.TRACK:
 				_track(cell)
+			LevelGrid.Floor.CARRIAGE:
+				_carriage(cell)
+			LevelGrid.Floor.GANTRY:
+				_gantry(cell)
+			LevelGrid.Floor.CAB:
+				_cab(cell)
+			LevelGrid.Floor.VOID:
+				_drop(cell)
 
 
 ## Plain floor characters: what a placed thing's cell is drawn as, taken from a neighbour.
-const PLAIN_FLOORS := ".,:_iqn"
+const PLAIN_FLOORS := ".,:_iqnxh"
 ## Placed things (people, finds, spawns) stand on whatever floor surrounds them.
 const MARKERS := "TUWwPCckX"
 
@@ -167,6 +175,40 @@ func _track(cell: Vector2i) -> void:
 		draw_line(_at(cell, u, 0.1), _at(cell, u, 0.9), Color(look.timber.darkened(0.2), 0.9), 5.0, true)
 	for v: float in [0.3, 0.7]:
 		draw_line(_at(cell, 0.0, v), _at(cell, 1.0, v), Palette.IRON_DARK.lightened(0.25), 3.0, true)
+
+
+## A carriage's floor: worn lino between the seat rows, dead screens' glow long gone.
+func _carriage(cell: Vector2i) -> void:
+	draw_colored_polygon(Iso.cell_diamond(cell), look.wall_top.lightened(0.18))
+	draw_line(_at(cell, 0.0, 0.5), _at(cell, 1.0, 0.5), Color(Palette.NEAR_BLACK, 0.25), 2.0, true)
+
+
+## Steel grating over the drop.
+func _gantry(cell: Vector2i) -> void:
+	draw_colored_polygon(Iso.cell_diamond(cell), Color(Palette.IRON_DARK.lightened(0.2), 0.95))
+	for k: int in 6:
+		var u := 0.08 + k * 0.17
+		draw_line(_at(cell, u, 0.0), _at(cell, u, 1.0), Color(Palette.NEAR_BLACK, 0.5), 1.5, true)
+
+
+## The driver's cab: chequer plate, no Lattice.
+func _cab(cell: Vector2i) -> void:
+	draw_colored_polygon(Iso.cell_diamond(cell), Palette.IRON_DARK.lightened(0.1))
+	for k: int in 3:
+		for j: int in 3:
+			draw_circle(_at(cell, 0.2 + k * 0.3, 0.2 + j * 0.3), 2.0, Color(Palette.GREY_COLD, 0.3))
+
+
+## The drop beside the rails: the fog, where a district has it.
+func _drop(cell: Vector2i) -> void:
+	if look.void_fog.a <= 0.0:
+		return
+	var near := false
+	for dy: int in range(-2, 3):
+		for dx: int in range(-2, 3):
+			near = near or grid.is_walkable(cell + Vector2i(dx, dy))
+	if near:
+		draw_colored_polygon(Iso.cell_diamond(cell), look.void_fog)
 
 
 ## A garden walk the Lattice never lit.

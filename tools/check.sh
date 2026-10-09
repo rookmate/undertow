@@ -6,7 +6,8 @@
 #   3. The game runs for 30 s from the main scene under the autopilot with no ERROR/WARNING lines and
 #      every autopilot check passing. Windowed when a display exists, headless otherwise.
 #   4. Long autopilot runs (150 s each) that expect every feature built so far to work: New Game through
-#      Kestrel Heights to the Loop map ("slice"), and the Vellum's whole route to the Archive ("vellum").
+#      Kestrel Heights to the Loop map ("slice"), the Loop and its Conductor ("loop"), and the Vellum's
+#      whole route to the Archive ("vellum").
 #   5. A tour of every district in LevelCatalog (autopilot scenario "tour": start, checkpoints, finds,
 #      Reliquary, muted), each with no ERROR/WARNING lines.
 # Env: SMOKE_SECONDS (30), FULL_SECONDS (150), SMOKE_SCENARIO (slice), HEADLESS=1 to force headless, LOG_DIR.
@@ -18,7 +19,7 @@ LOG_DIR="${LOG_DIR:-$ROOT/reports/check}"
 SMOKE_SECONDS="${SMOKE_SECONDS:-30}"
 SMOKE_SCENARIO="${SMOKE_SCENARIO:-slice}"
 # The long runs: the new-game route (Kestrel Heights to the Loop map) and the Vellum's whole route.
-FULL_SCENARIOS="${FULL_SCENARIOS:-slice vellum}"
+FULL_SCENARIOS="${FULL_SCENARIOS:-slice loop vellum}"
 mkdir -p "$LOG_DIR"
 # Screenshots land inside the project folder: keep Godot from importing them.
 touch "$ROOT/reports/.gdignore"
@@ -78,7 +79,7 @@ for scenario in $FULL_SCENARIOS; do
 done
 
 echo "== 5/5 district tours"
-for district in $(timeout 120 godot --headless --path . -s tools/list_districts.gd 2>/dev/null | sed -n 's/^DISTRICT //p'); do
+for district in $(timeout 120 godot --headless --path . -- --list-districts 2>/dev/null | sed -n 's/^DISTRICT //p'); do
   log="$LOG_DIR/tour_$district.log"
   timeout 150 godot "${MODE[@]}" --path . -- --autopilot --autopilot-seconds=40 --autopilot-scenario=tour \
     --autopilot-level="$district" --autopilot-shots="$LOG_DIR/shots_tour_$district" > "$log" 2>&1

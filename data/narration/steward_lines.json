@@ -500,6 +500,41 @@
 			"event": "boss_down",
 			"tone": "cautious",
 			"text": "It's still. Take a breath before you go on."
+		},
+		{
+			"id": "LOOP_ENTER_N1",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "The Loop. It's safe to cross. I'm holding the trains for you.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_ENTER_B1",
+			"event": "level_enter",
+			"tone": "bold",
+			"text": "The Loop. Train to train, over the drop. You won't look down.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_ENTER_C1",
+			"event": "level_enter",
+			"tone": "cautious",
+			"text": "The Loop. Mind the gaps. I'll keep the trains still.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_RELIQ_N1",
+			"event": "reliquary_near",
+			"tone": "neutral",
+			"text": "The junction Reliquary. The ring's memory. Take what helps you cross.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_BOSS_N1",
+			"event": "boss_engaged",
+			"tone": "neutral",
+			"text": "The Conductor. It's only trying to clear the line. Stay off the track it's on.",
+			"level": "loop"
 		}
 	]
 }

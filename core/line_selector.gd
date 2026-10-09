@@ -90,12 +90,19 @@ static func tone_weights(lean: float) -> Dictionary[StringName, float]:
 
 ## The next line for `event`, or null if there is none. The tone is chosen first (by the profile's
 ## lean); inside that tone the least recently heard line is used, so lines don't repeat back to back
-## while the drift toward the flattering tone stays strong even with small pools.
+## while the drift toward the flattering tone stays strong even with small pools. A district's own lines
+## win: if it has any for this event, only those are used (its entry line is its lie, and is heard);
+## the lines for anywhere are for districts that have none.
 func pick(event: StringName, lean: float, rng: RandomNumberGenerator, level: String = "") -> Line:
 	var pool: Array = []
+	var own: Array = []
 	for l: Line in lines_by_event.get(event, []):
-		if l.level == "" or l.level == level:
+		if l.level == "":
 			pool.append(l)
+		elif l.level == level:
+			own.append(l)
+	if not own.is_empty():
+		pool = own
 	if pool.is_empty():
 		return null
 	var weights := tone_weights(lean)

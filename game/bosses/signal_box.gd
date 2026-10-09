@@ -14,7 +14,18 @@ func _ready() -> void:
 	radius_tiles = 0.4
 
 
+## The Conductor is down: the box is just a cabinet now, not something to fight.
+func retire() -> void:
+	if state == State.DEAD:
+		return
+	state = State.DEAD
+	remove_from_group(&"enemies")
+	queue_redraw()
+
+
 func take_hit(_amount: float, _from_dir: Vector2, _knock_tiles: float, _stun_seconds: float) -> void:
+	if state == State.DEAD:
+		return
 	_flash = 0.12
 	Sound.play(&"signal_zap", global_position)
 	if conductor != null:

@@ -106,3 +106,14 @@ func test_every_event_has_a_neutral_line_for_anywhere() -> void:
 		for l: LineSelector.Line in selector.lines_by_event.get(event, []):
 			generic = generic or (l.tone == &"neutral" and l.level == "")
 		check(generic, "%s works in any district" % event)
+
+
+func test_a_districts_own_lines_win() -> void:
+	var sel := LineSelector.load_file(VoiceLines.NARRATION_PATH)
+	var rng := RandomNumberGenerator.new()
+	for i: int in 30:
+		rng.seed = i
+		var line := sel.pick(&"level_enter", (i % 3) - 1.0, rng, "loop")
+		check(line != null and line.level == "loop", "the Loop greets you in its own words, not the generic ones (%s)" % (line.id if line != null else "none"))
+	var elsewhere := sel.pick(&"level_enter", 0.0, rng, "nowhere_built_yet")
+	check(elsewhere != null and elsewhere.level == "", "a district with no lines of its own still gets one for anywhere")
