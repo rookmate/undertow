@@ -1,7 +1,7 @@
 class_name Subtitles
 extends Control
-## The Steward's narration, bottom centre, in its own serif and its own gold. Gone the moment the voice
-## is muted: muted, it is silent.
+## The Steward's narration, bottom centre, in its own serif and its own gold, for as long as it takes to
+## say. Gone the moment the voice is muted or it loses you: it stops speaking then, mid-word.
 
 signal speaking_changed(speaking: bool)
 
@@ -18,6 +18,7 @@ func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	Narrator.line_spoken.connect(_on_line)
 	Steward.voice_changed.connect(_on_voice)
+	Steward.coverage_changed.connect(_on_coverage)
 
 
 func _exit_tree() -> void:
@@ -25,16 +26,23 @@ func _exit_tree() -> void:
 		Narrator.line_spoken.disconnect(_on_line)
 	if Steward.voice_changed.is_connected(_on_voice):
 		Steward.voice_changed.disconnect(_on_voice)
+	if Steward.coverage_changed.is_connected(_on_coverage):
+		Steward.coverage_changed.disconnect(_on_coverage)
 
 
 func is_speaking() -> bool:
 	return _left > 0.0 and text != ""
 
 
-func _on_line(_line_id: String, line_text: String) -> void:
+func _on_line(line_id: String, line_text: String) -> void:
 	text = line_text
-	_left = maxf(MIN_SECONDS, line_text.length() * SECONDS_PER_CHAR)
+	_left = maxf(maxf(MIN_SECONDS, line_text.length() * SECONDS_PER_CHAR), Sound.voice_length(line_id) + FADE)
 	speaking_changed.emit(true)
+
+
+func _on_coverage(covered: bool) -> void:
+	if not covered:
+		_on_voice(false)
 
 
 func _on_voice(on: bool) -> void:

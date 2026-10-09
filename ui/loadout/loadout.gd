@@ -3,7 +3,6 @@ extends Control
 ## A 2×2 grid of weapons (the fourth not yet recovered) and two slots, each with a Tuned/Manual toggle
 ## and ease vs skill-ceiling bars. The Steward would rather you kept the tuning on.
 
-const STEWARD_LINE := "I'd keep the tuning on. Let me carry the aim; you watch the street."
 
 ## The district these weapons are for (from the saved location).
 var level_id: String = LevelCatalog.FIRST_LEVEL
@@ -77,7 +76,8 @@ func _build() -> void:
 	# The Steward's nudge only while it is listening (muted, it isn't talking).
 	if Steward.voice_on:
 		var line := Label.new()
-		line.text = STEWARD_LINE
+		line.text = VoiceLines.fixed("loadout_nudge")
+		_say_after.call_deferred(0.6, "loadout_nudge")
 		line.add_theme_font_override(&"font", UiFonts.narration())
 		line.add_theme_font_size_override(&"font_size", 28)
 		line.add_theme_color_override(&"font_color", Palette.STEWARD_GOLD)
@@ -181,3 +181,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"ui_cancel"):
 		get_viewport().set_input_as_handled()
 		SceneRouter.goto(&"title")
+
+
+func _say_after(seconds: float, line_id: String) -> void:
+	await get_tree().create_timer(seconds).timeout
+	if is_inside_tree() and Steward.voice_on:
+		Sound.say(line_id)

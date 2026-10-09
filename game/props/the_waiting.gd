@@ -58,7 +58,13 @@ func blocked_reason() -> String:
 	if woken:
 		return ""
 	# The Steward's own words (its serif and its gold mark the speaker).
-	return "They're resting. Leave them." if Steward.voice_on else ""
+	return VoiceLines.fixed("waiting_refusal") if Steward.voice_on else ""
+
+
+## Trying to wake them while it listens: it says so, out loud.
+func refused(_player: Operator) -> void:
+	if not woken and Steward.voice_on:
+		Narrator.speak_text("waiting_refusal", VoiceLines.fixed("waiting_refusal"))
 
 
 func interact(_player: Operator) -> void:

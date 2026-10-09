@@ -123,7 +123,7 @@ func test_the_muted_loadout_has_no_steward_line() -> void:
 	await wait_frames(2)
 	var steward_line := false
 	for n: Node in screen.find_children("*", "Label", true, false):
-		steward_line = steward_line or (n as Label).text == screen.get("STEWARD_LINE")
+		steward_line = steward_line or (n as Label).text == VoiceLines.fixed("loadout_nudge")
 	check_false(steward_line, "muted, the Steward says nothing on the loadout")
 	screen.queue_free()
 	Steward.set_voice(true)

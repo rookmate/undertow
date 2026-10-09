@@ -79,6 +79,10 @@ func _make_card(id: String) -> Button:
 	card.custom_minimum_size = Vector2(400, 650)
 	card.add_theme_stylebox_override(&"normal", UiTheme.panel_style(0.92))
 	card.pressed.connect(_toggle.bind(id))
+	# While it listens, the Steward says its piece about each card you look at.
+	card.focus_entered.connect(func() -> void:
+		if Steward.voice_on and not _done:
+			Sound.say(VoiceLines.core_line(id)))
 	var art := CoreArt.new()
 	art.truth = truth
 	art.position = Vector2(100, 30)

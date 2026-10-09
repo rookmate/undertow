@@ -101,8 +101,8 @@ at the end. The user's answers (2026-10-09) are in DECISIONS.md 80–87.
 | Step | What | Status |
 |---|---|---|
 | 9 | Audio: buses, `Sound` service, synthesized placeholder SFX and ambience, hooks in play and UI | done |
-| 9b | Voiced narration: placeholder text-to-speech for every Steward line, played with its subtitles | next |
-| 10 | Options: volumes, display, subtitle size, key and pad rebinding, saved settings | |
+| 9b | Voiced narration: placeholder text-to-speech for every Steward line, played with its subtitles | done |
+| 10 | Options: volumes, display, subtitle size, key and pad rebinding, saved settings | next |
 | 11 | District structure: acts and unlocks, New Game starts in Kestrel Heights, the Loop map from the Ark dock, per-district look | |
 | 12 | Kestrel Heights: terraces, smart gates, sprinklers, Lamplighters, the child's map (first truth core), voice tutorial | |
 | 13 | Bosses and the Loop: boss framework (tuned and manual solutions), stalled trains, the Conductor | |
@@ -129,6 +129,25 @@ godot --path . -- --debug-overlay    # start with the tracked-state overlay open
 Controls: move WASD / left stick · aim mouse / right stick · weapon 1 LMB (or J) / RT · weapon 2 RMB
 (or K) / LT · dodge Space / A · interact E / X · voice V / Y · pause Esc / Start · overlay F3 /
 Back+R3 (debug builds; F5–F8 debug switches while it's open).
+
+## How to rebuild the sound and the voice
+
+```bash
+python3 -I tools/make_audio.py      # sound effects and ambience (needs ffmpeg)
+python3 -I tools/make_voice.py      # voices new or changed Steward lines (needs Piper, below)
+```
+
+Piper (placeholder text-to-speech) lives outside the repo. On this machine it was set up with:
+
+```bash
+python3 -m venv --without-pip --system-site-packages ~/.local/opt/piper-venv
+~/.local/opt/piper-venv/bin/python -m pip install piper-tts
+mkdir -p ~/.local/opt/piper-voices && cd ~/.local/opt/piper-voices
+curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_GB/cori/high/en_GB-cori-high.onnx
+curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_GB/cori/high/en_GB-cori-high.onnx.json
+```
+
+A test fails if any Steward line has no recording or its recording says older text.
 
 ## How to export
 
