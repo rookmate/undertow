@@ -10,8 +10,8 @@ Milestone: **vertical slice** (design brief, "First milestone"). Plan and decisi
 | 3 | Predictive path, hidden off-path area | done |
 | 4 | Voice toggle: assists, map, narration, lighting | done |
 | 5 | Adaptive narration from tagged line pools | done |
-| 6 | Level end with power-vs-truth core choice | next |
-| 7 | Ark hub with the Archive | |
+| 6 | Level end with power-vs-truth core choice | done |
+| 7 | Ark hub with the Archive | next |
 | 8 | Tracking finished + debug overlay + save round-trip | |
 | — | Sol analysis review (reviews/vertical-slice.md), fixes, re-check | |
 
@@ -57,10 +57,17 @@ dodges, retreats, slow-mo dodges, weapon modes, leaving and returning to the Lat
 level entry, kills, hurts, low Integrity, respawns, the checkpoint, the Reliquary and more. The debug
 overlay shows the lean and how many lines of each tone were heard.
 
+**Step 6.** The Reliquary in the plaza (the Steward's ring inlaid, lit while it listens) opens the core
+choice (mockup 3): two power cores and the "corrupted" Log 0522 core, plus Prem Vashti's note if you
+found it in the stacks; carry two. Faceted amber prisms vs cracked spheres; the Steward's comments
+push power and dismiss truth. Carrying cores strengthens assists (power) and files memory logs
+(both); the level completes and the Archive is restored.
+
 ## Next
 
-Step 6: the Reliquary at the end of the street and the core choice: four cards when the off-path core
-was found (two power, two truth), carry two; the Steward pushes power and dismisses truth.
+Step 7: the Ark hub (concrete disc in the estuary, ring of gold floor lights, the restored Archive,
+survivors, Noor and Teo) and the Archive screen (log list, decision-record replay, the Steward's
+present-day comment, Noor's and Teo's reactions with trust changes).
 
 ## How to run
 

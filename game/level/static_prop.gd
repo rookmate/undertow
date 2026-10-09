@@ -1,9 +1,9 @@
 class_name StaticProp
 extends Node2D
 ## Placeholder props drawn as small isometric prisms and shapes: the canal railing, low walls, stack
-## shelves, a Feed kiosk, a stalled tram segment, bollards, and the Reliquary hatch.
+## shelves, a Feed kiosk, a stalled tram segment and bollards.
 
-enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD, RELIQUARY }
+enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD }
 
 var kind: Kind = Kind.RAILING
 var cell: Vector2i
@@ -36,8 +36,6 @@ func _draw() -> void:
 		Kind.BOLLARD:
 			draw_rect(Rect2(-6, -34, 12, 34), Palette.IRON_DARK)
 			draw_circle(Vector2(0, -34), 6.0, Palette.IRON_DARK, true, -1.0, true)
-		Kind.RELIQUARY:
-			_prism(64.0, Palette.STONE_OLD.lightened(0.1), Palette.STONE_OLD.darkened(0.15), Palette.STONE_OLD.lightened(0.2), 0.8)
 
 
 ## Prism with a footprint shrunk by `scale_fp` around the cell centre.

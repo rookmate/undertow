@@ -168,7 +168,9 @@ func _build_cells() -> void:
 			"o":
 				_prop(cell, StaticProp.Kind.BOLLARD)
 			"R":
-				_prop(cell, StaticProp.Kind.RELIQUARY)
+				var reliquary := Reliquary.new()
+				reliquary.setup(self, cell, level_id)
+				world.add_child(reliquary)
 			"t":
 				var tram := _prop(cell, StaticProp.Kind.TRAM)
 				tram.joined_left = grid.char_at(cell + Vector2i(0, 1)) == "t"

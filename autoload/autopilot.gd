@@ -177,6 +177,8 @@ func _on_scene_changed(key: StringName) -> void:
 			_drive_loadout(gen)
 		&"level_vellum":
 			_drive_level(gen)
+		&"core_choice":
+			_drive_core_choice(gen)
 
 
 func _drive_title(gen: int) -> void:
@@ -276,7 +278,38 @@ func _drive_level(gen: int) -> void:
 	check(player.cell().distance_to(Vector2(5, 9)) <= 1.5, "arrived_by_reliquary")
 	var p := GameState.run.playstyle_profile
 	check(p.risk + p.caution > 0.0, "playstyle_profiled")
+	if long_run:
+		expect("core_choice_shown")
+		if not await advance_to(level, player, Vector2i(4, 8), 15.0, gen):
+			return
+		tap(&"interact")
 	await snap("level_plaza")
+
+
+## The Reliquary's cards: carry one of each, the off-path truth core and the Lattice power core.
+func _drive_core_choice(gen: int) -> void:
+	pass_check("core_choice_shown")
+	var screen := get_tree().current_scene
+	var offered: Array[String] = screen.get("offered")
+	check(offered.size() == 4 and offered.has(ContentIds.CORE_TRUTH_STACKS), "four_cards_with_the_found_core")
+	if not await _wait(1.5, gen):
+		return
+	await snap("core_choice")
+	screen.call("_toggle", ContentIds.CORE_TRUTH_STACKS)
+	screen.call("_toggle", "vellum_power_lattice")
+	if not await _wait(0.8, gen):
+		return
+	await snap("core_choice_picked")
+	var confirm := screen.get("_confirm") as Button
+	confirm.grab_focus()
+	tap(&"ui_accept")
+	if not await _wait(1.0, gen):
+		return
+	var r := GameState.run
+	check(r.cores_power() == 1 and r.cores_truth() == 1 and r.found_core_ids.is_empty(), "cores_carried")
+	check(r.levels_completed.has(ContentIds.LEVEL_VELLUM) and r.buildings_restored.has("archive") and r.logs_unlocked.has("log_vashti_audit_note"), "level_completed_archive_restored")
+	check(SaveService.has_save(), "saved_after_choice")
+	await snap("core_choice_done")
 
 
 ## Off the path: down the stair into the overflow stacks. Nothing there while the Steward listens;

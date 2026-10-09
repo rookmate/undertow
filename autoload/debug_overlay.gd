@@ -14,7 +14,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_panel = PanelContainer.new()
 	_panel.add_theme_stylebox_override(&"panel", UiTheme.panel_style(0.9))
-	_panel.position = Vector2(24, 24)
+	_panel.position = Vector2(24, 200)
 	_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_panel)
 	_label = RichTextLabel.new()

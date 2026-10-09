@@ -10,12 +10,15 @@ const SCENES: Dictionary[StringName, String] = {
 	&"ring_gallery": "res://ui/common/ring_gallery.tscn",
 	&"loadout": "res://ui/loadout/loadout.tscn",
 	&"level_vellum": "res://game/level/vellum_street.tscn",
+	&"core_choice": "res://ui/core_choice/core_choice.tscn",
 }
 
 ## Where a saved RunState.location resumes.
 const LOCATIONS: Dictionary[String, StringName] = {
 	# Weapons are picked before each level, so a run saved in the level resumes at the loadout.
 	"level:vellum": &"loadout",
+	# Opened the Reliquary but didn't choose yet: back to the choice, found cores intact.
+	"reliquary:vellum": &"core_choice",
 }
 
 var current_key: StringName = &""

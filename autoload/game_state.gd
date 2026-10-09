@@ -59,6 +59,14 @@ func find_core(core_id: String) -> void:
 	state_changed.emit(&"found_core_ids")
 
 
+## The Reliquary has made its offer; found cores were either carried or left behind.
+func clear_found_cores() -> void:
+	if run.found_core_ids.is_empty():
+		return
+	run.found_core_ids.clear()
+	state_changed.emit(&"found_core_ids")
+
+
 ## Returns false if this survivor was already counted.
 func add_survivor(survivor_id: String) -> bool:
 	if run.survivor_ids.has(survivor_id):

@@ -22,6 +22,9 @@ const STEWARD_ALLOWED: Dictionary[String, String] = {
 	"res://ui/hud/steward_pill.gd": "the Steward's own status and its assists",
 	"res://ui/hud/minimap.gd": "the Steward's map (voice on)",
 	"res://ui/hud/subtitles.gd": "the Steward's narration",
+	"res://ui/core_choice/core_art.gd": "power cores are the Steward's amber prisms",
+	"res://ui/core_choice/core_choice.gd": "POWER CORE label and the Steward's comments on the cards",
+	"res://game/props/reliquary.gd": "the Steward's ring inlaid in the Reliquary lid",
 }
 
 const SCAN_ROOTS: Array[String] = ["res://autoload", "res://core", "res://game", "res://ui", "res://data"]
