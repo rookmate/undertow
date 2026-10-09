@@ -274,3 +274,13 @@ Asked of the user on 2026-10-09 and answered the same day.
     uses swaps them, so nothing becomes unreachable; pause stays on Esc / Start. Prompts everywhere
     are read off the current bindings. Tests and the autopilot always use default settings. At
     launch, vsync is only touched if the player turned it off (so `--disable-vsync` still works).
+90. **Districts open in the world bible's order** (`LevelCatalog`: each district's act and the
+    districts that must be done first). The Ark's dock opens the Loop map: every district of Meridian,
+    done / open / not reached / not built, and the skiff to an open one (via its loadout). The old
+    end-of-slice panel is now "The run so far", a button on the map. Design notes for Act 1 are in
+    `design/act-1.md`.
+91. **Weapons are found** (`RunState.weapons_owned`); the loadout offers only what's owned and carries
+    one weapon while only one is owned. Saves are version 2 (weapons, scrap, upgrades); version-1 saves
+    (the slice) keep all three weapons. New runs own all three until Kestrel Heights is the start.
+92. **Each district has a look** (`DistrictLook`: ground, walls, sky, horizon, water, ambient light),
+    chosen from Palette colours; the Vellum's is unchanged (checked against screenshots).

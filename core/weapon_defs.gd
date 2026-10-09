@@ -9,10 +9,15 @@ const RIOT_DRONE := "riot_drone"
 const DEFIB := "defib_gauntlet"
 const SIGNAL_JAMMER := "signal_jammer"
 
-## Weapons the slice lets you pick, in loadout-grid order.
-const SLICE_WEAPONS: Array[String] = [BATON, RIOT_DRONE, DEFIB]
-## Shown in the grid, locked. The Signal Jammer is hand-built in Harbor Ward (Act 3).
-const LOCKED_WEAPONS: Array[String] = [SIGNAL_JAMMER]
+## The loadout grid, in order. Weapons are found in the city (design/act-1.md); the grid shows the ones
+## not found yet as locked. The Signal Jammer is hand-built in Harbor Ward (Act 3) and has no code yet.
+const GRID: Array[String] = [BATON, RIOT_DRONE, DEFIB, SIGNAL_JAMMER]
+## Weapons that exist in code (can be carried).
+const PLAYABLE: Array[String] = [BATON, RIOT_DRONE, DEFIB]
+## What a new run owns. Until Act 1's districts exist, the slice's three.
+const STARTING: Array[String] = [BATON, RIOT_DRONE, DEFIB]
+## What a version-1 save (the vertical slice) owned.
+const SLICE_SET: Array[String] = [BATON, RIOT_DRONE, DEFIB]
 
 const ALL: Dictionary[String, Dictionary] = {
 	BATON: {
@@ -46,8 +51,8 @@ static func is_known(weapon_id: String) -> bool:
 	return ALL.has(weapon_id)
 
 
-static func is_unlocked(weapon_id: String) -> bool:
-	return SLICE_WEAPONS.has(weapon_id)
+static func is_playable(weapon_id: String) -> bool:
+	return PLAYABLE.has(weapon_id)
 
 
 static func display_name(weapon_id: String) -> String:

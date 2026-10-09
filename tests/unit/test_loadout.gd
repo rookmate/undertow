@@ -1,13 +1,26 @@
 extends TestCase
 
+const ALL_THREE: Array[String] = [WeaponDefs.BATON, WeaponDefs.RIOT_DRONE, WeaponDefs.DEFIB]
 
-func test_valid_pick_is_two_different_unlocked_weapons() -> void:
-	check_eq(Loadout.validate([WeaponDefs.BATON, WeaponDefs.DEFIB]), "")
-	check(Loadout.validate([WeaponDefs.BATON]) != "", "one is not enough")
-	check(Loadout.validate([WeaponDefs.BATON, WeaponDefs.RIOT_DRONE, WeaponDefs.DEFIB]) != "", "three is too many")
-	check(Loadout.validate([WeaponDefs.BATON, WeaponDefs.BATON]) != "", "no duplicates")
-	check(Loadout.validate([WeaponDefs.BATON, WeaponDefs.SIGNAL_JAMMER]) != "", "the locked tool can't be carried")
-	check(Loadout.validate([WeaponDefs.BATON, "spoon"]) != "", "unknown ids rejected")
+
+func test_valid_pick_is_two_different_owned_weapons() -> void:
+	check_eq(Loadout.validate([WeaponDefs.BATON, WeaponDefs.DEFIB], ALL_THREE), "")
+	check(Loadout.validate([WeaponDefs.BATON], ALL_THREE) != "", "one is not enough when two are owned")
+	check(Loadout.validate([WeaponDefs.BATON, WeaponDefs.RIOT_DRONE, WeaponDefs.DEFIB], ALL_THREE) != "", "three is too many")
+	check(Loadout.validate([WeaponDefs.BATON, WeaponDefs.BATON], ALL_THREE) != "", "no duplicates")
+	check(Loadout.validate([WeaponDefs.BATON, WeaponDefs.SIGNAL_JAMMER], ALL_THREE) != "", "the locked tool can't be carried")
+	check(Loadout.validate([WeaponDefs.BATON, "spoon"], ALL_THREE) != "", "unknown ids rejected")
+
+
+func test_only_found_weapons_can_be_carried() -> void:
+	var baton_only: Array[String] = [WeaponDefs.BATON]
+	check_eq(Loadout.slots_for(baton_only), 1, "with one weapon found, the loadout carries one")
+	check_eq(Loadout.validate([WeaponDefs.BATON], baton_only), "")
+	check(Loadout.validate([WeaponDefs.BATON, WeaponDefs.RIOT_DRONE], baton_only) != "", "the drone hasn't been found")
+	check(Loadout.validate([WeaponDefs.RIOT_DRONE], baton_only) != "")
+	check_eq(Loadout.default_for(baton_only), baton_only)
+	var with_jammer: Array[String] = [WeaponDefs.BATON, WeaponDefs.SIGNAL_JAMMER]
+	check_eq(Loadout.slots_for(with_jammer), 1, "a weapon with no code yet doesn't count")
 
 
 func test_muting_the_steward_forces_manual() -> void:
@@ -18,11 +31,15 @@ func test_muting_the_steward_forces_manual() -> void:
 
 func test_run_loadout_falls_back_to_default_when_invalid() -> void:
 	var run := RunState.new()
-	check_eq(Loadout.from_run(run), Loadout.DEFAULT_WEAPONS)
+	run.weapons_owned = ALL_THREE.duplicate()
+	check_eq(Loadout.from_run(run), [WeaponDefs.BATON, WeaponDefs.RIOT_DRONE])
 	run.loadout = [WeaponDefs.DEFIB, WeaponDefs.BATON]
 	check_eq(Loadout.from_run(run), [WeaponDefs.DEFIB, WeaponDefs.BATON])
 	run.loadout = [WeaponDefs.DEFIB, WeaponDefs.DEFIB]
-	check_eq(Loadout.from_run(run), Loadout.DEFAULT_WEAPONS)
+	check_eq(Loadout.from_run(run), [WeaponDefs.BATON, WeaponDefs.RIOT_DRONE])
+	run.weapons_owned = [WeaponDefs.BATON]
+	run.loadout = [WeaponDefs.DEFIB, WeaponDefs.BATON]
+	check_eq(Loadout.from_run(run), [WeaponDefs.BATON], "a saved pick of weapons no longer owned falls back")
 
 
 func test_modes_round_trip_through_save_keys() -> void:
@@ -36,7 +53,7 @@ func test_modes_round_trip_through_save_keys() -> void:
 
 ## Brief: Steward-tuned is easier; manual is harder and stronger in skilled hands.
 func test_every_weapon_is_easier_tuned_and_deeper_manual() -> void:
-	for id: String in WeaponDefs.SLICE_WEAPONS:
+	for id: String in WeaponDefs.PLAYABLE:
 		var tuned := WeaponDefs.mode_info(id, "tuned")
 		var manual := WeaponDefs.mode_info(id, "manual")
 		check(float(tuned["ease"]) > float(manual["ease"]), "%s tuned is easier" % id)

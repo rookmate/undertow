@@ -4,7 +4,8 @@ extends RefCounted
 ## writer; everything else reads. Brief variables that are counts are derived from ID lists so the
 ## count and the list can never disagree.
 
-const SAVE_VERSION := 1
+## 2: weapons are found (weapons_owned), scrap and upgrades.
+const SAVE_VERSION := 2
 
 const WHO_NOOR := &"noor"
 const WHO_TEO := &"teo"
@@ -37,6 +38,12 @@ var active_overrides: Array[String] = []
 var playstyle_profile: PlaystyleProfile = PlaystyleProfile.new()
 
 # --- Progress ---------------------------------------------------------------------------------------------
+## Weapons recovered so far (the loadout only offers these).
+var weapons_owned: Array[String] = WeaponDefs.STARTING.duplicate()
+## Parts taken from machines and crates; spent at the Workshop.
+var scrap: int = 0
+## Workshop upgrades bought: "<weapon>:<mode>" -> level.
+var upgrades: Dictionary[String, int] = {}
 var loadout: Array[String] = []
 var weapon_modes: Dictionary[String, String] = {}
 var buildings_restored: Array[String] = []
@@ -99,6 +106,9 @@ func to_dict() -> Dictionary:
 		"teo_present": teo_present,
 		"active_overrides": active_overrides.duplicate(),
 		"playstyle_profile": playstyle_profile.to_dict(),
+		"weapons_owned": weapons_owned.duplicate(),
+		"scrap": scrap,
+		"upgrades": upgrades.duplicate(),
 		"loadout": loadout.duplicate(),
 		"weapon_modes": weapon_modes.duplicate(),
 		"buildings_restored": buildings_restored.duplicate(),
@@ -133,6 +143,18 @@ static func from_dict(d: Dictionary) -> RunState:
 	s.active_overrides = _strings(d.get("active_overrides", []))
 	var profile: Variant = d.get("playstyle_profile", {})
 	s.playstyle_profile = PlaystyleProfile.from_dict(profile if profile is Dictionary else {})
+	# Saves from before weapons were found (version 1, the vertical slice) had all three from the start.
+	var owned: Variant = d.get("weapons_owned", null)
+	s.weapons_owned = _strings(owned) if owned is Array else WeaponDefs.SLICE_SET.duplicate()
+	s.weapons_owned = s.weapons_owned.filter(func(id: String) -> bool: return WeaponDefs.is_known(id))
+	if s.weapons_owned.is_empty():
+		s.weapons_owned = WeaponDefs.STARTING.duplicate()
+	s.scrap = maxi(0, _int(d.get("scrap", 0)))
+	var ups: Variant = d.get("upgrades", {})
+	if ups is Dictionary:
+		for key: Variant in ups:
+			if key is String and (ups[key] is int or ups[key] is float):
+				s.upgrades[key] = clampi(int(ups[key]), 0, Tunables.UPGRADE_LEVELS)
 	s.loadout = _strings(d.get("loadout", []))
 	var modes: Variant = d.get("weapon_modes", {})
 	if modes is Dictionary:

@@ -1,6 +1,9 @@
-class_name EndOfSlice
+class_name RunSummary
 extends CanvasLayer
-## The dock: the end of the vertical slice. The skiff isn't ready; more of Meridian is coming.
+## The run so far, from the Loop map: voice, cores, survivors, trust, and the three endings the city will
+## offer (Rewrite with its checklist). Closes back to the map; or save and return to the title.
+
+signal closed
 
 var _back: Button
 
@@ -17,24 +20,44 @@ func _ready() -> void:
 	box.add_theme_constant_override(&"separation", 18)
 	add_child(box)
 	var title := Label.new()
-	title.text = "THE SKIFF ISN'T READY"
+	title.text = "THE RUN SO FAR"
 	title.add_theme_font_override(&"font", UiFonts.heading())
 	title.add_theme_font_size_override(&"font_size", 72)
 	box.add_child(title)
 	var sub := Label.new()
-	sub.text = "More of Meridian is coming. This is the end of the vertical slice."
+	sub.text = "What the city will offer you at the end, and how close you are to the third choice."
 	sub.add_theme_font_size_override(&"font_size", 30)
 	sub.add_theme_color_override(&"font_color", Palette.IVORY_DIM)
 	box.add_child(sub)
 	_add_details(box)
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override(&"separation", 20)
+	box.add_child(row)
 	_back = Button.new()
-	_back.text = "SAVE AND RETURN TO TITLE"
-	_back.custom_minimum_size = Vector2(420, 60)
-	_back.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	_back.pressed.connect(_to_title)
-	box.add_child(_back)
-	_back.grab_focus()
+	_back.text = "BACK TO THE MAP"
+	_back.custom_minimum_size = Vector2(360, 60)
+	_back.pressed.connect(close)
+	row.add_child(_back)
+	var title_button := Button.new()
+	title_button.text = "SAVE AND RETURN TO TITLE"
+	title_button.custom_minimum_size = Vector2(420, 60)
+	title_button.pressed.connect(_to_title)
+	row.add_child(title_button)
 	Modals.push(self)
+	_back.grab_focus()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if Modals.is_top(self) and event.is_action_pressed(&"ui_cancel"):
+		get_viewport().set_input_as_handled()
+		close()
+
+
+func close() -> void:
+	Sound.play(&"ui_back")
+	Modals.pop(self)
+	closed.emit()
+	queue_free()
 
 
 ## The run so far, and the three endings the city will offer (brief, mockup 7): Reboot and Unplug are

@@ -24,7 +24,7 @@ const SLICE_LONG: Array[String] = [
 	"core_choice_shown", "four_cards_with_the_found_core", "cores_carried",
 	"level_completed_archive_restored", "saved_after_choice", "ark_reached",
 	"archive_restored_on_the_ark", "noor_and_teo_present", "survivors_on_the_ark", "archive_replayed",
-	"trust_changed", "end_of_slice_shown", "endings_offered_with_rewrite_locked",
+	"trust_changed", "loop_map_shown", "endings_offered_with_rewrite_locked",
 ]
 const RING_GALLERY: Array[String] = ["save_isolated", "title_shown", "title_ring_present", "ring_gallery_shown"]
 const LONG_RUN_SECONDS := 55.0
@@ -533,7 +533,7 @@ func _drive_ark(gen: int) -> void:
 	if not await _wait(1.5, gen):
 		return
 	await snap("ark")
-	for c: String in ["archive_replayed", "trust_changed", "end_of_slice_shown"]:
+	for c: String in ["archive_replayed", "trust_changed", "loop_map_shown"]:
 		expect(c)
 	if not await advance_to(ark, player, Vector2i(10, 7), 20.0, gen):
 		return
@@ -567,8 +567,15 @@ func _drive_ark(gen: int) -> void:
 	tap(&"interact")
 	if not await _wait(1.0, gen):
 		return
-	check(ark.end_panel != null, "end_of_slice_shown")
-	await snap("end_of_slice")
+	check(ark.city_map != null, "loop_map_shown")
+	await snap("loop_map")
+	if not await _wait(1.5, gen):
+		return
+	if ark.city_map != null:
+		ark.city_map.open_summary()
+	if not await _wait(1.0, gen):
+		return
+	await snap("run_summary")
 	var rewrite := EndingRules.evaluate(GameState.run)
 	check(rewrite.reboot and rewrite.unplug and not rewrite.rewrite and rewrite.checklist.size() == 3, "endings_offered_with_rewrite_locked")
 	if not await _wait(1.0, gen):

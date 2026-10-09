@@ -12,14 +12,32 @@ extends RefCounted
 
 const FIRST_LEVEL := "vellum"
 
+## Playable districts. "after": districts that must be completed first (the world bible's acts).
 const LEVELS: Dictionary[String, Dictionary] = {
 	"vellum": {
 		"name": "The Vellum",
+		"act": 2,
+		"after": [],
 		"scene": "res://game/level/vellum_street.tscn",
 		"map": "res://data/levels/vellum_street.txt",
 		"restores": "archive",
 	},
 }
+
+## Every district of Meridian for the Loop map, built or not, with its place on the map (0..1 across and
+## down: the hills north-west, the docks east, the sea south, the Ark in the estuary).
+const CITY: Array[Dictionary] = [
+	{"id": "kestrel", "name": "Kestrel Heights", "act": 1, "at": Vector2(0.27, 0.2)},
+	{"id": "loop", "name": "The Loop", "act": 1, "at": Vector2(0.64, 0.16)},
+	{"id": "tideworks", "name": "The Tideworks", "act": 1, "at": Vector2(0.84, 0.48)},
+	{"id": "mercy", "name": "Mercy General", "act": 2, "at": Vector2(0.18, 0.5)},
+	{"id": "vellum", "name": "The Vellum", "act": 2, "at": Vector2(0.36, 0.66)},
+	{"id": "greywater", "name": "Greywater", "act": 2, "at": Vector2(0.56, 0.8)},
+	{"id": "harbor", "name": "Harbor Ward", "act": 3, "at": Vector2(0.84, 0.78)},
+	{"id": "spire", "name": "The Spire", "act": 3, "at": Vector2(0.5, 0.45)},
+]
+## Where the Ark sits on the Loop map.
+const ARK_AT := Vector2(0.7, 0.94)
 
 
 static func has_level(level_id: String) -> bool:
@@ -75,3 +93,26 @@ static func check(grids: Dictionary[String, LevelGrid]) -> PackedStringArray:
 		if broken != "":
 			problems.append("%s: %s" % [level_id, broken])
 	return problems
+
+
+## A district can be travelled to once every district before it is done.
+static func is_open(run: RunState, level_id: String) -> bool:
+	if not has_level(level_id):
+		return false
+	for before: Variant in LEVELS[level_id].get("after", []):
+		if not run.levels_completed.has(str(before)):
+			return false
+	return true
+
+
+## Districts open and not yet done, in the order they're listed.
+static func open_districts(run: RunState) -> Array[String]:
+	var out: Array[String] = []
+	for id: String in LEVELS:
+		if is_open(run, id) and not run.levels_completed.has(id):
+			out.append(id)
+	return out
+
+
+static func act_of(level_id: String) -> int:
+	return int(LEVELS.get(level_id, {}).get("act", 0))
