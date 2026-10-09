@@ -3,15 +3,16 @@
 ; Same orientation and conventions as the level maps (see vellum_street.txt).
 ;
 ;   n  concrete          G  concrete with a gold floor light     f  unbuilt plot (foundation)
-;   A  the Archive (restored)    a  the Archive's door           D  the dock (end of the slice)
+;   A  the Archive (from the Vellum)   a  its door                 D  the dock (the skiff, the Loop map)
+;   M  the Signal Room (from the Loop) e  its door
 ;   N  Noor      Y  Teo      s  where woken survivors stand      p  start (off the skiff)
 ;   ~  water
 ~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~G~~~~~~~~~~~~
-~~~~~~~~~nnnnnG~~~~~~~~~
-~~~~~~AAAnnnnnnGn~~~~~~~
+~~~~~~~~~MMnnnG~~~~~~~~~
+~~~~~~AAAMMennnGn~~~~~~~
 ~~~~~~AAAnnnnffnnn~~~~~~
 ~~~~~~AAAannnffnnG~~~~~~
 ~~~~GnnnnnnnnnnnnnG~~~~~

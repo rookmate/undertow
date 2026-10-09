@@ -1,23 +1,27 @@
 {
 	"version": 1,
-	"notes": "The Steward's narration (text for now; every line has a stable id for voice-over). Tone: warm, unhurried, flattering. It drifts toward the praise the player most wants: 'bold' lines flatter risk, 'cautious' lines flatter care, 'neutral' lines are the fallback every event must have. The Steward never says 'I decided'; it says 'it was determined'. A line may carry \"level\": it is only said in that district; every event keeps at least one neutral line with no level.",
+	"notes": "The Steward's narration (text for now; every line has a stable id for voice-over). Tone: warm, unhurried, flattering. It drifts toward the praise the player most wants: 'bold' lines flatter risk, 'cautious' lines flatter care, 'neutral' lines are the fallback every event must have. The Steward never says 'I decided'; it says 'it was determined'. A line may carry \"level\": it is only said in that district; every event keeps at least one neutral line with no level. Events marked 'praise' are flattery and comfort: silent while 'Stop praising me' is signed.",
 	"events": {
 		"level_enter": {
 			"cooldown": 0,
 			"priority": true
 		},
 		"kill": {
-			"cooldown": 7
+			"cooldown": 7,
+			"praise": true
 		},
 		"multi_kill": {
 			"cooldown": 10,
-			"priority": true
+			"priority": true,
+			"praise": true
 		},
 		"dodge_close": {
-			"cooldown": 6
+			"cooldown": 6,
+			"praise": true
 		},
 		"hurt": {
-			"cooldown": 9
+			"cooldown": 9,
+			"praise": true
 		},
 		"low_integrity": {
 			"cooldown": 25,
@@ -32,13 +36,16 @@
 			"priority": true
 		},
 		"path_returned": {
-			"cooldown": 20
+			"cooldown": 20,
+			"praise": true
 		},
 		"weapon_manual": {
-			"cooldown": 40
+			"cooldown": 40,
+			"praise": true
 		},
 		"idle": {
-			"cooldown": 30
+			"cooldown": 30,
+			"praise": true
 		},
 		"checkpoint": {
 			"cooldown": 0

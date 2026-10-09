@@ -13,7 +13,7 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	"W": Floor.PAVEMENT, "w": Floor.STACKS, "T": Floor.STACKS, "U": Floor.STACKS,
 	"n": Floor.CONCRETE, "G": Floor.CONCRETE, "a": Floor.CONCRETE, "N": Floor.CONCRETE, "Y": Floor.CONCRETE,
 	"s": Floor.CONCRETE, "D": Floor.CONCRETE, "f": Floor.FOUNDATION, "A": Floor.BUILDING,
-	"p": Floor.CONCRETE,
+	"p": Floor.CONCRETE, "M": Floor.BUILDING, "e": Floor.CONCRETE,
 	# Kestrel Heights
 	"l": Floor.BUILDING, "v": Floor.LAWN, "H": Floor.LAWN, "j": Floor.LAWN, "F": Floor.COBBLE, "Q": Floor.COBBLE,
 	"X": Floor.COBBLE, "E": Floor.STEPS, "i": Floor.TIMBER, "q": Floor.GRAVEL, "b": Floor.TIMBER,
@@ -25,7 +25,7 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 ## Characters whose cell blocks movement.
 ## Lawns (and the hedges, planters and sprinklers on them) are the Steward's gardens: looked at, not
 ## walked on. The smart gate 'Q' is solid only while closed (SmartGate), so it isn't listed.
-const SOLID := " #dmgAl~=-L|KtoRTvHjFbrJ*"
+const SOLID := " #dmgAlM~=-L|KtoRTvHjFbrJ*"
 ## People stand on these cells: walkable floor, but nothing should route through them.
 const OCCUPIED := "WwNY"
 ## Placed things that need a stable id from an '@' line (people, caches, logs).

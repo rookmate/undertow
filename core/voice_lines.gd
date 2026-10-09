@@ -25,6 +25,10 @@ static func all() -> Dictionary[String, String]:
 		out[core_line(id)] = str(ContentDb.core(id).get("steward", ""))
 	for id: String in ContentDb.log_ids():
 		out[log_line(id)] = str(ContentDb.memory_log(id).get("steward_now", ""))
+	for id: String in Overrides.IDS:
+		if Overrides.is_known(id):
+			out[Overrides.reply_line(id, true)] = Overrides.field(id, "sign")
+			out[Overrides.reply_line(id, false)] = Overrides.field(id, "revoke")
 	return out
 
 

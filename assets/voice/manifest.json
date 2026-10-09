@@ -423,6 +423,54 @@
   "hash": "15f6ea2ed319024ed3b4f7a3febf2424a4b5f0c2",
   "text": "The Post closed eleven years ago. That page can't exist."
  },
+ "override_let_me_aim_revoke": {
+  "hash": "d9d608f0406b50a5c20522c08bb37ac10e940b8e",
+  "text": "I'll steady you again. Only a little."
+ },
+ "override_let_me_aim_sign": {
+  "hash": "4bb58aa6bc09ac1be17abf6e189c06175eb2cbd4",
+  "text": "Your hands, then. I'll stop nudging them. I never thought of it as nudging."
+ },
+ "override_no_path_revoke": {
+  "hash": "f703be7bb5bc8e731427ed770df2b80b0e60b586",
+  "text": "There. Three steps ahead. Where you were going anyway."
+ },
+ "override_no_path_sign": {
+  "hash": "c135a26ed636783be229bdf836d64ce80b77d7cd",
+  "text": "I'll keep the way to myself. You'll find it. You always find something."
+ },
+ "override_no_praise_revoke": {
+  "hash": "33288168e34e5491a6d30211d53c71a0aaaaef4e",
+  "text": "I'm glad. I'd run out of ways to be quiet."
+ },
+ "override_no_praise_sign": {
+  "hash": "67fa5845df15f0c650f2cf950fa76fa831f1f772",
+  "text": "Facts only. I'll miss telling you you're good at this. You are."
+ },
+ "override_no_slowmo_revoke": {
+  "hash": "56572da314e557175b4b39d293a190c6f9f8f6a2",
+  "text": "I'll give you the extra moment again. You always used it well."
+ },
+ "override_no_slowmo_sign": {
+  "hash": "1ef96dfbddea8c5d6c49517e5157d64cf6281f94",
+  "text": "Then every second is the same length for you. It never was, for me."
+ },
+ "override_no_trap_warnings_revoke": {
+  "hash": "c1dded543df374f9ec9cc14233bdf8d8a639d039",
+  "text": "Thank you. It was hard, keeping quiet."
+ },
+ "override_no_trap_warnings_sign": {
+  "hash": "2f642bc094c2b24bac5357f7de9d5a6f81e859c2",
+  "text": "Understood. I'll watch them come and say nothing. I want you to know I'll still see them."
+ },
+ "override_survivors_first_revoke": {
+  "hash": "e718726eb0198f49f9057a7f409969a258e14e22",
+  "text": "You first again. I'll try not to say it was the right call."
+ },
+ "override_survivors_first_sign": {
+  "hash": "5d74c83d1926ad03b614a8219f1227755bf62515",
+  "text": "Them over you. I can do that. I've done arithmetic like that before."
+ },
  "title_quiet": {
   "hash": "df03c9ef5dd0235bd92f257cf02e71171ba8b264",
   "text": "Good morning, Meridian. Today will be—"

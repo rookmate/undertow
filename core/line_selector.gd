@@ -73,6 +73,11 @@ func cooldown_for(event: StringName) -> float:
 	return float(event_rules.get(event, {}).get("cooldown", 6.0))
 
 
+## Flattery and comfort, as opposed to facts and warnings (silent under "Stop praising me").
+func is_praise(event: StringName) -> bool:
+	return bool(event_rules.get(event, {}).get("praise", false))
+
+
 func is_priority(event: StringName) -> bool:
 	return bool(event_rules.get(event, {}).get("priority", false))
 
@@ -93,7 +98,7 @@ static func tone_weights(lean: float) -> Dictionary[StringName, float]:
 ## while the drift toward the flattering tone stays strong even with small pools. A district's own lines
 ## win: if it has any for this event, only those are used (its entry line is its lie, and is heard);
 ## the lines for anywhere are for districts that have none.
-func pick(event: StringName, lean: float, rng: RandomNumberGenerator, level: String = "") -> Line:
+func pick(event: StringName, lean: float, rng: RandomNumberGenerator, level: String = "", only_tone: StringName = &"") -> Line:
 	var pool: Array = []
 	var own: Array = []
 	for l: Line in lines_by_event.get(event, []):
@@ -103,6 +108,8 @@ func pick(event: StringName, lean: float, rng: RandomNumberGenerator, level: Str
 			own.append(l)
 	if not own.is_empty():
 		pool = own
+	if only_tone != &"" and pool.any(func(l: Line) -> bool: return l.tone == only_tone):
+		pool = pool.filter(func(l: Line) -> bool: return l.tone == only_tone)
 	if pool.is_empty():
 		return null
 	var weights := tone_weights(lean)

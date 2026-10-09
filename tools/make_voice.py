@@ -3,6 +3,7 @@
 
     python3 -I tools/make_voice.py            # voices new or changed lines into assets/voice/
     python3 -I tools/make_voice.py --all      # re-voices everything (after changing the voice below)
+    python3 -I tools/make_voice.py --prune    # also deletes recordings of lines that no longer exist
 
 The lines come from the game itself (tools/voice_manifest.gd lists VoiceLines.all()), so the game and the
 voice files can't disagree about ids. A line is re-voiced only when its text or the voice settings change;
@@ -37,11 +38,16 @@ SETTINGS = "|".join([MODEL, str(LENGTH_SCALE), str(SENTENCE_SILENCE), FILTERS])
 
 
 def lines_from_game():
-    out = subprocess.run(["godot", "--headless", "--path", ROOT, "-s", "tools/voice_manifest.gd"],
-                         capture_output=True, text=True, timeout=300).stdout
-    if "VOICE_MANIFEST_BEGIN" not in out:
-        sys.exit("could not read the lines from the game:\n" + out[-2000:])
-    return json.loads(out.split("VOICE_MANIFEST_BEGIN", 1)[1].split("VOICE_MANIFEST_END", 1)[0])
+    run = subprocess.run(["godot", "--headless", "--path", ROOT, "-s", "tools/voice_manifest.gd"],
+                         capture_output=True, text=True, timeout=300)
+    out = run.stdout + run.stderr
+    # A game that doesn't compile can't say what its lines are: never act on a partial list.
+    if "SCRIPT ERROR" in out or "Parse Error" in out or "VOICE_MANIFEST_BEGIN" not in run.stdout:
+        sys.exit("the game didn't list its lines cleanly; fix it first:\n" + out[-3000:])
+    lines = json.loads(run.stdout.split("VOICE_MANIFEST_BEGIN", 1)[1].split("VOICE_MANIFEST_END", 1)[0])
+    if not lines:
+        sys.exit("the game listed no lines at all; refusing to touch the recordings")
+    return lines
 
 
 def spoken_form(text):
@@ -76,6 +82,7 @@ def voice(line_id, text, dst):
 
 def main():
     redo_all = "--all" in sys.argv
+    prune = "--prune" in sys.argv
     if not os.path.exists(PIPER_PYTHON):
         sys.exit("Piper isn't installed at %s (see PROGRESS.md, 'How to rebuild the voice')" % PIPER_PYTHON)
     os.makedirs(OUT, exist_ok=True)
@@ -93,8 +100,11 @@ def main():
         manifest[line_id] = {"text": text, "hash": digest}
     for f in os.listdir(OUT):
         if f.endswith(".ogg") and f[:-4] not in manifest:
-            os.remove(os.path.join(OUT, f))
-            print("  removed %s (no such line any more)" % f)
+            if prune:
+                os.remove(os.path.join(OUT, f))
+                print("  removed %s (no such line any more)" % f)
+            else:
+                print("  %s is no longer a line (run with --prune to delete it)" % f)
     with open(MANIFEST, "w") as fh:
         json.dump(manifest, fh, indent=1, sort_keys=True, ensure_ascii=False)
         fh.write("\n")

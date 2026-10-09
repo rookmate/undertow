@@ -8,12 +8,15 @@ extends Level
 const SURVIVOR_SPOTS := "s"
 ## Which map letters are which Ark building's plot. A plot is built only once that building has been
 ## restored by bringing a district's core home; until then it is an unbuilt slab.
-const PLOTS: Dictionary[String, String] = {"A": "archive"}
+const PLOTS: Dictionary[String, String] = {"A": "archive", "M": "signal_room"}
 ## The door belongs to the building it opens.
-const DOORS: Dictionary[String, String] = {"a": "archive"}
+const DOORS: Dictionary[String, String] = {"a": "archive", "e": "signal_room"}
+## What each building's door is.
+const DOOR_KINDS: Dictionary[String, ArkFixture.Kind] = {"archive": ArkFixture.Kind.ARCHIVE_DOOR, "signal_room": ArkFixture.Kind.SIGNAL_DOOR}
 
 var archive_screen: ArchiveScreen
 var city_map: CityMap
+var overrides_screen: OverridesScreen
 
 
 func is_hub() -> bool:
@@ -43,7 +46,7 @@ func _populate() -> void:
 			continue
 		for c: Vector2i in grid.cells_with(marker):
 			var door := ArkFixture.new()
-			door.setup(self, c, ArkFixture.Kind.ARCHIVE_DOOR)
+			door.setup(self, c, DOOR_KINDS[DOORS[marker]])
 			door.used.connect(_on_fixture_used)
 			world.add_child(door)
 	for c: Vector2i in grid.cells_with("D"):
@@ -142,10 +145,13 @@ func _add_floor_lights() -> void:
 
 
 func _on_fixture_used(kind: ArkFixture.Kind) -> void:
-	if kind == ArkFixture.Kind.ARCHIVE_DOOR:
-		open_archive()
-	else:
-		open_city_map()
+	match kind:
+		ArkFixture.Kind.ARCHIVE_DOOR:
+			open_archive()
+		ArkFixture.Kind.SIGNAL_DOOR:
+			open_overrides()
+		_:
+			open_city_map()
 
 
 ## The Archive and the end panel pause the Ark through Modals (they own the pause while open).
@@ -156,6 +162,16 @@ func open_archive() -> ArchiveScreen:
 	archive_screen.closed.connect(func() -> void: archive_screen = null)
 	add_child(archive_screen)
 	return archive_screen
+
+
+## The Signal Room: the standing orders.
+func open_overrides() -> OverridesScreen:
+	if overrides_screen != null:
+		return overrides_screen
+	overrides_screen = OverridesScreen.new()
+	overrides_screen.closed.connect(func() -> void: overrides_screen = null)
+	add_child(overrides_screen)
+	return overrides_screen
 
 
 ## The dock: the skiff and the Loop map.

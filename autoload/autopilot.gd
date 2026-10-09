@@ -54,7 +54,7 @@ const LOOP_ROUTE: Array[String] = [
 	"level_reached", "player_spawned", "path_three_tiles_ahead", "enemy_killed", "cab_truth_found",
 	"conductor_engaged", "conductor_called_a_lane", "conductor_vented", "conductor_beaten",
 	"barriers_opened", "route_completed", "core_choice_shown", "loop_cores_carried", "ark_reached",
-	"signal_room_restored",
+	"signal_room_restored", "signal_room_standing", "override_signed", "steward_answered_the_order",
 ]
 const SCENARIOS: Array[String] = ["slice", "vellum", "loop", "ring_gallery", "options", "tour"]
 const TOUR: Array[String] = ["save_isolated", "title_shown", "tour_level_reached", "tour_done"]
@@ -654,9 +654,27 @@ func _drive_ark(gen: int) -> void:
 		return
 	if scenario == "loop":
 		check(GameState.run.buildings_restored.has("signal_room"), "signal_room_restored")
+		var standing := 0
+		for n: Node in ark.world.get_children():
+			if n is BuildingCell and (n as BuildingCell).facade == BuildingCell.Facade.SIGNAL_ROOM:
+				standing += 1
+		check(standing > 0, "signal_room_standing")
 		if not await _wait(1.5, gen):
 			return
 		await snap("ark_after_loop")
+		if not await _use_at(ark, player, Vector2i(12, 5), gen):
+			return
+		var orders := ark.overrides_screen
+		if orders == null:
+			return
+		await snap("signal_room")
+		orders.toggle(Overrides.NO_SLOWMO)
+		check(GameState.has_override(Overrides.NO_SLOWMO), "override_signed")
+		check(Sound.voice_line == Overrides.reply_line(Overrides.NO_SLOWMO, true), "steward_answered_the_order")
+		if not await _wait(2.5, gen):
+			return
+		await snap("signal_room_signed")
+		orders.close()
 		return
 	var archive_cells := 0
 	var figures: Dictionary[String, int] = {}
@@ -1116,6 +1134,8 @@ func _nearest_threat(level: Level, player: Operator, reach: float) -> Enemy:
 	var best: Enemy = null
 	var best_d := reach
 	for e: Enemy in level.living_enemies():
+		if not e.is_threat:
+			continue
 		var d := Iso.ground_distance(player.global_position, e.global_position)
 		if d <= best_d:
 			best = e

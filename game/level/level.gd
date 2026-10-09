@@ -234,6 +234,8 @@ func _build_cells() -> void:
 					facade = BuildingCell.Facade.NEON_LIME
 				"l":
 					facade = BuildingCell.Facade.LAUNDRY
+				"M":
+					facade = BuildingCell.Facade.SIGNAL_ROOM
 			b.setup(cell, facade, not grid.is_building(cell + Vector2i(0, 1)), not grid.is_building(cell + Vector2i(1, 0)), look)
 			world.add_child(b)
 			continue
@@ -394,6 +396,15 @@ func _add_steward_path() -> void:
 	predicted_path.predictor = predictor
 	predicted_path.player = player
 	add_child(predicted_path)
+
+
+## True if one of the Waiting (not yet woken) is within `tiles` of a point.
+func waiting_near(at: Vector2, tiles: float) -> bool:
+	for n: Node in world.get_children():
+		var w := n as TheWaiting
+		if w != null and not w.woken and Iso.ground_distance(at, w.global_position) <= tiles:
+			return true
+	return false
 
 
 ## Cells of truth caches whose core has been taken (the hand-scan map marks them).

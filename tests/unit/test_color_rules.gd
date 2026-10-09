@@ -34,6 +34,7 @@ const STEWARD_ALLOWED: Dictionary[String, String] = {
 	"res://game/enemies/lamplighter.gd": "a Lamplighter is a Lattice lamp on legs: its lens and its beam are the Steward's light",
 	"res://game/bosses/conductor.gd": "the Conductor is the Loop's train-management unit: its core is the Steward's",
 	"res://game/level/route_light.gd": "the Loop's route lights are the Steward's",
+	"res://ui/ark/overrides_screen.gd": "the Steward's replies to your orders (its narration)",
 }
 
 const SCAN_ROOTS: Array[String] = ["res://autoload", "res://core", "res://game", "res://ui", "res://data"]

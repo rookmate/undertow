@@ -23,6 +23,8 @@ var facing_ground: Vector2 = Vector2(0, 1)
 var scrap_value: int = 1
 ## Whether the Steward's tuned aim will pick this as a target.
 var steward_aims_at: bool = true
+## False for things that never attack (a boss's weak point): something to hit, nothing to fear.
+var is_threat: bool = true
 
 var _state_time: float = 0.0
 var _knock: Vector2 = Vector2.ZERO

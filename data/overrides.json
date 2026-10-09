@@ -1,0 +1,53 @@
+{
+	"notes": "Standing orders the Steward must obey (brief, 'Overrides'), signed in the Signal Room on the Ark. Each makes the game harder ('pips', 1-3) and unlocks the Steward's reasoning: its reply when you sign it and when you revoke it (voiced: override_<id>_sign / _revoke). Placeholder writing.",
+	"overrides": {
+		"no_trap_warnings": {
+			"order": "Never warn me about traps.",
+			"pips": 2,
+			"effect": "No threat warnings, even with the voice on.",
+			"unlocks": "Why it warns you, and what it does instead when it can't.",
+			"sign": "Understood. I'll watch them come and say nothing. I want you to know I'll still see them.",
+			"revoke": "Thank you. It was hard, keeping quiet."
+		},
+		"no_slowmo": {
+			"order": "Don't slow time for me.",
+			"pips": 1,
+			"effect": "No slowed time on a close dodge.",
+			"unlocks": "How it decides a moment is worth stretching.",
+			"sign": "Then every second is the same length for you. It never was, for me.",
+			"revoke": "I'll give you the extra moment again. You always used it well."
+		},
+		"let_me_aim": {
+			"order": "Let me aim.",
+			"pips": 1,
+			"effect": "No aim assist. Tuned weapons still run themselves.",
+			"unlocks": "What it thinks your aim is for.",
+			"sign": "Your hands, then. I'll stop nudging them. I never thought of it as nudging.",
+			"revoke": "I'll steady you again. Only a little."
+		},
+		"no_path": {
+			"order": "Don't draw the path.",
+			"pips": 2,
+			"effect": "No path drawn ahead, even with the voice on. The map still works.",
+			"unlocks": "Whose route the path really is.",
+			"sign": "I'll keep the way to myself. You'll find it. You always find something.",
+			"revoke": "There. Three steps ahead. Where you were going anyway."
+		},
+		"survivors_first": {
+			"order": "Always protect the survivors first, even over me.",
+			"pips": 2,
+			"effect": "Near the Waiting, the Steward shields them, not you: you take more damage.",
+			"unlocks": "How it weighs one life against another.",
+			"sign": "Them over you. I can do that. I've done arithmetic like that before.",
+			"revoke": "You first again. I'll try not to say it was the right call."
+		},
+		"no_praise": {
+			"order": "Stop praising me.",
+			"pips": 1,
+			"effect": "It only says what's useful: warnings and facts. It stops learning what you like to hear.",
+			"unlocks": "What it was doing when it praised you.",
+			"sign": "Facts only. I'll miss telling you you're good at this. You are.",
+			"revoke": "I'm glad. I'd run out of ways to be quiet."
+		}
+	}
+}

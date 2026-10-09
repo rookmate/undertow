@@ -322,3 +322,15 @@ Asked of the user on 2026-10-09 and answered the same day.
      and is always the one heard).
 104. **A boss's weak point retires with it** (the signal box is just a cabinet once the Conductor is
      down).
+105. **Overrides are six standing orders** (data/overrides.json, writer-editable; effects in code),
+     signed in the Signal Room on the Ark once the Loop is done: no trap warnings, no slowed time, no
+     aim assist, no path drawn (the map still works), survivors first (×1.25 damage near the Waiting),
+     and "Stop praising me" (only facts and warnings, neutral tone, the profile stops learning). Each
+     has 1–3 difficulty pips (9 in all; the city difficulty meter sums the signed ones) and two voiced
+     replies, its reasoning, said only while the Steward listens. Orders bind it whether or not it's
+     listening. HUD chips switched off by an order read "· OVERRIDE".
+106. **The voice tool never deletes on a bad listing:** it stops if the game doesn't compile or lists
+     no lines, and only removes orphaned recordings with `--prune`. (It once deleted every recording
+     when a compile error emptied the list; they were restored from git.)
+107. **Things that never attack aren't threats** (`Enemy.is_threat`; the signal box): the autopilot
+     doesn't stop to fight them.
