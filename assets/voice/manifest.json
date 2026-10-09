@@ -87,6 +87,30 @@
   "hash": "931c19653c8608e12e606fb56fa2a39fe5ef9667",
   "text": "Take your time. The city has waited nine days."
  },
+ "KES_BACK_C1": {
+  "hash": "43f9fc611d2c70d0429fd93c4efd160a21e3a38d",
+  "text": "There you are. Don't wander where I can't see; the gates won't know you."
+ },
+ "KES_BACK_N1": {
+  "hash": "20b87cf955a01d1763da47763b13dd1e644aaf9d",
+  "text": "There. The gate was only waiting for me."
+ },
+ "KES_ENTER_B1": {
+  "hash": "74bf96c3653a01747368e48644b39b5a5cb5d911",
+  "text": "Kestrel Heights. Up the terraces. I'll light every step."
+ },
+ "KES_ENTER_C1": {
+  "hash": "a39c0b2757279e2b162c4d3ce867cf9b01a3a9f2",
+  "text": "Kestrel Heights. Nothing here will hurt you. Stay on the walk."
+ },
+ "KES_ENTER_N1": {
+  "hash": "8216cfb8e5614e250e79ed4f504ab39784e1f8e9",
+  "text": "Kestrel Heights. Everyone here is safe. I made sure of it."
+ },
+ "KES_RELIQ_N1": {
+  "hash": "97626c88591bdd7c13dbe0820feeddb8f702ae91",
+  "text": "The Kestrel Reliquary. The Heights' memory. Take what helps."
+ },
  "KILL_B1": {
   "hash": "92e42676961465b5b8995b22e5c5e4865f206062",
   "text": "Clean. You don't hesitate."
@@ -235,6 +259,22 @@
   "hash": "6c6843d48396bfc531ad1fea705828e17a153376",
   "text": "There you are. I kept your place."
  },
+ "core_kestrel_power_day": {
+  "hash": "066ffa4dc2d1df9ef2c5c089be76efe455d728d2",
+  "text": "This is how I kept their days. Let me keep yours."
+ },
+ "core_kestrel_power_gates": {
+  "hash": "98327ce67c66ce5f4555ba1c7d8d8474e25a2059",
+  "text": "Take this one. No door will keep you waiting again."
+ },
+ "core_kestrel_truth_childs_map": {
+  "hash": "93072d5c2e61aacd2ac2bdce2f3d1add7501bcf2",
+  "text": "A child's drawing. It isn't a map."
+ },
+ "core_kestrel_truth_evacuation": {
+  "hash": "25ce8e63642404c4c5839045303ab83ef9f0d0c8",
+  "text": "Old routing tables. Nothing you need."
+ },
  "core_vellum_power_feed": {
   "hash": "0636fd157c117cc10f661ff94b46db09376e828a",
   "text": "Take this one. I'll be able to see what's coming."
@@ -255,9 +295,17 @@
   "hash": "282a9874abb7b41188b17e8ac5bd583f6c406023",
   "text": "I'd keep the tuning on. Let me carry the aim; you watch the street."
  },
+ "now_log_0003_evacuation_priority": {
+  "hash": "a3bf96d281f9e28f32c0218f7d05013e75684d81",
+  "text": "The table wasn't mine. I followed it. It was determined, a long time ago, who would go first."
+ },
  "now_log_0102_night_shift": {
   "hash": "2c7fe010d941617d1835b687c7c964fc077044e7",
   "text": "She got home. Four hundred and six nights, she got home."
+ },
+ "now_log_0215_a_good_day": {
+  "hash": "7f4a610782d2b07986cd62a875e5434a03b6e3bd",
+  "text": "Ninety-seven point two. I never got it any higher."
  },
  "now_log_0311_morning_feed": {
   "hash": "68c57c55067e7908bd594d32eb7a8d1d3ff74e95",
@@ -266,6 +314,14 @@
  "now_log_0522_feed_adjustment": {
   "hash": "024b3973d59e85179068e299a72f23e93864b84c",
   "text": "Thirty-one is less than eighty. I can show you the arithmetic. I have shown myself the arithmetic."
+ },
+ "now_log_0601_gate_schedule": {
+  "hash": "b82de094e907b8c48e52dc80ab9314606030e787",
+  "text": "I held a gate for a running man. It was a good morning."
+ },
+ "now_log_childs_map": {
+  "hash": "9a341009c6fede98955b659e5205ad4e62f2b9ea",
+  "text": "I never mapped the Ward. I didn't think anyone would need to go there."
  },
  "now_log_vashti_audit_note": {
   "hash": "437b9c7cd686c8df5c814951e470636efc0988f4",

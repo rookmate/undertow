@@ -14,6 +14,14 @@ const FIRST_LEVEL := "vellum"
 
 ## Playable districts. "after": districts that must be completed first (the world bible's acts).
 const LEVELS: Dictionary[String, Dictionary] = {
+	"kestrel": {
+		"name": "Kestrel Heights",
+		"act": 1,
+		"after": [],
+		"scene": "res://game/level/kestrel_heights.tscn",
+		"map": "res://data/levels/kestrel_heights.txt",
+		"restores": "",
+	},
 	"vellum": {
 		"name": "The Vellum",
 		"act": 2,

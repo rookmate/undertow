@@ -414,6 +414,48 @@
 			"event": "ark_arrive",
 			"tone": "cautious",
 			"text": "The Ark. You're safe here. Nothing on this disc answers to me."
+		},
+		{
+			"id": "KES_ENTER_N1",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "Kestrel Heights. Everyone here is safe. I made sure of it.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_ENTER_B1",
+			"event": "level_enter",
+			"tone": "bold",
+			"text": "Kestrel Heights. Up the terraces. I'll light every step.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_ENTER_C1",
+			"event": "level_enter",
+			"tone": "cautious",
+			"text": "Kestrel Heights. Nothing here will hurt you. Stay on the walk.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_BACK_N1",
+			"event": "voice_restored",
+			"tone": "neutral",
+			"text": "There. The gate was only waiting for me.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_BACK_C1",
+			"event": "voice_restored",
+			"tone": "cautious",
+			"text": "There you are. Don't wander where I can't see; the gates won't know you.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_RELIQ_N1",
+			"event": "reliquary_near",
+			"tone": "neutral",
+			"text": "The Kestrel Reliquary. The Heights' memory. Take what helps.",
+			"level": "kestrel"
 		}
 	]
 }

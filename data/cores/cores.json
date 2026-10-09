@@ -2,7 +2,16 @@
 	"version": 1,
 	"notes": "Memory cores. Power cores give the Steward stronger assistance; truth cores reveal what it did. The Reliquary of each level offers its cores; truth cores found off the path join the offer. 'steward' is what the Steward says about the card (shown only while it is listening).",
 	"reliquaries": {
-		"vellum": ["vellum_power_lattice", "vellum_power_feed", "vellum_truth_0522"]
+		"vellum": [
+			"vellum_power_lattice",
+			"vellum_power_feed",
+			"vellum_truth_0522"
+		],
+		"kestrel": [
+			"kestrel_power_gates",
+			"kestrel_power_day",
+			"kestrel_truth_evacuation"
+		]
 	},
 	"cores": {
 		"vellum_power_lattice": {
@@ -36,6 +45,38 @@
 			"blurb": "Wrapped in a paper slip signed P. Vashti, Audit Office.",
 			"steward": "Paper. Unindexed. It won't be accurate.",
 			"log": "log_vashti_audit_note"
+		},
+		"kestrel_power_gates": {
+			"kind": "power",
+			"name": "Gate Core",
+			"origin": "The Kestrel Reliquary",
+			"blurb": "The Heights' gates and locks. The Steward opens doors before you reach them.",
+			"steward": "Take this one. No door will keep you waiting again.",
+			"log": "log_0601_gate_schedule"
+		},
+		"kestrel_power_day": {
+			"kind": "power",
+			"name": "Day Core",
+			"origin": "The Kestrel Reliquary",
+			"blurb": "The Heights' schedules. The Steward plans your next three moves.",
+			"steward": "This is how I kept their days. Let me keep yours.",
+			"log": "log_0215_a_good_day"
+		},
+		"kestrel_truth_evacuation": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "The Kestrel Reliquary, under the lid",
+			"blurb": "A dull cracked sphere. Labelled EVAC-P1.",
+			"steward": "Old routing tables. Nothing you need.",
+			"log": "log_0003_evacuation_priority"
+		},
+		"kestrel_truth_childs_map": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "A child's bedroom, Shrike Row",
+			"blurb": "A crayon map of the city, folded around a cracked sphere.",
+			"steward": "A child's drawing. It isn't a map.",
+			"log": "log_childs_map"
 		}
 	}
 }

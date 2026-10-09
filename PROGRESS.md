@@ -104,7 +104,9 @@ at the end. The user's answers (2026-10-09) are in DECISIONS.md 80–87.
 | 9b | Voiced narration: placeholder text-to-speech for every Steward line, played with its subtitles | done |
 | 10 | Options: volumes, display, subtitle size, key and pad rebinding, saved settings | done |
 | 11 | District structure: acts and unlock order, found weapons, scrap and upgrades in the save (v2), the Loop map from the Ark dock, per-district look | done |
-| 12 | Kestrel Heights: terraces, smart gates, sprinklers, Lamplighters, the child's map (first truth core), voice tutorial; New Game starts there | next |
+| 12a | Kestrel Heights: the district (terraces, lawns, hedges, planters, sprinklers, smart gates, laundry, blue-hour look), its cores, logs and voiced lines | done |
+| 12b | Kestrel Heights: Lamplighters, the child's room, the gardener, the voice tutorial | next |
+| 12c | New Game starts in Kestrel Heights with the baton; autopilot routes for Kestrel and the Vellum | |
 | 13 | Bosses and the Loop: boss framework (tuned and manual solutions), stalled trains, the Conductor | |
 | 14 | The Signal Room and the Overrides screen (mockup 6): six overrides with effects and Steward replies | |
 | 15 | The Tideworks: cranes and containers, Salvagers, the union hall, finding the Riot Drone, the Crane | |
@@ -173,12 +175,14 @@ godot --path . -- --autopilot --perf-disable=minimap,lights   # switch features 
 ## How to test
 
 ```bash
-tools/check.sh                       # the full gate: import, tests, 30 s run, 150 s full-slice run
+tools/check.sh                       # the full gate: import, tests, 30 s run, 150 s full-slice run, district tours
 godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn            # tests only
 godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn -- --filter=save   # some tests
 tools/record.sh <name> [seconds] [scenario]   # progress video -> ../undertow-recordings/<name>.mp4
 ```
 
 Autopilot scenarios (`-- --autopilot --autopilot-scenario=NAME`): `slice` (default: title → loadout
-→ level, fighting up the street), `ring_gallery`, `options` (the options screen: a volume, a rebinding). Runs of 55 s or more also expect the route to finish.
+→ level, fighting up the street), `ring_gallery`, `options` (the options screen: a volume, a rebinding),
+`tour` with `--autopilot-level=ID` (straight into a district: photographs its start, checkpoints, finds,
+Reliquary, muted). Runs of 55 s or more also expect the route to finish.
 Gate logs and screenshots land in `reports/check/` (ignored by git).

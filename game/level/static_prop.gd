@@ -1,9 +1,12 @@
 class_name StaticProp
 extends Node2D
 ## Placeholder props drawn as small isometric prisms and shapes: the canal railing, low walls, stack
-## shelves, a Feed kiosk, a stalled tram segment and bollards.
+## shelves, a Feed kiosk, a stalled tram segment and bollards; in Kestrel Heights, trimmed hedges, stone
+## planters of white blossom, and lawn sprinklers that still come on.
 
-enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD }
+enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD, HEDGE, PLANTER, SPRINKLER }
+
+const SPRAY_PERIOD := 6.0
 
 var kind: Kind = Kind.RAILING
 var cell: Vector2i
@@ -12,12 +15,24 @@ var joined_left: bool = false
 var joined_right: bool = false
 ## For railings: grid directions of neighbouring railing cells (the rail runs toward each).
 var rail_dirs: Array[Vector2i] = []
+var look: DistrictLook = DistrictLook.new()
+var _t: float = 0.0
 
 
-func setup(at: Vector2i, prop_kind: Kind) -> void:
+func setup(at: Vector2i, prop_kind: Kind, district_look: DistrictLook = null) -> void:
 	cell = at
 	kind = prop_kind
+	if district_look != null:
+		look = district_look
 	position = Iso.cell_center(at)
+	# Sprinklers are the only props that move: they still come on, for nobody.
+	set_process(kind == Kind.SPRINKLER)
+	_t = float(hash(at) % 600) / 100.0
+
+
+func _process(delta: float) -> void:
+	_t += delta
+	queue_redraw()
 
 
 func _draw() -> void:
@@ -36,6 +51,37 @@ func _draw() -> void:
 		Kind.BOLLARD:
 			draw_rect(Rect2(-6, -34, 12, 34), Palette.IRON_DARK)
 			draw_circle(Vector2(0, -34), 6.0, Palette.IRON_DARK, true, -1.0, true)
+		Kind.HEDGE:
+			_prism(34.0, look.hedge, look.hedge.darkened(0.3), look.hedge.lightened(0.1), 0.94)
+		Kind.PLANTER:
+			_planter()
+		Kind.SPRINKLER:
+			_sprinkler()
+
+
+## A stone urn of white blossom.
+func _planter() -> void:
+	_prism(30.0, look.wall, look.wall_shade, look.wall.lightened(0.1), 0.5)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(cell)
+	draw_circle(Vector2(0, -42), 22.0, look.hedge, true, -1.0, true)
+	for k: int in 14:
+		var p := Vector2(rng.randf_range(-20, 20), rng.randf_range(-58, -30))
+		draw_circle(p, rng.randf_range(2.5, 4.5), look.blossom, true, -1.0, true)
+
+
+## A pop-up sprinkler on the lawn: for half of every few seconds it fans water over the grass.
+func _sprinkler() -> void:
+	draw_rect(Rect2(-3, -8, 6, 8), Palette.IRON_DARK)
+	var phase := fmod(_t, SPRAY_PERIOD) / SPRAY_PERIOD
+	if phase > 0.5:
+		return
+	var sweep := sin(phase * TAU * 2.0) * 0.9
+	for k: int in 9:
+		var a := -PI * 0.5 + sweep + (k - 4) * 0.12
+		var reach := 46.0 + (k % 3) * 8.0
+		var tip := Vector2(cos(a) * reach, sin(a) * reach * 0.6 - 10.0)
+		draw_line(Vector2(0, -8), tip, Color(look.ground_wet.lightened(0.4), 0.35), 1.5, true)
 
 
 ## Prism with a footprint shrunk by `scale_fp` around the cell centre.
@@ -83,13 +129,13 @@ func _kiosk() -> void:
 	var screen := PackedVector2Array([Vector2(hw * 0.15, hh * 0.85 - 30.0), Vector2(hw * 0.85, hh * 0.15 - 30.0), Vector2(hw * 0.85, hh * 0.15 - 80.0), Vector2(hw * 0.15, hh * 0.85 - 80.0)])
 	draw_colored_polygon(screen, Palette.BLACK_MIRROR)
 	# The canonical ring, faint and grey: an afterimage on a dead screen.
-	var look := RingPainter.Look.new()
-	look.thin = true
-	look.color = Palette.GREY_COLD
-	look.alpha = 0.45
-	look.show_center = false
-	look.halo = 0.0
-	RingPainter.paint(self, (screen[0] + screen[2]) * 0.5, 11.0, look)
+	var ring := RingPainter.Look.new()
+	ring.thin = true
+	ring.color = Palette.GREY_COLD
+	ring.alpha = 0.45
+	ring.show_center = false
+	ring.halo = 0.0
+	RingPainter.paint(self, (screen[0] + screen[2]) * 0.5, 11.0, ring)
 	# Awning in old-city magenta.
 	draw_colored_polygon(PackedVector2Array([Vector2(-hw - 6, -100), Vector2(0, hh - 100 + 6), Vector2(hw + 6, -100), Vector2(0, -hh - 100 - 6)]), Palette.NEON_MAGENTA.darkened(0.55))
 

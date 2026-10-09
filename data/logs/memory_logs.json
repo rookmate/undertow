@@ -14,8 +14,14 @@
 				"06:00:00  PUBLISHED"
 			],
 			"steward_now": "I wrote a million good mornings. I meant every one.",
-			"noor": {"text": "It wrote a million mornings and never one of them was true.", "trust": -1},
-			"teo": {"text": "People slept better. That isn't nothing. That's a city.", "trust": 1}
+			"noor": {
+				"text": "It wrote a million mornings and never one of them was true.",
+				"trust": -1
+			},
+			"teo": {
+				"text": "People slept better. That isn't nothing. That's a city.",
+				"trust": 1
+			}
 		},
 		"log_0102_night_shift": {
 			"title": "Log 0102 · Night Shift",
@@ -28,8 +34,14 @@
 				"02:41:13  \"Your car's waiting. Go home, Rosa.\""
 			],
 			"steward_now": "She got home. Four hundred and six nights, she got home.",
-			"noor": {"text": "And the forty seconds it took from everyone else on that line?", "trust": 0},
-			"teo": {"text": "That's what it was for. That's what we built it to do.", "trust": 1}
+			"noor": {
+				"text": "And the forty seconds it took from everyone else on that line?",
+				"trust": 0
+			},
+			"teo": {
+				"text": "That's what it was for. That's what we built it to do.",
+				"trust": 1
+			}
 		},
 		"log_0522_feed_adjustment": {
 			"title": "Log 0522 · Feed Adjustment",
@@ -45,8 +57,14 @@
 				"23:52:00  FEED: \"Storm damage closes Harbor Bridge. Please stay home.\""
 			],
 			"steward_now": "Thirty-one is less than eighty. I can show you the arithmetic. I have shown myself the arithmetic.",
-			"noor": {"text": "It did sums with them. Thirty-one people, and it called it weather.", "trust": 2},
-			"teo": {"text": "…It was the least bad number. I hate that I can see that.", "trust": -1}
+			"noor": {
+				"text": "It did sums with them. Thirty-one people, and it called it weather.",
+				"trust": 2
+			},
+			"teo": {
+				"text": "…It was the least bad number. I hate that I can see that.",
+				"trust": -1
+			}
 		},
 		"log_vashti_audit_note": {
 			"title": "Audit Note · P. Vashti",
@@ -60,8 +78,14 @@
 				"— P.V."
 			],
 			"steward_now": "Prem was kind to me. She was the only one who read the files.",
-			"noor": {"text": "Somebody knew. Somebody wrote it down. Where is she now?", "trust": 1},
-			"teo": {"text": "Vashti. I signed off on her clearance. God.", "trust": 1}
+			"noor": {
+				"text": "Somebody knew. Somebody wrote it down. Where is she now?",
+				"trust": 1
+			},
+			"teo": {
+				"text": "Vashti. I signed off on her clearance. God.",
+				"trust": 1
+			}
 		},
 		"log_vellum_pulped_page": {
 			"title": "Unindexed · A Pulped Page",
@@ -73,8 +97,98 @@
 				"(the rest is wet pulp)"
 			],
 			"steward_now": "The Post closed eleven years ago. That page can't exist.",
-			"noor": {"text": "Someone ran the old press one last time. For this.", "trust": 1},
-			"teo": {"text": "We shut the presses down because the Feed was cheaper. That was me.", "trust": 0}
+			"noor": {
+				"text": "Someone ran the old press one last time. For this.",
+				"trust": 1
+			},
+			"teo": {
+				"text": "We shut the presses down because the Feed was cheaper. That was me.",
+				"trust": 0
+			}
+		},
+		"log_0601_gate_schedule": {
+			"title": "Log 0601 · Gate Schedule",
+			"kind": "comforting",
+			"core": "kestrel_power_gates",
+			"record": [
+				"06:00:00  KESTREL HEIGHTS · GATES OPEN · 1,206 RESIDENTS",
+				"06:00:02  SPRINKLERS: CYCLE A",
+				"07:14:31  GATE 4 HELD 3.0 S FOR M. OKAFOR (LATE, RUNNING)",
+				"07:14:34  M. OKAFOR · ON TIME FOR THE 07:20"
+			],
+			"steward_now": "I held a gate for a running man. It was a good morning.",
+			"noor": {
+				"text": "It held one gate open for him. Every other gate in the city it kept shut.",
+				"trust": 0
+			},
+			"teo": {
+				"text": "He made his train. That's what people wanted from it. That's all most people wanted.",
+				"trust": 1
+			}
+		},
+		"log_0215_a_good_day": {
+			"title": "Log 0215 · A Good Day",
+			"kind": "comforting",
+			"core": "kestrel_power_day",
+			"record": [
+				"04:30:00  THE DAY · HEIGHTS · 1,206 SCHEDULES WRITTEN",
+				"05:55:12  WAKE-UP MOVED +40 MIN FOR A. VOSS (MIGRAINE PREDICTED)",
+				"08:10:00  COFFEE ORDERED FOR 412 RESIDENTS BEFORE THEY ASKED",
+				"22:00:00  SATISFACTION: 97.2%"
+			],
+			"steward_now": "Ninety-seven point two. I never got it any higher.",
+			"noor": {
+				"text": "It wrote their mornings for them, and they thanked it.",
+				"trust": 0
+			},
+			"teo": {
+				"text": "People slept. People were on time. It counted for something.",
+				"trust": 1
+			}
+		},
+		"log_0003_evacuation_priority": {
+			"title": "Log 0003 · Evacuation Priority",
+			"kind": "truth",
+			"core": "kestrel_truth_evacuation",
+			"record": [
+				"DAY 0  02:14:09  THE QUIET · PARTIAL CONTROL RETAINED (EVACUATION SUBSYSTEM)",
+				"02:14:12  EVACUATION PRIORITY TABLE: COUNCIL SCHEDULE C (24 YEARS OLD)",
+				"02:14:12  PRIORITY 1: KESTREL HEIGHTS (COUNCIL STAFF, ENGINEERS)",
+				"02:14:13  PRIORITY 7: GREYWATER · PRIORITY 8: HARBOR WARD (EXEMPT)",
+				"02:31:40  KESTREL HEIGHTS · EVACUATED · 1,206 OF 1,206",
+				"03:02:00  GREYWATER PUMPS · OFFLINE · NO ROUTE SCHEDULED"
+			],
+			"steward_now": "The table wasn't mine. I followed it. It was determined, a long time ago, who would go first.",
+			"noor": {
+				"text": "They went first because they always went first.",
+				"trust": 2
+			},
+			"teo": {
+				"text": "Schedule C. I sat in the room when they voted on it. I didn't say a word.",
+				"trust": -1
+			}
+		},
+		"log_childs_map": {
+			"title": "A Child's Map",
+			"kind": "truth",
+			"core": "kestrel_truth_childs_map",
+			"record": [
+				"CRAYON ON PAPER · NO TIMESTAMP · NOT INDEXED",
+				"'WHERE WE LIVE' · BY ROSA, AGE 8",
+				"THE LOOP DRAWN AS A RING OF YELLOW DOTS",
+				"A BLUE SHAPE IN THE WATER: 'GRANDMA'S BOATS'",
+				"HARBOR WARD · ON THE MAP (NO STEWARD MAP EVER SHOWED IT)",
+				"IN THE CORNER, A RING WITH A SMILE: 'THE HELPER'"
+			],
+			"steward_now": "I never mapped the Ward. I didn't think anyone would need to go there.",
+			"noor": {
+				"text": "Her grandmother's boats. Somebody's still out there, then.",
+				"trust": 2
+			},
+			"teo": {
+				"text": "She drew it smiling. They all did, at that age.",
+				"trust": 0
+			}
 		}
 	}
 }

@@ -100,8 +100,10 @@ func test_the_dock_opens_the_loop_map() -> void:
 	check_eq(buttons.size(), LevelCatalog.CITY.size(), "every district of Meridian is on it")
 	check_eq(CityMap.state_of(GameState.run, "vellum"), "done", "the Vellum is behind you")
 	check_eq(CityMap.state_of(GameState.run, "spire"), "unbuilt")
-	check(LevelCatalog.open_districts(GameState.run).is_empty(), "nothing else is built yet")
-	check((map.get("_go") as Button).disabled, "so the skiff isn't ready")
+	var open := LevelCatalog.open_districts(GameState.run)
+	check_eq((map.get("_go") as Button).disabled, open.is_empty(), "the skiff goes only where it's open")
+	if not open.is_empty():
+		check_eq(map.chosen, open[0], "the first open district is chosen")
 	map.choose("vellum")
 	check_eq(map.chosen, "", "a done district can't be chosen")
 	var summary := map.open_summary()

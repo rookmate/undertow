@@ -38,6 +38,14 @@ func _draw() -> void:
 				_flagstones(cell, look.stone.lightened(0.12), 1)
 			LevelGrid.Floor.FOUNDATION:
 				_foundation(cell)
+			LevelGrid.Floor.LAWN:
+				_lawn(cell)
+			LevelGrid.Floor.STEPS:
+				_steps(cell)
+			LevelGrid.Floor.TIMBER:
+				_timber(cell)
+			LevelGrid.Floor.GRAVEL:
+				_gravel(cell)
 
 
 func _rng(cell: Vector2i, salt: int = 0) -> RandomNumberGenerator:
@@ -107,6 +115,38 @@ func _foundation(cell: Vector2i) -> void:
 	for k: int in 3:
 		var p := _at(cell, rng.randf_range(0.2, 0.8), rng.randf_range(0.2, 0.8))
 		draw_line(p, p + Vector2(0, -10), Palette.IRON_DARK, 2.0)
+
+
+## The Steward's lawns: mown in stripes, wet.
+func _lawn(cell: Vector2i) -> void:
+	draw_colored_polygon(Iso.cell_diamond(cell), look.lawn)
+	if (cell.x + cell.y) % 2 == 0:
+		draw_colored_polygon(PackedVector2Array([_at(cell, 0.0, 0.0), _at(cell, 1.0, 0.0), _at(cell, 1.0, 0.5), _at(cell, 0.0, 0.5)]), look.lawn_stripe)
+
+
+## Stone steps between terraces, on the path.
+func _steps(cell: Vector2i) -> void:
+	draw_colored_polygon(Iso.cell_diamond(cell), look.pavement.darkened(0.2))
+	for k: int in 4:
+		var v := 0.12 + k * 0.24
+		draw_line(_at(cell, 0.0, v), _at(cell, 1.0, v), Color(Palette.NEAR_BLACK, 0.45), 3.0, true)
+		draw_line(_at(cell, 0.0, v + 0.05), _at(cell, 1.0, v + 0.05), Color(look.ground_wet, 0.5), 1.5, true)
+
+
+## A room's floorboards.
+func _timber(cell: Vector2i) -> void:
+	draw_colored_polygon(Iso.cell_diamond(cell), look.timber)
+	for k: int in 5:
+		var u := 0.1 + k * 0.2
+		draw_line(_at(cell, u, 0.0), _at(cell, u, 1.0), Color(Palette.NEAR_BLACK, 0.3), 1.5, true)
+
+
+## A garden walk the Lattice never lit.
+func _gravel(cell: Vector2i) -> void:
+	draw_colored_polygon(Iso.cell_diamond(cell), look.gravel)
+	var rng := _rng(cell, 5)
+	for k: int in 14:
+		draw_circle(_at(cell, rng.randf_range(0.08, 0.92), rng.randf_range(0.08, 0.92)), 1.5, Color(Palette.NEAR_BLACK, 0.3))
 
 
 func _water(cell: Vector2i) -> void:

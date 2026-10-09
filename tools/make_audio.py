@@ -275,6 +275,11 @@ def build():
     # Checkpoint and respawn.
     write("checkpoint", mix((env(tone(0.9, 784.0), 0.01, 0.3), 0.5), (env(tone(0.9, 1174.7), 0.01, 0.25), 0.35, 0.06)), -12)
     write("respawn", env(tone(0.8, lambda t: 260 * (3.0 ** (t / 0.8)), "tri"), 0.2, None, 0.2), -12)
+    # A wrought-iron gate swinging shut on its own: a creak, a clang, the latch.
+    creak = env(bandpass(mul(white(0.5, rng), tone(0.5, 31.0, "saw")), 900, 3.0), 0.05, None, 0.1)
+    clang = env(mix((tone(0.9, 210), 0.6), (tone(0.9, 331), 0.4), (tone(0.9, 517), 0.25)), 0.001, 0.22)
+    latch = env(highpass(white(0.03, rng), 2500), 0.0005, 0.005)
+    write("gate_shut", mix((creak, 0.5), (clang, 1.0, 0.45), (latch, 0.7, 0.6)), -4)
 
     # --- Ambience loops (seamless) ---
     # Rain on stone: pink noise shaped bright, with a slow wash.
@@ -306,4 +311,6 @@ def build():
 if __name__ == "__main__":
     print("Writing sounds to %s" % OUT)
     build()
+    # Godot only sees new sound files once it has imported them.
+    subprocess.run(["godot", "--headless", "--path", ROOT, "--import"], capture_output=True, timeout=600)
     sys.exit(0)
