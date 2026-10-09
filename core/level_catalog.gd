@@ -66,6 +66,13 @@ const CITY: Array[Dictionary] = [
 ## Where the Ark sits on the Loop map.
 const ARK_AT := Vector2(0.7, 0.94)
 
+## Every boss in the game and what its fight needs on the map besides its 'B' and its weak point 'Z':
+## how many lanes ('1', '2', '3', each a track of two cells or more).
+const BOSSES: Dictionary[String, Dictionary] = {
+	"conductor": {"lanes": 3},
+	"crane": {"lanes": 0},
+}
+
 
 static func has_level(level_id: String) -> bool:
 	return LEVELS.has(level_id)
@@ -119,7 +126,73 @@ static func check(grids: Dictionary[String, LevelGrid]) -> PackedStringArray:
 		var broken := CoreChoice.offer_problem(level_id, ContentDb.reliquary(level_id))
 		if broken != "":
 			problems.append("%s: %s" % [level_id, broken])
+		for p: String in boss_problems(boss_of(level_id), grid):
+			problems.append("%s: %s" % [level_id, p])
 	return problems
+
+
+## Everything wrong between a district's boss ("" for none) and its map: the boss's 'B', its weak point
+## 'Z' (the other way to win), its lanes (each a straight unbroken track: the carriage runs end to end),
+## and barriers 'y', which only a boss's fall opens. With the barriers shut, the boss and its weak point
+## must both be reachable from the start, or the fight could never begin and the barriers never open. A
+## map that fails this never loads.
+static func boss_problems(boss_id: String, grid: LevelGrid) -> PackedStringArray:
+	var problems := PackedStringArray()
+	var lanes := 0
+	for digit: String in ["1", "2", "3"]:
+		var n := grid.cells_with(digit).size()
+		lanes += 1 if n > 0 else 0
+		if n == 1:
+			problems.append("lane '%s' is a single cell" % digit)
+	if boss_id == "":
+		for ch: String in ["B", "Z", "y"]:
+			if not grid.cells_with(ch).is_empty():
+				problems.append("'%s' on the map, but the district has no boss" % ch)
+		if lanes > 0:
+			problems.append("lanes on the map, but the district has no boss")
+		return problems
+	if not BOSSES.has(boss_id):
+		problems.append("no boss called '%s' in the game" % boss_id)
+		return problems
+	if grid.cells_with("B").size() != 1:
+		problems.append("the %s needs exactly one 'B', found %d" % [boss_id, grid.cells_with("B").size()])
+	if grid.cells_with("Z").size() != 1:
+		problems.append("the %s's weak point needs exactly one 'Z', found %d" % [boss_id, grid.cells_with("Z").size()])
+	var wanted := int(BOSSES[boss_id]["lanes"])
+	if lanes != wanted:
+		problems.append("the %s needs %d lane%s ('1' to '%d'), found %d" % [boss_id, wanted, "" if wanted == 1 else "s", wanted, lanes])
+	for digit: String in ["1", "2", "3"]:
+		if not _straight_run(grid.cells_with(digit)):
+			problems.append("lane '%s' isn't one straight, unbroken track" % digit)
+	if not problems.is_empty():
+		return problems
+	var reach := grid.reachable_from(grid.start_cell(), false, "y")
+	for marker: String in ["B", "Z"]:
+		if not _within_reach(reach, grid.first(marker)):
+			problems.append("with the barriers shut, the %s can't be reached from the start" % ("boss" if marker == "B" else "weak point"))
+	return problems
+
+
+## True for no cells, or cells in one row or column with no gaps.
+static func _straight_run(cells: Array[Vector2i]) -> bool:
+	if cells.is_empty():
+		return true
+	var same_row := cells.all(func(c: Vector2i) -> bool: return c.y == cells[0].y)
+	var same_column := cells.all(func(c: Vector2i) -> bool: return c.x == cells[0].x)
+	if not same_row and not same_column:
+		return false
+	var along: Array[int] = []
+	for c: Vector2i in cells:
+		along.append(c.x if same_row else c.y)
+	return along.max() - along.min() + 1 == cells.size()
+
+
+## The cell or one beside it is in `reach`.
+static func _within_reach(reach: Dictionary[Vector2i, bool], cell: Vector2i) -> bool:
+	for d: Vector2i in [Vector2i.ZERO, Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]:
+		if reach.has(cell + d):
+			return true
+	return false
 
 
 ## A district can be travelled to once every district before it is done.

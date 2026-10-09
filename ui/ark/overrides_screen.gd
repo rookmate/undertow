@@ -99,13 +99,9 @@ func toggle(id: String) -> void:
 	var signed := not GameState.has_override(id)
 	GameState.set_override(id, signed)
 	SaveFlow.checkpoint(get_tree())
-	var line := Overrides.reply_line(id, signed)
 	var text := Overrides.field(id, "sign" if signed else "revoke")
-	if Steward.assists().narration:
-		_reply.text = text
-		Narrator.speak_text(line, text)
-	else:
-		_reply.text = ""
+	# Its reasoning is a fact about it, said even under the orders it was just given.
+	_reply.text = text if Narrator.speak_text(Overrides.reply_line(id, signed), text, LineSelector.FACT) else ""
 	_refresh()
 
 

@@ -5,6 +5,8 @@ extends Node
 ## controller binding can be changed in Options; the other defaults (arrow keys, J/K, the d-pad) stay.
 
 signal device_changed(device: Device)
+## Any binding changed (rebound, reset, loaded): prompts read off bindings refresh on this.
+signal bindings_changed
 
 enum Device { KEYBOARD_MOUSE, PAD }
 
@@ -82,6 +84,7 @@ func register_actions() -> void:
 		InputMap.add_action(action, 0.2)
 		for binding: Array in bindings_for(action):
 			InputMap.action_add_event(action, _make_event(binding))
+	bindings_changed.emit()
 
 
 ## An action's bindings: its defaults, with the player's choice in place of the first keyboard/mouse one
@@ -113,19 +116,68 @@ func primary(action: StringName, slot: String) -> Array:
 	return []
 
 
-## Binds an action's keyboard/mouse or controller slot. If another rebindable action already uses that
-## input there, the two swap, so no action is ever left unreachable.
-func set_binding(action: StringName, binding: Array) -> void:
-	if not REBINDABLE.has(action) or not _valid(binding):
+## Binds an action's keyboard/mouse or controller slot. Checked against every binding in effect, the
+## kept defaults (arrow keys, J/K, the d-pad) and Esc / Start / F3 included: if another rebindable
+## action's own choice for that slot uses the input, the two swap, so no action is left unreachable; if
+## anything else uses it (blocker_for()), nothing changes. Returns whether it was bound.
+func set_binding(action: StringName, binding: Array) -> bool:
+	var wanted := normalized(binding)
+	if not REBINDABLE.has(action) or wanted.is_empty():
 		Diagnostics.error("Controls: can't bind %s to %s" % [action, binding])
-		return
-	var slot := slot_of(binding)
+		return false
+	if blocker_for(action, wanted) != &"":
+		return false
+	var slot := slot_of(wanted)
 	var previous := primary(action, slot)
-	for other: StringName in REBINDABLE:
-		if other != action and primary(other, slot) == binding and not previous.is_empty():
-			_set_override(other, slot, previous)
-	_set_override(action, slot, binding)
+	var holder := holder_of(wanted, action)
+	if holder != &"":
+		_set_override(holder, slot, previous)
+	_set_override(action, slot, wanted)
 	register_actions()
+	return true
+
+
+## The action that keeps `binding` if `action` asks for it, or &"" if it can have it. It can only swap
+## with another rebindable action's own choice for that slot, and only if afterwards no input is shared
+## (that action may also keep the input as a default: Move Up rebound to Up Arrow still has Up Arrow).
+func blocker_for(action: StringName, binding: Array) -> StringName:
+	var wanted := normalized(binding)
+	var holder := holder_of(wanted, action)
+	if holder == &"":
+		return &""
+	var slot := slot_of(wanted)
+	var previous := primary(action, slot)
+	if not REBINDABLE.has(holder) or primary(holder, slot) != wanted or previous.is_empty():
+		return holder
+	# Try the swap on the choices alone, see whether anything is shared, and put them back.
+	var before := _overrides.duplicate(true)
+	_set_override(holder, slot, previous)
+	_set_override(action, slot, wanted)
+	var shared := not conflicts().is_empty()
+	_overrides = before
+	return holder if shared else &""
+
+
+## The other action that has `binding` among its bindings in effect, or &"".
+func holder_of(binding: Array, except: StringName = &"") -> StringName:
+	for other: StringName in BINDINGS:
+		if other != except and bindings_for(other).has(binding):
+			return other
+	return &""
+
+
+## Every input bound to more than one action ([binding, action, action] each). Empty, always: tests and
+## loading check it.
+func conflicts() -> Array:
+	var out: Array = []
+	var seen := {}
+	for action: StringName in BINDINGS:
+		for binding: Array in bindings_for(action):
+			var key := str(binding)
+			if seen.has(key) and seen[key] != action:
+				out.append([binding, seen[key], action])
+			seen[key] = action
+	return out
 
 
 func _set_override(action: StringName, slot: String, binding: Array) -> void:
@@ -138,7 +190,8 @@ func overrides() -> Dictionary:
 	return _overrides.duplicate(true)
 
 
-## Loads saved choices; anything that isn't a valid binding for a rebindable action is dropped.
+## Loads saved choices. Anything that isn't a valid binding for a rebindable action is dropped, and so
+## is any choice that would share an input with another action (a damaged or hand-edited file).
 func set_overrides(saved: Dictionary) -> void:
 	_overrides = {}
 	for action: Variant in saved:
@@ -146,9 +199,17 @@ func set_overrides(saved: Dictionary) -> void:
 		if not REBINDABLE.has(StringName(str(action))) or not chosen is Dictionary:
 			continue
 		for slot: Variant in chosen:
-			var binding: Variant = (chosen as Dictionary)[slot]
-			if binding is Array and _valid(binding) and slot_of(binding) == str(slot):
+			var raw: Variant = (chosen as Dictionary)[slot]
+			var binding := normalized(raw if raw is Array else [])
+			if not binding.is_empty() and slot_of(binding) == str(slot):
 				_set_override(StringName(str(action)), str(slot), binding)
+	var clashes := conflicts()
+	while not clashes.is_empty():
+		for clash: Array in clashes:
+			for action: StringName in [clash[1], clash[2]]:
+				var chosen: Dictionary = _overrides.get(action, {})
+				chosen.erase(slot_of(clash[0]))
+		clashes = conflicts()
 	register_actions()
 
 
@@ -157,15 +218,30 @@ func reset_bindings() -> void:
 	register_actions()
 
 
-static func _valid(binding: Array) -> bool:
+## A binding in its one canonical form (whole-number codes, a ±1.0 axis direction), or [] if it isn't a
+## binding a player could make.
+static func normalized(binding: Array) -> Array:
 	if binding.size() != 2:
-		return false
+		return []
+	var code: Variant = binding[1]
 	match str(binding[0]):
-		"key", "mouse", "pad_button":
-			return binding[1] is int
+		"key":
+			if code is int and int(code) > 0 and OS.get_keycode_string(int(code)) != "":
+				return ["key", int(code)]
+		"mouse":
+			if code is int and int(code) >= MOUSE_BUTTON_LEFT and int(code) <= MOUSE_BUTTON_XBUTTON2:
+				return ["mouse", int(code)]
+		"pad_button":
+			if code is int and int(code) >= 0 and int(code) < JOY_BUTTON_SDL_MAX:
+				return ["pad_button", int(code)]
 		"pad_axis":
-			return binding[1] is Array and (binding[1] as Array).size() == 2
-	return false
+			if code is Array and (code as Array).size() == 2:
+				var axis: Variant = code[0]
+				var dir: Variant = code[1]
+				if axis is int and int(axis) >= 0 and int(axis) < JOY_AXIS_SDL_MAX \
+						and (dir is int or dir is float) and absf(absf(float(dir)) - 1.0) < 0.001:
+					return ["pad_axis", [int(axis), signf(float(dir))]]
+	return []
 
 
 ## How a binding is written in prompts: the key's name on this keyboard layout, LMB/RMB, A/B/X/Y, RT/LT.
@@ -272,6 +348,29 @@ func prompt(action: StringName) -> String:
 	if BINDINGS.has(action):
 		return label_of(primary(action, "pad" if using_pad() else "kb"))
 	return String(action).to_upper()
+
+
+## How moving is written in prompts, read off the bindings: the four keys in up-left-down-right order
+## ("WASD", or "ZQSD" on an AZERTY keyboard, or whatever they were rebound to), "LEFT STICK" on a pad.
+func move_prompt() -> String:
+	var slot := "pad" if using_pad() else "kb"
+	var labels: PackedStringArray = []
+	var as_shipped := true
+	for action: StringName in [&"move_up", &"move_left", &"move_down", &"move_right"]:
+		labels.append(label_of(primary(action, slot)))
+		as_shipped = as_shipped and primary(action, slot) == _shipped_primary(action, slot)
+	if slot == "pad" and as_shipped:
+		return "LEFT STICK"
+	if Array(labels).all(func(l: String) -> bool: return l.length() == 1):
+		return "".join(labels)
+	return "/".join(labels)
+
+
+func _shipped_primary(action: StringName, slot: String) -> Array:
+	for binding: Array in BINDINGS.get(action, []):
+		if slot_of(binding) == slot:
+			return binding
+	return []
 
 
 func move_vector() -> Vector2:

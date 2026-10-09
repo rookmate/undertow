@@ -105,6 +105,23 @@ func test_tuned_aim_never_picks_the_signal_box() -> void:
 	check_eq(baton.tuned_direction(3.0), level.player.aim_ground(), "the Steward's aim ignores it")
 
 
+## Against the player's own aim, not the assisted one: eight degrees beside the box stays eight degrees
+## beside it (an ordinary machine in the same place would pull it in).
+func test_aim_assist_never_bends_toward_the_signal_box() -> void:
+	await _stand(Vector2i(3, 8))
+	var p := level.player
+	var box := conductor.weak_point
+	var to_box := Iso.world_to_grid(box.global_position) - Iso.world_to_grid(p.global_position)
+	var raw := to_box.normalized().rotated(deg_to_rad(8.0))
+	check(Steward.assists().aim_assist > 0.0, "aim assist is on")
+	check_near(rad_to_deg(absf(p.assisted_aim(raw).angle_to(to_box))), 8.0, 0.01, "no pull toward the box")
+	var stand_in := level.add_enemy(Custodian.new(), box.grid_cell(), 10.0)
+	stand_in.global_position = box.global_position
+	await wait_frames(1)
+	check(rad_to_deg(absf(p.assisted_aim(raw).angle_to(to_box))) < 7.0, "while a machine there would pull it")
+	stand_in.queue_free()
+
+
 func test_taking_it_apart_opens_the_way_and_pays() -> void:
 	await _stand(Vector2i(5, 7))
 	await wait_frames(2)

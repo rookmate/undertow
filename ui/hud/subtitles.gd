@@ -1,7 +1,9 @@
 class_name Subtitles
 extends Control
 ## The Steward's narration, bottom centre, in its own serif and its own gold, for as long as it takes to
-## say. Gone the moment the voice is muted or it loses you: it stops speaking then, mid-word.
+## say. Gone the moment the voice is muted or it loses you: it stops speaking then, mid-word. A voiced
+## line keeps the voice's own clock (Sound.voice_left()): up while the recording plays, through a pause
+## and through slowed time alike, then a short fade; never shorter than it takes to read.
 
 signal speaking_changed(speaking: bool)
 
@@ -10,11 +12,18 @@ const SECONDS_PER_CHAR := 0.045
 const FADE := 0.4
 
 var text: String = ""
+## Seconds the line has left on screen.
 var _left: float = 0.0
+var _line_id: String = ""
+## Reading time still owed, whatever the voice does (real seconds).
+var _floor: float = 0.0
+## The fade once the voice has finished (real seconds).
+var _tail: float = 0.0
 
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	Narrator.line_spoken.connect(_on_line)
 	Steward.voice_changed.connect(_on_voice)
@@ -36,8 +45,17 @@ func is_speaking() -> bool:
 
 func _on_line(line_id: String, line_text: String) -> void:
 	text = line_text
-	_left = maxf(maxf(MIN_SECONDS, line_text.length() * SECONDS_PER_CHAR), Sound.voice_length(line_id) + FADE)
+	_line_id = line_id
+	_floor = maxf(MIN_SECONDS, line_text.length() * SECONDS_PER_CHAR)
+	_tail = FADE
+	_left = _remaining()
 	speaking_changed.emit(true)
+
+
+## While its voice plays: what the recording has left, plus the fade. Never less than the reading time.
+func _remaining() -> float:
+	var voice := Sound.voice_left() if Sound.voice_line == _line_id else 0.0
+	return maxf(_floor, voice + _tail)
 
 
 func _on_coverage(covered: bool) -> void:
@@ -48,6 +66,8 @@ func _on_coverage(covered: bool) -> void:
 func _on_voice(on: bool) -> void:
 	if not on:
 		_left = 0.0
+		_floor = 0.0
+		_tail = 0.0
 		text = ""
 		speaking_changed.emit(false)
 		queue_redraw()
@@ -56,7 +76,11 @@ func _on_voice(on: bool) -> void:
 func _process(delta: float) -> void:
 	# Nothing to fade while nothing is shown; the line that ends still gets one last (empty) redraw.
 	if _left > 0.0:
-		_left -= delta
+		var real := delta / maxf(Engine.time_scale, 0.01)
+		_floor = maxf(0.0, _floor - real)
+		if Sound.voice_line != _line_id:
+			_tail = maxf(0.0, _tail - real)
+		_left = _remaining()
 		if _left <= 0.0:
 			speaking_changed.emit(false)
 		queue_redraw()

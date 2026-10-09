@@ -53,6 +53,8 @@ func _ready() -> void:
 	look = DistrictLook.for_district(level_id)
 	var problems := grid.validate(is_hub())
 	problems.append_array(_map_problems())
+	if not is_hub():
+		problems.append_array(LevelCatalog.boss_problems(boss_id(), grid))
 	if not problems.is_empty():
 		# A broken map never becomes a saved location: report it, stop here, and let the router take the
 		# player back to the title. Nothing below ran, so nothing may run per frame either.
@@ -192,6 +194,16 @@ func living_enemies() -> Array[Enemy]:
 		if is_instance_valid(e) and e.is_alive():
 			out.append(e)
 	return out
+
+
+## What the Operator's weapons can strike now (every hit query uses this).
+func hittable_enemies() -> Array[Enemy]:
+	return living_enemies().filter(func(e: Enemy) -> bool: return e.is_hittable())
+
+
+## What the Steward's aim may bend toward: struck-able, and not something it keeps quiet about.
+func steward_targets() -> Array[Enemy]:
+	return living_enemies().filter(func(e: Enemy) -> bool: return e.steward_will_aim())
 
 
 func _update_checkpoint() -> void:
@@ -466,6 +478,11 @@ func _spawn_enemies() -> void:
 		_add_enemy(Salvager.new(), o, Salvager.MAX_INTEGRITY)
 
 
+## The boss this level ends with ("" for none): a test arena's own, or the district's.
+func boss_id() -> String:
+	return boss_override if boss_override != "" else LevelCatalog.boss_of(level_id)
+
+
 ## The district's boss on its 'B' cell, with what its fight needs: lanes ('1', '2', '3'), a signal box
 ## ('Z'), and barriers ('y') that open when it falls.
 func _spawn_boss() -> void:
@@ -476,8 +493,7 @@ func _spawn_boss() -> void:
 	var b := grid.first("B")
 	if b.x < 0:
 		return
-	var boss_id := boss_override if boss_override != "" else LevelCatalog.boss_of(level_id)
-	match boss_id:
+	match boss_id():
 		"conductor":
 			var conductor := Conductor.new()
 			add_enemy(conductor, b, Conductor.MAX_INTEGRITY)

@@ -147,8 +147,11 @@ static func from_dict(d: Dictionary) -> RunState:
 	var owned: Variant = d.get("weapons_owned", null)
 	s.weapons_owned = _strings(owned) if owned is Array else WeaponDefs.SLICE_SET.duplicate()
 	s.weapons_owned = s.weapons_owned.filter(func(id: String) -> bool: return WeaponDefs.is_known(id))
-	if s.weapons_owned.is_empty():
-		s.weapons_owned = WeaponDefs.STARTING.duplicate()
+	# Never a run with nothing to carry: the Operator always has the tools they started with.
+	if not s.weapons_owned.any(func(id: String) -> bool: return WeaponDefs.is_playable(id)):
+		for id: String in WeaponDefs.STARTING:
+			if not s.weapons_owned.has(id):
+				s.weapons_owned.append(id)
 	s.scrap = maxi(0, _int(d.get("scrap", 0)))
 	var ups: Variant = d.get("upgrades", {})
 	if ups is Dictionary:

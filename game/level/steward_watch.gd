@@ -28,8 +28,7 @@ func setup(owner_level: Level) -> void:
 	level.slow_mo.started.connect(func(_s: float) -> void:
 		_record(&"perfect_dodge")
 		_say(&"dodge_close"))
-	for w: Weapon in p.weapons:
-		w.fired.connect(_on_fired.bind(w))
+	p.weapon_fired.connect(_on_fired)
 	level.enemy_died.connect(_on_enemy_died)
 	_was_indexed = level.grid.is_indexed(p.cell())
 	if not level.is_hub():

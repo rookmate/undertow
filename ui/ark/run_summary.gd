@@ -9,10 +9,12 @@ var _back: Button
 
 
 func _ready() -> void:
-	layer = 30
+	# Over the Loop map it opens from, and opaque: the map's bright labels show through any translucent
+	# backing.
+	layer = 31
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	var dim := ColorRect.new()
-	dim.color = Color(Palette.NEAR_BLACK, 0.94)
+	dim.color = Palette.NEAR_BLACK
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(dim)
 	var box := VBoxContainer.new()

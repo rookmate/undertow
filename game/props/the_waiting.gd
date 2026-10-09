@@ -64,7 +64,7 @@ func blocked_reason() -> String:
 ## Trying to wake them while it listens: it says so, out loud.
 func refused(_player: Operator) -> void:
 	if not woken and Steward.voice_on:
-		Narrator.speak_text("waiting_refusal", VoiceLines.fixed("waiting_refusal"))
+		Narrator.say_fixed("waiting_refusal")
 
 
 func interact(_player: Operator) -> void:

@@ -92,6 +92,22 @@ func test_a_broken_map_stops_the_level_before_anything_runs() -> void:
 	await wait_frames(1)
 
 
+## A boss whose fight the map can't hold (the Conductor with no lanes) stops the level the same way,
+## before any barrier is raised.
+func test_a_boss_the_map_cant_hold_stops_the_level() -> void:
+	GameState.new_run()
+	Diagnostics.capture()
+	var level := (load("res://tests/fixtures/laneless_conductor.tscn") as PackedScene).instantiate() as Level
+	add_child(level)
+	await wait_frames(3)
+	var reports := Diagnostics.release()
+	check(level.failed)
+	check("\n".join(reports).contains("lanes"), "%s" % [reports])
+	check(level.boss == null and get_tree().get_nodes_in_group(&"boss_barriers").filter(func(n: Node) -> bool: return level.is_ancestor_of(n)).is_empty(), "no fight, no barriers")
+	level.queue_free()
+	await wait_frames(1)
+
+
 ## Through the real router: the broken level is entered behind a fade and the player ends up on the title,
 ## with the save untouched and no errors after the reports.
 func test_entering_a_broken_level_lands_on_the_title() -> void:

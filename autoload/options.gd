@@ -23,18 +23,24 @@ func _ready() -> void:
 	apply(true)
 
 
-## Tests point the settings at a scratch file.
+## Tests and the autopilot point the settings at a scratch file, starting from the defaults.
 func use_path(file_path: String) -> void:
 	path = file_path
 	reset_all()
 
 
+## Every setting back to its default, and in effect: bindings and volumes at once (whatever the player
+## had applied before), the display left alone (only apply() touches the window, and never in automated
+## runs).
 func reset_all() -> void:
 	volumes = VOLUME_DEFAULTS.duplicate()
 	display_mode = "windowed"
 	vsync = true
 	subtitle_size = "medium"
 	Controls.reset_bindings()
+	for bus: StringName in volumes:
+		Sound.set_volume(bus, volumes[bus])
+	changed.emit()
 
 
 func load_settings() -> void:

@@ -109,6 +109,8 @@ func test_the_dock_opens_the_loop_map() -> void:
 	var summary := map.open_summary()
 	await wait_frames(2)
 	check(Modals.is_top(summary), "the run so far opens over the map")
+	check(summary.layer > map.layer, "drawn above it")
+	check_eq((summary.get_child(0) as ColorRect).color.a, 1.0, "on an opaque backing: none of the map's labels show through")
 	summary.close()
 	await wait_frames(1)
 	check(Modals.is_top(map), "and closes back to it")

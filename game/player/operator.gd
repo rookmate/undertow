@@ -10,6 +10,9 @@ signal hurt(amount: float)
 signal evaded
 signal downed
 signal respawned
+## Any carried weapon attacked. Stable across finds, snatches and returns (the weapon nodes come and
+## go; this doesn't), so listeners connect here, not to a weapon.
+signal weapon_fired(weapon: Weapon)
 
 const WALK_TILES_PER_SECOND := 3.2
 const RADIUS_TILES := 0.3
@@ -78,14 +81,21 @@ func equip(weapon_ids: Array[String], modes: Array[Loadout.Mode]) -> void:
 		w.queue_free()
 	weapons.clear()
 	for i: int in weapon_ids.size():
-		var script: GDScript = WEAPON_SCRIPTS.get(weapon_ids[i])
-		if script == null:
-			push_error("Operator.equip: no weapon %s" % weapon_ids[i])
-			continue
-		var w := script.new() as Weapon
-		w.setup(weapon_ids[i], modes[i], i, self)
-		add_child(w)
-		weapons.append(w)
+		_mount(weapon_ids[i], modes[i])
+
+
+## Adds a weapon node in the next slot. Null if there's no such weapon.
+func _mount(weapon_id: String, mode: Loadout.Mode) -> Weapon:
+	var script: GDScript = WEAPON_SCRIPTS.get(weapon_id)
+	if script == null:
+		push_error("Operator: no weapon %s" % weapon_id)
+		return null
+	var w := script.new() as Weapon
+	w.setup(weapon_id, mode, weapons.size(), self)
+	w.fired.connect(func() -> void: weapon_fired.emit(w))
+	add_child(w)
+	weapons.append(w)
+	return w
 
 
 ## What the Operator carries, in slot order, and each one's chosen mode.
@@ -96,34 +106,26 @@ func carried() -> Array[Dictionary]:
 	return out
 
 
-func _re_equip(items: Array[Dictionary]) -> void:
-	var ids: Array[String] = []
-	var modes: Array[Loadout.Mode] = []
-	for item: Dictionary in items:
-		ids.append(str(item["id"]))
-		modes.append(item["mode"])
-	equip(ids, modes)
-
-
 ## Takes the weapon in a slot away (a Salvager's snatch). Returns {id, mode}, or {} if the slot is empty.
+## The other weapon is untouched (its cooldown, heat or charge carry on); it moves up a slot if need be.
 func take_weapon(slot: int) -> Dictionary:
-	var items := carried()
-	if slot < 0 or slot >= items.size():
+	if slot < 0 or slot >= weapons.size():
 		return {}
-	var taken := items[slot]
-	items.remove_at(slot)
-	_re_equip(items)
+	var w := weapons[slot]
+	var taken := {"id": w.weapon_id, "mode": w.chosen_mode}
+	weapons.remove_at(slot)
+	w.queue_free()
+	for i: int in weapons.size():
+		weapons[i].slot = i
 	return taken
 
 
-## Puts a weapon in the next free slot (a find, or one taken back). False if both slots are full.
+## Puts a weapon in the next free slot (a find, or one taken back). False if both slots are full or it's
+## already carried. What's already carried is untouched.
 func add_weapon(weapon_id: String, mode: Loadout.Mode) -> bool:
-	var items := carried()
-	if items.size() >= Loadout.SLOTS or items.any(func(i: Dictionary) -> bool: return i["id"] == weapon_id):
+	if weapons.size() >= Loadout.SLOTS or weapons.any(func(w: Weapon) -> bool: return w.weapon_id == weapon_id):
 		return false
-	items.append({"id": weapon_id, "mode": mode})
-	_re_equip(items)
-	return true
+	return _mount(weapon_id, mode) != null
 
 
 func _physics_process(delta: float) -> void:
@@ -226,8 +228,13 @@ func _attacking() -> bool:
 
 ## Where the player is aiming, as a ground direction: the right stick on a pad, the mouse otherwise,
 ## the facing direction when neither says anything. With the Steward listening, the aim is bent a little
-## toward the nearest threat in a narrow cone (aim assist).
+## toward the nearest thing it's willing to aim at in a narrow cone (aim assist).
 func aim_ground() -> Vector2:
+	return assisted_aim(raw_aim())
+
+
+## The player's own aim, before the Steward has any say.
+func raw_aim() -> Vector2:
 	var aim := facing_ground
 	if Controls.using_pad():
 		var stick := Controls.aim_stick()
@@ -237,13 +244,19 @@ func aim_ground() -> Vector2:
 		var to_mouse := cursor_aim(global_position, get_global_mouse_position())
 		if to_mouse != Vector2.ZERO:
 			aim = to_mouse
-	var strength := Steward.assists().aim_assist
-	if strength > 0.0 and level != null:
-		var threats: Array[Node2D] = []
-		for e: Enemy in level.living_enemies():
-			threats.append(e)
-		aim = CombatMath.assist_aim(aim, global_position, threats, ASSIST_REACH, ASSIST_CONE_DEG, strength)
 	return aim
+
+
+## Aim assist: bends `aim` toward what the Steward will aim at (Level.steward_targets()), never toward a
+## boss's weak point or a lamp walking with you.
+func assisted_aim(aim: Vector2) -> Vector2:
+	var strength := Steward.assists().aim_assist
+	if strength <= 0.0 or level == null:
+		return aim
+	var willing: Array[Node2D] = []
+	for e: Enemy in level.steward_targets():
+		willing.append(e)
+	return CombatMath.assist_aim(aim, global_position, willing, ASSIST_REACH, ASSIST_CONE_DEG, strength)
 
 
 ## The cursor points at things where they are drawn: bodies and shots at chest height, not at their

@@ -87,7 +87,7 @@ func targets_in_range(max_tiles: float) -> Array[Node2D]:
 	var lv := level()
 	if lv == null:
 		return out
-	for e: Enemy in lv.living_enemies():
+	for e: Enemy in lv.hittable_enemies():
 		if Iso.ground_distance(player.global_position, e.global_position) <= max_tiles and lv.grid.line_clear(player.global_position, e.global_position):
 			out.append(e)
 	return out
@@ -97,7 +97,7 @@ func targets_in_range(max_tiles: float) -> Array[Node2D]:
 ## never aims at a boss's weak point it would rather you didn't know about). Falls back to the player's
 ## aim.
 func tuned_direction(max_tiles: float) -> Vector2:
-	var willing := targets_in_range(max_tiles).filter(func(e: Node2D) -> bool: return (e as Enemy).steward_aims_at)
+	var willing := targets_in_range(max_tiles).filter(func(e: Node2D) -> bool: return (e as Enemy).steward_will_aim())
 	var target := CombatMath.nearest(player.global_position, willing, max_tiles)
 	if target != null:
 		return Iso.ground_dir_between(player.global_position, target.global_position)

@@ -350,3 +350,55 @@ Asked of the user on 2026-10-09 and answered the same day.
      damage in that mode (a tuned upgrade waits while muted, since muted weapons run manual). The
      Steward is pleased when you upgrade what it runs, resigned when you upgrade what you run. Scrap
      shows on the HUD.
+111. **What weapons may strike, and what the Steward may aim at, is decided in one place:**
+     `Enemy.is_hittable()` (a Lamplighter walking with you isn't) and `Enemy.steward_will_aim()` (a
+     boss's weak point never is). Every hit query uses `Level.hittable_enemies()`; tuned targeting and
+     aim assist use `Level.steward_targets()`. Aim assist is `Operator.assisted_aim(raw_aim())`, so it can
+     be tested against the player's own aim. (Milestone 2 review, findings 1 and 2.)
+112. **Finding, losing or getting back a weapon leaves the other one alone** (same node, same cooldown,
+     heat or charge); listeners connect to `Operator.weapon_fired`, which outlives the weapon nodes.
+113. **Every Steward line has a purpose: fact, warning or praise**, and `Narrator.allows()` is the one
+     gate: silent while it isn't listening or can't reach you; "Never warn me about traps" silences
+     warnings (the Conductor's track calls, the Crane's drop and swing calls); "Stop praising me"
+     silences praise. Pool events carry their purpose in steward_lines.json, fixed lines in
+     steward_fixed.json; screen voice-overs (core cards, memory logs, the loadout nudge) pass the same
+     gate through `Narrator.voice_over()`. A line's purpose is resolved from its id
+     (`VoiceLines.purpose_of`), whatever the caller says; only text that isn't one of its lines takes the
+     purpose given. Override replies are facts about how it reasons, said under any order, so they never
+     flatter (three were rewritten). The title's line is the title sequence's own, before any run.
+114. **The Vellum offers the Defib Gauntlet** on a crash cart down the stair on the old quay (off the
+     Lattice), until Mercy General is built. A fresh run can now own all three weapons.
+115. **Rebinding is checked against every binding in effect**, the kept defaults (arrows, J/K, the
+     d-pad), Esc / Start / F3 and the aim stick included. Taking another rebindable action's own choice
+     for that slot swaps the two, as before, but only if afterwards no input is shared (an action may
+     keep the same key as a default too); anything else is refused, and the Options screen says
+     whose input it is ("RIGHT STAYS ON MOVE RIGHT."). Saved bindings are normalized (whole-number
+     codes, ±1 axis directions) and dropped if malformed or if they'd share an input. Prompts (the hint
+     bar's move keys too) refresh on `Controls.bindings_changed`.
+116. **A save never leaves the Operator with nothing to carry:** if it owns no playable weapon, the
+     starting tools are added back. The loadout screen is safe with an empty pick anyway.
+117. **A boss and its map are validated together** (`LevelCatalog.boss_problems`): a boss the game has,
+     exactly one 'B' and one 'Z', the Conductor's three lanes (each one straight, unbroken track of two
+     cells or more), the boss and its weak point reachable from the start with the barriers shut, and no
+     boss markers, lanes or barriers on a map without a boss. A level that fails it doesn't load, so a
+     fight that can't start can never leave its barriers shut.
+118. **The autopilot is infrastructure plus modules:** `autoload/autopilot.gd` (arguments, isolation,
+     checks, timing, input, walking, fighting), scenarios (`autoload/autopilot/scenarios/`) and one
+     route per district (`autoload/autopilot/routes/`; a test fails while a district has none).
+     Prepared single-district runs carry only what the districts before gave (the Vellum's no longer
+     hands over the Gauntlet). **The gate's long run is the campaign**: New Game through Kestrel Heights,
+     the Loop (an order signed and kept), a save and Continue, the Tideworks (an upgrade bought) and the
+     Vellum to the Archive, one run throughout, each district's checks tagged with its name. It ends
+     when done (at most 900 s).
+119. **Subtitles keep the voice's own clock** (`Sound.voice_left()`: the recording's position, or with no
+     audio device the same real-time advance): up while the voice plays, through a pause and slowed
+     time alike, then a short fade; never shorter than the reading time.
+120. **Automated settings are the defaults in effect:** `Options.use_path()` puts default volumes on the
+     buses at once. A settings save that fails shows the save-failure notice (the change lasts this
+     session only).
+121. **The gate checks its own district listing:** a listing that fails, is empty, or is cut short
+     (it ends with its count) fails stage 5 instead of touring nothing.
+122. **Once the game is closing, no new sound starts** (`Sound.closing`): quitting silences everything and
+     gives the audio thread a moment, and a sound begun in that moment (a respawn's, the Steward's word
+     on it) leaked at exit. Found by a gate tour.
+123. **The gate tests its own listing check** (`tools/test_district_listing.sh`, run before the tours).

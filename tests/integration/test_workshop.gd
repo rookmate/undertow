@@ -83,6 +83,33 @@ func test_the_workshop_stands_once_the_tideworks_is_done() -> void:
 	await wait_frames(2)
 
 
+## "Stop praising me" holds at the Workshop's own counter: buying what the Steward runs gets no praise,
+## said or shown; buying what you run still gets its plain remark. Pressed through the screen's rows.
+func test_stop_praising_me_holds_at_the_workshop() -> void:
+	GameState.restore_building("workshop")
+	GameState.add_scrap(20)
+	GameState.set_override(Overrides.NO_PRAISE, true)
+	var ark := (load("res://game/ark/ark.tscn") as PackedScene).instantiate() as ArkLevel
+	add_child(ark)
+	await wait_frames(2)
+	var screen := ark.open_workshop()
+	await wait_frames(2)
+	var rows: Dictionary = screen.get("_rows")
+	var reply: Label = screen.get("_reply")
+	Sound.hush()
+	var voices := Sound.heard(&"voice")
+	(rows[Upgrades.key(WeaponDefs.BATON, "tuned")] as Button).pressed.emit()
+	check_eq(Upgrades.level(GameState.run, WeaponDefs.BATON, "tuned"), 1, "bought")
+	check_eq(Sound.heard(&"voice"), voices, "and not praised aloud")
+	check_eq(reply.text, "", "nor in writing")
+	(rows[Upgrades.key(WeaponDefs.BATON, "manual")] as Button).pressed.emit()
+	check_eq(Sound.voice_line, "workshop_manual", "a plain remark is still said")
+	check_eq(reply.text, VoiceLines.fixed("workshop_manual"))
+	screen.close()
+	ark.queue_free()
+	await wait_frames(2)
+
+
 func _count(ark: ArkLevel, facade: BuildingCell.Facade) -> int:
 	var n := 0
 	for c: Node in ark.world.get_children():

@@ -1,8 +1,9 @@
 class_name WeaponFind
 extends Interactable
 ## A reclaimed city tool lying where it was left: the Riot Drone in the Warden depot built to watch the
-## Tideworks strikers. Take it and it's yours from then on (the loadout offers it), and in your second
-## hand straight away. Its id comes from the map ('@' line): the weapon it is.
+## Tideworks strikers, the Defib Gauntlet on a crash cart on the Vellum's old quay. Take it and it's yours
+## from then on (the loadout offers it), and in your second hand straight away if it's free. Its id
+## comes from the map ('@' line): the weapon it is.
 
 var weapon_id: String = ""
 var cell: Vector2i
@@ -29,9 +30,7 @@ func interact(player: Operator) -> void:
 	GameState.give_weapon(weapon_id)
 	player.add_weapon(weapon_id, Loadout.chosen_mode(GameState.run, weapon_id))
 	Sound.play(&"core_take", global_position)
-	var line := "find_" + weapon_id
-	if VoiceLines.fixed(line) != "":
-		Narrator.speak_text(line, VoiceLines.fixed(line))
+	Narrator.say_fixed("find_" + weapon_id)
 	queue_redraw()
 
 

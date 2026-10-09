@@ -64,10 +64,57 @@ func test_while_it_listens_lamplighters_light_the_way_and_are_not_targets() -> v
 	var lamp := _lamplighters()[0]
 	check_false(lamp.is_in_group(&"enemies"), "not something your weapons aim at")
 	check_false(lamp.hunting)
+	check_false(level.hittable_enemies().has(lamp) or level.steward_targets().has(lamp))
 	await _put(lamp.grid_cell() + Vector2i(3, 0))
 	await wait_seconds(3.0)
 	check_false(lamp.hooking, "it never takes hold while the Steward listens")
 	check_eq(level.player.integrity.value, level.player.integrity.max_value, "and never hurts you")
+
+
+## Swings the baton (tuned, then manual) at a lamp a tile in front of you; returns what it took.
+func _swing_at(lamp: Lamplighter) -> float:
+	var p := level.player
+	# On a pad with the stick at rest, the player's own aim is where they face.
+	Controls.device = Controls.Device.PAD
+	p.set_physics_process(false)
+	lamp.set_physics_process(false)
+	lamp.global_position = p.global_position + Iso.ground_velocity(Vector2(1, 0), 1.0)
+	p.face(Vector2(1, 0))
+	var before := lamp.integrity.value
+	var baton := p.weapons[0] as TrafficBaton
+	for mode: Loadout.Mode in [Loadout.Mode.TUNED, Loadout.Mode.MANUAL]:
+		baton.chosen_mode = mode
+		baton.call(&"_swing", false)
+		var raw := Vector2(1, 0).rotated(deg_to_rad(8.0))
+		var drift := rad_to_deg(absf(p.assisted_aim(raw).angle_to(raw)))
+		if not lamp.hunting:
+			check(drift < 0.01, "and the Steward's aim doesn't bend toward it (%.2f°)" % drift)
+	Controls.device = Controls.Device.KEYBOARD_MOUSE
+	return before - lamp.integrity.value
+
+
+## Only this lamp nearby, so nothing else draws the aim.
+func _alone_with(lamp: Lamplighter) -> void:
+	for e: Enemy in level.living_enemies():
+		if e != lamp:
+			e.queue_free()
+	await _put(lamp.grid_cell() + Vector2i(-1, 0))
+
+
+func test_a_lamp_walking_with_you_cant_be_struck() -> void:
+	var lamp := _lamplighters()[0]
+	await _alone_with(lamp)
+	check_eq(_swing_at(lamp), 0.0, "tuned or manual, the baton passes it by")
+	check_false(lamp.hooking)
+
+
+func test_muted_a_lamplighter_is_a_target_like_any_other() -> void:
+	var lamp := _lamplighters()[0]
+	await _alone_with(lamp)
+	Steward.set_voice(false)
+	await wait_frames(1)
+	check(level.hittable_enemies().has(lamp))
+	check(_swing_at(lamp) > 0.0, "muted, it hunts you, and you can hit it")
 
 
 func test_muted_a_lamplighter_hooks_you_and_drags_you_toward_the_lattice() -> void:

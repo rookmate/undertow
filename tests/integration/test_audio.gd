@@ -68,10 +68,10 @@ func test_volume_sliders_set_the_buses() -> void:
 func test_the_steward_chimes_when_it_speaks_and_never_while_muted() -> void:
 	await _start_level()
 	var chimes := Sound.heard(&"steward_chime")
-	Narrator.speak_text("test_line", "There you are.")
+	Narrator.speak_text("test_line", "There you are.", LineSelector.FACT)
 	check_eq(Sound.heard(&"steward_chime"), chimes + 1, "its words come with its chime")
 	Steward.set_voice(false)
-	Narrator.speak_text("test_line", "There you are.")
+	Narrator.speak_text("test_line", "There you are.", LineSelector.FACT)
 	check_eq(Narrator.notify(&"kill"), "", "muted, nothing is said")
 	check_eq(Sound.heard(&"steward_chime"), chimes + 1, "and nothing chimes")
 
@@ -124,3 +124,19 @@ func test_the_voice_switch_clicks_but_loading_a_save_does_not() -> void:
 	Steward.set_voice(false)
 	Steward.set_voice(true)
 	check_eq(Sound.heard(&"voice_off") + Sound.heard(&"voice_on"), offs + ons + 2, "setting it from a save is silent")
+
+
+## Quitting silences everything and then waits a moment for the audio thread; whatever the game does in
+## that moment (a respawn, the Steward's word on it) mustn't start a sound, or it leaks at exit.
+func test_nothing_new_starts_once_the_game_is_closing() -> void:
+	Sound.set_ambience({})
+	Sound.closing = true
+	var cues := Sound.heard(&"respawn")
+	var voices := Sound.heard(&"voice")
+	check(Sound.play(&"respawn") == null, "no cue")
+	check_eq(Sound.say("RESPAWN_N1"), 0.0, "no line")
+	Sound.set_ambience({&"rain": 1.0})
+	check_eq(Sound.layer_target(&"rain"), 0.0, "no ambience")
+	check_eq(Sound.heard(&"respawn"), cues)
+	check_eq(Sound.heard(&"voice"), voices)
+	Sound.closing = false

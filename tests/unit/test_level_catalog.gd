@@ -43,3 +43,37 @@ func test_old_saves_keep_the_slices_weapons_and_new_runs_start_with_what_the_act
 	check_eq(odd.weapons_owned, WeaponDefs.STARTING, "unknown weapons dropped; never nothing to fight with")
 	check_eq(odd.scrap, 0)
 	check_eq(odd.upgrades["baton:tuned"], Tunables.UPGRADE_LEVELS)
+
+
+## A boss and its map are checked together: a fight that can't start (no lanes for the Conductor, no
+## 'B', a boss the game doesn't have) would otherwise leave its barriers shut for good.
+func test_a_boss_and_its_map_are_checked_together() -> void:
+	var conductor := LevelGrid.parse("########\n#.B....#\n#.1111.#\n#.2222.#\n#.3333.#\n#.Z..P.#\n#..yyR.#\n########")
+	check(LevelCatalog.boss_problems("conductor", conductor).is_empty(), "%s" % [LevelCatalog.boss_problems("conductor", conductor)])
+	check_false(LevelCatalog.boss_problems("crane", conductor).is_empty(), "the crane has no lanes")
+	check_false(LevelCatalog.boss_problems("", conductor).is_empty(), "a boss's markers on a map without one")
+	check_false(LevelCatalog.boss_problems("tram", conductor).is_empty(), "no such boss")
+	var no_lanes := LevelGrid.parse("#######\n#.B...#\n#.Z.P.#\n#..yyR#\n#######")
+	check_eq(LevelCatalog.boss_problems("conductor", no_lanes).size(), 1, "the Conductor needs its lanes")
+	check(LevelCatalog.boss_problems("crane", no_lanes).is_empty())
+	var no_b := LevelGrid.parse("#######\n#.....#\n#.Z.P.#\n#..yyR#\n#######")
+	check_eq(LevelCatalog.boss_problems("crane", no_b).size(), 1, "no 'B'")
+	var no_z := LevelGrid.parse("#######\n#.B...#\n#...P.#\n#..yyR#\n#######")
+	check_eq(LevelCatalog.boss_problems("crane", no_z).size(), 1, "no weak point: no second way to win")
+	var plain := LevelGrid.parse("#####\n#P.R#\n#####")
+	check(LevelCatalog.boss_problems("", plain).is_empty())
+
+
+## Counting markers isn't enough: a fight the player can't get to, or a lane the carriage can't run
+## along, is refused too.
+func test_a_boss_must_be_a_fight_you_can_reach() -> void:
+	# The Crane sealed in a chamber below, the Reliquary behind a barrier: the fight could never start.
+	var sealed := LevelGrid.parse("#######\n#.P..R#\n#..yy.#\n#######\n#.B.Z.#\n#.....#\n#######")
+	check_eq(LevelCatalog.boss_problems("crane", sealed).size(), 2, "%s" % [LevelCatalog.boss_problems("crane", sealed)])
+	# A barrier across the only way to the boss.
+	var walled := LevelGrid.parse("#########\n#.P.y.B.#\n#...#.Z.#\n#...#..R#\n#########")
+	check_false(LevelCatalog.boss_problems("crane", walled).is_empty(), "the barrier shuts the way to it")
+	# A Conductor lane broken in two, and one bent round a corner.
+	var broken := LevelGrid.parse("########\n#.B....#\n#.11.1.#\n#.2222.#\n#.333..#\n#...3..#\n#.Z..P.#\n#..yyR.#\n########")
+	var problems := LevelCatalog.boss_problems("conductor", broken)
+	check(problems.size() == 2 and "\n".join(problems).contains("lane '1'") and "\n".join(problems).contains("lane '3'"), "%s" % [problems])

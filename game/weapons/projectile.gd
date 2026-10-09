@@ -43,7 +43,7 @@ func _physics_process(delta: float) -> void:
 		wall_t = INF
 	var hits: Array[Array] = []
 	if team == Team.PLAYER:
-		for e: Enemy in level.living_enemies():
+		for e: Enemy in level.hittable_enemies():
 			if _hit.has(e):
 				continue
 			var t := CombatMath.segment_hit(from, to, Iso.world_to_grid(e.global_position), radius_tiles + e.radius_tiles)

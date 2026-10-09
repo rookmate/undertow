@@ -26,7 +26,10 @@ func _ready() -> void:
 		modes[id] = Loadout.chosen_mode(run, id)
 	_build()
 	_refresh()
-	_cards[picked[0]].grab_focus()
+	if not picked.is_empty():
+		_cards[picked[0]].grab_focus()
+	else:
+		_depart.grab_focus()
 
 
 func _build() -> void:
@@ -189,5 +192,5 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _say_after(seconds: float, line_id: String) -> void:
 	await get_tree().create_timer(seconds).timeout
-	if is_inside_tree() and Steward.voice_on:
-		Sound.say(line_id)
+	if is_inside_tree():
+		Narrator.voice_over(line_id)

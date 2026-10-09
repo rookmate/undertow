@@ -63,6 +63,87 @@ func test_the_riot_drone_is_found_in_the_depot_and_goes_straight_to_hand() -> vo
 	check_eq(Sound.voice_line, "find_riot_drone", "the Steward has a view on it")
 
 
+## Finding, losing and getting back a weapon leaves the one in your hand alone, and the Steward goes on
+## noticing what you fire. All through real presses: Interact at a find, the drone's trigger (real
+## shots), a Salvager that comes for the drone by itself, beaten, and the drone fired again.
+func test_finds_and_snatches_keep_the_weapon_in_hand_and_the_steward_watching() -> void:
+	var modes: Dictionary[String, String] = {WeaponDefs.BATON: "tuned", WeaponDefs.RIOT_DRONE: "manual"}
+	GameState.set_loadout([WeaponDefs.BATON] as Array[String], modes)
+	await _open("res://game/level/tideworks.tscn")
+	level.remove_all_enemies()
+	Controls.device = Controls.Device.PAD
+	var p := level.player
+	var at := Vector2i(10, 12)
+	p.position = Iso.cell_center(at)
+	var find := WeaponFind.new()
+	find.setup(level, at + Vector2i(1, 0), WeaponDefs.RIOT_DRONE)
+	level.world.add_child(find)
+	await wait_physics_frames(3)
+	var heard: Array[StringName] = []
+	var listen := func(id: String, _t: String) -> void:
+		for l: LineSelector.Line in Narrator.selector.all_lines():
+			if l.id == id:
+				heard.append(l.event)
+	Narrator.line_spoken.connect(listen)
+	# The district's own entry line comes first; then the Steward is free to remark on what you do.
+	var waited := 0
+	while not heard.has(&"level_enter") and waited < 240:
+		await wait_physics_frames(1)
+		waited += 1
+	var baton := p.weapons[0] as TrafficBaton
+	await _press(&"attack_primary", 1)
+	check(float(baton.get(&"_since_swing")) < TrafficBaton.SWING_SECONDS, "a swing under way")
+	await _press(&"interact", 1)
+	check(GameState.run.weapons_owned.has(WeaponDefs.RIOT_DRONE) and p.weapons.size() == 2, "the drone, taken off the find with Interact")
+	check(is_same(p.weapons[0], baton), "the baton is the same baton")
+	check(float(baton.get(&"_since_swing")) < TrafficBaton.SWING_SECONDS, "still mid-swing")
+	check_eq(Sound.voice_line, "find_riot_drone", "the Steward has a view on the find")
+	# Its next remark waits for the gap it keeps between lines.
+	await wait_seconds(Narrator.MIN_GAP + 0.1)
+	var profile := GameState.run.playstyle_profile
+	var risk := profile.risk
+	var shots := _shots()
+	await _press(&"attack_secondary", 12)
+	check(_shots() > shots, "the drone fires")
+	check(profile.risk > risk, "the Steward sees it fired by hand")
+	check(heard.has(&"weapon_manual"), "and says so: %s" % [heard])
+	var drone := p.weapons[1]
+	var thief := level.add_enemy(Salvager.new(), at + Vector2i(0, 2), Salvager.MAX_INTEGRITY) as Salvager
+	waited = 0
+	while p.weapons.size() == 2 and waited < 300:
+		await wait_physics_frames(1)
+		waited += 1
+	check_eq(p.weapons.size(), 1, "a Salvager comes for the drone and takes it")
+	check(is_same(p.weapons[0], baton) and not is_instance_valid(drone), "the drone, never the baton")
+	thief.take_hit(1000.0, Vector2(1, 0), 0.0, 0.0)
+	check(p.weapons.size() == 2 and p.weapons[1].weapon_id == WeaponDefs.RIOT_DRONE, "beaten, it drops it back")
+	check(is_same(p.weapons[0], baton))
+	await wait_seconds(StewardWatch.MODE_REPORT_EVERY + 0.1)
+	risk = profile.risk
+	shots = _shots()
+	await _press(&"attack_secondary", 12)
+	check(_shots() > shots and profile.risk > risk, "fired again, and still noticed")
+	Narrator.line_spoken.disconnect(listen)
+	Controls.device = Controls.Device.KEYBOARD_MOUSE
+
+
+## Holds an action for some physics frames, then lets go.
+func _press(action: StringName, frames: int) -> void:
+	Input.action_press(action)
+	await wait_physics_frames(frames)
+	Input.action_release(action)
+	await wait_physics_frames(1)
+
+
+## The Operator's shots in the air.
+func _shots() -> int:
+	var n := 0
+	for c: Node in level.world.get_children():
+		if c is Projectile and (c as Projectile).team == Projectile.Team.PLAYER:
+			n += 1
+	return n
+
+
 func test_a_salvager_snatches_your_second_weapon_and_drops_it_when_beaten() -> void:
 	await _open("res://game/level/tideworks.tscn")
 	GameState.give_weapon(WeaponDefs.RIOT_DRONE)
