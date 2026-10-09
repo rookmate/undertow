@@ -1,0 +1,41 @@
+{
+	"version": 1,
+	"notes": "Memory cores. Power cores give the Steward stronger assistance; truth cores reveal what it did. The Reliquary of each level offers its cores; truth cores found off the path join the offer. 'steward' is what the Steward says about the card (shown only while it is listening).",
+	"reliquaries": {
+		"vellum": ["vellum_power_lattice", "vellum_power_feed", "vellum_truth_0522"]
+	},
+	"cores": {
+		"vellum_power_lattice": {
+			"kind": "power",
+			"name": "Lattice Core",
+			"origin": "The Vellum Reliquary",
+			"blurb": "The district's lamp-and-camera model. Sharper aim assist, longer slowed time on dodges.",
+			"steward": "This one's mine. With it I can do so much more for you.",
+			"log": "log_0311_morning_feed"
+		},
+		"vellum_power_feed": {
+			"kind": "power",
+			"name": "Feed Core",
+			"origin": "The Vellum Reliquary",
+			"blurb": "The Feed's editorial weights. The Steward sees further ahead.",
+			"steward": "Take this one. I'll be able to see what's coming.",
+			"log": "log_0102_night_shift"
+		},
+		"vellum_truth_0522": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "The Vellum Reliquary, back of the rack",
+			"blurb": "A dull cracked sphere with a faint blink inside. Labelled 0522.",
+			"steward": "Corrupted. I wouldn't bother.",
+			"log": "log_0522_feed_adjustment"
+		},
+		"vellum_truth_vashti_note": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "The overflow stacks, unindexed",
+			"blurb": "Wrapped in a paper slip signed P. Vashti, Audit Office.",
+			"steward": "Paper. Unindexed. It won't be accurate.",
+			"log": "log_vashti_audit_note"
+		}
+	}
+}

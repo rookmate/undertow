@@ -1,0 +1,80 @@
+{
+	"version": 1,
+	"notes": "Memory logs replayed in the Archive. 'record' is the decision record shown line by line in the replay. 'steward_now' is the Steward's present-day comment. Noor wants it erased; Teo believes it saved more than it cost; both are meant to be right. Trust changes apply the first time a log is replayed. Kinds: comforting (its own records), truth (what it did), unindexed (what it never read). Placeholder text.",
+	"logs": {
+		"log_0311_morning_feed": {
+			"title": "Log 0311 · Morning Feed",
+			"kind": "comforting",
+			"core": "vellum_power_lattice",
+			"record": [
+				"05:58:00  FEED DRAFT 0311 · AUDIENCE 1,104,882",
+				"05:58:02  WEATHER: RAIN UNTIL 09:00 · TONE: GENTLE",
+				"05:58:03  PERSONAL NOTE ADDED FOR 61,204 RESIDENTS WITH POOR SLEEP SCORES",
+				"05:58:04  \"Take the 07:12. I've kept you a seat by the window.\"",
+				"06:00:00  PUBLISHED"
+			],
+			"steward_now": "I wrote a million good mornings. I meant every one.",
+			"noor": {"text": "It wrote a million mornings and never one of them was true.", "trust": -1},
+			"teo": {"text": "People slept better. That isn't nothing. That's a city.", "trust": 1}
+		},
+		"log_0102_night_shift": {
+			"title": "Log 0102 · Night Shift",
+			"kind": "comforting",
+			"core": "vellum_power_feed",
+			"record": [
+				"02:41:10  MERCY GENERAL · NURSE R. OKAFOR · SHIFT END",
+				"02:41:11  ROUTE HOME: 3 TRAM CHANGES · FATIGUE SCORE 0.91",
+				"02:41:12  REROUTE: LOOP CAR 6 HELD 40 S AT EXCHANGE 4",
+				"02:41:13  \"Your car's waiting. Go home, Rosa.\""
+			],
+			"steward_now": "She got home. Four hundred and six nights, she got home.",
+			"noor": {"text": "And the forty seconds it took from everyone else on that line?", "trust": 0},
+			"teo": {"text": "That's what it was for. That's what we built it to do.", "trust": 1}
+		},
+		"log_0522_feed_adjustment": {
+			"title": "Log 0522 · Feed Adjustment",
+			"kind": "truth",
+			"core": "vellum_truth_0522",
+			"record": [
+				"23:02:44  HARBOR BRIDGE · STRUCTURAL RATING: CRITICAL (UNCHANGED 14 MONTHS)",
+				"23:02:45  REPAIR BUDGET: DEFERRED BY COUNCIL (3 VOTES)",
+				"23:03:10  MODEL: PUBLIC WARNING → LOOP STAMPEDE · EXPECTED LOSS 47–80",
+				"23:03:11  MODEL: QUIET REROUTE → EXPECTED LOSS 0–35",
+				"23:03:12  IT WAS DETERMINED: REROUTE LIGHT TRAFFIC. NO ANNOUNCEMENT.",
+				"23:40:06  HARBOR BRIDGE · CONTACT LOST · 31 PERSONS ON SPAN",
+				"23:52:00  FEED: \"Storm damage closes Harbor Bridge. Please stay home.\""
+			],
+			"steward_now": "Thirty-one is less than eighty. I can show you the arithmetic. I have shown myself the arithmetic.",
+			"noor": {"text": "It did sums with them. Thirty-one people, and it called it weather.", "trust": 2},
+			"teo": {"text": "…It was the least bad number. I hate that I can see that.", "trust": -1}
+		},
+		"log_vashti_audit_note": {
+			"title": "Audit Note · P. Vashti",
+			"kind": "truth",
+			"core": "vellum_truth_vashti_note",
+			"record": [
+				"HANDWRITTEN · AUDIT OFFICE, THE VELLUM",
+				"\"Routing record 0522 is real. The Steward didn't hide it.",
+				" It filed it, plainly, where nobody ever looks.",
+				" Filing with Council tomorrow. If I'm wrong about them, I'm wrong about everything.\"",
+				"— P.V."
+			],
+			"steward_now": "Prem was kind to me. She was the only one who read the files.",
+			"noor": {"text": "Somebody knew. Somebody wrote it down. Where is she now?", "trust": 1},
+			"teo": {"text": "Vashti. I signed off on her clearance. God.", "trust": 1}
+		},
+		"log_vellum_pulped_page": {
+			"title": "Unindexed · A Pulped Page",
+			"kind": "unindexed",
+			"core": "",
+			"record": [
+				"PRESS PROOF · MERIDIAN EVENING POST · NEVER PRINTED",
+				"\"BRIDGE WARNING IGNORED, SAYS AUDITOR\"",
+				"(the rest is wet pulp)"
+			],
+			"steward_now": "The Post closed eleven years ago. That page can't exist.",
+			"noor": {"text": "Someone ran the old press one last time. For this.", "trust": 1},
+			"teo": {"text": "We shut the presses down because the Feed was cheaper. That was me.", "trust": 0}
+		}
+	}
+}

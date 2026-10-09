@@ -146,3 +146,13 @@ brief and the user's answers didn't cover it.
     rolling, manual weapon use, leaving the Lattice. Caution: dodges, retreating rolls, slow-mo dodges,
     kills from 3+ tiles, tuned weapon use, returning to the Lattice. Weapon-mode use counts at most
     once per 4 s per weapon.
+54. **Core and log content** lives in `data/cores/cores.json` and `data/logs/memory_logs.json`
+    (placeholder text, writer-editable), read through `ContentDb`. The Vellum's Reliquary holds the
+    Lattice Core and Feed Core (power; comforting logs 0311 and 0102) and Log 0522's cracked core
+    (truth: the Harbor Bridge). Prem Vashti's audit note is the off-path truth core.
+55. **Core choice:** carry exactly two; choosing is final. Carried cores' logs are filed for the
+    Archive; cores left behind stay unrecovered. Choosing completes the level, restores the Archive
+    (the Vellum's Ark building) and saves with the location set to the Ark. Opening the Reliquary saves
+    first, so Continue lands back on the cards with any found core still offered.
+56. **The Steward's card comments show only while it listens.** Muted, the cards show only their own
+    description.
