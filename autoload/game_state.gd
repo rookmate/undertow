@@ -1,0 +1,146 @@
+extends Node
+## Owns the RunState. Every change to tracked state goes through these methods so it is signalled
+## (HUD, debug overlay) and saved at the right moments.
+
+signal state_changed(key: StringName)
+signal run_replaced
+
+var run: RunState = RunState.new()
+
+
+func new_run() -> void:
+	run = RunState.new()
+	run_replaced.emit()
+
+
+func replace_run(state: RunState) -> void:
+	run = state
+	run_replaced.emit()
+
+
+func save() -> Error:
+	return SaveService.save_run(run)
+
+
+# --- Voice -------------------------------------------------------------------------------------------
+## Called every gameplay frame by the Steward while a level is running.
+func add_voice_time(delta: float, voice_on: bool) -> void:
+	if delta <= 0.0:
+		return
+	if voice_on:
+		run.voice_on_seconds += delta
+	else:
+		run.voice_off_seconds += delta
+
+
+func count_voice_toggle() -> void:
+	run.voice_toggle_count += 1
+	state_changed.emit(&"voice_toggle_count")
+
+
+func add_play_time(delta: float) -> void:
+	run.play_seconds += maxf(delta, 0.0)
+
+
+# --- Cores, survivors, logs ----------------------------------------------------------------------------
+func take_core(core_id: String, is_truth: bool) -> void:
+	var list := run.truth_core_ids if is_truth else run.power_core_ids
+	if list.has(core_id):
+		return
+	list.append(core_id)
+	state_changed.emit(&"cores_truth" if is_truth else &"cores_power")
+
+
+## Returns false if this survivor was already counted.
+func add_survivor(survivor_id: String) -> bool:
+	if run.survivor_ids.has(survivor_id):
+		return false
+	run.survivor_ids.append(survivor_id)
+	state_changed.emit(&"survivors_found")
+	return true
+
+
+func unlock_log(log_id: String) -> void:
+	if run.logs_unlocked.has(log_id):
+		return
+	run.logs_unlocked.append(log_id)
+	state_changed.emit(&"logs_unlocked")
+
+
+## Returns true the first time a log is replayed (reactions and trust apply only then).
+func mark_log_replayed(log_id: String) -> bool:
+	if run.logs_replayed.has(log_id):
+		return false
+	run.logs_replayed.append(log_id)
+	state_changed.emit(&"logs_replayed")
+	return true
+
+
+# --- Companions --------------------------------------------------------------------------------------------
+func change_trust(who: StringName, amount: int) -> void:
+	if who == RunState.WHO_NOOR:
+		run.noor_trust = clampi(run.noor_trust + amount, Tunables.TRUST_MIN, Tunables.TRUST_MAX)
+		state_changed.emit(&"noor_trust")
+	elif who == RunState.WHO_TEO:
+		run.teo_trust = clampi(run.teo_trust + amount, Tunables.TRUST_MIN, Tunables.TRUST_MAX)
+		state_changed.emit(&"teo_trust")
+	else:
+		push_error("GameState.change_trust: unknown companion %s" % who)
+
+
+func set_present(who: StringName, present: bool) -> void:
+	if who == RunState.WHO_NOOR:
+		run.noor_present = present
+		state_changed.emit(&"noor_present")
+	elif who == RunState.WHO_TEO:
+		run.teo_present = present
+		state_changed.emit(&"teo_present")
+	else:
+		push_error("GameState.set_present: unknown companion %s" % who)
+
+
+# --- Overrides ----------------------------------------------------------------------------------------------
+func has_override(override_id: String) -> bool:
+	return run.active_overrides.has(override_id)
+
+
+func set_override(override_id: String, signed: bool) -> void:
+	if signed == has_override(override_id):
+		return
+	if signed:
+		run.active_overrides.append(override_id)
+	else:
+		run.active_overrides.erase(override_id)
+	state_changed.emit(&"active_overrides")
+
+
+# --- Playstyle ------------------------------------------------------------------------------------------------
+func record_playstyle(event: StringName, weight: float = 1.0) -> void:
+	if run.playstyle_profile.record(event, weight):
+		state_changed.emit(&"playstyle_profile")
+
+
+# --- Progress ----------------------------------------------------------------------------------------------------
+func set_loadout(weapon_ids: Array[String], modes: Dictionary[String, String]) -> void:
+	run.loadout = weapon_ids.duplicate()
+	run.weapon_modes = modes.duplicate()
+	state_changed.emit(&"loadout")
+
+
+func restore_building(building_id: String) -> void:
+	if run.buildings_restored.has(building_id):
+		return
+	run.buildings_restored.append(building_id)
+	state_changed.emit(&"buildings_restored")
+
+
+func complete_level(level_id: String) -> void:
+	if run.levels_completed.has(level_id):
+		return
+	run.levels_completed.append(level_id)
+	state_changed.emit(&"levels_completed")
+
+
+func set_location(where: String) -> void:
+	run.location = where
+	state_changed.emit(&"location")

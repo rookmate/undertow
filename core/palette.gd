@@ -1,0 +1,68 @@
+class_name Palette
+extends RefCounted
+## Every colour in Undertow comes from here. Colours have owners (design brief, "Color has owners"):
+##   STEWARD_*   the Steward and only the Steward: path, Lattice lamps, ring, gilt, assists, power cores,
+##               its narration. Usage is restricted by tests/unit/test_color_rules.gd.
+##   TRUTH_CYAN  what the player found alone: off-path survivors, truth cores, unindexed logs, Rewrite.
+##   NEON_*      the old city, people selling things to people. Keeps burning after the Quiet.
+##   HUMAN_CREAM human warmth: candles, kitchens, lit windows. Human light is never gold.
+##   DANGER      danger and nothing else.
+## Hex literals are only allowed in this file (also enforced by the colour-rules test).
+
+# --- Owned colours -----------------------------------------------------------------------------
+const STEWARD_GOLD := Color("#F0B35B")
+const STEWARD_GOLD_DIM := Color("#F0B35B", 0.35)
+const STEWARD_GOLD_HOT := Color(1.88, 1.4, 0.72) # HDR value of the gold, for bloom on emissive gilt.
+const TRUTH_CYAN := Color("#7CC7E0")
+const TRUTH_CYAN_HOT := Color(0.97, 1.56, 1.76)
+const NEON_MAGENTA := Color("#E24C8F")
+const NEON_LIME := Color("#9BE36A")
+const HUMAN_CREAM := Color("#F3E3C6")
+const DANGER := Color("#E5654B")
+
+# --- Muted state / UI neutrals ------------------------------------------------------------------
+const IVORY := Color("#ECE8DF")
+const IVORY_DIM := Color("#ECE8DF", 0.55)
+const IVORY_FAINT := Color("#ECE8DF", 0.18)
+const NEAR_BLACK := Color("#0C0D11")
+const PANEL := Color("#0C0D11", 0.86)
+const GREY_COLD := Color("#7D848C")
+const GREY_DEEP := Color("#2B3036")
+const SCORCH := Color("#1B1A19")
+
+# --- World materials (not owned colours; never amber) --------------------------------------------
+const GROUND_TEAL := Color("#0B1A20")
+const COBBLE_A := Color("#16262C")
+const COBBLE_B := Color("#1C2F36")
+const COBBLE_WET := Color("#2A4652")
+const PAVEMENT := Color("#222C33")
+const STONE_OLD := Color("#2A2A2E")
+const PAPER := Color("#B9B3A6")
+const BRICK := Color("#4A2C2A")
+const BRICK_DARK := Color("#331F1E")
+const BRICK_TOP := Color("#2A1D1E")
+const IRON_VERDIGRIS := Color("#2F5450")
+const IRON_DARK := Color("#141B1D")
+const BLACK_MIRROR := Color("#06080B")
+const STAINED_ROSE := Color("#8C3B5A")
+const STAINED_TEAL := Color("#2E6E73")
+const WATER_DEEP := Color("#06141A")
+const WATER_SHEEN := Color("#1A3A46")
+const SKY_VIOLET := Color("#251C3B")
+const SKY_TEAL := Color("#0E2329")
+const FOG := Color("#9FB3BC")
+
+# --- Characters ---------------------------------------------------------------------------------
+const COVERALL := Color("#23282C")
+const COVERALL_LIGHT := Color("#343B40")
+const HIVIS_DULL := Color("#8E8A6E")
+const SKIN_SHADOW := Color("#3A2E2A")
+const CUSTODIAN_SHELL := Color("#C9CDCB")
+const CUSTODIAN_PANEL := Color("#3F7A4A")
+const CLERK_SHELL := Color("#8F8A7E")
+const WAITING_GREY := Color("#5C6166")
+
+# --- Lighting states ----------------------------------------------------------------------------
+## CanvasModulate for the world. Voice on: soft violet-teal night. Muted: cold grey, near-black.
+const AMBIENT_VOICE_ON := Color(0.58, 0.6, 0.74)
+const AMBIENT_MUTED := Color(0.34, 0.37, 0.4)
