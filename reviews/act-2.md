@@ -300,3 +300,61 @@ Both confirmed findings and the inferred one were fixed (DECISIONS 140).
    The calls are now a word or two ("In close.", "Left basin.", "Roll.", "Find the gap.", "Closer.",
    "Middle track."), all within their leads. The visible tells stay first; the voice confirms them.
    Listening is still needed to judge them.
+
+## Round 4 findings (verbatim from sol_analyst)
+
+Scope: `git diff e03edd7..26b712d`, the round 3 fixes being `13fa388..26b712d`.
+
+The Round 3 fixes hold. I found no confirmed high- or medium-severity defect, but one low-severity gap remains in the warning-protection contract.
+
+Reviewed `e03edd7..26b712d` and all three fix ranges without editing files. “Confirmed” means established from source, shipped content, or read-only calculations, not a fresh gameplay reproduction.
+
+1. **Low — Screen voice-overs still cut off warnings. Confirmed contract defect.**
+
+   The protection in [narrator.gd:107](/home/homebox/Documents/rookmate/undertow/autoload/narrator.gd:107) covers `speak_text()`, and pooled narration checks it separately. However, [narrator.gd:129](/home/homebox/Documents/rookmate/undertow/autoload/narrator.gd:129) lets `voice_over()` call `Sound.say()` without checking `warning_in_progress()`. [sound.gd:234](/home/homebox/Documents/rookmate/undertow/autoload/sound.gd:234) then stops the current recording.
+
+   With the voice enabled, calling `Narrator.voice_over("core_greywater_power_pumps")` during `tide_swell` therefore replaces the warning. This also has a reachable screen transition: opening Greywater's Reliquary during the tide warning changes scene, and the first core card automatically receives focus and starts its voice-over. See [reliquary.gd:24](/home/homebox/Documents/rookmate/undertow/game/props/reliquary.gd:24), [core_choice.gd:32](/home/homebox/Documents/rookmate/undertow/ui/core_choice/core_choice.gd:32), and [core_choice.gd:96](/home/homebox/Documents/rookmate/undertow/ui/core_choice/core_choice.gd:96). Neither the scene router nor the level exit clears that warning first.
+
+   The demonstrated normal-flow impact is limited because the player has left the hazard scene. Nevertheless, Decision 139's promise that only a boss call can interrupt a warning is still false. The interruption tests at [test_boss_calls.gd:85](/home/homebox/Documents/rookmate/undertow/tests/integration/test_boss_calls.gd:85) and [test_boss_calls.gd:100](/home/homebox/Documents/rookmate/undertow/tests/integration/test_boss_calls.gd:100) never exercise `voice_over()`.
+
+   Apply the warning guard to `voice_over()` and add a regression assertion that an attempted core or log voice-over leaves the active warning unchanged. I did not execute the sequence above in Godot.
+
+The fix audit is:
+
+| Recorded finding | Result and evidence |
+|---|---|
+| R1 #1 — Surgeon mist reaches the whole hospital | **Resolved.** [surgeon.gd:135](/home/homebox/Documents/rookmate/undertow/game/bosses/surgeon.gd:135) bounds damage to the shared 2–5.5 tile annulus. [test_surgeon.gd:85](/home/homebox/Documents/rookmate/undertow/tests/integration/test_surgeon.gd:85) checks retreat beyond its reach; [test_surgeon.gd:97](/home/homebox/Documents/rookmate/undertow/tests/integration/test_surgeon.gd:97) checks respawn in shipped Mercy General. |
+| R1 #2 — Lung drawing and damage disagree | **Resolved.** [lung.gd:141](/home/homebox/Documents/rookmate/undertow/game/bosses/lung.gd:141) defines the rectangle used by damage, outline and fill. [test_lung.gd:62](/home/homebox/Documents/rookmate/undertow/tests/integration/test_lung.gd:62) checks every quarter's inner corners and outer edges. |
+| R1 #3 — Tall props allow lines through | **Resolved under Decision 138.** [level_grid.gd:301](/home/homebox/Documents/rookmate/undertow/core/level_grid.gd:301) uses the explicit tall classification. [test_level_grid.gd:171](/home/homebox/Documents/rookmate/undertow/tests/unit/test_level_grid.gd:171) checks classification completeness and shipped props. Desks and partitions deliberately remain low; crane legs deliberately gained line blocking. |
+| R1 #4 — Markers erase terrain | **Resolved.** [level_grid.gd:123](/home/homebox/Documents/rookmate/undertow/core/level_grid.gd:123) derives marker terrain. Floor drawing uses that same value at [floor_layer.gd:21](/home/homebox/Documents/rookmate/undertow/game/level/floor_layer.gd:21); flooding, footing, indexing and Marrow detection consume it too. [test_level_grid.gd:153](/home/homebox/Documents/rookmate/undertow/tests/unit/test_level_grid.gd:153) covers the reported Greywater cells and the Loop cache's off-path exclusion. |
+| R1 #5 — Boss recordings are interrupted | **Resolved for the original combat causes.** Recordings fit their declared cadences, and [boss.gd:75](/home/homebox/Documents/rookmate/undertow/game/bosses/boss.gd:75) waits for the introduction. The broader warning-protection promise remains incomplete as described above. |
+| R1 #6 — Trust assertions repeat content data | **Resolved.** [conversations.gd:11](/home/homebox/Documents/rookmate/undertow/core/conversations.gd:11) owns the rule in code. [test_conversations.gd:29](/home/homebox/Documents/rookmate/undertow/tests/integration/test_conversations.gd:29) asserts literal +2/−1/0 values and applied outcomes; the following test checks clamping. The campaign also uses literal deltas. |
+| R1 #7 — Absent companions permit mutation | **Resolved.** [game_state.gd:164](/home/homebox/Documents/rookmate/undertow/autoload/game_state.gd:164) checks both companions before mutation. [test_conversations.gd:56](/home/homebox/Documents/rookmate/undertow/tests/integration/test_conversations.gd:56) checks unchanged trust and consumption after rejection. |
+| R1 #8 — Malformed conversations crash | **Resolved.** [conversations.gd:63](/home/homebox/Documents/rookmate/undertow/core/conversations.gd:63) checks nested shapes; accessors safely return strings. [test_conversations.gd:65](/home/homebox/Documents/rookmate/undertow/tests/integration/test_conversations.gd:65) supplies malformed documents. |
+| R1 #9 — Companions use the Steward's font | **Resolved.** [conversation_screen.gd:42](/home/homebox/Documents/rookmate/undertow/ui/ark/conversation_screen.gd:42) and its speech builder use Barlow. [test_font_rules.gd:20](/home/homebox/Documents/rookmate/undertow/tests/unit/test_font_rules.gd:20) rejects the previous narration-font use. |
+| R2 #1 — Fixed narration and tide interrupt warnings | **Resolved for fixed/pooled narration and the Lung/tide conflict; incomplete across all speech entry points.** The fixed guard and tide suppression hold. The remaining `voice_over()` bypass is the finding above. |
+| R2 #2 / R3 #1 — Migration discards earlier bindings | **Resolved.** [controls.gd:249](/home/homebox/Documents/rookmate/undertow/autoload/controls.gd:249) includes spares, freed defaults and additional inputs, checking actual ownership before assigning one. [test_controls.gd:73](/home/homebox/Documents/rookmate/undertow/tests/unit/test_controls.gd:73) occupies every declared spare and checks preservation, conflict absence and save/load. |
+| R3 #2 — Clinic prompt becomes stale | **Resolved.** [clinic_screen.gd:41](/home/homebox/Documents/rookmate/undertow/ui/ark/clinic_screen.gd:41) refreshes on binding and device changes. [test_clinic.gd:121](/home/homebox/Documents/rookmate/undertow/tests/integration/test_clinic.gd:121) checks rebinding while open and switching device. It changes Controls directly rather than navigating through nested Options. |
+| R3 inferred concern — Instructions finish after their hazards | **Resolved for recording duration versus programmed lead time.** [test_boss_calls.gd:37](/home/homebox/Documents/rookmate/undertow/tests/integration/test_boss_calls.gd:37) checks every boss warning against `WARN_LEADS`; those declarations agree with the actual phase transitions. |
+
+Independent `ffprobe` measurements confirm that all 14 boss warning recordings now fit their programmed leads. For example, `surgeon_mist` lasts **1.036 seconds** against its **1.1-second** lead; the Lung's basin calls last **0.943–1.080 seconds** against **1.5 seconds**. These measurements establish completion timing, not intelligibility or sufficient human reaction time.
+
+I found no additional confirmed regression in run-save serialization, targeting eligibility, colour/typeface ownership, or the voice table. The new save fields have backward-compatible defaults, and existing weapon normalization remains intact. All **187 voice IDs** have clips and matching manifest text, with no orphan manifest entries. No earlier core, log, override or voice ID was removed. The earlier route checks remain, apart from the approved Gauntlet relocation and expanded Vellum coverage.
+
+The regression assertions address the original failures and would reject the old behaviour. I inspected them in source; I did **not** execute historical mutation checks or rerun the artifact-writing gate.
+
+All **17 stored check logs** are free of error, warning and failed-result markers. They substantiate [394 passing tests](/home/homebox/Documents/rookmate/undertow/reports/check/tests.log:406), [198 campaign checks in 724.0 seconds](/home/homebox/Documents/rookmate/undertow/reports/check/full_campaign.log:216), the 30-second run and six passing district tours.
+
+No further inferred defect is established by this review. Listening to the re-voiced lines, human boss balance, and real controller/Steam Deck behaviour remain unverified.
+## Round 4: what was done
+
+The one finding (low) was fixed (DECISIONS 141).
+
+1. **Screen voice-overs cut warnings (low).** `Narrator.voice_over()` now checks
+   `warning_in_progress()` like every other entry point. That leaves `Boss.call_out` as the only way to
+   cut a warning. Sol's example (opening a Reliquary during the tide warning) is now also resolved at
+   its source: a level hushes a warning still being said as it leaves (`Level._exit_tree`). Its hazard
+   is behind you, so the next screen's voice-over is heard. Test:
+   `test_boss_calls::test_a_voice_over_waits_and_leaving_ends_the_warning`. During a warning, a card's
+   and a record's voice-over both wait. Once the level is freed the warning has stopped, and the
+   card's voice-over is said.
