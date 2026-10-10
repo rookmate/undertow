@@ -68,13 +68,15 @@ func _draw() -> void:
 				_kelp(cell)
 			LevelGrid.Floor.GRATING:
 				_grating(cell)
+			LevelGrid.Floor.PARQUET:
+				_parquet(cell)
 			LevelGrid.Floor.VOID:
 				_drop(cell)
 
 
 ## Plain floor characters: what a placed thing's cell is drawn as, taken from a neighbour.
 const PLAIN_FLOORS := ".,:_iqnxh" + Tiles.HOSPITAL_TILE + Tiles.ASPHALT + Tiles.STAFF_FLOOR + Tiles.SEAWALL \
-	+ Tiles.LOW_STREET + Tiles.GRATING
+	+ Tiles.LOW_STREET + Tiles.GRATING + Tiles.NEWSROOM_FLOOR
 ## Placed things (people, finds, spawns) stand on whatever floor surrounds them.
 const MARKERS := "TUWwPCckXVO]BZy"
 
@@ -262,6 +264,22 @@ func _asphalt(cell: Vector2i) -> void:
 
 
 ## Lino laid by people: warm, scuffed, in long strips.
+## The newsroom's parquet: short blocks laid in alternating directions, worn pale where chairs rolled.
+func _parquet(cell: Vector2i) -> void:
+	draw_colored_polygon(Iso.cell_diamond(cell), Palette.PARQUET)
+	for i: int in 2:
+		for j: int in 2:
+			var along_x := (i + j) % 2 == 0
+			var block := _sub_diamond(cell, i * 0.5, j * 0.5, 0.5, 0.02)
+			draw_colored_polygon(block, Palette.PARQUET_B if along_x else Palette.PARQUET)
+			for k: int in 3:
+				var t := 0.125 + k * 0.125
+				if along_x:
+					draw_line(_at(cell, i * 0.5, j * 0.5 + t), _at(cell, i * 0.5 + 0.5, j * 0.5 + t), Color(Palette.NEAR_BLACK, 0.22), 1.0, true)
+				else:
+					draw_line(_at(cell, i * 0.5 + t, j * 0.5), _at(cell, i * 0.5 + t, j * 0.5 + 0.5), Color(Palette.NEAR_BLACK, 0.22), 1.0, true)
+
+
 func _lino(cell: Vector2i) -> void:
 	draw_colored_polygon(Iso.cell_diamond(cell), look.staff_floor)
 	for k: int in 3:

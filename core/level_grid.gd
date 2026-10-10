@@ -4,7 +4,7 @@ extends RefCounted
 ## may rename its own characters to named tiles with '% <char> <tile>' lines (Tiles); the grid stores
 ## the tiles' internal codes, so the rest of the game never sees the map's own letters.
 
-enum Floor { VOID, BUILDING, COBBLE, PAVEMENT, OLD_QUAY, STACKS, STAIRS, WATER, RAILING, LOW_WALL, CONCRETE, FOUNDATION, LAWN, STEPS, TIMBER, GRAVEL, TRACK, CARRIAGE, GANTRY, CAB, TILE, ASPHALT, STAFF, SEAWALL, LOW_STREET, KELP, GRATING }
+enum Floor { VOID, BUILDING, COBBLE, PAVEMENT, OLD_QUAY, STACKS, STAIRS, WATER, RAILING, LOW_WALL, CONCRETE, FOUNDATION, LAWN, STEPS, TIMBER, GRAVEL, TRACK, CARRIAGE, GANTRY, CAB, TILE, ASPHALT, STAFF, SEAWALL, LOW_STREET, KELP, GRATING, PARQUET }
 
 const FLOOR_OF: Dictionary[String, Floor] = {
 	" ": Floor.VOID, "#": Floor.BUILDING, "d": Floor.BUILDING, "m": Floor.BUILDING, "g": Floor.BUILDING,
@@ -35,13 +35,14 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	Tiles.SEAWALL: Floor.SEAWALL, Tiles.LOW_STREET: Floor.LOW_STREET, Tiles.KELP: Floor.KELP,
 	Tiles.MARROW: Floor.LOW_STREET, Tiles.GRATING: Floor.GRATING, Tiles.PUMP_WALL: Floor.BUILDING,
 	Tiles.PUMP_DOOR: Floor.BUILDING, Tiles.TURBINE: Floor.WATER, Tiles.TIDE_GAUGE: Floor.LOW_STREET,
+	Tiles.NEWSROOM_FLOOR: Floor.PARQUET, Tiles.NEWSROOM_DESK: Floor.PARQUET,
 }
 ## Characters whose cell blocks movement.
 ## Lawns (and the hedges, planters and sprinklers on them) are the Steward's gardens: looked at, not
 ## walked on. The smart gate 'Q' is solid only while closed (SmartGate), so it isn't listed.
 const SOLID := " #dmgAlMI~=-L|KtoRTvHjFbrJ*[^" + Tiles.PARTITION + Tiles.AMBULANCE + Tiles.NURSE_DESK \
 	+ Tiles.HOSPITAL_WALL + Tiles.HOSPITAL_DOOR + Tiles.HOSPITAL_BED + Tiles.CLINIC + Tiles.PUMP_WALL \
-	+ Tiles.PUMP_DOOR + Tiles.TURBINE + Tiles.TIDE_GAUGE + Tiles.PUMPHOUSE
+	+ Tiles.PUMP_DOOR + Tiles.TURBINE + Tiles.TIDE_GAUGE + Tiles.PUMPHOUSE + Tiles.NEWSROOM_DESK
 ## People stand on these cells: walkable floor, but nothing should route through them.
 const OCCUPIED := "WwNY"
 ## Placed things that need a stable id from an '@' line (people, caches, logs).
@@ -232,7 +233,8 @@ func is_occupied(cell: Vector2i) -> bool:
 func is_indexed(cell: Vector2i) -> bool:
 	var f := floor_at(cell)
 	return f == Floor.COBBLE or f == Floor.PAVEMENT or f == Floor.STEPS or f == Floor.TRACK or f == Floor.CARRIAGE or f == Floor.GANTRY \
-		or f == Floor.TILE or f == Floor.ASPHALT or f == Floor.SEAWALL or f == Floor.LOW_STREET or f == Floor.KELP
+		or f == Floor.TILE or f == Floor.ASPHALT or f == Floor.SEAWALL or f == Floor.LOW_STREET or f == Floor.KELP \
+		or f == Floor.PARQUET
 
 
 ## Low enough to flood at high tide (Greywater's low streets, kelp and all).

@@ -29,7 +29,7 @@ func test_opening_the_reliquary_saves_and_points_continue_at_the_choice() -> voi
 	for n: Node in get_tree().get_nodes_in_group(&"interactables"):
 		if n is Reliquary and level.is_ancestor_of(n):
 			reliquary = n
-	check(reliquary != null, "the Reliquary stands in the plaza")
+	check(reliquary != null, "the Reliquary stands past the press hall")
 	level.player.position = Iso.cell_center(level.grid.first("R") + Vector2i(1, 0))
 	await wait_frames(2)
 	check(level.player.interact_target() == reliquary, "in reach")
@@ -50,6 +50,18 @@ func test_card_screen_offers_three_or_four_cards() -> void:
 	var screen2 := await _open_choice()
 	check_eq((screen2.get("offered") as Array).size(), 4)
 	screen2.queue_free()
+
+
+func test_five_cards_fit_across_the_screen() -> void:
+	GameState.find_core(ContentIds.CORE_TRUTH_STACKS)
+	GameState.find_core("vellum_truth_vashti_office")
+	var screen := await _open_choice()
+	var cards: Dictionary = screen.get("_cards")
+	check_eq(cards.size(), 5, "the Vellum's three and both of Prem Vashti's notes")
+	for b: Button in cards.values():
+		var corner := b.get_global_transform() * b.size
+		check(corner.x <= 1920.0 - 40.0 and corner.y <= 900.0, "a card ends at %s, on screen and above the buttons" % corner)
+	screen.queue_free()
 
 
 func test_steward_comments_only_while_listening() -> void:

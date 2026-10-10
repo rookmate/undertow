@@ -3,9 +3,10 @@ extends Node2D
 ## Placeholder props drawn as small isometric prisms and shapes: the canal railing, low walls, stack
 ## shelves, a Feed kiosk, a stalled tram segment and bollards; in Kestrel Heights, trimmed hedges, stone
 ## planters of white blossom, and lawn sprinklers that still come on; in Mercy General, glass ward
-## partitions cut away to waist height, and ambulances parked nose to tail.
+## partitions cut away to waist height, and ambulances parked nose to tail; in the Vellum's newsroom,
+## desks with their dead screens.
 
-enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD, HEDGE, PLANTER, SPRINKLER, BED, CARRIAGE_SIDE, DESK, CONTAINER, PARTITION, AMBULANCE, NURSE_DESK, HOSPITAL_BED, TURBINE }
+enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD, HEDGE, PLANTER, SPRINKLER, BED, CARRIAGE_SIDE, DESK, CONTAINER, PARTITION, AMBULANCE, NURSE_DESK, HOSPITAL_BED, TURBINE, NEWS_DESK }
 ## Props that move (and so redraw every frame); every other kind is drawn once.
 const MOVING: Array[Kind] = [Kind.SPRINKLER, Kind.TURBINE]
 
@@ -87,6 +88,22 @@ func _draw() -> void:
 			_hospital_bed()
 		Kind.TURBINE:
 			_turbine()
+		Kind.NEWS_DESK:
+			_news_desk()
+
+
+## A newsroom desk: a black screen with the Feed's ring burned into it, and a tube carrier left on top.
+func _news_desk() -> void:
+	_prism(28.0, Palette.NEWS_DESK, Palette.NEWS_DESK.darkened(0.3), Palette.NEWS_DESK.lightened(0.12), 0.78)
+	var screen := PackedVector2Array([Vector2(-20, -40), Vector2(8, -26), Vector2(8, -58), Vector2(-20, -72)])
+	draw_colored_polygon(screen, Palette.BLACK_MIRROR)
+	draw_line(Vector2(-6, -33), Vector2(-6, -28), Palette.IRON_DARK, 3.0)
+	var ring := PackedVector2Array()
+	for k: int in 25:
+		var a := TAU * k / 24.0
+		ring.append(Vector2(-6 + cos(a) * 7.0, -49 + sin(a) * 9.0 + cos(a) * 3.5))
+	draw_polyline(ring, Palette.SCREEN_BURN, 2.0, true)
+	draw_line(Vector2(14, -32), Vector2(26, -26), Palette.IRON_VERDIGRIS, 5.0, true)
 
 
 ## A tidal turbine in the channel, still turning on the current: a pylon and three blades.

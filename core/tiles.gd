@@ -44,6 +44,13 @@ const PUMP_DOOR := "υ"
 const TURBINE := "φ"
 const TIDE_GAUGE := "χ"
 
+# --- The Vellum (Act 2's east bank) -------------------------------------------------------------------
+# (The lowercase Greek letters are spent; these are uppercase.)
+## The newsroom's parquet: on the Lattice (the Feed was written here).
+const NEWSROOM_FLOOR := "Γ"
+## A newsroom desk: a black screen with the ring burned into it.
+const NEWSROOM_DESK := "Δ"
+
 # --- The Ark -----------------------------------------------------------------------------------------
 ## The Clinic (from Mercy General) and its door.
 const CLINIC := "μ"
@@ -59,6 +66,7 @@ const BY_NAME: Dictionary[String, String] = {
 	"clinic": CLINIC, "clinic_door": CLINIC_DOOR, "pumphouse": PUMPHOUSE, "pumphouse_door": PUMPHOUSE_DOOR,
 	"seawall": SEAWALL, "low_street": LOW_STREET, "kelp": KELP, "marrow": MARROW, "grating": GRATING,
 	"pump_wall": PUMP_WALL, "pump_door": PUMP_DOOR, "turbine": TURBINE, "tide_gauge": TIDE_GAUGE,
+	"newsroom_floor": NEWSROOM_FLOOR, "newsroom_desk": NEWSROOM_DESK,
 }
 
 

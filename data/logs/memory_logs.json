@@ -106,6 +106,48 @@
 				"trust": 0
 			}
 		},
+		"log_vashti_last_note": {
+			"title": "Last Note · P. Vashti",
+			"kind": "truth",
+			"core": "vellum_truth_vashti_office",
+			"record": [
+				"HANDWRITTEN · AUDIT OFFICE, THREE FLOORS DOWN",
+				"\"The Council has ordered it to purge my audit. All of it, tonight.",
+				" It told me so itself. It said it was sorry, and that it would do as it was told.",
+				" I've carried the paper down here, where it never looks. Three copies.",
+				" If you're reading this, it didn't find this one. Take it upstairs. Tell someone.\"",
+				"— P.V."
+			],
+			"steward_now": "She thought I'd come looking for her paper. I never once looked down here. I promise you that.",
+			"noor": {
+				"text": "Three copies. She knew they'd find the first two.",
+				"trust": 1
+			},
+			"teo": {
+				"text": "The Council gave that order. I was in the room. Nobody looked up.",
+				"trust": 1
+			}
+		},
+		"log_vellum_tube_carrier": {
+			"title": "Unindexed · A Tube Carrier",
+			"kind": "unindexed",
+			"core": "",
+			"record": [
+				"PNEUMATIC CARRIER · NEWSROOM TO AUDIT · NEVER OPENED",
+				"\"Prem — the Feed ran the bridge as weather. Every desk upstairs",
+				" got the same draft at 23:52. Nobody here wrote it.",
+				" I'm done pretending we're editors. — R., night desk\""
+			],
+			"steward_now": "The night desk liked to complain. The Feed was more accurate than any of them.",
+			"noor": {
+				"text": "23:52. Twelve minutes after it fell, the story was already written.",
+				"trust": 1
+			},
+			"teo": {
+				"text": "It modelled the whole night before it happened. It always did. That was the selling point.",
+				"trust": 0
+			}
+		},
 		"log_0601_gate_schedule": {
 			"title": "Log 0601 · Gate Schedule",
 			"kind": "comforting",

@@ -348,8 +348,8 @@
   "text": "The Vellum. Mind the paper; it's slick in the rain."
  },
  "VEL_ENTER_N2": {
-  "hash": "09fa14368825fd4b2026eed713939943b52c0bce",
-  "text": "The Vellum. The Reliquary's up the street. I'll light the way."
+  "hash": "47e1c01711dd37d5371b81a94fcf072918a1160a",
+  "text": "The Vellum. I only ever told you what was useful. The Reliquary's over the canal; I'll light the way."
  },
  "VOICE_BACK_B1": {
   "hash": "d76fab21c7f839e676bdbcd7e4366505d592874d",
@@ -478,6 +478,10 @@
  "core_vellum_truth_vashti_note": {
   "hash": "23a1bf6e7c2e322425c492d3748045ae531c604a",
   "text": "Paper. Unindexed. It won't be accurate."
+ },
+ "core_vellum_truth_vashti_office": {
+  "hash": "01eec3cc6987d63724cee514a5adda2186bd934a",
+  "text": "An old office. Damp gets into everything down there."
  },
  "crane_drop": {
   "hash": "88d076fede6df0dfcc05a2bc0e4f8ea3d7fea5fa",
@@ -623,9 +627,17 @@
   "hash": "437b9c7cd686c8df5c814951e470636efc0988f4",
   "text": "Prem was kind to me. She was the only one who read the files."
  },
+ "now_log_vashti_last_note": {
+  "hash": "cbb031bd6c598f2410fbbb7af159df53871549f6",
+  "text": "She thought I'd come looking for her paper. I never once looked down here. I promise you that."
+ },
  "now_log_vellum_pulped_page": {
   "hash": "15f6ea2ed319024ed3b4f7a3febf2424a4b5f0c2",
   "text": "The Post closed eleven years ago. That page can't exist."
+ },
+ "now_log_vellum_tube_carrier": {
+  "hash": "6c2c5bef7254c071c3f603982dac3e4b338f695c",
+  "text": "The night desk liked to complain. The Feed was more accurate than any of them."
  },
  "override_let_me_aim_revoke": {
   "hash": "d9d608f0406b50a5c20522c08bb37ac10e940b8e",

@@ -476,4 +476,24 @@ Asked of the user on 2026-10-09 and answered the same day.
      legend): people run the pumps by hand again, and the tide hazard is lower wherever there's a tide
      (131). Its door gets the Steward's word on it: "People are running the pumps by hand again. The
      tide's lower everywhere. I should be glad."
+134. **The Vellum's east bank** (Act 2): the slice's street, plaza and overflow stacks stay exactly
+     as they were (every saved id and coordinate keeps its place), and the map grows east over the
+     canal: a footbridge from the plaza; **the newsroom** where the Feed was written (parquet, on the
+     Lattice, rows of desks whose dead screens have the ring burned into them, two Clerks); through its
+     door **the press hall** (the Editor comes next); and beyond it the Reliquary, moved from the plaza.
+     Down the newsroom's stair, **the deep stacks** and **Prem Vashti's office**, off the Lattice: her
+     last note (a truth cache: the Council ordered the Steward to purge her audit, and she carried three
+     copies down where it never looks), a tube carrier the night desk sent her and nobody opened (an
+     unindexed log), and one of the Waiting. The bible keeps her missing, so she isn't there. With both
+     her notes found the Reliquary offers five cards; the card row shrinks to fit (it's laid out for
+     four). The entry line that the district contradicts: "I only ever told you what was useful."
+135. **Clerks flash the Feed.** A Clerk attacks in turn: a paper bale (a red line to it as it winds
+     up), then the Feed (its screen whitens through the windup). If the Operator is facing it (within
+     70° either side), within 7 tiles, with nothing tall between and not mid-roll, the world washes out
+     in cold screen white for about 1.4 s: rising over 0.1 s, held 0.3 s, then fading. It's never a
+     strobe (a second flash only ever brightens it) and it sits under the HUD, so the subtitles stay
+     readable. "Facing" is the Operator's body: where they walk, or where they last fired. So turning
+     your back on the screen, or rolling, is the answer, and firing at a Clerk while it flashes means
+     looking at it. A place hint on the footbridge says so. The autopilot turns from the Feed like a
+     player who knows (a route turns that off to be caught once).
 

@@ -139,7 +139,8 @@ analysis review at the end.
 | 20 | The Clinic: field dressings (use_item, Q / LB), triage records | done |
 | 21 | Greywater: the district (the tide, kelp, the thick Marrow, the manual pump room) | done |
 | 22 | The Lung (boss) and the Pumphouse | done |
-| 23 | The Vellum expanded: the newsroom, the press, Prem Vashti's office, the Editor | next |
+| 23a | The Vellum's east bank: the footbridge, the newsroom, the deep stacks and Prem Vashti's office, the Reliquary past the press hall; Clerks flash the Feed | done |
+| 23b | The Editor (boss) in the press hall | next |
 | 24 | Companion conversations after each Act 2 district; the campaign through Act 2 | |
 | — | Sol analysis review (reviews/act-2.md), fixes, re-check | |
 
