@@ -41,7 +41,13 @@ func prompt_verb() -> String:
 	return "TALK TO %s" % display_name()
 
 
+## Noor and Teo talk a district over with you the first time after it (ConversationScreen); otherwise
+## each says a line.
 func interact(_player: Operator) -> void:
+	var ark := level as ArkLevel
+	if who != Who.SURVIVOR and ark != null and GameState.run.pending_conversation() != "":
+		ark.open_conversation(GameState.run.pending_conversation())
+		return
 	_line = current_line()
 	_line_left = 4.0
 

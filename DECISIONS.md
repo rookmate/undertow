@@ -507,4 +507,11 @@ Asked of the user on 2026-10-09 and answered the same day.
      three bales in a fan, then **re-inks** for 3.5 s: open to blows. 420 integrity. The manual
      solution: knock the bale stack over the pulper into it while it pulps, and it jams for 6 s, once a
      cycle.
+137. **Noor and Teo talk each Act 2 district over**, once: the first time you talk to either of them
+     after it, a conversation opens (`data/companions/conversations.json`). Each says their piece (they
+     disagree), and you answer: side with Noor, side with Teo, or say nothing. Siding moves the one you
+     sided with +2 and the other −1; saying nothing moves neither; each replies either way. Backing out
+     before answering leaves it for next time (saying nothing is an answer; leaving isn't). The run
+     keeps which have been had (`conversations_had`). With either of them gone there's none. With every
+     built district done, the Loop map names what's still to come (Harbor Ward, the Spire).
 

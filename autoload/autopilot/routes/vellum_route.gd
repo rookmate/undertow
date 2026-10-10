@@ -25,7 +25,8 @@ const THROUGH: Array[String] = [
 	"playstyle_profiled", "core_choice_shown", "five_cards_with_both_vashti_notes", "cores_carried",
 	"level_completed_archive_restored", "saved_after_choice", "ark_reached",
 	"archive_restored_on_the_ark", "noor_and_teo_present", "survivors_on_the_ark", "archive_replayed",
-	"trust_changed", "loop_map_shown", "endings_offered_with_rewrite_locked",
+	"trust_changed", "conversation_waiting", "conversation_offered", "conversation_answered", "loop_map_shown",
+	"endings_offered_with_rewrite_locked",
 ]
 
 
@@ -393,7 +394,8 @@ func choose(screen: Node, gen: int) -> void:
 	on_to_the_ark(screen)
 
 
-## The Ark: the restored Archive, Noor and Teo, the survivors; replay two memories, talk, take the skiff.
+## The Ark: the restored Archive, Noor and Teo, the survivors; replay Prem Vashti's notes, talk her over
+## with Noor and Teo (and say nothing), take the skiff.
 func at_ark(ark: ArkLevel, gen: int) -> bool:
 	pass_check("ark_reached")
 	var player := ark.player
@@ -431,9 +433,8 @@ func at_ark(ark: ArkLevel, gen: int) -> bool:
 	Autopilot.tap(&"ui_cancel")
 	if not await Autopilot.wait(0.8, gen):
 		return false
-	if not await Autopilot.use_at(ark, player, Vector2i(12, 9), gen):
+	if not await talk_it_over(ark, "none", gen):
 		return false
-	await Autopilot.snap("ark_noor")
 	if not await Autopilot.open_city_map(ark, gen):
 		return false
 	check(ark.city_map != null, "loop_map_shown")

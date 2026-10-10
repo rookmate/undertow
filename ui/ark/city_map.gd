@@ -64,7 +64,7 @@ func _ready() -> void:
 	Modals.push(self)
 	var open := LevelCatalog.open_districts(GameState.run)
 	if open.is_empty():
-		_detail.text = "THE SKIFF ISN'T READY\n\nMore of Meridian is coming. Every district built so far is behind you."
+		_detail.text = "THE SKIFF ISN'T READY\n\nEvery district built so far is behind you. Still to come: %s." % ", ".join(still_to_come())
 		_go.disabled = true
 		_summary_button.grab_focus()
 	else:
@@ -79,6 +79,15 @@ func _label(text: String, font: Font, font_size: int, col: Color) -> Label:
 	l.add_theme_font_size_override(&"font_size", font_size)
 	l.add_theme_color_override(&"font_color", col)
 	return l
+
+
+## The districts of Meridian not built yet, by name (Harbor Ward and the Spire, Act 3).
+static func still_to_come() -> PackedStringArray:
+	var out := PackedStringArray()
+	for d: Dictionary in LevelCatalog.CITY:
+		if not LevelCatalog.has_level(str(d["id"])):
+			out.append(str(d["name"]))
+	return out
 
 
 ## How far the run has got with a district: "done", "open", "locked" (built, not reached yet), "unbuilt".

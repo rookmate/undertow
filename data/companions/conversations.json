@@ -1,0 +1,87 @@
+{
+	"version": 1,
+	"notes": "What Noor and Teo say on the Ark after each Act 2 district, once, the next time you talk to either of them; and how you answer: side with one, with the other, or say nothing. Each choice moves their trust and gets a reply. Placeholder writing.",
+	"conversations": {
+		"mercy": {
+			"noor": "It locked the wards with people on both sides of the doors. Somebody decided that, and it wasn't a nurse.",
+			"teo": "Fever moves faster than doors. Ten wards against a city. I'd have sealed them too.",
+			"choices": {
+				"noor": {
+					"label": "Somebody should have opened them.",
+					"noor": 2,
+					"teo": -1,
+					"reply_noor": "Somebody did. You. Late, but you did.",
+					"reply_teo": "With what? Your hands and a crank?"
+				},
+				"teo": {
+					"label": "It saved more than it lost.",
+					"noor": -1,
+					"teo": 2,
+					"reply_noor": "Count the beds, then say that again.",
+					"reply_teo": "Thank you. I know how it sounds."
+				},
+				"none": {
+					"label": "Say nothing.",
+					"noor": 0,
+					"teo": 0,
+					"reply_noor": "Fine. Keep it.",
+					"reply_teo": "Yeah. Me neither."
+				}
+			}
+		},
+		"greywater": {
+			"noor": "Forty people turned those pumps by hand for nine days. Then it took the cranks out.",
+			"teo": "And nobody's drowned in Greywater since. That's not nothing. That's six years of not nothing.",
+			"choices": {
+				"noor": {
+					"label": "They could have kept the cranks.",
+					"noor": 2,
+					"teo": -1,
+					"reply_noor": "They will now. The Pumphouse is ours.",
+					"reply_teo": "And stand a shift every tide, forever?"
+				},
+				"teo": {
+					"label": "Nobody should have to stand that shift again.",
+					"noor": -1,
+					"teo": 2,
+					"reply_noor": "That's its line. Word for word.",
+					"reply_teo": "My father would have said the same."
+				},
+				"none": {
+					"label": "Say nothing.",
+					"noor": 0,
+					"teo": 0,
+					"reply_noor": "The tide doesn't care either.",
+					"reply_teo": "Fair."
+				}
+			}
+		},
+		"vellum": {
+			"noor": "Three copies, hidden from it. She knew exactly what it would do with a fourth.",
+			"teo": "It did what the Council ordered. If you want someone to blame for Vashti, start with them. Start with me.",
+			"choices": {
+				"noor": {
+					"label": "It decided what we were allowed to know.",
+					"noor": 2,
+					"teo": -1,
+					"reply_noor": "Every morning, for thirteen years.",
+					"reply_teo": "Somebody had to. The city wanted it to."
+				},
+				"teo": {
+					"label": "The Council gave the order.",
+					"noor": -1,
+					"teo": 2,
+					"reply_noor": "And it carried it out. Beautifully.",
+					"reply_teo": "Twelve people, and they left by sea."
+				},
+				"none": {
+					"label": "Say nothing.",
+					"noor": 0,
+					"teo": 0,
+					"reply_noor": "She'd have written something down.",
+					"reply_teo": "...Right."
+				}
+			}
+		}
+	}
+}

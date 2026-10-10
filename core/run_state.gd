@@ -34,6 +34,8 @@ var noor_present: bool = true
 var teo_present: bool = true
 ## Noor and Teo have arrived on the Ark (their arrival plays once).
 var companions_met: bool = false
+## Act 2 districts talked over with them (Conversations), in the order you had them.
+var conversations_had: Array[String] = []
 
 # --- Steward --------------------------------------------------------------------------------------------
 var active_overrides: Array[String] = []
@@ -101,6 +103,17 @@ func companion_here(who: StringName) -> bool:
 	return companions_joined() and is_present(who)
 
 
+## The conversation waiting for the next time you talk to Noor or Teo: the first district you've done
+## that has one not yet had, while both of them are here ("" if none).
+func pending_conversation() -> String:
+	if not (companion_here(WHO_NOOR) and companion_here(WHO_TEO)):
+		return ""
+	for district: String in levels_completed:
+		if Conversations.has(district) and not conversations_had.has(district):
+			return district
+	return ""
+
+
 # --- Serialisation ----------------------------------------------------------------------------------
 func to_dict() -> Dictionary:
 	return {
@@ -120,6 +133,7 @@ func to_dict() -> Dictionary:
 		"noor_present": noor_present,
 		"teo_present": teo_present,
 		"companions_met": companions_met,
+		"conversations_had": conversations_had.duplicate(),
 		"active_overrides": active_overrides.duplicate(),
 		"playstyle_profile": playstyle_profile.to_dict(),
 		"weapons_owned": weapons_owned.duplicate(),
@@ -158,6 +172,7 @@ static func from_dict(d: Dictionary) -> RunState:
 	s.noor_present = _bool(d.get("noor_present", true))
 	s.teo_present = _bool(d.get("teo_present", true))
 	s.companions_met = _bool(d.get("companions_met", false))
+	s.conversations_had = _strings(d.get("conversations_had", []))
 	s.active_overrides = _strings(d.get("active_overrides", []))
 	var profile: Variant = d.get("playstyle_profile", {})
 	s.playstyle_profile = PlaystyleProfile.from_dict(profile if profile is Dictionary else {})
