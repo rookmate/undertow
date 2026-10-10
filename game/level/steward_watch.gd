@@ -4,6 +4,8 @@ extends Node
 ## something about it. Listens to gameplay, feeds the playstyle profile while the voice is on (muted, it
 ## isn't listening), and passes events to the Narrator.
 
+## Seconds into a district before the Steward says its line about it.
+const ENTER_DELAY := 1.4
 const MULTI_KILL_WINDOW := 2.0
 const IDLE_SECONDS := 9.0
 const RELIQUARY_TILES := 4.0
@@ -32,7 +34,7 @@ func setup(owner_level: Level) -> void:
 	level.enemy_died.connect(_on_enemy_died)
 	_was_indexed = level.grid.is_indexed(p.cell())
 	if not level.is_hub():
-		_say_later(&"level_enter", 1.4)
+		_say_later(&"level_enter", ENTER_DELAY)
 
 
 func _say_later(event: StringName, seconds: float) -> void:

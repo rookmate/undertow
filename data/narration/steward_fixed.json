@@ -38,11 +38,11 @@
 			"purpose": "fact"
 		},
 		"crane_drop": {
-			"text": "Drop. Get out from under it.",
+			"text": "Drop, move.",
 			"purpose": "warning"
 		},
 		"crane_swing": {
-			"text": "Swing. Get in close to the tower.",
+			"text": "In close.",
 			"purpose": "warning"
 		},
 		"crane_rest": {
@@ -66,7 +66,7 @@
 			"purpose": "fact"
 		},
 		"surgeon_incision": {
-			"text": "Incision. Off the line.",
+			"text": "Off the line.",
 			"purpose": "warning"
 		},
 		"surgeon_mist": {
@@ -82,7 +82,7 @@
 			"purpose": "warning"
 		},
 		"lung_left": {
-			"text": "The left basin's filling. Out of it.",
+			"text": "Left basin. Out of it.",
 			"purpose": "warning"
 		},
 		"lung_right": {
@@ -98,7 +98,7 @@
 			"purpose": "warning"
 		},
 		"lung_surge": {
-			"text": "Surge. Roll through it.",
+			"text": "Surge. Roll through.",
 			"purpose": "warning"
 		},
 		"lung_vent": {
@@ -110,11 +110,11 @@
 			"purpose": "fact"
 		},
 		"editor_rollers": {
-			"text": "Rollers. Stand in the gap; I've lit it.",
+			"text": "Rollers. Stand in the gap.",
 			"purpose": "warning"
 		},
 		"editor_feed": {
-			"text": "It's turning the Feed on you. Don't look at it.",
+			"text": "Look away.",
 			"purpose": "warning"
 		},
 		"editor_ink": {

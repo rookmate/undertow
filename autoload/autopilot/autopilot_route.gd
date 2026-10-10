@@ -139,9 +139,10 @@ func talk_it_over(ark: ArkLevel, side: String, gen: int) -> bool:
 	if not await Autopilot.wait(2.0, gen):
 		return false
 	await Autopilot.snap(id + "_conversation")
-	var choice := Conversations.choice(id, side)
-	var noor := clampi(r.noor_trust + int(choice.get("noor", 0)), Tunables.TRUST_MIN, Tunables.TRUST_MAX)
-	var teo := clampi(r.teo_trust + int(choice.get("teo", 0)), Tunables.TRUST_MIN, Tunables.TRUST_MAX)
+	# DECISIONS 137: siding with one is +2 for them and -1 for the other; saying nothing moves neither.
+	var moves: Dictionary[String, Vector2i] = {"noor": Vector2i(2, -1), "teo": Vector2i(-1, 2), "none": Vector2i.ZERO}
+	var noor := clampi(r.noor_trust + moves[side].x, Tunables.TRUST_MIN, Tunables.TRUST_MAX)
+	var teo := clampi(r.teo_trust + moves[side].y, Tunables.TRUST_MIN, Tunables.TRUST_MAX)
 	var buttons: Dictionary = screen.get("_choices")
 	(buttons[side] as Button).grab_focus()
 	Autopilot.tap(&"ui_accept")

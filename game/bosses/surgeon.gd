@@ -15,19 +15,30 @@ const MARK_SECONDS := 1.0
 ## Muted, you read the guide line yourself: it shows this much sooner.
 const EARLY_MARK := 0.3
 const CUT_SECONDS := 0.35
+## After the cut, before the next line.
+const CUT_RECOVER := 0.3
 ## How close to the line the beam catches you, and how far out from the table it reaches (tiles).
 const CUT_WIDTH := 0.6
 const CUT_LENGTH := 6.5
 const CUT_DAMAGE := 18.0
 const MIST_WARN_SECONDS := 1.1
 const MIST_SECONDS := 2.6
-## Close to the table the mist doesn't reach (tiles).
+## Close to the table the mist doesn't reach (tiles); it fills the theatre out to MIST_REACH, and no
+## further (the damage and the drawn mist both use these two).
 const MIST_SAFE := 2.0
+const MIST_REACH := 5.5
 const MIST_TICK := 0.35
 const MIST_DAMAGE := 4.0
 const SUTURE_SECONDS := 3.5
 const STALL_SECONDS := 6.0
 const ARM_HEIGHT := 150.0
+
+## Each call, and the soonest the next can come (seconds).
+const CALL_GAPS: Dictionary[String, float] = {
+	"surgeon_incision": MARK_SECONDS + CUT_SECONDS + CUT_RECOVER,
+	"surgeon_mist": MIST_WARN_SECONDS + MIST_SECONDS,
+	"surgeon_suture": SUTURE_SECONDS,
+}
 
 var phase: Phase = Phase.IDLE
 ## Times stalled through the lamp switch (the manual solution).
@@ -114,9 +125,10 @@ func on_line(at: Vector2) -> bool:
 	return absf(rel.dot(cut_dir)) <= CUT_LENGTH and absf(rel.cross(cut_dir)) <= CUT_WIDTH
 
 
-## Whether a point (world) is out in the mist (too far from the table).
+## Whether a point (world) is out in the mist: too far from the table, but still in the theatre.
 func in_mist(at: Vector2) -> bool:
-	return Iso.ground_distance(global_position, at) > MIST_SAFE
+	var d := Iso.ground_distance(global_position, at)
+	return d > MIST_SAFE and d <= MIST_REACH
 
 
 func _fight(delta: float) -> void:
@@ -136,7 +148,7 @@ func _fight(delta: float) -> void:
 				_struck = true
 				if player_ok and on_line(p.global_position):
 					p.take_hit(CUT_DAMAGE, global_position)
-			if _phase_time >= CUT_SECONDS + 0.3:
+			if _phase_time >= CUT_SECONDS + CUT_RECOVER:
 				_enter_phase(Phase.MARK if _cuts_left > 0 else Phase.MIST_WARN)
 		Phase.MIST_WARN:
 			if _phase_time >= MIST_WARN_SECONDS:
@@ -212,11 +224,13 @@ func _draw() -> void:
 	if phase == Phase.CUT:
 		draw_line(-a_end, a_end, Color(Palette.DANGER, 0.9), 6.0, true)
 		draw_line(-a_end, a_end, Color(Palette.IVORY, 0.6), 2.0, true)
-	# The mist's edge: inside this ring the table keeps you clear.
+	# The mist: from the table's clear ring (red-orange, the edge that matters) out to the theatre's
+	# reach, where it thins out.
 	if phase == Phase.MIST_WARN or phase == Phase.MIST:
 		_ring(MIST_SAFE, Color(Palette.DANGER, 0.85))
+		_ring(MIST_REACH, Color(Palette.STERILE_MIST, 0.25 if phase == Phase.MIST_WARN else 0.5))
 		if phase == Phase.MIST:
-			_ring(MIST_SAFE + 3.5, Color(Palette.STERILE_MIST, 0.25))
+			_annulus(MIST_SAFE, MIST_REACH, Color(Palette.STERILE_MIST, 0.16))
 
 
 func _dashed(from: Vector2, to: Vector2, col: Color) -> void:
@@ -224,6 +238,17 @@ func _dashed(from: Vector2, to: Vector2, col: Color) -> void:
 	for i: int in n:
 		if i % 2 == 0:
 			draw_line(from.lerp(to, float(i) / n), from.lerp(to, float(i + 1) / n), col, 4.0, true)
+
+
+## The ground between two circles round the table, filled.
+func _annulus(inner: float, outer: float, col: Color) -> void:
+	for i: int in 32:
+		var a0 := TAU * i / 32.0
+		var a1 := TAU * (i + 1) / 32.0
+		draw_colored_polygon(PackedVector2Array([
+			Iso.grid_to_world(Vector2.from_angle(a0) * inner), Iso.grid_to_world(Vector2.from_angle(a0) * outer),
+			Iso.grid_to_world(Vector2.from_angle(a1) * outer), Iso.grid_to_world(Vector2.from_angle(a1) * inner),
+		]), col)
 
 
 ## A circle of `tiles` radius round the table, on the ground.

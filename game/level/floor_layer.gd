@@ -18,7 +18,7 @@ func _draw() -> void:
 	if grid == null:
 		return
 	for cell: Vector2i in grid.all_cells():
-		var f := drawn_floor(grid, cell)
+		var f := grid.floor_at(cell)
 		match f:
 			LevelGrid.Floor.COBBLE:
 				_cobble(cell)
@@ -72,23 +72,6 @@ func _draw() -> void:
 				_parquet(cell)
 			LevelGrid.Floor.VOID:
 				_drop(cell)
-
-
-## Plain floor characters: what a placed thing's cell is drawn as, taken from a neighbour.
-const PLAIN_FLOORS := ".,:_iqnxh" + Tiles.HOSPITAL_TILE + Tiles.ASPHALT + Tiles.STAFF_FLOOR + Tiles.SEAWALL \
-	+ Tiles.LOW_STREET + Tiles.GRATING + Tiles.NEWSROOM_FLOOR
-## Placed things (people, finds, spawns) stand on whatever floor surrounds them.
-const MARKERS := "TUWwPCckXVO]BZy"
-
-
-## The floor a cell is drawn with: its own, except a placed thing's cell borrows a plain neighbour's
-## (a truth cache in a bedroom sits on floorboards, not on the stacks' paper). Drawing only.
-static func drawn_floor(level_grid: LevelGrid, cell: Vector2i) -> LevelGrid.Floor:
-	if MARKERS.contains(level_grid.char_at(cell)):
-		for d: Vector2i in [Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT, Vector2i.UP]:
-			if PLAIN_FLOORS.contains(level_grid.char_at(cell + d)):
-				return level_grid.floor_at(cell + d)
-	return level_grid.floor_at(cell)
 
 
 func _rng(cell: Vector2i, salt: int = 0) -> RandomNumberGenerator:

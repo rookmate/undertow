@@ -120,6 +120,9 @@ func test_with_never_warn_me_signed_the_crane_drops_in_silence() -> void:
 	level.player.set_physics_process(false)
 	await wait_physics_frames(4)
 	check((level.boss as Crane).is_engaged)
+	# Past the Steward's introduction, as if cut short: the fight starts at once.
+	Sound.hush()
+	await wait_physics_frames(1)
 	await wait_seconds(Crane.LIFT_SECONDS + 0.1)
 	check_eq((level.boss as Crane).phase, Crane.Phase.AIM)
 	check(Sound.voice_line != "crane_drop", "no call: it watches the load come down and says nothing")

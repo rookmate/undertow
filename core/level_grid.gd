@@ -43,10 +43,28 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 const SOLID := " #dmgAlMI~=-L|KtoRTvHjFbrJ*[^" + Tiles.PARTITION + Tiles.AMBULANCE + Tiles.NURSE_DESK \
 	+ Tiles.HOSPITAL_WALL + Tiles.HOSPITAL_DOOR + Tiles.HOSPITAL_BED + Tiles.CLINIC + Tiles.PUMP_WALL \
 	+ Tiles.PUMP_DOOR + Tiles.TURBINE + Tiles.TIDE_GAUGE + Tiles.PUMPHOUSE + Tiles.NEWSROOM_DESK
+## Solid things taller than a chest-height shot, which stop sight, swings and shots (blocks_line): the
+## Feed kiosk, the stalled tram, the stacks' shelves, the Reliquary, the Tideworks' crane legs, and the
+## named tall ones (Tiles.TALL). Buildings stop them anyway.
+const TALL := "Kt|R^" + Tiles.TALL
+## Solid things you see, swing and shoot over or past: the drop, water, railings, low walls, lamp posts,
+## bollards, a truth cache, lawns and what's on them, beds, carriage sides cut to the windows, desks,
+## route lights, the Tideworks' containers (stacked one high), and the named low ones (Tiles.LOW).
+const LOW := " ~=-LoTvHjFbrJ*[" + Tiles.LOW
 ## People stand on these cells: walkable floor, but nothing should route through them.
 const OCCUPIED := "WwNY"
 ## Placed things that need a stable id from an '@' line (people, caches, logs).
 const NEEDS_ID := "WwTUV"
+## Placed things (people, finds, spawns, a boss, its weak point and barrier) stand on the ground around
+## them: a marker's cell takes its terrain from its neighbours (terrain_at), so a Custodian scrubbing a
+## low street leaves a low street that floods, and the Waiting in the Marrow stand in the Marrow. The
+## character's own floor (FLOOR_OF) is only the fallback for a marker with no ground beside it.
+const MARKERS := "TUWwPCckXVO]BZy"
+## Ground a marker can stand on: plain floors.
+const TERRAIN := ".,:_iqnxh" + Tiles.HOSPITAL_TILE + Tiles.ASPHALT + Tiles.STAFF_FLOOR + Tiles.SEAWALL \
+	+ Tiles.LOW_STREET + Tiles.KELP + Tiles.MARROW + Tiles.GRATING + Tiles.NEWSROOM_FLOOR
+## Off the path whatever they stand on: truth caches, unindexed slips, the Waiting off the path.
+const OFF_PATH := "TUw"
 
 var size: Vector2i = Vector2i.ZERO
 ## Stable ids of placed things, from the map's '@ x,y id' lines.
@@ -57,6 +75,8 @@ var hints: Dictionary[Vector2i, String] = {}
 var parse_errors: PackedStringArray = []
 ## The map's own legend: its characters renamed to named tiles' codes ('% <char> <tile>' lines).
 var legend: Dictionary[String, String] = {}
+## The ground under each marker (MARKERS), by cell.
+var _terrain: Dictionary[Vector2i, String] = {}
 var _rows: PackedStringArray = []
 
 
@@ -94,7 +114,27 @@ static func parse(text: String) -> LevelGrid:
 	for i: int in grid._rows.size():
 		grid._rows[i] = grid._rows[i].rpad(width)
 	grid.size = Vector2i(width, grid._rows.size())
+	grid._find_terrain()
 	return grid
+
+
+## What each marker stands on: the commonest ground among its four neighbours (ties go right, down,
+## left, up, in that order).
+func _find_terrain() -> void:
+	for c: Vector2i in all_cells():
+		if not MARKERS.contains(char_at(c)):
+			continue
+		var counts: Dictionary[String, int] = {}
+		var best := ""
+		for d: Vector2i in [Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT, Vector2i.UP]:
+			var ch := char_at(c + d)
+			if not TERRAIN.contains(ch):
+				continue
+			counts[ch] = counts.get(ch, 0) + 1
+			if best == "" or counts[ch] > counts[best]:
+				best = ch
+		if best != "":
+			_terrain[c] = best
 
 
 func _parse_id_line(line: String) -> void:
@@ -192,8 +232,14 @@ func char_at(cell: Vector2i) -> String:
 	return _rows[cell.y][cell.x]
 
 
+## The ground at a cell: its own character's, or for a marker, what it stands on.
+func terrain_at(cell: Vector2i) -> String:
+	return _terrain.get(cell, char_at(cell))
+
+
+## The floor at a cell (what's drawn, what floods, what you walk on, whether the Lattice reaches it).
 func floor_at(cell: Vector2i) -> Floor:
-	return FLOOR_OF.get(char_at(cell), Floor.VOID)
+	return FLOOR_OF.get(terrain_at(cell), Floor.VOID)
 
 
 ## The content each placed thing names exists and is the right kind: a cache 'T' holds a truth core, a
@@ -229,8 +275,11 @@ func is_occupied(cell: Vector2i) -> bool:
 	return OCCUPIED.contains(char_at(cell))
 
 
-## The Lattice reaches this cell: it is lit, on the Steward's map and routable by its path.
+## The Lattice reaches this cell: it is lit, on the Steward's map and routable by its path. Off-path finds
+## and the Waiting off the path never are.
 func is_indexed(cell: Vector2i) -> bool:
+	if OFF_PATH.contains(char_at(cell)):
+		return false
 	var f := floor_at(cell)
 	return f == Floor.COBBLE or f == Floor.PAVEMENT or f == Floor.STEPS or f == Floor.TRACK or f == Floor.CARRIAGE or f == Floor.GANTRY \
 		or f == Floor.TILE or f == Floor.ASPHALT or f == Floor.SEAWALL or f == Floor.LOW_STREET or f == Floor.KELP \
@@ -245,14 +294,14 @@ func floods(cell: Vector2i) -> bool:
 
 ## Under the thick Marrow: the Steward's hardware reaches it, but it can't see through.
 func is_marrow(cell: Vector2i) -> bool:
-	return char_at(cell) == Tiles.MARROW
+	return terrain_at(cell) == Tiles.MARROW
 
 
 ## Tall things stop sight, swings and shots: buildings and tall props. Water, rails and low walls don't.
 func blocks_line(cell: Vector2i) -> bool:
 	if not in_bounds(cell):
 		return true
-	return is_building(cell) or "Kt|R".contains(char_at(cell))
+	return is_building(cell) or TALL.contains(char_at(cell))
 
 
 ## Grid-space parameter (0..1) along `from`→`to` where the segment first touches a blocking cell (0 if

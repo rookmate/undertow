@@ -15,6 +15,8 @@ const AIM_SECONDS := 0.9
 ## Muted, you read the marker yourself: it shows this much sooner.
 const EARLY_MARK := 0.3
 const DROP_SECONDS := 0.25
+## After a drop lands, before the hook lifts again (or it swings).
+const DROP_SETTLE := 0.4
 const DROP_DAMAGE := 22.0
 const DROP_RADIUS := 1.15
 const SWING_WARN_SECONDS := 1.0
@@ -27,6 +29,13 @@ const STALL_SECONDS := 6.0
 const HOOK_HEIGHT := 220.0
 const MIN_REACH := 1.6
 const MAX_REACH := 5.0
+
+## Each call, and the soonest the next can come (seconds): after the last drop it swings at once.
+const CALL_GAPS: Dictionary[String, float] = {
+	"crane_drop": AIM_SECONDS + DROP_SECONDS + DROP_SETTLE,
+	"crane_swing": SWING_WARN_SECONDS + SWING_SECONDS,
+	"crane_rest": REST_SECONDS,
+}
 
 var phase: Phase = Phase.IDLE
 ## Ground point (world) the load hangs over, and its height above the ground (px).
@@ -115,7 +124,7 @@ func _fight(delta: float) -> void:
 				Sound.play(&"container_drop", load_at)
 				if p != null and p.is_alive() and Iso.ground_distance(p.global_position, load_at) <= DROP_RADIUS:
 					p.take_hit(DROP_DAMAGE, load_at)
-			if _phase_time >= DROP_SECONDS + 0.4:
+			if _phase_time >= DROP_SECONDS + DROP_SETTLE:
 				_enter_phase(Phase.LIFT if _drops_left > 0 else Phase.SWING_WARN)
 		Phase.SWING_WARN:
 			load_height = 60.0

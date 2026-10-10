@@ -17,6 +17,10 @@ const FILL_SECONDS := 1.2
 const EARLY_FILL := 0.3
 const FLOOD_SECONDS := 1.6
 const FLOOD_DAMAGE := 14.0
+## A flooding quarter is the square this many tiles on a side out from the Lung (what's drawn is what
+## floods: flood_rect()).
+const FLOOD_TILES := 4.5
+## How far the surge rings out.
 const BASIN_TILES := 6.0
 const SURGE_WARN_SECONDS := 1.0
 const SURGE_SECONDS := 1.4
@@ -26,6 +30,14 @@ const VENT_SECONDS := 3.5
 const STALL_SECONDS := 6.0
 const LINES: Dictionary[Quarter, String] = {
 	Quarter.LEFT: "lung_left", Quarter.RIGHT: "lung_right", Quarter.NEAR: "lung_near", Quarter.FAR: "lung_far",
+}
+
+## Each call, and the soonest the next can come (seconds).
+const CALL_GAPS: Dictionary[String, float] = {
+	"lung_left": FILL_SECONDS + FLOOD_SECONDS, "lung_right": FILL_SECONDS + FLOOD_SECONDS,
+	"lung_near": FILL_SECONDS + FLOOD_SECONDS, "lung_far": FILL_SECONDS + FLOOD_SECONDS,
+	"lung_surge": SURGE_WARN_SECONDS + SURGE_SECONDS,
+	"lung_vent": VENT_SECONDS,
 }
 
 var phase: Phase = Phase.IDLE
@@ -115,9 +127,18 @@ static func quarter_signs(q: Quarter) -> Vector2:
 	return Vector2(-1, -1)
 
 
+## A quarter's flooding square, in grid space relative to the Lung: both the warning drawn and the
+## water that hurts.
+static func flood_rect(q: Quarter) -> Rect2:
+	var sg := quarter_signs(q) * FLOOD_TILES
+	return Rect2(Vector2(minf(sg.x, 0.0), minf(sg.y, 0.0)), sg.abs())
+
+
 ## Whether a point (world) is in the basin quarter that's flooding.
 func in_flood(at: Vector2) -> bool:
-	return Iso.ground_distance(global_position, at) <= BASIN_TILES and quarter_of(at) == quarter
+	var rel := Iso.world_to_grid(at) - Iso.world_to_grid(global_position)
+	var r := flood_rect(quarter)
+	return quarter_of(at) == quarter and rel.x >= r.position.x and rel.x <= r.end.x and rel.y >= r.position.y and rel.y <= r.end.y
 
 
 ## The surge's ring: how far out it is now (tiles).
@@ -203,10 +224,10 @@ func _draw() -> void:
 		_ring(surge_radius(), Color(Palette.DANGER, 0.6))
 
 
-## The quarter that's filling, as a square of the basin on the ground (local points).
+## The quarter that's filling, as its square of the basin on the ground (local points).
 func _quarter_points() -> PackedVector2Array:
-	var sg := quarter_signs(quarter) * BASIN_TILES * 0.72
-	return PackedVector2Array([Vector2.ZERO, Iso.grid_to_world(Vector2(sg.x, 0)), Iso.grid_to_world(sg), Iso.grid_to_world(Vector2(0, sg.y))])
+	var r := flood_rect(quarter)
+	return PackedVector2Array([Iso.grid_to_world(r.position), Iso.grid_to_world(Vector2(r.end.x, r.position.y)), Iso.grid_to_world(r.end), Iso.grid_to_world(Vector2(r.position.x, r.end.y))])
 
 
 func _quarter_outline(col: Color) -> void:

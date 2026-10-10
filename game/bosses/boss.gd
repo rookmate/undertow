@@ -11,11 +11,20 @@ signal engaged
 signal defeated
 
 const ENGAGE_TILES := 7.0
+## Its fight waits while the Steward introduces it (the boss_engaged line, said aloud), never longer than
+## this: its first call would otherwise cut the introduction off mid-word. Muted, or cut short, it starts
+## at once.
+const OPENING_MAX := 6.0
 
 ## Shown on the HUD bar.
 var boss_name: String = "BOSS"
 ## True once the Operator has come within reach; the fight doesn't start before.
 var is_engaged: bool = false
+## True once the introduction is over and the fight has begun.
+var is_fighting: bool = false
+## The introduction being said ("" if none), and how long it's been going.
+var _intro: String = ""
+var _opening: float = 0.0
 
 
 func _ready() -> void:
@@ -68,11 +77,21 @@ func _think(_delta: float) -> Vector2:
 	if not is_engaged and p != null and p.is_alive() and distance_to_player() <= ENGAGE_TILES:
 		is_engaged = true
 		engaged.emit()
-		Narrator.notify(&"boss_engaged", level.level_id if level != null else "")
+		_intro = Narrator.notify(&"boss_engaged", level.level_id if level != null else "")
+	if is_engaged and not is_fighting:
+		_opening += _delta
+		if introducing() and _opening < OPENING_MAX:
+			return Vector2.ZERO
+		is_fighting = true
 		_on_engaged()
-	if is_engaged:
+	if is_fighting:
 		_fight(_delta)
 	return Vector2.ZERO
+
+
+## The Steward is still saying its introduction.
+func introducing() -> bool:
+	return _intro != "" and Sound.voice_line == _intro and Sound.voice_left() > 0.0
 
 
 func _on_engaged() -> void:
@@ -85,7 +104,9 @@ func _fight(_delta: float) -> void:
 
 
 ## The Steward calls a move: only if it's with you (voice on and on its hardware) and no signed order
-## forbids it (its warnings fall silent under "Never warn me about traps"). Voiced, subtitled.
+## forbids it (its warnings fall silent under "Never warn me about traps"). Voiced, subtitled. Each boss
+## lists its calls in CALL_GAPS with the soonest the next call can come, and a test keeps every
+## recording short enough to be said in full.
 func call_out(line_id: String) -> void:
 	Narrator.say_fixed(line_id)
 

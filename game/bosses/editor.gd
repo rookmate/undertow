@@ -42,6 +42,13 @@ const BALE_SPEED := 6.5
 const INK_SECONDS := 3.5
 const JAM_SECONDS := 6.0
 
+## Each call, and the soonest the next can come (seconds).
+const CALL_GAPS: Dictionary[String, float] = {
+	"editor_rollers": ROLL_WARN_SECONDS + ROLL_SECONDS,
+	"editor_feed": FEED_WARN_SECONDS + FEED_SECONDS,
+	"editor_ink": INK_SECONDS,
+}
+
 var phase: Phase = Phase.IDLE
 var sweep: Sweep = Sweep.DOWN
 ## Across the hall, which way the roller runs along x (+1 or -1); it turns about each cycle.
