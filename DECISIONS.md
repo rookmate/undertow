@@ -431,4 +431,17 @@ Asked of the user on 2026-10-09 and answered the same day.
      Waiting). Indoors: no rain; hospital walls with chalk arrows and the Steward's ceiling lights. It
      restores the Clinic. **The Defib Gauntlet is found here** (the resus bay), no longer on the
      Vellum's old quay (supersedes 114).
+128. **The Surgeon** (Mercy General's boss), in the surgical theatre before the records vault: its
+     operating lamp's guide light (the Steward's gold) marks an incision across the floor, tracking you
+     for most of a second, then commits; the beam cuts along it (18 damage within 0.6 tiles of the
+     line), three times a cycle. Then it floods the theatre with sterilizing mist (4 every 0.35 s)
+     except within 2 tiles of the table. Then it bends over the table to suture for 3.5 s: open to
+     blows. 400 integrity. The Steward calls the incisions and the mist (warnings) and the suture (a
+     fact). The manual solution: the theatre lamp's switch panel by the door, thrown while it's marking,
+     takes away its guide; it stalls for 6 s, once a cycle. Muted, the guide line shows 0.3 s sooner.
+129. **Still props don't redraw every frame.** Every district's static props were processing (and
+     redrawing) every frame: Godot switches processing on at `_ready` for any script with a `_process`,
+     undoing the `set_process(false)` made in `setup()`. Mercy General's hundred glass partitions made
+     it show (game logic 14.2 ms a frame, now 5.7; the Vellum 8.3, now 6.7). A test checks every
+     district. `-- --perf-hide=ClassName,...` hides and stops nodes of those classes when measuring.
 

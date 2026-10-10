@@ -83,13 +83,15 @@ rect(9, 2, 29, 2, '=')
 put(14, 5, 'x'); put(22, 4, 'c')
 put(18, 3, 'L'); put(27, 3, 'L')
 
-# The surgical theatre (the Surgeon comes with step 19).
+# The surgical theatre: the Surgeon at its table, the lamp's switch panel by the door.
 rect(30, 2, 40, 12, '.')
+put(35, 7, 'B')
+put(31, 9, 'Z')
 for p in [(30, 2), (40, 2)]:
     put(p[0], p[1], 'L')
 rect(30, 13, 40, 13, '=')
-# Through to the records vault, the Mercy Reliquary.
-rect(34, 13, 36, 13, '.')
+# Past the barrier (it opens when the Surgeon falls): the records vault, the Mercy Reliquary.
+rect(34, 13, 36, 13, 'y')
 rect(31, 14, 39, 19, '.')
 put(35, 17, 'R'); put(32, 15, 'C')
 put(31, 19, 'L'); put(39, 14, 'L')

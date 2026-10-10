@@ -211,6 +211,10 @@
   "hash": "23285b11179fe7a78097341615705ff641f9e496",
   "text": "Doing it by hand. I could carry the aim, you know."
  },
+ "MERCY_BOSS_N1": {
+  "hash": "9e2b35b13412316376b31f8565fa7051ea30bb7e",
+  "text": "The Surgeon. It's finishing a procedure. It was always very thorough."
+ },
  "MERCY_ENTER_B1": {
   "hash": "93e62f1d21bca6cb3bee8e29257426053b9aa778",
   "text": "Mercy General. Clean corridors, all the way through. Go on."
@@ -594,6 +598,18 @@
  "override_survivors_first_sign": {
   "hash": "5d74c83d1926ad03b614a8219f1227755bf62515",
   "text": "Them over you. I can do that. I've done arithmetic like that before."
+ },
+ "surgeon_incision": {
+  "hash": "5f7c5a40a73b1e18daeb10ec966b334fe1992464",
+  "text": "Incision. Off the line."
+ },
+ "surgeon_mist": {
+  "hash": "92906ee37ea50086bfe154359fe2f78513e4f8ea",
+  "text": "Mist. In close, by the table."
+ },
+ "surgeon_suture": {
+  "hash": "cd56894ec22f8278ba5e9dc365c8fb44bf8ce7be",
+  "text": "It's suturing. Now."
  },
  "title_quiet": {
   "hash": "df03c9ef5dd0235bd92f257cf02e71171ba8b264",

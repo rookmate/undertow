@@ -64,6 +64,18 @@
     "ward_sealed": {
       "text": "Sealed for their safety. Leave them.",
       "purpose": "fact"
+    },
+    "surgeon_incision": {
+      "text": "Incision. Off the line.",
+      "purpose": "warning"
+    },
+    "surgeon_mist": {
+      "text": "Mist. In close, by the table.",
+      "purpose": "warning"
+    },
+    "surgeon_suture": {
+      "text": "It's suturing. Now.",
+      "purpose": "fact"
     }
   }
 }

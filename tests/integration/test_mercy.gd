@@ -50,6 +50,7 @@ func _press_interact() -> void:
 func test_mercy_general_is_a_real_district() -> void:
 	check(level.grid.validate(false).is_empty() and level.grid.content_problems().is_empty(), "%s" % [level.grid.validate(false)])
 	check_eq(level.look.wall, Palette.WARD_WALL, "white walls gone grey")
+	check(level.boss is Surgeon and level.boss.weak_point is TheatreSwitch, "the Surgeon in the theatre, and the lamp switch")
 	check_false(level.look.rain, "indoors, no rain")
 	check(LevelCatalog.is_open(GameState.run, "mercy"), "open once Act 1 is done")
 	check_eq(LevelCatalog.restores("mercy"), "clinic")

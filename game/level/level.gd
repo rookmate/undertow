@@ -549,6 +549,11 @@ func _spawn_boss() -> void:
 			add_enemy(crane, b, Crane.MAX_INTEGRITY)
 			boss = crane
 			_add_weak_point(crane, HoistBrake.new())
+		"surgeon":
+			var surgeon := Surgeon.new()
+			add_enemy(surgeon, b, Surgeon.MAX_INTEGRITY)
+			boss = surgeon
+			_add_weak_point(surgeon, TheatreSwitch.new())
 
 
 func _add_weak_point(owner_boss: Boss, point: WeakPoint) -> void:
@@ -615,13 +620,28 @@ func _add_atmosphere() -> void:
 	add_child(we)
 
 
-## Developer profiling: `-- --perf-disable=lights,glow,grade,rain,reflections,fog,buildings,hdr,minimap,hud`
-## rendering features off so their cost can be measured with the autopilot's [perf] report.
+## Developer profiling: `-- --perf-disable=lights,glow,grade,rain,reflections,fog,buildings,hdr,minimap,hud,
+## path,enemies` features off so their cost can be measured with the autopilot's [perf] report.
+## `-- --perf-hide=WardSeal,StaticProp` hides and stops every node of those script classes.
 func _apply_perf_flags() -> void:
 	var off := PackedStringArray()
+	var hidden_classes := PackedStringArray()
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--perf-disable="):
 			off = arg.get_slice("=", 1).split(",")
+		elif arg.begins_with("--perf-hide="):
+			hidden_classes = arg.get_slice("=", 1).split(",")
+	if not hidden_classes.is_empty():
+		print("[perf] hidden: ", ", ".join(hidden_classes))
+		for n: Node in find_children("*", "", true, false):
+			var script := n.get_script() as Script
+			while script != null:
+				if hidden_classes.has(str(script.get_global_name())):
+					if n is CanvasItem:
+						(n as CanvasItem).visible = false
+					n.set_process(false)
+					n.set_physics_process(false)
+				script = script.get_base_script()
 	if off.is_empty():
 		return
 	print("[perf] disabled: ", ", ".join(off))
@@ -644,6 +664,10 @@ func _apply_perf_flags() -> void:
 		if off.has("minimap") and n is Minimap:
 			(n as Minimap).visible = false
 			(n as Minimap).set_process(false)
+		if off.has("path") and n is PredictedPath:
+			n.set_process(false)
+		if off.has("enemies") and n is Enemy:
+			n.set_physics_process(false)
 		if off.has("hud") and n is Hud:
 			(n as Hud).visible = false
 			for c: Node in n.get_children():

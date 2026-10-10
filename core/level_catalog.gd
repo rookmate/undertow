@@ -50,6 +50,7 @@ const LEVELS: Dictionary[String, Dictionary] = {
 		"scene": "res://game/level/mercy_general.tscn",
 		"map": "res://data/levels/mercy_general.txt",
 		"restores": "clinic",
+		"boss": "surgeon",
 	},
 	"vellum": {
 		"name": "The Vellum",
@@ -82,6 +83,7 @@ const ARK_AT := Vector2(0.7, 0.94)
 const BOSSES: Dictionary[String, Dictionary] = {
 	"conductor": {"lanes": 3},
 	"crane": {"lanes": 0},
+	"surgeon": {"lanes": 0},
 }
 
 

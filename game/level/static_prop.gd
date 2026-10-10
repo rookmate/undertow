@@ -26,9 +26,14 @@ func setup(at: Vector2i, prop_kind: Kind, district_look: DistrictLook = null) ->
 	if district_look != null:
 		look = district_look
 	position = Iso.cell_center(at)
-	# Sprinklers are the only props that move: they still come on, for nobody.
-	set_process(kind == Kind.SPRINKLER)
 	_t = float(hash(at) % 600) / 100.0
+
+
+func _ready() -> void:
+	# Sprinklers are the only props that move: they still come on, for nobody. (This has to wait for
+	# _ready: Godot switches processing on for any script with a _process when it enters the tree, so
+	# switching it off in setup() did nothing and every prop redrew itself every frame.)
+	set_process(kind == Kind.SPRINKLER)
 
 
 func _process(delta: float) -> void:
