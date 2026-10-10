@@ -11,7 +11,7 @@ signal closed
 const ACTION_NAMES: Dictionary[StringName, String] = {
 	&"move_up": "MOVE UP", &"move_down": "MOVE DOWN", &"move_left": "MOVE LEFT", &"move_right": "MOVE RIGHT",
 	&"attack_primary": "WEAPON 1", &"attack_secondary": "WEAPON 2", &"dodge": "DODGE",
-	&"interact": "INTERACT", &"voice_toggle": "STEWARD ON / OFF",
+	&"interact": "INTERACT", &"voice_toggle": "STEWARD ON / OFF", &"use_item": "FIELD DRESSING",
 	&"pause": "PAUSE", &"debug_overlay": "THE DEBUG OVERLAY",
 	&"aim_left": "AIM", &"aim_right": "AIM", &"aim_up": "AIM", &"aim_down": "AIM",
 }

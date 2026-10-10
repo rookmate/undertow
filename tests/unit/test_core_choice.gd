@@ -105,11 +105,12 @@ func test_broken_content_is_reported_not_crashed_on() -> void:
 		"log_ok": {"title": "T", "kind": "truth", "record": ["a"], "steward_now": "s", "noor": {"text": "n", "trust": 1}, "teo": {"text": "t", "trust": 0}},
 		"log_bad_reaction": {"title": "T", "kind": "truth", "record": ["a"], "steward_now": "s", "noor": "angry", "teo": {"text": "t", "trust": 0}},
 		"log_no_record": {"title": "T", "kind": "truth", "record": [], "steward_now": "s", "noor": {"text": "n", "trust": 1}, "teo": {"text": "t", "trust": 0}},
+		"log_odd_topic": {"title": "T", "kind": "truth", "record": ["a"], "steward_now": "s", "topic": "gossip", "noor": {"text": "n", "trust": 1}, "teo": {"text": "t", "trust": 0}},
 	}}
 	var out := ContentDb.validate_documents(cores_doc, logs_doc, problems)
 	check_eq((out["cores"] as Dictionary).keys(), ["ok"], "only the valid core survives")
 	check_eq((out["logs"] as Dictionary).keys(), ["log_ok"], "only the valid log survives")
-	check(problems.size() >= 7, "every problem reported: %s" % [problems])
+	check(problems.size() >= 8, "every problem reported (an unknown topic too): %s" % [problems])
 	var not_dicts := PackedStringArray()
 	ContentDb.validate_documents({"cores": [], "reliquaries": 5}, {"logs": "x"}, not_dicts)
 	check(not_dicts.size() >= 3, "wrong top-level shapes are reported too")

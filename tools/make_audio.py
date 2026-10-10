@@ -343,6 +343,10 @@ def build():
     write("seal_crank", mix((highpass(ratchet, 1500), 0.9), (slide, 0.7)), -6)
     # A Sterilizer letting its mist go: a soft pressurised spray.
     write("sterile_hiss", env(bandpass(white(1.4, rng), 4200, 0.7), 0.08, None, 0.6), -10)
+    # A field dressing going on: a strip of tape torn, a soft press.
+    tear = env(bandpass(white(0.35, rng), 2400, 1.0), 0.01, None, 0.15)
+    press = env(lowpass(brown(0.3, rng), 300), 0.02, None, 0.2)
+    write("dressing", mix((tear, 0.9), (press, 0.6, 0.3)), -9)
 
 
 if __name__ == "__main__":

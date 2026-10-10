@@ -14,7 +14,7 @@ const THROUGH: Array[String] = [
 	"gauntlet_found", "seal_held", "seal_cranked", "woke_in_ward", "night_sheets_found",
 	"night_nurse_woken", "sterilizer_misted", "surgeon_engaged", "surgeon_called_an_incision",
 	"surgeon_sutured", "surgeon_beaten", "barriers_opened", "route_completed", "core_choice_shown",
-	"mercy_cores_carried", "ark_reached", "clinic_restored",
+	"mercy_cores_carried", "ark_reached", "clinic_restored", "clinic_standing", "dressings_stocked",
 ]
 
 
@@ -201,10 +201,26 @@ func choose(screen: Node, gen: int) -> void:
 	on_to_the_ark(screen)
 
 
-func at_ark(_ark: ArkLevel, gen: int) -> bool:
+## The Clinic stands: home, it stocks you up; inside, the triage records.
+func at_ark(ark: ArkLevel, gen: int) -> bool:
 	pass_check("ark_reached")
 	check(GameState.run.buildings_restored.has("clinic"), "clinic_restored")
+	check(facade_cells(ark, BuildingCell.Facade.CLINIC) > 0, "clinic_standing")
+	check(GameState.run.dressings == Tunables.DRESSINGS_MAX, "dressings_stocked")
 	if not await Autopilot.wait(1.5, gen):
 		return false
 	await Autopilot.snap("ark_after_mercy")
+	if not await Autopilot.use_at(ark, ark.player, Vector2i(12, 6), gen):
+		return false
+	var clinic := ark.clinic_screen
+	if clinic == null:
+		return false
+	clinic.read("log_night_sheets")
+	if not await Autopilot.wait(2.0, gen):
+		return false
+	await Autopilot.snap("clinic")
+	clinic.close()
+	if not await Autopilot.wait(0.8, gen):
+		return false
+	await Autopilot.snap("ark_clinic")
 	return true

@@ -44,6 +44,8 @@ var playstyle_profile: PlaystyleProfile = PlaystyleProfile.new()
 var weapons_owned: Array[String] = WeaponDefs.STARTING.duplicate()
 ## Parts taken from machines and crates; spent at the Workshop.
 var scrap: int = 0
+## Field dressings carried (the Clinic stocks them up whenever you're home).
+var dressings: int = 0
 ## Workshop upgrades bought: "<weapon>:<mode>" -> level.
 var upgrades: Dictionary[String, int] = {}
 var loadout: Array[String] = []
@@ -122,6 +124,7 @@ func to_dict() -> Dictionary:
 		"playstyle_profile": playstyle_profile.to_dict(),
 		"weapons_owned": weapons_owned.duplicate(),
 		"scrap": scrap,
+		"dressings": dressings,
 		"upgrades": upgrades.duplicate(),
 		"loadout": loadout.duplicate(),
 		"weapon_modes": weapon_modes.duplicate(),
@@ -168,6 +171,7 @@ static func from_dict(d: Dictionary) -> RunState:
 			if not s.weapons_owned.has(id):
 				s.weapons_owned.append(id)
 	s.scrap = maxi(0, _int(d.get("scrap", 0)))
+	s.dressings = clampi(_int(d.get("dressings", 0)), 0, Tunables.DRESSINGS_MAX)
 	var ups: Variant = d.get("upgrades", {})
 	if ups is Dictionary:
 		for key: Variant in ups:

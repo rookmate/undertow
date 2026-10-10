@@ -1,8 +1,8 @@
 class_name ArkFixture
 extends Interactable
-## The Archive's door, the Signal Room's door and the dock on the Ark.
+## The doors of the Ark's buildings, and the dock.
 
-enum Kind { ARCHIVE_DOOR, DOCK, SIGNAL_DOOR, WORKSHOP_DOOR }
+enum Kind { ARCHIVE_DOOR, DOCK, SIGNAL_DOOR, WORKSHOP_DOOR, CLINIC_DOOR }
 
 signal used(fixture: Kind)
 
@@ -23,6 +23,8 @@ func prompt_verb() -> String:
 			return "ENTER THE SIGNAL ROOM"
 		Kind.WORKSHOP_DOOR:
 			return "ENTER THE WORKSHOP"
+		Kind.CLINIC_DOOR:
+			return "ENTER THE CLINIC"
 	return "TAKE THE SKIFF"
 
 

@@ -10,12 +10,13 @@ extends Level
 const SURVIVOR_SPOTS := "s"
 ## Which map letters are which Ark building's plot. A plot is built only once that building has been
 ## restored by bringing a district's core home; until then it is an unbuilt slab.
-const PLOTS: Dictionary[String, String] = {"A": "archive", "M": "signal_room", "I": "workshop"}
+const PLOTS: Dictionary[String, String] = {"A": "archive", "M": "signal_room", "I": "workshop", Tiles.CLINIC: "clinic"}
 ## The door belongs to the building it opens.
-const DOORS: Dictionary[String, String] = {"a": "archive", "e": "signal_room", "z": "workshop"}
+const DOORS: Dictionary[String, String] = {"a": "archive", "e": "signal_room", "z": "workshop", Tiles.CLINIC_DOOR: "clinic"}
 ## What each building's door is.
 const DOOR_KINDS: Dictionary[String, ArkFixture.Kind] = {
 	"archive": ArkFixture.Kind.ARCHIVE_DOOR, "signal_room": ArkFixture.Kind.SIGNAL_DOOR, "workshop": ArkFixture.Kind.WORKSHOP_DOOR,
+	"clinic": ArkFixture.Kind.CLINIC_DOOR,
 }
 
 ## The arrival lines, in order: who says it ("noor", "teo", or "steward" for its voiced line) and what.
@@ -38,6 +39,7 @@ var arriving: bool = false
 var city_map: CityMap
 var overrides_screen: OverridesScreen
 var workshop_screen: WorkshopScreen
+var clinic_screen: ClinicScreen
 
 
 func is_hub() -> bool:
@@ -137,6 +139,8 @@ func survivor_cells(count: int) -> Array[Vector2i]:
 
 
 func _on_ready_extra() -> void:
+	# Home, with the Clinic standing: it stocks you up for the next district.
+	GameState.restock_dressings()
 	if arriving:
 		_companions_arrive()
 	else:
@@ -211,6 +215,8 @@ func _on_fixture_used(kind: ArkFixture.Kind) -> void:
 			open_overrides()
 		ArkFixture.Kind.WORKSHOP_DOOR:
 			open_workshop()
+		ArkFixture.Kind.CLINIC_DOOR:
+			open_clinic()
 		_:
 			open_city_map()
 
@@ -233,6 +239,16 @@ func open_workshop() -> WorkshopScreen:
 	workshop_screen.closed.connect(func() -> void: workshop_screen = null)
 	add_child(workshop_screen)
 	return workshop_screen
+
+
+## The Clinic: field dressings, and the triage records.
+func open_clinic() -> ClinicScreen:
+	if clinic_screen != null:
+		return clinic_screen
+	clinic_screen = ClinicScreen.new()
+	clinic_screen.closed.connect(func() -> void: clinic_screen = null)
+	add_child(clinic_screen)
+	return clinic_screen
 
 
 ## The Signal Room: the standing orders.

@@ -240,6 +240,8 @@ func _build_cells() -> void:
 					facade = BuildingCell.Facade.HOSPITAL
 				Tiles.HOSPITAL_DOOR:
 					facade = BuildingCell.Facade.HOSPITAL_DOOR
+				Tiles.CLINIC:
+					facade = BuildingCell.Facade.CLINIC
 				"A":
 					facade = BuildingCell.Facade.ARCHIVE
 				"d":

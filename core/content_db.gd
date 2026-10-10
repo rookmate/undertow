@@ -9,6 +9,8 @@ const CORES_PATH := "res://data/cores/cores.json"
 const LOGS_PATH := "res://data/logs/memory_logs.json"
 const CORE_KINDS: Array[String] = ["power", "truth"]
 const LOG_KINDS: Array[String] = ["comforting", "truth", "unindexed"]
+## What a log may be about, besides its kind: "triage" records are the Clinic's too ("" for none).
+const LOG_TOPICS: Array[String] = ["", "triage"]
 
 static var _cores: Dictionary = {}
 static var _reliquaries: Dictionary = {}
@@ -96,6 +98,8 @@ static func _clean_log(id: String, raw: Variant, problems: PackedStringArray) ->
 		return bad.call("record must be a non-empty list of lines")
 	if not d.get("steward_now") is String:
 		return bad.call("needs the Steward's present-day comment")
+	if not d.get("topic", "") is String or not LOG_TOPICS.has(str(d.get("topic", ""))):
+		return bad.call("topic must be one of %s" % [LOG_TOPICS])
 	var reactions := {}
 	for who: String in ["noor", "teo"]:
 		var r: Variant = d.get(who)
@@ -105,6 +109,7 @@ static func _clean_log(id: String, raw: Variant, problems: PackedStringArray) ->
 	return {
 		"title": str(d["title"]), "kind": str(d["kind"]), "core": str(d.get("core", "")),
 		"record": record, "steward_now": str(d["steward_now"]), "noor": reactions["noor"], "teo": reactions["teo"],
+		"topic": str(d.get("topic", "")),
 	}
 
 

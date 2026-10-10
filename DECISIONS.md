@@ -444,4 +444,11 @@ Asked of the user on 2026-10-09 and answered the same day.
      undoing the `set_process(false)` made in `setup()`. Mercy General's hundred glass partitions made
      it show (game logic 14.2 ms a frame, now 5.7; the Vellum 8.3, now 6.7). A test checks every
      district. `-- --perf-hide=ClassName,...` hides and stops nodes of those classes when measuring.
+130. **The Clinic** (the Ark, from Mercy General) stands on the disc's top rim beside the Signal Room
+     (the Ark's map names it through its own legend). Run by people: warm windows, a cross lit in cream
+     (never red: red-orange is danger). Home with the Clinic standing, you're stocked up to **three
+     field dressings**; one puts 40 Integrity back (never past full; not used when unhurt), on its own
+     rebindable action, **use_item** (Q / LB). The HUD shows the key and the count. Its screen shows the
+     dressings and the **triage records**: memory logs with `"topic": "triage"` (Mercy General's four),
+     readable once recovered, with the Steward's present-day comment while it listens (voiced).
 

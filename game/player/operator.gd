@@ -8,6 +8,8 @@ signal dodged(ground_direction: Vector2)
 signal hurt(amount: float)
 ## A hit arrived during the roll's invulnerable window.
 signal evaded
+## A field dressing went on.
+signal dressed
 signal downed
 signal respawned
 ## Any carried weapon attacked. Stable across finds, snatches and returns (the weapon nodes come and
@@ -143,6 +145,8 @@ func _physics_process(delta: float) -> void:
 			target.interact(self)
 		elif target != null:
 			target.refused(self)
+	if input_enabled and Input.is_action_just_pressed(&"use_item"):
+		use_dressing()
 	if input_enabled and Input.is_action_just_pressed(&"dodge"):
 		var dir := ground if ground.length_squared() > 0.01 else facing_ground
 		if dodge.try_start(dir):
@@ -195,6 +199,16 @@ func interact_target() -> Interactable:
 	if level == null or _downed:
 		return null
 	return level.nearest_interactable(global_position)
+
+
+## A field dressing from the Clinic: Integrity back, if there's one to use and anything to mend.
+func use_dressing() -> bool:
+	if _downed or integrity.value >= integrity.max_value or not GameState.use_dressing():
+		return false
+	integrity.heal(Tunables.DRESSING_HEAL)
+	Sound.play(&"dressing", global_position)
+	dressed.emit()
+	return true
 
 
 func cell() -> Vector2i:

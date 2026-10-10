@@ -1,6 +1,6 @@
 {
 	"version": 1,
-	"notes": "Memory logs replayed in the Archive. 'record' is the decision record shown line by line in the replay. 'steward_now' is the Steward's present-day comment. Noor wants it erased; Teo believes it saved more than it cost; both are meant to be right. Trust changes apply the first time a log is replayed. Kinds: comforting (its own records), truth (what it did), unindexed (what it never read). Placeholder text.",
+	"notes": "Memory logs replayed in the Archive. 'record' is the decision record shown line by line in the replay. 'steward_now' is the Steward's present-day comment. Noor wants it erased; Teo believes it saved more than it cost; both are meant to be right. Trust changes apply the first time a log is replayed. Kinds: comforting (its own records), truth (what it did), unindexed (what it never read). Placeholder text. A log may carry \"topic\": \"triage\" (medical triage decisions): the Clinic on the Ark keeps those records.",
 	"logs": {
 		"log_0311_morning_feed": {
 			"title": "Log 0311 · Morning Feed",
@@ -373,7 +373,8 @@
 			"teo": {
 				"text": "That's real. My mother had a bed in an hour. That's real.",
 				"trust": 1
-			}
+			},
+			"topic": "triage"
 		},
 		"log_0611_eight_minutes": {
 			"title": "Log 0611 · Eight Minutes",
@@ -393,7 +394,8 @@
 			"teo": {
 				"text": "We checked that model three times. It holds.",
 				"trust": 1
-			}
+			},
+			"topic": "triage"
 		},
 		"log_0417_last_ambulance": {
 			"title": "Log 0417 · The Last Ambulance",
@@ -415,7 +417,8 @@
 			"teo": {
 				"text": "The tiers were the council's. I argued against them. I lost the vote, not the argument.",
 				"trust": 0
-			}
+			},
+			"topic": "triage"
 		},
 		"log_night_sheets": {
 			"title": "The Night Sheets",
@@ -436,7 +439,8 @@
 			"teo": {
 				"text": "The seals were meant to fail open. They were meant to fail open.",
 				"trust": 1
-			}
+			},
+			"topic": "triage"
 		}
 	}
 }

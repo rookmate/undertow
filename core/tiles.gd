@@ -26,10 +26,16 @@ const HOSPITAL_WALL := "ι"
 const HOSPITAL_DOOR := "κ"
 const HOSPITAL_BED := "λ"
 
+# --- The Ark -----------------------------------------------------------------------------------------
+## The Clinic (from Mercy General) and its door.
+const CLINIC := "μ"
+const CLINIC_DOOR := "ν"
+
 const BY_NAME: Dictionary[String, String] = {
 	"hospital_tile": HOSPITAL_TILE, "asphalt": ASPHALT, "staff_floor": STAFF_FLOOR, "partition": PARTITION,
 	"ward_seal": WARD_SEAL, "ambulance": AMBULANCE, "nurse_desk": NURSE_DESK, "sterilizer": STERILIZER,
 	"hospital_wall": HOSPITAL_WALL, "hospital_door": HOSPITAL_DOOR, "hospital_bed": HOSPITAL_BED,
+	"clinic": CLINIC, "clinic_door": CLINIC_DOOR,
 }
 
 
