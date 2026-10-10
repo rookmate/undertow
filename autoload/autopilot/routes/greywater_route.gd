@@ -3,7 +3,8 @@ extends AutopilotRoute
 ## Steward calls the swell, and at high water its path keeps to high ground); north to the station apron;
 ## muted, the old pump room's brass plaque and the last shift's hand still at the valve; into the thick
 ## Marrow, where even listening the Steward draws no path, and the one waiting in it; over the bridge to
-## the Reliquary on the east island.
+## the Lung (the Steward's way: out of the quarter that's filling, roll through the surge, hit it while
+## it vents), then past the barrier to the Reliquary.
 
 const OPENING: Array[String] = [
 	"loadout_shown", "loadout_applied", "level_reached", "player_spawned", "path_three_tiles_ahead",
@@ -11,8 +12,9 @@ const OPENING: Array[String] = [
 ]
 const THROUGH: Array[String] = [
 	"steward_called_the_tide", "path_kept_to_high_ground", "plaque_found", "woke_the_last_shift",
-	"no_path_in_the_marrow", "woke_in_the_marrow", "enemy_killed", "route_completed", "core_choice_shown",
-	"greywater_cores_carried", "ark_reached", "pumphouse_restored",
+	"no_path_in_the_marrow", "woke_in_the_marrow", "enemy_killed", "lung_engaged", "lung_called_a_flood",
+	"lung_vented", "lung_beaten", "barriers_opened", "route_completed", "core_choice_shown",
+	"greywater_cores_carried", "ark_reached", "pumphouse_restored", "pumphouse_standing",
 ]
 
 
@@ -55,10 +57,12 @@ func drive(level: Level, gen: int) -> void:
 	await Autopilot.snap("greywater_kelp")
 	if not long_run or tide == null:
 		return
-	# Up onto the causeway, and wait for the tide to turn.
-	for cell: Vector2i in [Vector2i(14, 17), Vector2i(16, 17)]:
+	# Past the Custodian scrubbing the low street, up onto the causeway, and wait for the tide to turn.
+	for cell: Vector2i in [Vector2i(9, 12), Vector2i(14, 17), Vector2i(16, 17)]:
 		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
 			return
+		if level.living_enemies().size() < start_count:
+			pass_check("enemy_killed")
 	if not await Autopilot.until(func() -> bool: return tide.phase == Tide.Phase.SWELL, 45.0, gen):
 		return
 	check(await Autopilot.until(func() -> bool: return Sound.voice_line == "tide_swell", 1.0, gen), "steward_called_the_tide")
@@ -102,17 +106,70 @@ func drive(level: Level, gen: int) -> void:
 		return
 	check(GameState.run.survivor_ids.has("greywater_waiting_in_the_marrow"), "woke_in_the_marrow")
 	Autopilot.tap(&"voice_toggle")
-	# Over the bridge to the east island and the Reliquary.
-	for cell: Vector2i in [Vector2i(27, 6), Vector2i(32, 5), Vector2i(36, 6), Vector2i(38, 12), Vector2i(40, 16)]:
+	# Over the bridge to the east island and the Lung.
+	for cell: Vector2i in [Vector2i(27, 6), Vector2i(32, 5), Vector2i(35, 5)]:
 		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
 			return
 		if level.living_enemies().size() < start_count:
 			pass_check("enemy_killed")
 	if level.living_enemies().size() < start_count:
 		pass_check("enemy_killed")
+	var lung := level.boss as Lung
+	if lung == null:
+		return
+	check(await Autopilot.until(func() -> bool: return lung.is_engaged, 3.0, gen), "lung_engaged")
+	await Autopilot.snap("greywater_lung")
+	if not await _fight_lung(player, lung, gen):
+		return
+	check(not lung.is_alive(), "lung_beaten")
+	await Autopilot.snap("greywater_lung_down")
+	check(await Autopilot.until(Autopilot.barriers_open, 2.0, gen), "barriers_opened")
+	for cell: Vector2i in [Vector2i(38, 13), Vector2i(40, 16)]:
+		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+			return
 	pass_check("route_completed")
 	await Autopilot.snap("greywater_reliquary")
 	Autopilot.tap(&"interact")
+
+
+## The Steward's way with the Lung: out of the quarter it's filling, into the one across; roll through
+## the surge's ring; hit it while it vents. Gives up after 110 s.
+func _fight_lung(player: Operator, lung: Lung, gen: int) -> bool:
+	var spent := 0.0
+	var frame := 0
+	while lung.is_alive() and spent < 110.0:
+		if Autopilot.stale(gen):
+			Autopilot.release_all()
+			return false
+		frame += 1
+		if Lung.LINES.values().has(Sound.voice_line):
+			pass_check("lung_called_a_flood")
+		if lung.phase == Lung.Phase.VENT:
+			pass_check("lung_vented")
+		var at := player.global_position
+		if lung.is_vulnerable():
+			Autopilot.fight(player, lung, frame)
+			spent += await Autopilot.physics_step()
+			continue
+		Autopilot.release_attacks()
+		var target := lung.global_position + Iso.ground_velocity(Iso.ground_dir_between(lung.global_position, at), 3.0)
+		if lung.phase == Lung.Phase.FILL or lung.phase == Lung.Phase.FLOOD:
+			target = lung.global_position + Iso.ground_velocity(-Lung.quarter_signs(lung.quarter).normalized(), 3.0)
+		elif lung.phase == Lung.Phase.SURGE:
+			var d := Iso.ground_distance(lung.global_position, at)
+			if absf(d - lung.surge_radius()) < Lung.SURGE_WIDTH + 0.5 and player.dodge.can_start():
+				# Roll in, through the ring.
+				Autopilot.press_move(Autopilot.input_for_ground(Iso.ground_dir_between(at, lung.global_position)))
+				Autopilot.tap(&"dodge")
+				spent += await Autopilot.physics_step()
+				continue
+		if Iso.ground_distance(at, target) > 0.3:
+			Autopilot.press_move(Autopilot.input_for_ground(Iso.ground_dir_between(at, target)))
+		else:
+			Autopilot.press_move(Vector2.ZERO)
+		spent += await Autopilot.physics_step()
+	Autopilot.release_all()
+	return true
 
 
 ## Carry the plaque and the Pump Core.
@@ -127,10 +184,16 @@ func choose(screen: Node, gen: int) -> void:
 	on_to_the_ark(screen)
 
 
-func at_ark(_ark: ArkLevel, gen: int) -> bool:
+func at_ark(ark: ArkLevel, gen: int) -> bool:
 	pass_check("ark_reached")
 	check(GameState.run.buildings_restored.has("pumphouse"), "pumphouse_restored")
+	check(facade_cells(ark, BuildingCell.Facade.PUMPHOUSE) > 0, "pumphouse_standing")
 	if not await Autopilot.wait(1.5, gen):
 		return false
 	await Autopilot.snap("ark_after_greywater")
+	if not await Autopilot.use_at(ark, ark.player, Vector2i(6, 11), gen):
+		return false
+	if not await Autopilot.wait(2.0, gen):
+		return false
+	await Autopilot.snap("ark_pumphouse")
 	return true

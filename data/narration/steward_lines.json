@@ -640,6 +640,13 @@
 			"tone": "neutral",
 			"text": "The pumping station's Reliquary. The tide's memory. Take what keeps you dry.",
 			"level": "greywater"
+		},
+		{
+			"id": "GREY_BOSS_N1",
+			"event": "boss_engaged",
+			"tone": "neutral",
+			"text": "The Lung. It's still running the tide tables for everyone. Let it breathe.",
+			"level": "greywater"
 		}
 	]
 }

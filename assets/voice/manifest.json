@@ -79,6 +79,10 @@
   "hash": "21b576b906aef1a99b63ff48b945dc30fcb7196c",
   "text": "Somewhere new. Stay where I can see you."
  },
+ "GREY_BOSS_N1": {
+  "hash": "053dab3ddbee11cdbade504cec64b76accc1edcd",
+  "text": "The Lung. It's still running the tide tables for everyone. Let it breathe."
+ },
  "GREY_ENTER_B1": {
   "hash": "d19e7242caee7bd9463347be9f8869a1a266e5b8",
   "text": "Greywater. The sea's in no hurry. Neither are you, I hope."
@@ -499,6 +503,30 @@
   "hash": "282a9874abb7b41188b17e8ac5bd583f6c406023",
   "text": "I'd keep the tuning on. Let me carry the aim; you watch the street."
  },
+ "lung_far": {
+  "hash": "748dfa64b4c7866bef90a2ad529368733ba4e8ea",
+  "text": "The far basin's filling."
+ },
+ "lung_left": {
+  "hash": "4fbe13b958b5e985dbeded61439f04798831f270",
+  "text": "The left basin's filling. Out of it."
+ },
+ "lung_near": {
+  "hash": "226c4a3cbc9f42529b2f1da6e328a7024430f90c",
+  "text": "The near basin, where you are. Move."
+ },
+ "lung_right": {
+  "hash": "1fc7cac3fc1c093d672a7319561e056a492b1319",
+  "text": "The right basin. Out of it."
+ },
+ "lung_surge": {
+  "hash": "3982e96d771bba6372987253e9bec759584f86ff",
+  "text": "Surge. Roll through it."
+ },
+ "lung_vent": {
+  "hash": "1df9039a0474eb303e278910d2bb6d389ce65e5b",
+  "text": "It's venting. Now."
+ },
  "now_log_0001_transition": {
   "hash": "504732839ded3943daee206733ac33736e9ae507",
   "text": "The Feed was written before the strike ended. It was written before the strike began, actually."
@@ -646,6 +674,10 @@
  "override_survivors_first_sign": {
   "hash": "5d74c83d1926ad03b614a8219f1227755bf62515",
   "text": "Them over you. I can do that. I've done arithmetic like that before."
+ },
+ "pumphouse_note": {
+  "hash": "d8143195a256c3956587629efa2783f3bed7079f",
+  "text": "People are running the pumps by hand again. The tide's lower everywhere. I should be glad."
  },
  "surgeon_incision": {
   "hash": "5f7c5a40a73b1e18daeb10ec966b334fe1992464",

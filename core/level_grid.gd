@@ -30,7 +30,8 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	Tiles.PARTITION: Floor.TILE, Tiles.WARD_SEAL: Floor.TILE, Tiles.AMBULANCE: Floor.ASPHALT,
 	Tiles.NURSE_DESK: Floor.STAFF, Tiles.STERILIZER: Floor.TILE, Tiles.HOSPITAL_WALL: Floor.BUILDING,
 	Tiles.HOSPITAL_DOOR: Floor.BUILDING, Tiles.HOSPITAL_BED: Floor.TILE,
-	Tiles.CLINIC: Floor.BUILDING, Tiles.CLINIC_DOOR: Floor.CONCRETE,
+	Tiles.CLINIC: Floor.BUILDING, Tiles.CLINIC_DOOR: Floor.CONCRETE, Tiles.PUMPHOUSE: Floor.BUILDING,
+	Tiles.PUMPHOUSE_DOOR: Floor.CONCRETE,
 	Tiles.SEAWALL: Floor.SEAWALL, Tiles.LOW_STREET: Floor.LOW_STREET, Tiles.KELP: Floor.KELP,
 	Tiles.MARROW: Floor.LOW_STREET, Tiles.GRATING: Floor.GRATING, Tiles.PUMP_WALL: Floor.BUILDING,
 	Tiles.PUMP_DOOR: Floor.BUILDING, Tiles.TURBINE: Floor.WATER, Tiles.TIDE_GAUGE: Floor.LOW_STREET,
@@ -40,7 +41,7 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 ## walked on. The smart gate 'Q' is solid only while closed (SmartGate), so it isn't listed.
 const SOLID := " #dmgAlMI~=-L|KtoRTvHjFbrJ*[^" + Tiles.PARTITION + Tiles.AMBULANCE + Tiles.NURSE_DESK \
 	+ Tiles.HOSPITAL_WALL + Tiles.HOSPITAL_DOOR + Tiles.HOSPITAL_BED + Tiles.CLINIC + Tiles.PUMP_WALL \
-	+ Tiles.PUMP_DOOR + Tiles.TURBINE + Tiles.TIDE_GAUGE
+	+ Tiles.PUMP_DOOR + Tiles.TURBINE + Tiles.TIDE_GAUGE + Tiles.PUMPHOUSE
 ## People stand on these cells: walkable floor, but nothing should route through them.
 const OCCUPIED := "WwNY"
 ## Placed things that need a stable id from an '@' line (people, caches, logs).

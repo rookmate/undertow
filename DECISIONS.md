@@ -464,4 +464,16 @@ Asked of the user on 2026-10-09 and answered the same day.
      wall) holds the brass plaque for the Blackout Winter's dead and its crews (a truth cache) and the
      last shift's hand, one of the Waiting. **With the Pumphouse rebuilt**, high water lasts 6 s and
      doesn't sting (it still slows you): the tide hazard is lower wherever there's a tide.
+132. **The Lung** (Greywater's boss), in its basin on the east island before the Reliquary: it floods
+     the basin a quarter at a time (the quarters are the grid's quadrants around it, which on screen are
+     left, right, near and far), three a cycle, the one you're in first; each is outlined in red-orange
+     for 1.2 s (1.5 s muted) and called by the Steward ("The left basin's filling. Out of it."), then
+     floods (14 damage). Then a pressure surge rings out across the basin (16 damage where it passes;
+     roll through it). Then it vents for 3.5 s: open to blows. 420 integrity. The manual solution: the
+     old hand valve on the basin's edge, turned while it fills a quarter, chokes it for 6 s, once a
+     cycle.
+133. **The Pumphouse** stands on the Ark's left rim once Greywater is done (through the Ark map's
+     legend): people run the pumps by hand again, and the tide hazard is lower wherever there's a tide
+     (131). Its door gets the Steward's word on it: "People are running the pumps by hand again. The
+     tide's lower everywhere. I should be glad."
 

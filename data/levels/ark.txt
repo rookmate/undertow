@@ -7,12 +7,15 @@
 ;   M  the Signal Room (from the Loop) e  its door
 ;   I  the Workshop (from the Tideworks) z  its door
 ;   h  the Clinic (from Mercy General)   k  its door
+;   o  the Pumphouse (from Greywater)    j  its door
 ;   N  Noor      Y  Teo      s  where woken survivors stand      p  start (off the skiff)
 ;   ~  water
 ;
 ; This map's own characters ('%' lines; see core/tiles.gd):
 %  h clinic
 %  k clinic_door
+%  o pumphouse
+%  j pumphouse_door
 ~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -24,9 +27,9 @@
 ~~~~InnnnnnnnnnnnnG~~~~~
 ~~~~IznnnnnNnnnffnn~~~~~
 ~~~~Innnnnnnnnnffnn~~~~~
-~~~GnnnnnYnnnnnnnnnG~~~~
-~~~~nffnnnnnnnnnnnn~~~~~
-~~~~nffnnnnnnnnnnnn~~~~~
+~~~oojnnnYnnnnnnnnnG~~~~
+~~~ooffnnnnnnnnnnnn~~~~~
+~~~ooffnnnnnnnnnnnn~~~~~
 ~~~~GnnnnnnnnnnnnnG~~~~~
 ~~~~~GnnffnnffnnsG~~~~~~
 ~~~~~nnnffnnffnsnn~~~~~~
