@@ -44,6 +44,15 @@ func aim_at(target: Vector2i, from: Vector2i) -> void:
 	route = []
 
 
+## Cells the route mustn't use for now (Greywater's low streets while the tide is up): the Steward routes
+## over high ground instead. Unblocking gives them back as they were.
+func set_blocked(cells: Array[Vector2i], blocked: bool) -> void:
+	for c: Vector2i in cells:
+		if grid.in_bounds(c):
+			nav.astar.set_point_solid(c, blocked or not (grid.is_indexed(c) and grid.is_walkable(c) and not grid.is_occupied(c)))
+	route = []
+
+
 ## The Lattice reaches this cell. Coverage is about hardware, not about whether a route can pass through
 ## the cell: a lamp post's cell is lit even though the route goes round the post.
 func covers(cell: Vector2i) -> bool:
@@ -66,6 +75,9 @@ func predict(world_position: Vector2, count: int = Tunables.PATH_TILES_AHEAD) ->
 		at = 0
 	for i: int in range(at, route.size()):
 		var c := route[i]
+		# The thick Marrow: the Steward can't see through it, so its path stops at the fog.
+		if grid.is_marrow(c):
+			break
 		if c == here or Iso.ground_distance(world_position, Iso.cell_center(c)) < UNDERFOOT_TILES:
 			continue
 		out.append(c)

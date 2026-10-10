@@ -157,7 +157,7 @@ func _physics_process(delta: float) -> void:
 	if dodge.is_rolling():
 		velocity = dodge.velocity()
 	else:
-		velocity = Iso.ground_velocity(ground, WALK_TILES_PER_SECOND)
+		velocity = Iso.ground_velocity(ground, WALK_TILES_PER_SECOND * (level.footing(cell()) if level != null else 1.0))
 		if ground.length_squared() > 0.01 and not _attacking():
 			facing_ground = ground.normalized()
 	velocity += _knock

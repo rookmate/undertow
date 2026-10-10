@@ -28,7 +28,7 @@ func test_every_district_has_a_route() -> void:
 		check(names.has("route_completed") and names.has("ark_reached"), "%s is played through to the Ark" % id)
 		for c: String in names:
 			check_eq(names.count(c), 1, "%s's check %s is listed once" % [id, c])
-	check(AutopilotRoute.for_district("greywater") == null, "a district not built has no route")
+	check(AutopilotRoute.for_district("harbor") == null, "a district not built has no route")
 
 
 func test_the_campaign_checks_each_district_by_name() -> void:
@@ -37,7 +37,7 @@ func test_the_campaign_checks_each_district_by_name() -> void:
 	var expected := plan.expected()
 	for c: String in expected:
 		check_eq(expected.count(c), 1, "%s is expected once" % c)
-	for id: String in ["kestrel", "loop", "tideworks", "mercy", "vellum"]:
+	for id: String in ["kestrel", "loop", "tideworks", "mercy", "greywater", "vellum"]:
 		check(expected.has(id + ":route_completed") and expected.has(id + ":ark_reached"), "%s, tagged" % id)
 	check_false(expected.has("route_completed"), "no untagged district check a district could pass for another")
 	check(expected.has("campaign_saved_and_continued") and expected.has("mercy:gauntlet_found"))

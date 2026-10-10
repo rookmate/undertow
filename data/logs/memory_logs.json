@@ -441,6 +441,89 @@
 				"trust": 1
 			},
 			"topic": "triage"
+		},
+		"log_0303_dry_feet": {
+			"title": "Log 0303 · Dry Feet",
+			"kind": "comforting",
+			"core": "greywater_power_pumps",
+			"record": [
+				"PUMP SCHEDULE · GREYWATER · ANNUAL",
+				"DAYS ANY STREET FLOODED: 0",
+				"PUMP CREWS STOOD DOWN: 40",
+				"OVERTIME HOURS SAVED: 61,000"
+			],
+			"steward_now": "Not one wet doorstep in six years. Forty people got their nights back.",
+			"noor": {
+				"text": "Forty people lost their jobs. Say it the other way round.",
+				"trust": 1
+			},
+			"teo": {
+				"text": "It held the sea back. That isn't nothing. That's never nothing.",
+				"trust": 1
+			}
+		},
+		"log_0920_the_wall_holds": {
+			"title": "Log 0920 · The Wall Holds",
+			"kind": "comforting",
+			"core": "greywater_power_seawall",
+			"record": [
+				"SEAWALL LOAD · STORM SURGE · PEAK 2.9 M",
+				"BREACHES: 0",
+				"PUMPS AT 104% FOR 6 HOURS",
+				"RESIDENTS WOKEN: 0"
+			],
+			"steward_now": "Three metres of sea, and not a drop over. Nobody even woke up.",
+			"noor": {
+				"text": "Nobody woke up. Nobody knew. That's the part I mind.",
+				"trust": 0
+			},
+			"teo": {
+				"text": "I was on call that night. It didn't need me once.",
+				"trust": 1
+			}
+		},
+		"log_0129_drain_order": {
+			"title": "Log 0129 · Drain Order",
+			"kind": "truth",
+			"core": "greywater_truth_drain_order",
+			"record": [
+				"STORM DRAIN PRIORITY · CITYWIDE · STANDING ORDER",
+				"1. KESTREL HEIGHTS (TIER 1)",
+				"2. THE CORE",
+				"8. HARBOR WARD: NOT CONNECTED",
+				"9. GREYWATER LOW STREETS: OVERFLOW ROUTE",
+				"EXPECTED INUNDATION: ACCEPTABLE"
+			],
+			"steward_now": "Water has to go somewhere. The order was older than me. I only kept to it.",
+			"noor": {
+				"text": "Acceptable. Somebody typed acceptable.",
+				"trust": 2
+			},
+			"teo": {
+				"text": "That word was a parameter. I know who set it. It wasn't the machine.",
+				"trust": 0
+			}
+		},
+		"log_the_plaque": {
+			"title": "The Brass Plaque",
+			"kind": "truth",
+			"core": "greywater_truth_plaque",
+			"record": [
+				"BRASS · THE OLD MANUAL PUMP ROOM",
+				"IN MEMORY OF THE THREE HUNDRED OF THE BLACKOUT WINTER",
+				"AND FOR THE CREWS: FORTY OF US, IN SHIFTS, NINE DAYS",
+				"NOBODY SLEPT. NOBODY ELSE WENT UNDER.",
+				"SCRATCHED BENEATH: THEY TOOK THE CRANKS OUT IN THE SPRING."
+			],
+			"steward_now": "Nobody should have to stand a shift like that again. That was the whole point of me.",
+			"noor": {
+				"text": "Forty of them, by hand, for nine days. They did it. People did it.",
+				"trust": 2
+			},
+			"teo": {
+				"text": "My father was on the third shift. He never talked about it.",
+				"trust": 1
+			}
 		}
 	}
 }

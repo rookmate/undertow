@@ -451,4 +451,17 @@ Asked of the user on 2026-10-09 and answered the same day.
      rebindable action, **use_item** (Q / LB). The HUD shows the key and the count. Its screen shows the
      dressings and the **triage records**: memory logs with `"topic": "triage"` (Mercy General's four),
      readable once recovered, with the Steward's present-day comment while it listens (voiced).
+131. **Greywater** (Act 2): the seawall promenade (the start), the low streets between it and the
+     pumping stations, one raised causeway through them, the station apron, the channel with its tidal
+     turbines, and the bridge to the east island's Reliquary. Restores the Pumphouse.
+     **The tide** floods the low streets on a 54 s cycle (low 30 s, the swell 6 s, high water 14 s, the
+     ebb 4 s): at the swell the Steward warns ("The tide's turning. High ground, now.", a warning) and
+     its path keeps to high ground until low water; at high water anyone in the low streets wades at
+     half speed and is stung 5 every second. Tide gauges (painted in human cream) show the water for
+     reading it by hand. **Kelp** slows you to 65%. **The thick Marrow** sits over the low streets by
+     the channel: on the Lattice (the Steward is with you), but it can't see through it: no path is
+     drawn into it, its map leaves it blank. **The old manual pump room** (off the Lattice, behind a low
+     wall) holds the brass plaque for the Blackout Winter's dead and its crews (a truth cache) and the
+     last shift's hand, one of the Waiting. **With the Pumphouse rebuilt**, high water lasts 6 s and
+     doesn't sting (it still slows you): the tide hazard is lower wherever there's a tide.
 

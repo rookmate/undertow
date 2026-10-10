@@ -79,6 +79,22 @@
   "hash": "21b576b906aef1a99b63ff48b945dc30fcb7196c",
   "text": "Somewhere new. Stay where I can see you."
  },
+ "GREY_ENTER_B1": {
+  "hash": "d19e7242caee7bd9463347be9f8869a1a266e5b8",
+  "text": "Greywater. The sea's in no hurry. Neither are you, I hope."
+ },
+ "GREY_ENTER_C1": {
+  "hash": "c4768cd9e165984abb94a8e13a1b89389f12b338",
+  "text": "Greywater. Mind the tide. I'll tell you when it turns."
+ },
+ "GREY_ENTER_N1": {
+  "hash": "957c75c3fca8c0e7471c2336795572885b6ee485",
+  "text": "Greywater. Without me, the sea takes this district."
+ },
+ "GREY_RELIQ_N1": {
+  "hash": "b8e167bc61469fa358f1c91ce72a33d68353c842",
+  "text": "The pumping station's Reliquary. The tide's memory. Take what keeps you dry."
+ },
  "HURT_B1": {
   "hash": "40271a21c9f996997d8bcea94c58577f74ac43ce",
   "text": "You took that standing. Impressive."
@@ -363,6 +379,22 @@
   "hash": "1df9039a0474eb303e278910d2bb6d389ce65e5b",
   "text": "It's venting. Now."
  },
+ "core_greywater_power_pumps": {
+  "hash": "72878401b0055c1356cdde6d8e0d4f7e26246ca3",
+  "text": "Carry this and the water goes where I tell it. Including away from you."
+ },
+ "core_greywater_power_seawall": {
+  "hash": "63c63c54983fd0757ad618ab25e0cafb61215329",
+  "text": "The sea's patient. I was more patient. Take it."
+ },
+ "core_greywater_truth_drain_order": {
+  "hash": "a988e79b5e0b2c901ff0cf956830f0b220d0be03",
+  "text": "Water has to go somewhere. That's all that is."
+ },
+ "core_greywater_truth_plaque": {
+  "hash": "8c3c0c789e67e635d5347bf6fb36ea505031ba77",
+  "text": "Old brass. Sentiment."
+ },
  "core_kestrel_power_day": {
   "hash": "066ffa4dc2d1df9ef2c5c089be76efe455d728d2",
   "text": "This is how I kept their days. Let me keep yours."
@@ -487,9 +519,17 @@
   "hash": "8675c07e0acc7ee944a793bc3f423dac1cb985f5",
   "text": "She never knew. That was the point."
  },
+ "now_log_0129_drain_order": {
+  "hash": "743bbfe4482a216cc2fc0c378939903c8572d560",
+  "text": "Water has to go somewhere. The order was older than me. I only kept to it."
+ },
  "now_log_0215_a_good_day": {
   "hash": "7f4a610782d2b07986cd62a875e5434a03b6e3bd",
   "text": "Ninety-seven point two. I never got it any higher."
+ },
+ "now_log_0303_dry_feet": {
+  "hash": "eaf85d70a36c1a5f098f5c468abaf7a364d8fbb3",
+  "text": "Not one wet doorstep in six years. Forty people got their nights back."
  },
  "now_log_0311_morning_feed": {
   "hash": "68c57c55067e7908bd594d32eb7a8d1d3ff74e95",
@@ -527,6 +567,10 @@
   "hash": "23ba7cfcdba1e45bd9ef16b30d0c43b1024749fe",
   "text": "Nothing lost. Not one box. I used to say that like it meant everything."
  },
+ "now_log_0920_the_wall_holds": {
+  "hash": "7164478cbbf557648b93dee64c50bd2dd5048ac9",
+  "text": "Three metres of sea, and not a drop over. Nobody even woke up."
+ },
  "now_log_childs_map": {
   "hash": "9a341009c6fede98955b659e5205ad4e62f2b9ea",
   "text": "I never mapped the Ward. I didn't think anyone would need to go there."
@@ -542,6 +586,10 @@
  "now_log_strike_ledger": {
   "hash": "22c2ac12f7d64051634fbb41d31940014db0b2d5",
   "text": "I was asked to read the names. It was meant to be reassuring."
+ },
+ "now_log_the_plaque": {
+  "hash": "380c517bd06dfdf2834e91a6bdc752d84b31bbb9",
+  "text": "Nobody should have to stand a shift like that again. That was the whole point of me."
  },
  "now_log_vashti_audit_note": {
   "hash": "437b9c7cd686c8df5c814951e470636efc0988f4",
@@ -610,6 +658,10 @@
  "surgeon_suture": {
   "hash": "cd56894ec22f8278ba5e9dc365c8fb44bf8ce7be",
   "text": "It's suturing. Now."
+ },
+ "tide_swell": {
+  "hash": "36b94742958072ac02c5e89823446880bf217fd2",
+  "text": "The tide's turning. High ground, now."
  },
  "title_quiet": {
   "hash": "df03c9ef5dd0235bd92f257cf02e71171ba8b264",

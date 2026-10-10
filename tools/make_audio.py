@@ -347,6 +347,10 @@ def build():
     tear = env(bandpass(white(0.35, rng), 2400, 1.0), 0.01, None, 0.15)
     press = env(lowpass(brown(0.3, rng), 300), 0.02, None, 0.2)
     write("dressing", mix((tear, 0.9), (press, 0.6, 0.3)), -9)
+    # The tide turning in Greywater: a long low swell of water and a bell buoy far out.
+    surge = swell(lowpass(brown(3.0, rng), 260))
+    buoy = env(mix((tone(3.0, 196.0), 0.5), (tone(3.0, 293.7), 0.3)), 0.01, 1.4)
+    write("tide_swell", mix((surge, 1.0), (buoy, 0.25, 0.4)), -6)
 
 
 if __name__ == "__main__":

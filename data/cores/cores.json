@@ -26,6 +26,11 @@
 			"mercy_power_beds",
 			"mercy_power_dispatch",
 			"mercy_truth_0417"
+		],
+		"greywater": [
+			"greywater_power_pumps",
+			"greywater_power_seawall",
+			"greywater_truth_drain_order"
 		]
 	},
 	"cores": {
@@ -188,6 +193,38 @@
 			"blurb": "Clipped to a board under the desk lamp: the night's triage sheets, in pencil.",
 			"steward": "Paper, and tired hands. Corrupted.",
 			"log": "log_night_sheets"
+		},
+		"greywater_power_pumps": {
+			"kind": "power",
+			"name": "Pump Core",
+			"origin": "The Greywater Reliquary",
+			"blurb": "Every pump on the seawall, on one schedule. Not a wet doorstep in six years.",
+			"steward": "Carry this and the water goes where I tell it. Including away from you.",
+			"log": "log_0303_dry_feet"
+		},
+		"greywater_power_seawall": {
+			"kind": "power",
+			"name": "Seawall Core",
+			"origin": "The Greywater Reliquary",
+			"blurb": "The wall's load, the surge, the tide tables. It knew the sea better than the sea did.",
+			"steward": "The sea's patient. I was more patient. Take it.",
+			"log": "log_0920_the_wall_holds"
+		},
+		"greywater_truth_drain_order": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "The Greywater Reliquary, in the sump",
+			"blurb": "A dull cracked sphere, silted over. Labelled DRAIN ORDER.",
+			"steward": "Water has to go somewhere. That's all that is.",
+			"log": "log_0129_drain_order"
+		},
+		"greywater_truth_plaque": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "The old manual pump room",
+			"blurb": "Wired behind a brass plaque on the pump room wall, where someone hid it.",
+			"steward": "Old brass. Sentiment.",
+			"log": "log_the_plaque"
 		}
 	}
 }

@@ -15,8 +15,8 @@ func test_props_that_never_move_dont_redraw_every_frame() -> void:
 			var prop := n as StaticProp
 			if prop == null:
 				continue
-			if prop.kind == StaticProp.Kind.SPRINKLER:
-				check(prop.is_processing(), "%s: a sprinkler still comes on" % id)
+			if StaticProp.MOVING.has(prop.kind):
+				check(prop.is_processing(), "%s: what moves (a sprinkler, a turbine) still moves" % id)
 			elif prop.is_processing():
 				busy += 1
 		check_eq(busy, 0, "%s: no still prop is processing" % id)

@@ -5,7 +5,7 @@ extends Node2D
 ## windows (human warmth), old-city neon, and the Steward's gilt threaded along the balcony ironwork,
 ## which dies when the voice is muted.
 
-enum Facade { PLAIN, DOOR, NEON_MAGENTA, NEON_LIME, ARCHIVE, LAUNDRY, SIGNAL_ROOM, WORKSHOP, HOSPITAL, HOSPITAL_DOOR, CLINIC }
+enum Facade { PLAIN, DOOR, NEON_MAGENTA, NEON_LIME, ARCHIVE, LAUNDRY, SIGNAL_ROOM, WORKSHOP, HOSPITAL, HOSPITAL_DOOR, CLINIC, PUMPING_STATION, PUMPING_STATION_DOOR }
 
 const STORY := 74.0
 const STORIES := 3
@@ -107,6 +107,9 @@ func _face(a: Vector2, b: Vector2, h: float, street_side: bool) -> void:
 	rng.seed = hash(Vector3i(cell.x, cell.y, 1 if street_side else 2))
 	if facade == Facade.HOSPITAL or facade == Facade.HOSPITAL_DOOR:
 		_hospital_face(a, b, h, street_side, rng)
+		return
+	if facade == Facade.PUMPING_STATION or facade == Facade.PUMPING_STATION_DOOR:
+		_pump_face(a, b, h, street_side)
 		return
 	var mortar := Color(Palette.NEAR_BLACK, 0.16)
 	var v := 12.0
@@ -237,6 +240,26 @@ func _hospital_face(a: Vector2, b: Vector2, h: float, street_side: bool, rng: Ra
 		_base.line(tip, tip + (tail - tip).rotated(-0.5) * 0.3, chalk, 3.0)
 	if (cell.x + cell.y) % 3 == 0 and street_side:
 		_gilt.circle(_on_face(a, b, 0.5, h - PARAPET - 10.0), 5.0, Palette.STEWARD_GOLD_HOT)
+
+
+## A pumping station: board-marked concrete, louvres high up, a big pipe down the face, kelp and a tide
+## stain low on it; its doors are steel. The gilt on the louvres is the Steward's (dies when muted).
+func _pump_face(a: Vector2, b: Vector2, h: float, street_side: bool) -> void:
+	for k: int in 6:
+		var v := 30.0 + k * 34.0
+		_base.line(_on_face(a, b, 0.0, v), _on_face(a, b, 1.0, v), Color(Palette.NEAR_BLACK, 0.12), 1.0)
+	_base.poly(PackedVector2Array([_on_face(a, b, 0.0, 0.0), _on_face(a, b, 1.0, 0.0), _on_face(a, b, 1.0, 26.0), _on_face(a, b, 0.0, 26.0)]), Color(Palette.KELP_DARK, 0.55))
+	_base.line(_on_face(a, b, 0.0, 30.0), _on_face(a, b, 1.0, 30.0), Color(Palette.LOW_STREET_WET, 0.8), 2.0)
+	_base.line(_on_face(a, b, 0.78, 0.0), _on_face(a, b, 0.78, h - PARAPET), Palette.IRON_DARK.lightened(0.15), 8.0)
+	for k: int in 4:
+		var v := h - PARAPET - 30.0 - k * 9.0
+		_base.line(_on_face(a, b, 0.2, v), _on_face(a, b, 0.6, v), Palette.IRON_DARK, 3.0)
+	if street_side and (cell.x + cell.y) % 2 == 0:
+		_gilt.line(_on_face(a, b, 0.2, h - PARAPET - 26.0), _on_face(a, b, 0.6, h - PARAPET - 26.0), Palette.STEWARD_GOLD, 1.5)
+	if facade == Facade.PUMPING_STATION_DOOR and street_side:
+		var door := PackedVector2Array([_on_face(a, b, 0.22, 0.0), _on_face(a, b, 0.68, 0.0), _on_face(a, b, 0.68, 70.0), _on_face(a, b, 0.22, 70.0)])
+		_base.poly(door, Palette.IRON_DARK.lightened(0.1))
+		_base.line(_on_face(a, b, 0.45, 0.0), _on_face(a, b, 0.45, 70.0), Palette.NEAR_BLACK, 2.0)
 
 
 func _door(a: Vector2, b: Vector2) -> void:

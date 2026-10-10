@@ -14,6 +14,7 @@ const ROUTES: Dictionary[String, String] = {
 	"loop": "res://autoload/autopilot/routes/loop_route.gd",
 	"tideworks": "res://autoload/autopilot/routes/tideworks_route.gd",
 	"mercy": "res://autoload/autopilot/routes/mercy_route.gd",
+	"greywater": "res://autoload/autopilot/routes/greywater_route.gd",
 	"vellum": "res://autoload/autopilot/routes/vellum_route.gd",
 }
 
