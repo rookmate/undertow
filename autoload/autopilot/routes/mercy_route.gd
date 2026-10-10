@@ -15,6 +15,7 @@ const THROUGH: Array[String] = [
 	"night_nurse_woken", "sterilizer_misted", "surgeon_engaged", "surgeon_called_an_incision",
 	"surgeon_sutured", "surgeon_beaten", "barriers_opened", "route_completed", "core_choice_shown",
 	"mercy_cores_carried", "ark_reached", "clinic_restored", "clinic_standing", "dressings_stocked",
+	"conversation_waiting", "conversation_offered", "conversation_answered",
 ]
 
 
@@ -201,7 +202,8 @@ func choose(screen: Node, gen: int) -> void:
 	on_to_the_ark(screen)
 
 
-## The Clinic stands: home, it stocks you up; inside, the triage records.
+## The Clinic stands: home, it stocks you up; inside, the triage records. Then Noor and Teo talk the
+## wards over: side with Noor.
 func at_ark(ark: ArkLevel, gen: int) -> bool:
 	pass_check("ark_reached")
 	check(GameState.run.buildings_restored.has("clinic"), "clinic_restored")
@@ -223,4 +225,4 @@ func at_ark(ark: ArkLevel, gen: int) -> bool:
 	if not await Autopilot.wait(0.8, gen):
 		return false
 	await Autopilot.snap("ark_clinic")
-	return true
+	return await talk_it_over(ark, "noor", gen)

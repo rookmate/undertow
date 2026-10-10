@@ -15,6 +15,7 @@ const THROUGH: Array[String] = [
 	"no_path_in_the_marrow", "woke_in_the_marrow", "enemy_killed", "lung_engaged", "lung_called_a_flood",
 	"lung_vented", "lung_beaten", "barriers_opened", "route_completed", "core_choice_shown",
 	"greywater_cores_carried", "ark_reached", "pumphouse_restored", "pumphouse_standing",
+	"conversation_waiting", "conversation_offered", "conversation_answered",
 ]
 
 
@@ -184,6 +185,7 @@ func choose(screen: Node, gen: int) -> void:
 	on_to_the_ark(screen)
 
 
+## The Pumphouse stands; then Noor and Teo talk the pumps over: side with Teo.
 func at_ark(ark: ArkLevel, gen: int) -> bool:
 	pass_check("ark_reached")
 	check(GameState.run.buildings_restored.has("pumphouse"), "pumphouse_restored")
@@ -196,4 +198,4 @@ func at_ark(ark: ArkLevel, gen: int) -> bool:
 	if not await Autopilot.wait(2.0, gen):
 		return false
 	await Autopilot.snap("ark_pumphouse")
-	return true
+	return await talk_it_over(ark, "teo", gen)

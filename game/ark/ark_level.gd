@@ -40,6 +40,7 @@ var city_map: CityMap
 var overrides_screen: OverridesScreen
 var workshop_screen: WorkshopScreen
 var clinic_screen: ClinicScreen
+var conversation_screen: ConversationScreen
 
 
 func is_hub() -> bool:
@@ -252,6 +253,17 @@ func open_clinic() -> ClinicScreen:
 	clinic_screen.closed.connect(func() -> void: clinic_screen = null)
 	add_child(clinic_screen)
 	return clinic_screen
+
+
+## Noor and Teo talk a district over with you.
+func open_conversation(district: String) -> ConversationScreen:
+	if conversation_screen != null:
+		return conversation_screen
+	conversation_screen = ConversationScreen.new()
+	conversation_screen.district = district
+	conversation_screen.closed.connect(func() -> void: conversation_screen = null)
+	add_child(conversation_screen)
+	return conversation_screen
 
 
 ## The Signal Room: the standing orders.

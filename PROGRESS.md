@@ -141,8 +141,8 @@ analysis review at the end.
 | 22 | The Lung (boss) and the Pumphouse | done |
 | 23a | The Vellum's east bank: the footbridge, the newsroom, the deep stacks and Prem Vashti's office, the Reliquary past the press hall; Clerks flash the Feed | done |
 | 23b | The Editor (boss) in the press hall | done |
-| 24 | Companion conversations after each Act 2 district; the campaign through Act 2 | next |
-| — | Sol analysis review (reviews/act-2.md), fixes, re-check | |
+| 24 | Companion conversations after each Act 2 district; the campaign through Act 2 | done |
+| — | Sol analysis review (reviews/act-2.md), fixes, re-check | next |
 
 ## Later milestones (planned)
 
@@ -215,9 +215,10 @@ tools/record.sh <name> [seconds] [scenario]   # progress video -> ../undertow-re
 Autopilot scenarios (`-- --autopilot --autopilot-scenario=NAME`): `slice` (default: New Game →
 Kestrel Heights → the Reliquary → the bare Ark → the Loop map), `campaign` (one run as a player plays
 it: New Game, Kestrel Heights, the Loop and an order signed in the Signal Room, save and return to the
-title, Continue, the Tideworks and a Workshop upgrade, the Vellum to the Archive; ends when done; give
-it `--autopilot-seconds=900`), `loop`, `tideworks`, `vellum` (a prepared run straight to that district
-and the Ark after it, carrying only what the districts before gave), `ring_gallery`, `options` (the
+title, Continue, the Tideworks and a Workshop upgrade, then Act 2: Mercy General, Greywater and the
+Vellum, each talked over with Noor and Teo on the Ark, to the Archive; ends when done; give it
+`--autopilot-seconds=900`), `loop`, `tideworks`, `mercy`, `greywater`, `vellum` (a prepared run
+straight to that district and the Ark after it, carrying only what the districts before gave), `ring_gallery`, `options` (the
 options screen: a volume, a rebinding), `tour` with `--autopilot-level=ID` (straight into a district:
 photographs its start, checkpoints, finds, Reliquary, muted). Runs of 55 s or more also expect the
 route to finish. Screenshots (`--autopilot-shots=DIR`) need a window: a headless run never draws.

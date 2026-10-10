@@ -124,6 +124,35 @@ func at_ark(_ark: ArkLevel, gen: int) -> bool:
 
 
 # --- Helpers for routes ---------------------------------------------------------------------------
+## Talks this district over with Noor and Teo on the Ark (the first time you talk to Noor after it),
+## answering `side` ("noor", "teo" or "none", Conversations.SIDES) the way a player would; checks their
+## trust moved by what that answer says, once, and that nothing more is waiting.
+func talk_it_over(ark: ArkLevel, side: String, gen: int) -> bool:
+	var r := GameState.run
+	check(r.pending_conversation() == id, "conversation_waiting")
+	if not await Autopilot.use_at(ark, ark.player, ark.grid.first("N") + Vector2i(1, 0), gen):
+		return false
+	var screen := ark.conversation_screen
+	check(screen != null and screen.district == id, "conversation_offered")
+	if screen == null:
+		return false
+	if not await Autopilot.wait(2.0, gen):
+		return false
+	await Autopilot.snap(id + "_conversation")
+	var choice := Conversations.choice(id, side)
+	var noor := clampi(r.noor_trust + int(choice.get("noor", 0)), Tunables.TRUST_MIN, Tunables.TRUST_MAX)
+	var teo := clampi(r.teo_trust + int(choice.get("teo", 0)), Tunables.TRUST_MIN, Tunables.TRUST_MAX)
+	var buttons: Dictionary = screen.get("_choices")
+	(buttons[side] as Button).grab_focus()
+	Autopilot.tap(&"ui_accept")
+	if not await Autopilot.wait(2.0, gen):
+		return false
+	await Autopilot.snap(id + "_conversation_answered")
+	check(screen.answered == side and r.conversations_had.has(id) and r.noor_trust == noor and r.teo_trust == teo and r.pending_conversation() == "", "conversation_answered")
+	Autopilot.tap(&"ui_cancel")
+	return await Autopilot.wait(0.8, gen)
+
+
 ## Takes these cards and confirms. Returns false if the scene changed meanwhile.
 func pick_cores(screen: Node, cores: Array[String], gen: int) -> bool:
 	pass_check("core_choice_shown")
