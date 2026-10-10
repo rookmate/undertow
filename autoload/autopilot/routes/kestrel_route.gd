@@ -112,7 +112,7 @@ func choose(screen: Node, gen: int) -> void:
 ## After Kestrel Heights the Ark is bare (nothing restored yet); the dock's map shows the Loop open.
 func at_ark(ark: ArkLevel, gen: int) -> bool:
 	pass_check("ark_reached")
-	check(facade_cells(ark, BuildingCell.Facade.ARCHIVE) == 0 and GameState.run.buildings_restored.is_empty(), "ark_bare")
+	check(facade_cells(ark, BuildingCell.Facade.ARCHIVE) == 0 and GameState.run.buildings_restored.is_empty() and ark.noor == null and ark.teo == null, "ark_bare")
 	if not await Autopilot.wait(1.5, gen):
 		return false
 	await Autopilot.snap("ark_bare")

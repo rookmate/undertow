@@ -323,6 +323,10 @@
   "hash": "6c6843d48396bfc531ad1fea705828e17a153376",
   "text": "There you are. I kept your place."
  },
+ "companions_arrive": {
+  "hash": "386eb387c2e9e334711bf0a8653c17bc79500cfe",
+  "text": "You have company. Noor doesn't trust me. Teo built part of me. Both of them will want something from you."
+ },
  "conductor_left": {
   "hash": "deaaffc4f05ca9d48d57f4ba2fe6f05f52687b6c",
   "text": "Left track."

@@ -402,3 +402,17 @@ Asked of the user on 2026-10-09 and answered the same day.
      gives the audio thread a moment, and a sound begun in that moment (a respawn's, the Steward's word
      on it) leaked at exit. Found by a gate tour.
 123. **The gate tests its own listing check** (`tools/test_district_listing.sh`, run before the tours).
+
+## Milestone 3: Act 2
+
+124. **Act 2's plan** is `design/act-2.md` (placeholder design from the world bible): Mercy General, the
+     Vellum and Greywater in any order once the Tideworks is done; travel stays by the skiff and the
+     Loop map (the bible's further Loop arcs are left for later); the Defib Gauntlet moves home to
+     Mercy General.
+125. **Noor and Teo join after Act 1** (world bible: "This is where Noor and Teo join"). Before the
+     Tideworks is done the Ark is yours alone. The first time you come home after it they walk up off
+     the dock, say who they are, and the Steward says (aloud) what it thinks of them; once only
+     (`companions_met`, saved). Presence for the endings (`noor_present` / `teo_present`) is unchanged;
+     who is *here* (on the Ark, reacting to logs, with trust to move) is `RunState.companion_here()`:
+     joined and present.
+

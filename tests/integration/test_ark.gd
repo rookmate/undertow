@@ -4,8 +4,12 @@ extends TestCase
 var ark: ArkLevel
 
 
+## The Ark after the Vellum: Act 1 behind you, Noor and Teo already arrived.
 func before_each() -> void:
 	GameState.new_run()
+	for district: String in ["kestrel", "loop", "tideworks"]:
+		GameState.complete_level(district)
+	GameState.meet_companions()
 	Steward.set_voice(true)
 	GameState.add_survivor(ContentIds.SURVIVOR_DOORWAY)
 	GameState.find_core(ContentIds.CORE_TRUTH_STACKS)
@@ -117,6 +121,60 @@ func test_the_dock_opens_the_loop_map() -> void:
 	map.close()
 	await wait_frames(1)
 	check_false(get_tree().paused)
+
+
+## Act 1 is yours alone: Noor and Teo aren't on the Ark until the Tideworks is done.
+func test_in_act_1_the_ark_is_yours_alone() -> void:
+	ark.queue_free()
+	await wait_frames(1)
+	GameState.new_run()
+	GameState.complete_level("kestrel")
+	ark = (load("res://game/ark/ark.tscn") as PackedScene).instantiate() as ArkLevel
+	add_child(ark)
+	await wait_frames(2)
+	check_eq(_figures(ArkFigure.Who.NOOR) + _figures(ArkFigure.Who.TEO), 0, "nobody by the Archive plot yet")
+	check_false(ark.arriving)
+
+
+## Home from the Tideworks for the first time: they come up off the dock, say who they are, and the
+## Steward says what it thinks of them, aloud. Once only.
+func test_after_the_tideworks_noor_and_teo_arrive_once() -> void:
+	ark.queue_free()
+	await wait_frames(1)
+	GameState.new_run()
+	for district: String in ["kestrel", "loop", "tideworks"]:
+		GameState.complete_level(district)
+	ark = (load("res://game/ark/ark.tscn") as PackedScene).instantiate() as ArkLevel
+	add_child(ark)
+	await wait_frames(2)
+	check(ark.arriving and ark.noor != null and ark.teo != null, "they're coming")
+	var dock := Iso.cell_center(ark.grid.first("D"))
+	check(Iso.ground_distance(ark.noor.position, dock) < 2.0, "off the dock")
+	check(GameState.run.companions_met, "met, so it won't play again")
+	var said: Array[String] = []
+	var heard := func() -> void:
+		for f: ArkFigure in [ark.noor, ark.teo]:
+			if f.spoken_line() != "" and not said.has(f.spoken_line()):
+				said.append(f.spoken_line())
+	var waited := 0.0
+	var steward_spoke := false
+	while ark.arriving and waited < 30.0:
+		heard.call()
+		steward_spoke = steward_spoke or Sound.voice_line == "companions_arrive"
+		await wait_frames(6)
+		waited += 0.1
+	check_false(ark.arriving, "the arrival ends")
+	check(said.size() >= 3, "they say who they are: %s" % [said])
+	check(steward_spoke, "and the Steward has its say, aloud")
+	check(Iso.ground_distance(ark.noor.position, Iso.cell_center(ark.grid.first("N"))) < 0.2, "Noor by the Archive")
+	check(Iso.ground_distance(ark.teo.position, Iso.cell_center(ark.grid.first("Y"))) < 0.2, "Teo too")
+	ark.queue_free()
+	await wait_frames(1)
+	ark = (load("res://game/ark/ark.tscn") as PackedScene).instantiate() as ArkLevel
+	add_child(ark)
+	await wait_frames(2)
+	check_false(ark.arriving, "the next time, they're simply there")
+	check(Iso.ground_distance(ark.noor.position, Iso.cell_center(ark.grid.first("N"))) < 0.2)
 
 
 func test_buildings_stand_only_once_restored() -> void:

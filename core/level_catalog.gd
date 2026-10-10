@@ -11,6 +11,8 @@ extends RefCounted
 ##   "ark"             the hub
 
 const FIRST_LEVEL := "kestrel"
+## Noor and Teo join once this district (the end of Act 1) is done.
+const COMPANIONS_JOIN_AFTER := "tideworks"
 
 ## Playable districts. "after": districts that must be completed first (the world bible's acts).
 const LEVELS: Dictionary[String, Dictionary] = {

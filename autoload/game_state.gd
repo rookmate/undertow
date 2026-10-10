@@ -138,6 +138,13 @@ func change_trust(who: StringName, amount: int) -> void:
 		push_error("GameState.change_trust: unknown companion %s" % who)
 
 
+## Noor and Teo have arrived on the Ark.
+func meet_companions() -> void:
+	if not run.companions_met:
+		run.companions_met = true
+		state_changed.emit(&"companions_met")
+
+
 func set_present(who: StringName, present: bool) -> void:
 	if who == RunState.WHO_NOOR:
 		run.noor_present = present

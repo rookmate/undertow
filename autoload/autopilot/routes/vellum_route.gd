@@ -28,10 +28,12 @@ func checks() -> Array[String]:
 	return out
 
 
-## Arriving from the Tideworks: the Riot Drone found there, nothing else handed over.
+## Arriving from the Tideworks: the Riot Drone found there and Noor and Teo met on the Ark after it;
+## nothing else handed over.
 func prepare() -> void:
 	super()
 	GameState.give_weapon(WeaponDefs.RIOT_DRONE)
+	GameState.meet_companions()
 
 
 func drive(level: Level, gen: int) -> void:

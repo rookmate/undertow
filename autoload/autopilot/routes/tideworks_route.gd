@@ -7,7 +7,8 @@ const ROUTE: Array[String] = [
 	"loadout_shown", "loadout_one_weapon", "level_reached", "player_spawned", "riot_drone_found",
 	"strike_records_found", "enemy_killed", "crane_engaged", "crane_called_a_drop", "crane_rested",
 	"crane_beaten", "barriers_opened", "route_completed", "core_choice_shown", "tideworks_cores_carried",
-	"ark_reached", "workshop_restored", "workshop_standing", "upgrade_bought",
+	"ark_reached", "noor_and_teo_arrive", "workshop_restored", "workshop_standing", "upgrade_bought",
+	"noor_and_teo_stay",
 ]
 
 
@@ -112,9 +113,11 @@ func choose(screen: Node, gen: int) -> void:
 	on_to_the_ark(screen)
 
 
-## The Workshop stands: spend scrap on the Riot Drone's tuning.
+## Act 1 done: Noor and Teo arrive off the dock. The Workshop stands: spend scrap on the Riot Drone's
+## tuning.
 func at_ark(ark: ArkLevel, gen: int) -> bool:
 	pass_check("ark_reached")
+	check(ark.arriving and ark.noor != null and ark.teo != null, "noor_and_teo_arrive")
 	check(GameState.run.buildings_restored.has("workshop"), "workshop_restored")
 	check(facade_cells(ark, BuildingCell.Facade.WORKSHOP) > 0, "workshop_standing")
 	if not await Autopilot.wait(1.5, gen):
@@ -134,4 +137,6 @@ func at_ark(ark: ArkLevel, gen: int) -> bool:
 		return false
 	await Autopilot.snap("workshop_bought")
 	shop.close()
+	check(await Autopilot.until(func() -> bool: return not ark.arriving, 30.0, gen) and GameState.run.companions_met, "noor_and_teo_stay")
+	await Autopilot.snap("ark_noor_and_teo")
 	return await Autopilot.wait(0.5, gen)

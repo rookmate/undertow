@@ -2,8 +2,10 @@ class_name ArkLevel
 extends Level
 ## The Ark (hub): a civic emergency platform in the estuary, a concrete disc with a ring of gold floor
 ## lights, and the only charter clause the council never amended: the Steward may advise here and may
-## not act. No enemies, no predicted path, no weapons. Buildings rise as districts' cores come home; in
-## the slice, the Archive. Noor and Teo wait by it; survivors you woke stand by the unbuilt Commons.
+## not act. No enemies, no predicted path, no weapons. Buildings rise as districts' cores come home.
+## Survivors you woke stand by the unbuilt Commons. Noor and Teo join after Act 1: the first time you
+## come home after the Tideworks they arrive off the dock (once), and from then on they stand by the
+## Archive.
 
 const SURVIVOR_SPOTS := "s"
 ## Which map letters are which Ark building's plot. A plot is built only once that building has been
@@ -16,7 +18,23 @@ const DOOR_KINDS: Dictionary[String, ArkFixture.Kind] = {
 	"archive": ArkFixture.Kind.ARCHIVE_DOOR, "signal_room": ArkFixture.Kind.SIGNAL_DOOR, "workshop": ArkFixture.Kind.WORKSHOP_DOOR,
 }
 
+## The arrival lines, in order: who says it ("noor", "teo", or "steward" for its voiced line) and what.
+const ARRIVAL: Array[Array] = [
+	["noor", "So you're the one it woke. Keep a hand near that earpiece."],
+	["teo", "Teo. I wrote some of its dispatch layer. It's still trying to help, you know."],
+	["steward", "companions_arrive"],
+	["noor", "Noor. Harbor Ward. We ran our own lights for ten years. We can run them again."],
+]
+const ARRIVAL_LINE_SECONDS := 4.5
+## Where they come up onto the disc from the dock.
+const ARRIVAL_WAYPOINT := Vector2i(18, 18)
+
 var archive_screen: ArchiveScreen
+## Noor and Teo, when they're here (null otherwise).
+var noor: ArkFigure
+var teo: ArkFigure
+## Their arrival is playing.
+var arriving: bool = false
 var city_map: CityMap
 var overrides_screen: OverridesScreen
 var workshop_screen: WorkshopScreen
@@ -32,10 +50,17 @@ func location_key() -> String:
 
 func _populate() -> void:
 	_add_floor_lights()
-	for c: Vector2i in grid.cells_with("N"):
-		_figure(c, ArkFigure.Who.NOOR, "", GameState.run.noor_present)
-	for c: Vector2i in grid.cells_with("Y"):
-		_figure(c, ArkFigure.Who.TEO, "", GameState.run.teo_present)
+	var run := GameState.run
+	noor = _figure(grid.first("N"), ArkFigure.Who.NOOR, "", run.companion_here(RunState.WHO_NOOR))
+	teo = _figure(grid.first("Y"), ArkFigure.Who.TEO, "", run.companion_here(RunState.WHO_TEO))
+	arriving = run.companions_joined() and not run.companions_met and (noor != null or teo != null)
+	if arriving:
+		# Off the dock, side by side: they walk up to where they'll stand from now on.
+		var dock := grid.first("D")
+		if noor != null:
+			noor.position = Iso.cell_center(dock)
+		if teo != null:
+			teo.position = Iso.cell_center(dock + Vector2i(1, 0) if grid.is_walkable(dock + Vector2i(1, 0)) else dock)
 	var survivors := GameState.run.survivor_ids
 	var spots := survivor_cells(survivors.size())
 	if spots.size() < survivors.size():
@@ -69,6 +94,8 @@ func _map_problems() -> PackedStringArray:
 	for marker: String in [SURVIVOR_SPOTS, "N", "Y", "D"]:
 		if grid.cells_with(marker).is_empty():
 			problems.append("the Ark needs at least one '%s'" % marker)
+	if not grid.is_walkable(ARRIVAL_WAYPOINT):
+		problems.append("Noor and Teo come up off the dock through %s, which isn't walkable" % ARRIVAL_WAYPOINT)
 	return problems
 
 
@@ -110,7 +137,35 @@ func survivor_cells(count: int) -> Array[Vector2i]:
 
 
 func _on_ready_extra() -> void:
-	_arrive_line()
+	if arriving:
+		_companions_arrive()
+	else:
+		_arrive_line()
+
+
+## Noor and Teo come up off the dock, say who they are, and the Steward says what it thinks of them.
+func _companions_arrive() -> void:
+	GameState.meet_companions()
+	var steps := 0
+	for f: ArkFigure in [noor, teo]:
+		if f != null:
+			# Up past the landing (round the Operator, who comes off the same skiff) and across the disc.
+			var points: Array[Vector2] = [Iso.cell_center(ARRIVAL_WAYPOINT), Iso.cell_center(grid.first("N" if f == noor else "Y"))]
+			f.walk_along(points, 3.0, 0.6 + 1.2 * steps)
+			steps += 1
+	await Wait.seconds(self, 4.4)
+	for line: Array in ARRIVAL:
+		var who := str(line[0])
+		if who == "steward":
+			Narrator.say_fixed(str(line[1]))
+		else:
+			var f: ArkFigure = noor if who == "noor" else teo
+			if f == null:
+				continue
+			f.say(str(line[1]), ARRIVAL_LINE_SECONDS)
+		await Wait.seconds(self, ARRIVAL_LINE_SECONDS)
+	arriving = false
+	SaveFlow.checkpoint(get_tree())
 
 
 func _arrive_line() -> void:
@@ -118,12 +173,13 @@ func _arrive_line() -> void:
 	Narrator.notify(&"ark_arrive")
 
 
-func _figure(cell: Vector2i, who: ArkFigure.Who, id: String, present: bool) -> void:
+func _figure(cell: Vector2i, who: ArkFigure.Who, id: String, present: bool) -> ArkFigure:
 	if not present:
-		return
+		return null
 	var f := ArkFigure.new()
 	f.setup(self, cell, who, id)
 	world.add_child(f)
+	return f
 
 
 ## The ring of gold floor lights round the disc's edge.
