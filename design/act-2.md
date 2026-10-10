@@ -64,9 +64,14 @@ their trust (side with one, the other, or say nothing).
 - **New:** the press hall before the Reliquary, with **the Editor** (boss): a press-room unit that prints
   and pulps the same page forever. Its rollers sweep the floor; it flashes the Feed (a screen-white
   blind); between runs it re-inks and is open. **Manual:** jam the pulper with a paper bale.
-- **Clerks** flash the Feed at you (a short white blind) as well as throwing bales.
-- **Off the path:** deeper stacks; **Prem Vashti's office**, three floors down: her notes are the saddest
-  thread in the game (truth cores, optional).
+- **Layout:** the slice's street and plaza → over the canal by a footbridge → the newsroom (on the
+  Lattice; the Feed was written here) → the press hall (the Editor) → the Reliquary.
+- **Clerks** flash the Feed at you (a short white blind) as well as throwing bales, in turn. Face one as
+  it flashes and the world washes out; turn your back on the screen, or roll.
+- **Off the path:** down the newsroom's stair, the deep stacks; **Prem Vashti's office**, three floors
+  down: her notes are the saddest thread in the game (truth cores, optional). Her last note (the
+  Council's purge order; three copies carried where the Steward never looks), a tube carrier from the
+  night desk nobody opened, and one of the Waiting. She herself is still missing.
 - **The lie:** "I only ever told you what was useful."
 
 ## 3. Greywater — the lungs

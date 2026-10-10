@@ -83,7 +83,7 @@
 			"id": "VEL_ENTER_N2",
 			"event": "level_enter",
 			"tone": "neutral",
-			"text": "The Vellum. The Reliquary's up the street. I'll light the way.",
+			"text": "The Vellum. I only ever told you what was useful. The Reliquary's over the canal; I'll light the way.",
 			"level": "vellum"
 		},
 		{

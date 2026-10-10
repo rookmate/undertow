@@ -37,6 +37,9 @@ var shots_dir: String = ""
 var tour_level: String = ""
 ## What this run does (null until the run starts).
 var plan: AutopilotScenario
+## Turn away from a Clerk about to flash the Feed, the way a player who knows would (on by default; a
+## route turns it off to be caught once). Back on with every new scene.
+var turn_from_feed: bool = true
 
 var _elapsed: float = 0.0
 ## Real frame times (ms) while a district is on screen, for the performance report.
@@ -372,6 +375,7 @@ func hold_ground(ground: Vector2, duration: float, gen: int) -> bool:
 func _on_scene_changed(key: StringName) -> void:
 	_generation += 1
 	var gen := _generation
+	turn_from_feed = true
 	press_move(Vector2.ZERO)
 	var scene := get_tree().current_scene
 	match key:
@@ -437,7 +441,13 @@ func advance_to(level: Level, player: Operator, cell: Vector2i, timeout: float, 
 			return false
 		frame += 1
 		var threat := nearest_threat(level, player, 3.4)
-		if threat != null and player.is_alive():
+		var feed := feed_coming(level, player) if turn_from_feed else null
+		if feed != null and player.is_alive():
+			# Turn your back on the screen until it's flashed.
+			release_attacks()
+			press_move(input_for_ground(Iso.ground_dir_between(feed.global_position, player.global_position)))
+			repath = 0.0
+		elif threat != null and player.is_alive():
 			fight(player, threat, frame)
 			repath = 0.0
 		else:
@@ -463,6 +473,18 @@ func advance_to(level: Level, player: Operator, cell: Vector2i, timeout: float, 
 			print("[autopilot] advance_to %s timed out at %s%s" % [cell, player.cell(), " (fighting %s at %s)" % [near.get_class(), near.grid_cell()] if near != null else ""])
 			return false
 	return false
+
+
+## A Clerk in sight, past halfway through winding up the Feed at the Operator (null if none).
+func feed_coming(level: Level, player: Operator) -> Clerk:
+	for e: Enemy in level.living_enemies():
+		var clerk := e as Clerk
+		if clerk == null or clerk.state != Enemy.State.WINDUP or not clerk.flash_next or clerk.windup_progress() < 0.5:
+			continue
+		if Iso.ground_distance(player.global_position, clerk.global_position) <= Clerk.FLASH_REACH + 0.5 \
+				and level.grid.line_clear(player.global_position, clerk.global_position):
+			return clerk
+	return null
 
 
 func nearest_threat(level: Level, player: Operator, reach: float) -> Enemy:

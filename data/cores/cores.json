@@ -66,6 +66,14 @@
 			"steward": "Paper. Unindexed. It won't be accurate.",
 			"log": "log_vashti_audit_note"
 		},
+		"vellum_truth_vashti_office": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "Prem Vashti's office, three floors down",
+			"blurb": "Taped under her desk drawer with a note in her hand: the third copy.",
+			"steward": "An old office. Damp gets into everything down there.",
+			"log": "log_vashti_last_note"
+		},
 		"kestrel_power_gates": {
 			"kind": "power",
 			"name": "Gate Core",

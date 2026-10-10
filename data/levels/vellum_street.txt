@@ -1,6 +1,13 @@
-; The Vellum, street level (vertical slice). One character per cell: rows are grid y (top = 0), columns
-; are grid x. On screen +x runs down-right and +y runs down-left, so this text is the map turned 45°.
-; Lines starting with ';' are comments.
+; The Vellum, the memory: the street and its plaza (the vertical slice), and across the canal the east
+; bank (Act 2): the newsroom where the Feed was written, the press hall, the Reliquary beyond it, and down
+; the newsroom's stair the deep stacks and Prem Vashti's office. One character per cell: rows are grid y
+; (top = 0), columns are grid x. On screen +x runs down-right and +y runs down-left, so this text is the
+; map turned 45°. Lines starting with ';' are comments. Drawn by tools/maps/vellum_gen.py (this header is
+; kept by hand); the slice's rows are unchanged, so its coordinates stay put.
+;
+; This map's own characters ('%' lines; see core/tiles.gd):
+%  n newsroom_floor
+%  D newsroom_desk
 ;
 ; Terrain                                  Props and markers (floor shown in brackets)
 ;   ' ' void (blocked, not drawn)            L  Lattice lamp [pavement, indexed]
@@ -11,7 +18,8 @@
 ;   .   cobble street (indexed)              k  Clerk [cobble]            W  one of the Waiting [pavement]
 ;   ,   pavement (indexed)                   w  one of the Waiting, off the path [stacks]
 ;   :   old quay, unindexed                  T  truth cache [stacks]      U  unindexed log [stacks]
-;   _   overflow stacks floor, unindexed
+;   _   overflow stacks floor, unindexed     D  a newsroom desk, its screen dead [parquet]
+;   n   the newsroom's parquet (indexed)
 ;   S   stair down, unindexed
 ;   ~   canal water   =  railing   -  low wall
 ;
@@ -23,45 +31,50 @@
 @ 18,31 vellum_waiting_stacks
 @ 20,24 vellum_truth_vashti_note
 @ 18,27 log_vellum_pulped_page
-#################
-#################
-#################
-####d###g###m####
-#,,,,,,,,,,,,,,,=~~~~~~~
-#,L...L....L...,=~~~~~~~
-#,.............,=~~~~~~~
-#,.............,=~~~~~~~
-#,.R...........,=~~~~~~~
-#,.....k.......,=~~~~~~~
-#,L............,=~~~~~~~
-#,.............,=~~~~~~~
-#========......L=~~~~~~~
- ~~~~~~~=,.....,=~~~~~~~
- ~~~~~~~=L.....,=~~~~~~~
- ~~~~~~~=,.....,=~~~~~~~
-      ###,.....L=~~~~~~~
-      ###,...K.,=~~~~~~~
-      ###L.....,=~~~~~~~
-      ##m,.....,=~~~~~~~
-      ###,..c..L=~~~~~~~
-      ###,.....,=~~~~~~~
-      ###L.....,=:~~~~~~
-      ###,.....,=:___~~~
-      ###,..C..,=:__T~~~
-      ##dW.....,S:_|_~~~
-      ###,c....,S:_|_~~~
-      ###,.....,=:U__~~~
-      ###,.tt..L=:___~~~
-      ###,.tt..,=:_|_~~~
-      ###L.tt..,=:_|_~~~
-      ##g,.tt..,=:w__~~~
-      ###,.....L=:__|~~~
-      ###,.....,=:___~~~
-      ###L.....,=:~~~~~~
-      ###,...c.,=~~~~~~~
-      ##m,.....L=~~~~~~~
-      ###,.....,=~~~~~~~
-      ###L.....,=~~~~~~~
-      ###,..P..,=~~~~~~~
-      ###,.....,=~~~~~~~
-      ###--------~~~~~~~
+@ 27,19 vellum_waiting_audit_office
+@ 33,19 vellum_truth_vashti_office
+@ 30,20 log_vellum_tube_carrier
+! 21,6 THE CLERKS FLASH THE FEED. TURN YOUR BACK ON THE SCREEN, OR ROLL.
+! 27,12 [voice_on] THE STAIR GOES DOWN TO THE DEEP STACKS. THE STEWARD NEVER LOOKED.
+#############################################
+#############################################
+#############################################
+####d###g###m#############d###m#########g####
+#,,,,,,,,,,,,,,,=~~~~~~~=nnnnnnnnnL-........L
+#,L...L....L...,=~~~~~~~=nDnDnDnDnn-.........
+#,.............,,,,,,,,,,nnnnnnnnkn-.........
+#,.............,,,,,,,,,,nDnDnDnDnn-.........
+#,.............,=~~~~~~~=Lnnnnnnnnnn.........
+#,.....k.......,=~~~~~~~=nnnnknnnnnn.........
+#,L............,=~~~~~~~=nDnDnDnDnn-.........
+#,.............,=~~~~~~~=nnnnnnnnnn-.........
+#========......L=~~~~~~~=nDnDnDnDnn-L........
+ ~~~~~~~=,.....,=~~~~~~~=nnnCnnnnnn-.........
+ ~~~~~~~=L.....,=~~~~~~~=--S--------.........
+ ~~~~~~~=,.....,=~~~~~~~=_________--..C......
+      ###,.....L=~~~~~~~=_|__|__|_--.........
+      ###,...K.,=~~~~~~~=_|__|__|_--....R....
+      ###L.....,=~~~~~~~=_|__|__|_--.........
+      ##m,.....,=~~~~~~~=__w_____T--.........
+      ###,..c..L=~~~~~~~=_____U___--........L
+      ###,.....,=~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      ###L.....,=:~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      ###,.....,=:___~~~~~~~~~~~~~~~~~~~~~~~~
+      ###,..C..,=:__T~~~~~~~~~~~~~~~~~~~~~~~~
+      ##dW.....,S:_|_~~~~~~~~~~~~~~~~~~~~~~~~
+      ###,c....,S:_|_~~~~~~~~~~~~~~~~~~~~~~~~
+      ###,.....,=:U__~~~~~~~~~~~~~~~~~~~~~~~~
+      ###,.tt..L=:___~~~~~~~~~~~~~~~~~~~~~~~~
+      ###,.tt..,=:_|_~~~~~~~~~~~~~~~~~~~~~~~~
+      ###L.tt..,=:_|_~~~~~~~~~~~~~~~~~~~~~~~~
+      ##g,.tt..,=:w__~~~~~~~~~~~~~~~~~~~~~~~~
+      ###,.....L=:__|~~~~~~~~~~~~~~~~~~~~~~~~
+      ###,.....,=:___~~~~~~~~~~~~~~~~~~~~~~~~
+      ###L.....,=:~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      ###,...c.,=~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      ##m,.....L=~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      ###,.....,=~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      ###L.....,=~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      ###,..P..,=~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      ###,.....,=~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      ###--------~~~~~~~~~~~~~~~~~~~~~~~~~~~~

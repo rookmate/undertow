@@ -58,8 +58,19 @@ func test_path_reroutes_when_the_operator_strays() -> void:
 
 
 func test_no_path_off_the_lattice() -> void:
-	await _place(level.grid.first("U") + Vector2i(0, 1))
+	await _place(_cell_of(ContentIds.LOG_UNINDEXED_SLIP) + Vector2i(0, 1))
 	check(level.predicted_path.shown.is_empty(), "the Steward can't route you in the stacks")
+	await _place(_cell_of("vellum_truth_vashti_office") + Vector2i(-1, 0))
+	check(level.predicted_path.shown.is_empty(), "nor in the deep stacks")
+
+
+## Where the map puts the thing with this id.
+func _cell_of(id: String) -> Vector2i:
+	for c: Vector2i in level.grid.entity_ids:
+		if level.grid.entity_ids[c] == id:
+			return c
+	fail("no %s on the map" % id)
+	return Vector2i(-1, -1)
 
 
 func test_no_path_when_muted() -> void:
@@ -94,22 +105,37 @@ func _find(script_type: GDScript) -> Array[Interactable]:
 
 
 func test_off_path_finds_are_hidden_while_the_steward_listens() -> void:
-	var cache := _find(TruthCache)[0] as TruthCache
-	var slip := _find(UnindexedLog)[0] as UnindexedLog
-	check_false(cache.is_present(), "truth cache hidden")
-	check_false(slip.is_present(), "unindexed log hidden")
-	await _place(level.grid.first("T") + Vector2i(-1, 0))
-	cache.interact(level.player)
+	var caches := _find(TruthCache)
+	var slips := _find(UnindexedLog)
+	check_eq(caches.size(), 2, "the stacks' cache and Prem Vashti's")
+	check_eq(slips.size(), 2)
+	var finds: Array[Interactable] = []
+	finds.append_array(caches)
+	finds.append_array(slips)
+	for it: Interactable in finds:
+		check_false(it.is_present(), "%s hidden" % it.get_script().resource_path.get_file())
+	await _place(_cell_of(ContentIds.CORE_TRUTH_STACKS) + Vector2i(-1, 0))
+	_stacks_cache().interact(level.player)
 	check(GameState.run.found_core_ids.is_empty(), "can't take what isn't there")
+
+
+func _stacks_cache() -> TruthCache:
+	for it: Interactable in _find(TruthCache):
+		if (it as TruthCache).core_id == ContentIds.CORE_TRUTH_STACKS:
+			return it as TruthCache
+	return null
 
 
 func test_muted_operator_finds_what_it_left_out() -> void:
 	Steward.voice_on = false
 	await wait_frames(2)
-	var cache := _find(TruthCache)[0] as TruthCache
-	var slip := _find(UnindexedLog)[0] as UnindexedLog
+	var cache := _stacks_cache()
+	var slip: UnindexedLog = null
+	for it: Interactable in _find(UnindexedLog):
+		if (it as UnindexedLog).log_id == ContentIds.LOG_UNINDEXED_SLIP:
+			slip = it as UnindexedLog
 	check(cache.is_present() and slip.is_present())
-	await _place(level.grid.first("T") + Vector2i(-1, 0))
+	await _place(_cell_of(ContentIds.CORE_TRUTH_STACKS) + Vector2i(-1, 0))
 	check(level.player.interact_target() == cache, "the cache is in reach")
 	Input.action_press(&"interact")
 	await wait_physics_frames(3)

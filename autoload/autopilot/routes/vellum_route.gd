@@ -1,8 +1,11 @@
 extends AutopilotRoute
 ## The Vellum: the street (walls, the path, the voice table muted and back), its whole route to the
 ## Reliquary with a detour into the overflow stacks (muted: the slip, the truth core, two of the
-## Waiting), the core choice, then the Ark with its Archive restored: replay
-## two memories, talk to Noor, and the dock's map and the run summary.
+## Waiting); over the footbridge to the newsroom, where a Clerk turns the Feed on you (looked at, it
+## washes the world out; turned from, it doesn't); muted, down the stair to the deep stacks and Prem
+## Vashti's office (her last note, a tube carrier nobody opened, one of the Waiting); through the press
+## hall to the Reliquary. Both of her notes carried, then the Ark with its Archive restored: replay them,
+## talk to Noor, and the dock's map and the run summary.
 
 const OPENING: Array[String] = [
 	"loadout_shown", "loadout_applied", "level_reached", "player_spawned", "walls_block",
@@ -13,8 +16,10 @@ const OPENING: Array[String] = [
 const THROUGH: Array[String] = [
 	"threat_warning_shown", "slowmo_on_dodge", "stacks_reached", "stacks_hidden_while_listening",
 	"steward_blind_in_stacks", "found_unindexed_log", "found_truth_core",
-	"woke_survivor_in_stacks", "woke_survivor_in_doorway", "route_completed", "arrived_by_reliquary",
-	"playstyle_profiled", "core_choice_shown", "four_cards_with_the_found_core", "cores_carried",
+	"woke_survivor_in_stacks", "woke_survivor_in_doorway", "path_over_the_bridge", "newsroom_on_the_lattice",
+	"feed_blinded", "turned_from_the_feed", "woke_in_the_audit_office", "found_the_tube_carrier",
+	"found_vashti_last_note", "route_completed", "arrived_by_reliquary",
+	"playstyle_profiled", "core_choice_shown", "five_cards_with_both_vashti_notes", "cores_carried",
 	"level_completed_archive_restored", "saved_after_choice", "ark_reached",
 	"archive_restored_on_the_ark", "noor_and_teo_present", "survivors_on_the_ark", "archive_replayed",
 	"trust_changed", "loop_map_shown", "endings_offered_with_rewrite_locked",
@@ -61,7 +66,7 @@ func drive(level: Level, gen: int) -> void:
 	await Autopilot.snap("path")
 	if not await _toggle_voice_and_check(level, player, gen):
 		return
-	var route: Array[Vector2i] = [Vector2i(12, 37), Vector2i(13, 33), Vector2i(14, 30), Vector2i(13, 26), Vector2i(12, 21), Vector2i(11, 15), Vector2i(9, 10), Vector2i(5, 9)]
+	var route: Array[Vector2i] = [Vector2i(12, 37), Vector2i(13, 33), Vector2i(14, 30), Vector2i(13, 26), Vector2i(12, 21), Vector2i(11, 15), Vector2i(9, 10)]
 	if long_run:
 		level.slow_mo.started.connect(func(_s: float) -> void: pass_check("slowmo_on_dodge"), CONNECT_ONE_SHOT)
 		_watch_threats(level, gen)
@@ -79,14 +84,115 @@ func drive(level: Level, gen: int) -> void:
 				return
 	if not long_run:
 		return
+	await Autopilot.snap("level_plaza")
+	# Over the footbridge: the Steward's path leads on, into the newsroom.
+	for cell: Vector2i in [Vector2i(14, 7), Vector2i(19, 6)]:
+		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+			return
+	if not await Autopilot.wait(0.6, gen):
+		return
+	var ahead := level.predicted_path.shown
+	check(not ahead.is_empty() and ahead[ahead.size() - 1].x > player.cell().x, "path_over_the_bridge")
+	await Autopilot.snap("vellum_bridge")
+	if not await Autopilot.advance_to(level, player, Vector2i(25, 6), 25.0, gen):
+		return
+	check(level.grid.floor_at(player.cell()) == LevelGrid.Floor.PARQUET and level.grid.is_indexed(player.cell()) and not Steward.assists().signal_lost, "newsroom_on_the_lattice")
+	await Autopilot.snap("vellum_newsroom")
+	if not await _face_the_feed(level, player, gen):
+		return
+	# Through the newsroom to the stair down, muted: the deep stacks and Prem Vashti's office.
+	for cell: Vector2i in [Vector2i(27, 6), Vector2i(27, 13)]:
+		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+			return
+	Autopilot.tap(&"voice_toggle")
+	if not await Autopilot.wait(0.8, gen):
+		return
+	for cell: Vector2i in [Vector2i(27, 14), Vector2i(27, 15), Vector2i(28, 15)]:
+		if not await Autopilot.advance_to(level, player, cell, 20.0, gen):
+			return
+	if not await Autopilot.use_at(level, player, Vector2i(28, 19), gen):
+		return
+	check(GameState.run.survivor_ids.has("vellum_waiting_audit_office"), "woke_in_the_audit_office")
+	await Autopilot.snap("vellum_vashti_office")
+	if not await Autopilot.use_at(level, player, Vector2i(30, 19), gen):
+		return
+	check(GameState.run.logs_unlocked.has("log_vellum_tube_carrier"), "found_the_tube_carrier")
+	if not await Autopilot.use_at(level, player, Vector2i(32, 19), gen):
+		return
+	check(GameState.run.found_core_ids.has("vellum_truth_vashti_office"), "found_vashti_last_note")
+	await Autopilot.snap("vellum_vashti_note")
+	for cell: Vector2i in [Vector2i(28, 19), Vector2i(28, 15), Vector2i(27, 15), Vector2i(27, 13)]:
+		if not await Autopilot.advance_to(level, player, cell, 20.0, gen):
+			return
+	Autopilot.tap(&"voice_toggle")
+	if not await Autopilot.wait(0.6, gen):
+		return
+	# Through the press hall to the Reliquary.
+	for cell: Vector2i in [Vector2i(27, 11), Vector2i(33, 11), Vector2i(34, 9), Vector2i(37, 9), Vector2i(40, 13), Vector2i(40, 16)]:
+		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+			return
+		if level.living_enemies().size() < start_count:
+			pass_check("enemy_killed")
 	pass_check("route_completed")
-	check(player.cell().distance_to(Vector2(5, 9)) <= 1.5, "arrived_by_reliquary")
+	check(player.cell().distance_to(Vector2(level.grid.first("R"))) <= 1.5, "arrived_by_reliquary")
 	var p := GameState.run.playstyle_profile
 	check(p.risk + p.caution > 0.0, "playstyle_profiled")
-	if not await Autopilot.advance_to(level, player, Vector2i(4, 8), 15.0, gen):
-		return
+	await Autopilot.snap("vellum_reliquary")
 	Autopilot.tap(&"interact")
-	await Autopilot.snap("level_plaza")
+
+
+## In the newsroom a Clerk turns the Feed on you. Look at it and the world washes out; then, knowing,
+## turn your back on its next one (the way the autopilot does from here on), and nothing happens.
+## Stands its ground meanwhile, rolling from its bales.
+func _face_the_feed(level: Level, player: Operator, gen: int) -> bool:
+	var flashes: Array[bool] = []
+	level.feed_flashed.connect(func(caught: bool) -> void: flashes.append(caught))
+	var clerk: Clerk = null
+	for e: Enemy in level.living_enemies():
+		if e is Clerk and (clerk == null or Iso.ground_distance(player.global_position, e.global_position) < Iso.ground_distance(player.global_position, clerk.global_position)):
+			clerk = e
+	if clerk == null:
+		return true
+	Autopilot.turn_from_feed = false
+	var spent := 0.0
+	while not flashes.has(true) and spent < 10.0 and clerk.is_alive():
+		if Autopilot.stale(gen):
+			Autopilot.release_all()
+			return false
+		_stand_facing(player, clerk)
+		spent += await Autopilot.physics_step()
+	Autopilot.press_move(Vector2.ZERO)
+	check(flashes.has(true) and level.feed_blind.is_blinding(), "feed_blinded")
+	if not await Autopilot.wait(0.3, gen):
+		return false
+	await Autopilot.snap("vellum_feed_blind")
+	Autopilot.turn_from_feed = true
+	var before := flashes.size()
+	spent = 0.0
+	while flashes.size() == before and spent < 10.0 and clerk.is_alive():
+		if Autopilot.stale(gen):
+			Autopilot.release_all()
+			return false
+		if Autopilot.feed_coming(level, player) != null:
+			Autopilot.press_move(Autopilot.input_for_ground(Iso.ground_dir_between(clerk.global_position, player.global_position)))
+		else:
+			_stand_facing(player, clerk)
+		spent += await Autopilot.physics_step()
+	Autopilot.press_move(Vector2.ZERO)
+	check(flashes.size() > before and not flashes[flashes.size() - 1], "turned_from_the_feed")
+	return true
+
+
+## Turn to look at the Clerk (a nudge toward it), then stand; roll sideways out of a bale's line.
+func _stand_facing(player: Operator, clerk: Clerk) -> void:
+	var to := Iso.ground_dir_between(player.global_position, clerk.global_position)
+	if clerk.state == Enemy.State.WINDUP and not clerk.flash_next and clerk.windup_progress() > 0.8 and player.dodge.can_start():
+		Autopilot.press_move(Autopilot.input_for_ground(Vector2(-to.y, to.x)))
+		Autopilot.tap(&"dodge")
+	elif player.facing_ground.dot(to) < 0.95:
+		Autopilot.press_move(Autopilot.input_for_ground(to))
+	else:
+		Autopilot.press_move(Vector2.ZERO)
 
 
 ## Mutes the Steward with the voice key and checks everything the brief's voice table says changes,
@@ -190,17 +296,17 @@ func _visit_stacks(level: Level, player: Operator, gen: int) -> bool:
 	return await Autopilot.wait(0.5, gen)
 
 
-## Carry the off-path truth core and the Lattice power core.
+## Carry both of Prem Vashti's notes (her thread), leaving the power cores.
 func choose(screen: Node, gen: int) -> void:
 	var offered: Array[String] = screen.get("offered")
-	check(offered.size() == 4 and offered.has(ContentIds.CORE_TRUTH_STACKS), "four_cards_with_the_found_core")
+	check(offered.size() == 5 and offered.has(ContentIds.CORE_TRUTH_STACKS) and offered.has("vellum_truth_vashti_office"), "five_cards_with_both_vashti_notes")
 	var r := GameState.run
 	var power := r.cores_power()
 	var truth := r.cores_truth()
-	if not await pick_cores(screen, [ContentIds.CORE_TRUTH_STACKS, "vellum_power_lattice"], gen):
+	if not await pick_cores(screen, [ContentIds.CORE_TRUTH_STACKS, "vellum_truth_vashti_office"], gen):
 		return
-	check(r.cores_power() == power + 1 and r.cores_truth() == truth + 1 and r.found_core_ids.is_empty(), "cores_carried")
-	check(r.levels_completed.has(ContentIds.LEVEL_VELLUM) and r.buildings_restored.has("archive") and r.logs_unlocked.has("log_vashti_audit_note"), "level_completed_archive_restored")
+	check(r.cores_power() == power and r.cores_truth() == truth + 2 and r.found_core_ids.is_empty(), "cores_carried")
+	check(r.levels_completed.has(ContentIds.LEVEL_VELLUM) and r.buildings_restored.has("archive") and r.logs_unlocked.has("log_vashti_audit_note") and r.logs_unlocked.has("log_vashti_last_note"), "level_completed_archive_restored")
 	check(SaveService.has_save(), "saved_after_choice")
 	await Autopilot.snap("vellum_core_choice_done")
 	on_to_the_ark(screen)
@@ -232,14 +338,14 @@ func at_ark(ark: ArkLevel, gen: int) -> bool:
 	await Autopilot.snap("archive")
 	var noor_before := GameState.run.noor_trust
 	var teo_before := GameState.run.teo_trust
-	for log_id: String in ["log_0311_morning_feed", "log_vashti_audit_note"]:
+	for log_id: String in ["log_vashti_audit_note", "log_vashti_last_note"]:
 		screen.select(log_id)
 		screen.call("_on_replay")
 		var lines := (ContentDb.memory_log(log_id).get("record", []) as Array).size()
 		if not await Autopilot.wait(lines * ArchiveScreen.LINE_SECONDS + 1.2, gen):
 			return false
 		await Autopilot.snap("archive_" + log_id)
-	check(GameState.run.logs_replayed.has("log_0311_morning_feed") and GameState.run.logs_replayed.has("log_vashti_audit_note"), "archive_replayed")
+	check(GameState.run.logs_replayed.has("log_vashti_audit_note") and GameState.run.logs_replayed.has("log_vashti_last_note"), "archive_replayed")
 	check(GameState.run.noor_trust != noor_before or GameState.run.teo_trust != teo_before, "trust_changed")
 	Autopilot.tap(&"ui_cancel")
 	if not await Autopilot.wait(0.8, gen):
@@ -258,9 +364,11 @@ func at_ark(ark: ArkLevel, gen: int) -> bool:
 	if not await Autopilot.wait(1.0, gen):
 		return false
 	await Autopilot.snap("run_summary")
-	# Act 1 and the Vellum hold four truth cores at most, one short of what Rewrite asks: it's still locked
-	# (a prepared run, with none, and the campaign alike).
+	# Rewrite stays locked for both runs that get here: a prepared run carries two truth cores, short of
+	# what it asks, and the campaign listens far more than the balanced share it asks for.
 	var endings := EndingRules.evaluate(GameState.run)
+	for c: EndingRules.Condition in endings.checklist:
+		print("[autopilot] rewrite: %s: %s (%s)" % [c.label, "met" if c.met else "not met", c.detail])
 	check(endings.reboot and endings.unplug and not endings.rewrite and endings.checklist.size() == 3, "endings_offered_with_rewrite_locked")
 	if not await Autopilot.wait(1.0, gen):
 		return false

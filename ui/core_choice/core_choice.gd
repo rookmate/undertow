@@ -3,6 +3,12 @@ extends Control
 ## Steward's comment: it pushes the power cores and dismisses the truth cores. Muted, the cards show only
 ## what they are.
 
+const CARD_SIZE := Vector2(400, 650)
+const CARD_GAP := 24.0
+## Room for the row of cards: the design width (1920) less a margin each side. More cards than fit (the
+## Vellum's three and both of Prem Vashti's) shrink the row to fit.
+const ROW_ROOM := 1728.0
+
 var level_id: String = ContentIds.LEVEL_VELLUM
 var offered: Array[String] = []
 var picked: Array[String] = []
@@ -47,8 +53,9 @@ func _build() -> void:
 	sub.position = Vector2(100, 152)
 	add_child(sub)
 	var row := HBoxContainer.new()
-	row.add_theme_constant_override(&"separation", 24)
+	row.add_theme_constant_override(&"separation", int(CARD_GAP))
 	row.position = Vector2(96, 220)
+	row.scale = Vector2.ONE * row_scale(offered.size())
 	add_child(row)
 	for id: String in offered:
 		var card := _make_card(id)
@@ -72,11 +79,17 @@ func _build() -> void:
 	add_child(_confirm)
 
 
+## How much a row of `count` cards shrinks to fit across the screen (1 if it fits as it is).
+static func row_scale(count: int) -> float:
+	var width := count * CARD_SIZE.x + maxi(0, count - 1) * CARD_GAP
+	return minf(1.0, ROW_ROOM / width) if width > 0.0 else 1.0
+
+
 func _make_card(id: String) -> Button:
 	var def := ContentDb.core(id)
 	var truth := ContentDb.is_truth(id)
 	var card := Button.new()
-	card.custom_minimum_size = Vector2(400, 650)
+	card.custom_minimum_size = CARD_SIZE
 	card.add_theme_stylebox_override(&"normal", UiTheme.panel_style(0.92))
 	card.pressed.connect(_toggle.bind(id))
 	# While it listens, the Steward says its piece about each card you look at.

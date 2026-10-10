@@ -131,6 +131,16 @@ const SKY_MARROW_LOW := Color("#34434A")
 const AMBIENT_MARROW_ON := Color(0.34, 0.38, 0.42)
 const AMBIENT_MARROW_MUTED := Color(0.22, 0.24, 0.26)
 
+# --- The Vellum's newsroom: worn parquet, a hundred black screens with the ring burned into them ----
+const PARQUET := Color("#4A3C31")
+const PARQUET_B := Color("#54443A")
+const NEWS_DESK := Color("#3B3833")
+## The ring the Feed showed for sixteen years, burned into every dead screen: a ghost, not the Steward's
+## gold (nothing here is its now).
+const SCREEN_BURN := Color(0.62, 0.6, 0.55, 0.16)
+## The Feed at full white, turned on you (FeedBlind): a cold screen white, not the human cream.
+const FEED_WHITE := Color("#E6EDF2")
+
 # --- Characters ---------------------------------------------------------------------------------
 const COVERALL := Color("#39424A")
 const COVERALL_LIGHT := Color("#4B565E")

@@ -6,6 +6,8 @@ extends Node2D
 
 signal player_spawned(player: Operator)
 signal enemy_died(enemy: Enemy)
+## A screen flashed the Feed at the Operator (FeedBlind); `caught` if they were looking.
+signal feed_flashed(caught: bool)
 
 @export var level_id: String = "vellum"
 ## Districts take their map from LevelCatalog; hubs and test fixtures name one here.
@@ -35,6 +37,8 @@ var lighting: LightingState
 var slow_mo: SlowMo
 var watch: StewardWatch
 var hud: Hud
+## The Feed's flash, when a screen is turned on the Operator.
+var feed_blind: FeedBlind
 
 ## True when the map was broken and the level never started (see _ready).
 var failed: bool = false
@@ -108,6 +112,8 @@ func _ready() -> void:
 	watch = StewardWatch.new()
 	add_child(watch)
 	watch.setup(self)
+	feed_blind = FeedBlind.new()
+	add_child(feed_blind)
 	hud = Hud.new()
 	add_child(hud)
 	var audio := LevelAudio.new()
@@ -391,6 +397,8 @@ func _build_cells() -> void:
 				lamp.scale = Vector2(1.0, Iso.SQUASH)
 				lamp.position = Vector2(22, -40)
 				desk.add_child(lamp)
+			Tiles.NEWSROOM_DESK:
+				_prop(cell, StaticProp.Kind.NEWS_DESK)
 			Tiles.WARD_SEAL:
 				var seal := WardSeal.new()
 				seal.setup(self, cell)
@@ -540,7 +548,7 @@ func nearest_interactable(at: Vector2) -> Interactable:
 	return best
 
 
-## Custodians scrub in pairs ('c'); one Clerk ('k').
+## Custodians scrub in pairs ('c'); Clerks ('k') keep their distance.
 func _spawn_enemies() -> void:
 	for c: Vector2i in grid.cells_with("c"):
 		_add_enemy(Custodian.new(), c, Custodian.MAX_INTEGRITY)
@@ -633,6 +641,21 @@ func add_enemy(e: Enemy, cell: Vector2i, max_integrity: float) -> Enemy:
 	_enemies.append(e)
 	e.died.connect(func(dead: Enemy) -> void: enemy_died.emit(dead))
 	return e
+
+
+## A screen flashes the Feed from `source`: if the Operator is looking at it, no more than `reach_tiles`
+## away, with nothing tall between and not mid-roll, the world washes out for about `seconds`. Returns
+## whether it caught them.
+func flash_feed(source: Vector2, reach_tiles: float, seconds: float) -> bool:
+	if player == null or feed_blind == null:
+		return false
+	var caught := player.is_alive() and not player.is_invulnerable() \
+		and FeedBlind.catches(player.global_position, player.facing_ground, source, reach_tiles) \
+		and grid.line_clear(player.global_position, source)
+	if caught:
+		feed_blind.blind(seconds)
+	feed_flashed.emit(caught)
+	return caught
 
 
 ## Removes every enemy at once (tests and debug).

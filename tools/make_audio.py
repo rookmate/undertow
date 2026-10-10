@@ -351,6 +351,11 @@ def build():
     surge = swell(lowpass(brown(3.0, rng), 260))
     buoy = env(mix((tone(3.0, 196.0), 0.5), (tone(3.0, 293.7), 0.3)), 0.01, 1.4)
     write("tide_swell", mix((surge, 1.0), (buoy, 0.25, 0.4)), -6)
+    # A Vellum screen turning the Feed on you: an old set's thump on, its whine, a breath of static.
+    thump = env(lowpass(brown(0.25, rng), 180), 0.002, 0.12)
+    whine = env(tone(0.7, 7800.0), 0.01, None, 0.4)
+    hiss = env(bandpass(white(0.5, rng), 3000, 0.8), 0.005, 0.25)
+    write("feed_flash", mix((thump, 1.0), (whine, 0.12), (hiss, 0.5)), -8)
 
 
 if __name__ == "__main__":
