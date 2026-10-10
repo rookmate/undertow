@@ -18,7 +18,7 @@
 			"purpose": "warning"
 		},
 		"conductor_middle": {
-			"text": "Middle track. Move.",
+			"text": "Middle track.",
 			"purpose": "warning"
 		},
 		"conductor_right": {
@@ -42,7 +42,7 @@
 			"purpose": "warning"
 		},
 		"crane_swing": {
-			"text": "In close.",
+			"text": "Closer.",
 			"purpose": "warning"
 		},
 		"crane_rest": {
@@ -70,7 +70,7 @@
 			"purpose": "warning"
 		},
 		"surgeon_mist": {
-			"text": "Mist. In close, by the table.",
+			"text": "In close.",
 			"purpose": "warning"
 		},
 		"surgeon_suture": {
@@ -82,23 +82,23 @@
 			"purpose": "warning"
 		},
 		"lung_left": {
-			"text": "Left basin. Out of it.",
+			"text": "Left basin.",
 			"purpose": "warning"
 		},
 		"lung_right": {
-			"text": "The right basin. Out of it.",
+			"text": "Right basin.",
 			"purpose": "warning"
 		},
 		"lung_near": {
-			"text": "The near basin, where you are. Move.",
+			"text": "Near basin.",
 			"purpose": "warning"
 		},
 		"lung_far": {
-			"text": "The far basin's filling.",
+			"text": "Far basin.",
 			"purpose": "warning"
 		},
 		"lung_surge": {
-			"text": "Surge. Roll through.",
+			"text": "Roll.",
 			"purpose": "warning"
 		},
 		"lung_vent": {
@@ -110,7 +110,7 @@
 			"purpose": "fact"
 		},
 		"editor_rollers": {
-			"text": "Rollers. Stand in the gap.",
+			"text": "Find the gap.",
 			"purpose": "warning"
 		},
 		"editor_feed": {

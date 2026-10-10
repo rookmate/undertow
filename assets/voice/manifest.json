@@ -380,8 +380,8 @@
   "text": "Left track."
  },
  "conductor_middle": {
-  "hash": "a7fc50ec44d1cf9a17252eb1fb28d81e161ed531",
-  "text": "Middle track. Move."
+  "hash": "683dd3d8d8869cac1891ae6ac9770721ae88fc2c",
+  "text": "Middle track."
  },
  "conductor_right": {
   "hash": "79a71f958ac98609c4c929540c70e05a451a26d1",
@@ -500,8 +500,8 @@
   "text": "Its cab's down. Now."
  },
  "crane_swing": {
-  "hash": "076fd11117ad7b625e6ca6f35ada8b74e69ae008",
-  "text": "In close."
+  "hash": "e53775b968c5da9711d6124344a1e5478cab71e1",
+  "text": "Closer."
  },
  "editor_feed": {
   "hash": "9defd12cfcd7dc1613aca3a41491e153eebb5f31",
@@ -512,8 +512,8 @@
   "text": "It's re-inking. Now."
  },
  "editor_rollers": {
-  "hash": "ea71a460f91ff414e0ee39142961b6712949bc75",
-  "text": "Rollers. Stand in the gap."
+  "hash": "4fc18101f93da63a1d37c398a269a44942102365",
+  "text": "Find the gap."
  },
  "find_defib_gauntlet": {
   "hash": "d47c551cfafcaf24d8a680fa4e52ab42dd38dd1e",
@@ -528,24 +528,24 @@
   "text": "I'd keep the tuning on. Let me carry the aim; you watch the street."
  },
  "lung_far": {
-  "hash": "748dfa64b4c7866bef90a2ad529368733ba4e8ea",
-  "text": "The far basin's filling."
+  "hash": "c40acf94e50d4b5ff807170b60bed85d4b55c4ac",
+  "text": "Far basin."
  },
  "lung_left": {
-  "hash": "d3c84ee0db19ebdfab0b1c2859b24856c6638ef1",
-  "text": "Left basin. Out of it."
+  "hash": "368cb28ce855033ba0ea7bb18594d6341d01740f",
+  "text": "Left basin."
  },
  "lung_near": {
-  "hash": "226c4a3cbc9f42529b2f1da6e328a7024430f90c",
-  "text": "The near basin, where you are. Move."
+  "hash": "9bd1082a40e3de3dbbca4b49a72b67b52bd545b9",
+  "text": "Near basin."
  },
  "lung_right": {
-  "hash": "1fc7cac3fc1c093d672a7319561e056a492b1319",
-  "text": "The right basin. Out of it."
+  "hash": "cf8e181319fc894f33b01e0f35df546d5b7b4497",
+  "text": "Right basin."
  },
  "lung_surge": {
-  "hash": "fb2385d794f47ace37866806ef47266fb423db14",
-  "text": "Surge. Roll through."
+  "hash": "be66c72ce10a141cc223f567db8f5b19668daebd",
+  "text": "Roll."
  },
  "lung_vent": {
   "hash": "1df9039a0474eb303e278910d2bb6d389ce65e5b",
@@ -716,8 +716,8 @@
   "text": "Off the line."
  },
  "surgeon_mist": {
-  "hash": "92906ee37ea50086bfe154359fe2f78513e4f8ea",
-  "text": "Mist. In close, by the table."
+  "hash": "076fd11117ad7b625e6ca6f35ada8b74e69ae008",
+  "text": "In close."
  },
  "surgeon_suture": {
   "hash": "cd56894ec22f8278ba5e9dc365c8fb44bf8ce7be",

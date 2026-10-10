@@ -114,3 +114,21 @@ func test_the_clinic_keeps_the_triage_records() -> void:
 	screen.read("log_night_sheets")
 	check_false(str(screen.get("_record").text).contains("NIGHT NURSES"), "an unrecovered record can't be read")
 	screen.close()
+
+
+## Rebind the dressing in Options over the Clinic (or pick up the other controller) and its instruction
+## follows at once.
+func test_the_clinics_instruction_follows_the_binding() -> void:
+	GameState.restore_building("clinic")
+	await _open("res://game/ark/ark.tscn")
+	var screen := (level as ArkLevel).open_clinic()
+	await wait_frames(2)
+	var how := screen.get("_how") as Label
+	check(how.text.contains(Controls.prompt(&"use_item")), "it names the dressing's key: %s" % how.text)
+	check(Controls.set_binding(&"use_item", ["key", KEY_T]), "rebound to T")
+	check(how.text.contains("  T  "), "and now says T: %s" % how.text)
+	Controls.device = Controls.Device.PAD
+	check(how.text.contains(Controls.prompt(&"use_item")), "on a controller, its button: %s" % how.text)
+	Controls.device = Controls.Device.KEYBOARD_MOUSE
+	Controls.reset_bindings()
+	screen.close()

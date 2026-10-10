@@ -10,6 +10,14 @@ const BOSSES: Dictionary[String, Dictionary] = {
 	"lung_": Lung.CALL_GAPS,
 	"editor_": Editor.CALL_GAPS,
 }
+## Each boss's warnings and how soon their hazards land.
+const LEADS: Dictionary[String, Dictionary] = {
+	"conductor_": Conductor.WARN_LEADS,
+	"crane_": Crane.WARN_LEADS,
+	"surgeon_": Surgeon.WARN_LEADS,
+	"lung_": Lung.WARN_LEADS,
+	"editor_": Editor.WARN_LEADS,
+}
 ## A beat between one call ending and the next starting.
 const MARGIN := 0.1
 
@@ -23,6 +31,19 @@ func test_every_call_ends_before_the_next_can_come() -> void:
 			check(clip != null, "%s is voiced" % id)
 			if clip != null:
 				check(clip.get_length() + MARGIN <= float(gaps[id]), "%s (%.2f s) is said in full before the next call (%.2f s)" % [id, clip.get_length(), float(gaps[id])])
+
+
+## A warning is said by the time what it warns of lands: the instruction is over before it hurts.
+func test_every_warning_is_said_before_its_hazard_lands() -> void:
+	for prefix: String in LEADS:
+		var leads: Dictionary = LEADS[prefix]
+		for id: String in VoiceLines.all():
+			if id.begins_with(prefix) and VoiceLines.purpose_of(id) == LineSelector.WARNING:
+				check(leads.has(id), "%s (a warning) has a lead in its boss's WARN_LEADS" % id)
+		for id: String in leads:
+			var clip := load(VoiceLines.clip_path(id)) as AudioStream
+			if clip != null:
+				check(clip.get_length() <= float(leads[id]), "%s (%.2f s) is said before it lands (%.2f s)" % [id, clip.get_length(), float(leads[id])])
 
 
 func test_every_boss_line_is_listed() -> void:

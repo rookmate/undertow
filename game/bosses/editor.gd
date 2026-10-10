@@ -42,6 +42,12 @@ const BALE_SPEED := 6.5
 const INK_SECONDS := 3.5
 const JAM_SECONDS := 6.0
 
+## Each warning, and how soon after it's called its hazard lands (seconds): the rollers setting off,
+## the Feed. It has to be said by then.
+const WARN_LEADS: Dictionary[String, float] = {
+	"editor_rollers": ROLL_WARN_SECONDS,
+	"editor_feed": FEED_WARN_SECONDS,
+}
 ## Each call, and the soonest the next can come (seconds).
 const CALL_GAPS: Dictionary[String, float] = {
 	"editor_rollers": ROLL_WARN_SECONDS + ROLL_SECONDS,
