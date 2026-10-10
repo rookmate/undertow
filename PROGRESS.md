@@ -140,8 +140,8 @@ analysis review at the end.
 | 21 | Greywater: the district (the tide, kelp, the thick Marrow, the manual pump room) | done |
 | 22 | The Lung (boss) and the Pumphouse | done |
 | 23a | The Vellum's east bank: the footbridge, the newsroom, the deep stacks and Prem Vashti's office, the Reliquary past the press hall; Clerks flash the Feed | done |
-| 23b | The Editor (boss) in the press hall | next |
-| 24 | Companion conversations after each Act 2 district; the campaign through Act 2 | |
+| 23b | The Editor (boss) in the press hall | done |
+| 24 | Companion conversations after each Act 2 district; the campaign through Act 2 | next |
 | — | Sol analysis review (reviews/act-2.md), fixes, re-check | |
 
 ## Later milestones (planned)

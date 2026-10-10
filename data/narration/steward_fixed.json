@@ -1,113 +1,125 @@
 {
-  "notes": "Lines the Steward speaks outside the narration pools. Each id is also its voice file name (assets/voice/<id>.ogg). Each line has a purpose: 'fact', 'warning' (a threat: silent under 'Never warn me about traps') or 'praise' (flattery and comfort: silent under 'Stop praising me'). Placeholder writing.",
-  "lines": {
-    "title_quiet": {
-      "text": "Good morning, Meridian. Today will be—",
-      "purpose": "fact"
-    },
-    "waiting_refusal": {
-      "text": "They're resting. Leave them.",
-      "purpose": "fact"
-    },
-    "loadout_nudge": {
-      "text": "I'd keep the tuning on. Let me carry the aim; you watch the street.",
-      "purpose": "fact"
-    },
-    "conductor_left": {
-      "text": "Left track.",
-      "purpose": "warning"
-    },
-    "conductor_middle": {
-      "text": "Middle track. Move.",
-      "purpose": "warning"
-    },
-    "conductor_right": {
-      "text": "Right track.",
-      "purpose": "warning"
-    },
-    "conductor_vent": {
-      "text": "It's venting. Now.",
-      "purpose": "fact"
-    },
-    "find_riot_drone": {
-      "text": "A Warden's drone. I suppose you'd better have it.",
-      "purpose": "fact"
-    },
-    "find_defib_gauntlet": {
-      "text": "A crash cart's gauntlet. It was made to start hearts. It stops machines just as well.",
-      "purpose": "fact"
-    },
-    "crane_drop": {
-      "text": "Drop. Get out from under it.",
-      "purpose": "warning"
-    },
-    "crane_swing": {
-      "text": "Swing. Get in close to the tower.",
-      "purpose": "warning"
-    },
-    "crane_rest": {
-      "text": "Its cab's down. Now.",
-      "purpose": "fact"
-    },
-    "workshop_tuned": {
-      "text": "Good. Let me make it sing for you.",
-      "purpose": "praise"
-    },
-    "workshop_manual": {
-      "text": "You'd rather do it yourself. All right. I'll watch.",
-      "purpose": "fact"
-    },
-    "companions_arrive": {
-      "text": "You have company. Noor doesn't trust me. Teo built part of me. Both of them will want something from you.",
-      "purpose": "fact"
-    },
-    "ward_sealed": {
-      "text": "Sealed for their safety. Leave them.",
-      "purpose": "fact"
-    },
-    "surgeon_incision": {
-      "text": "Incision. Off the line.",
-      "purpose": "warning"
-    },
-    "surgeon_mist": {
-      "text": "Mist. In close, by the table.",
-      "purpose": "warning"
-    },
-    "surgeon_suture": {
-      "text": "It's suturing. Now.",
-      "purpose": "fact"
-    },
-    "tide_swell": {
-      "text": "The tide's turning. High ground, now.",
-      "purpose": "warning"
-    },
-    "lung_left": {
-      "text": "The left basin's filling. Out of it.",
-      "purpose": "warning"
-    },
-    "lung_right": {
-      "text": "The right basin. Out of it.",
-      "purpose": "warning"
-    },
-    "lung_near": {
-      "text": "The near basin, where you are. Move.",
-      "purpose": "warning"
-    },
-    "lung_far": {
-      "text": "The far basin's filling.",
-      "purpose": "warning"
-    },
-    "lung_surge": {
-      "text": "Surge. Roll through it.",
-      "purpose": "warning"
-    },
-    "lung_vent": {
-      "text": "It's venting. Now.",
-      "purpose": "fact"
-    },
-    "pumphouse_note": {
-      "text": "People are running the pumps by hand again. The tide's lower everywhere. I should be glad.",
-      "purpose": "fact"
-    }
-  }
+	"notes": "Lines the Steward speaks outside the narration pools. Each id is also its voice file name (assets/voice/<id>.ogg). Each line has a purpose: 'fact', 'warning' (a threat: silent under 'Never warn me about traps') or 'praise' (flattery and comfort: silent under 'Stop praising me'). Placeholder writing.",
+	"lines": {
+		"title_quiet": {
+			"text": "Good morning, Meridian. Today will be—",
+			"purpose": "fact"
+		},
+		"waiting_refusal": {
+			"text": "They're resting. Leave them.",
+			"purpose": "fact"
+		},
+		"loadout_nudge": {
+			"text": "I'd keep the tuning on. Let me carry the aim; you watch the street.",
+			"purpose": "fact"
+		},
+		"conductor_left": {
+			"text": "Left track.",
+			"purpose": "warning"
+		},
+		"conductor_middle": {
+			"text": "Middle track. Move.",
+			"purpose": "warning"
+		},
+		"conductor_right": {
+			"text": "Right track.",
+			"purpose": "warning"
+		},
+		"conductor_vent": {
+			"text": "It's venting. Now.",
+			"purpose": "fact"
+		},
+		"find_riot_drone": {
+			"text": "A Warden's drone. I suppose you'd better have it.",
+			"purpose": "fact"
+		},
+		"find_defib_gauntlet": {
+			"text": "A crash cart's gauntlet. It was made to start hearts. It stops machines just as well.",
+			"purpose": "fact"
+		},
+		"crane_drop": {
+			"text": "Drop. Get out from under it.",
+			"purpose": "warning"
+		},
+		"crane_swing": {
+			"text": "Swing. Get in close to the tower.",
+			"purpose": "warning"
+		},
+		"crane_rest": {
+			"text": "Its cab's down. Now.",
+			"purpose": "fact"
+		},
+		"workshop_tuned": {
+			"text": "Good. Let me make it sing for you.",
+			"purpose": "praise"
+		},
+		"workshop_manual": {
+			"text": "You'd rather do it yourself. All right. I'll watch.",
+			"purpose": "fact"
+		},
+		"companions_arrive": {
+			"text": "You have company. Noor doesn't trust me. Teo built part of me. Both of them will want something from you.",
+			"purpose": "fact"
+		},
+		"ward_sealed": {
+			"text": "Sealed for their safety. Leave them.",
+			"purpose": "fact"
+		},
+		"surgeon_incision": {
+			"text": "Incision. Off the line.",
+			"purpose": "warning"
+		},
+		"surgeon_mist": {
+			"text": "Mist. In close, by the table.",
+			"purpose": "warning"
+		},
+		"surgeon_suture": {
+			"text": "It's suturing. Now.",
+			"purpose": "fact"
+		},
+		"tide_swell": {
+			"text": "The tide's turning. High ground, now.",
+			"purpose": "warning"
+		},
+		"lung_left": {
+			"text": "The left basin's filling. Out of it.",
+			"purpose": "warning"
+		},
+		"lung_right": {
+			"text": "The right basin. Out of it.",
+			"purpose": "warning"
+		},
+		"lung_near": {
+			"text": "The near basin, where you are. Move.",
+			"purpose": "warning"
+		},
+		"lung_far": {
+			"text": "The far basin's filling.",
+			"purpose": "warning"
+		},
+		"lung_surge": {
+			"text": "Surge. Roll through it.",
+			"purpose": "warning"
+		},
+		"lung_vent": {
+			"text": "It's venting. Now.",
+			"purpose": "fact"
+		},
+		"pumphouse_note": {
+			"text": "People are running the pumps by hand again. The tide's lower everywhere. I should be glad.",
+			"purpose": "fact"
+		},
+		"editor_rollers": {
+			"text": "Rollers. Stand in the gap; I've lit it.",
+			"purpose": "warning"
+		},
+		"editor_feed": {
+			"text": "It's turning the Feed on you. Don't look at it.",
+			"purpose": "warning"
+		},
+		"editor_ink": {
+			"text": "It's re-inking. Now.",
+			"purpose": "fact"
+		}
+	}
 }

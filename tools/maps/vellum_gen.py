@@ -92,12 +92,14 @@ put(28, 13, 'C')
 # The wall between the newsroom and the press hall, its door.
 rect(35, 4, 35, 13, '-')
 rect(35, 8, 35, 9, 'n')
-# The press hall (the Editor comes with the next step), then the Reliquary.
+# The press hall: the Editor at the back, the pulper by it with a bale stack over it; the barrier that
+# opens when it falls, then the Reliquary.
 rect(36, 4, 44, 13, '.')
 put(44, 4, 'L'); put(36, 12, 'L')
+put(40, 5, 'B'); put(37, 5, 'Z')
 rect(35, 14, 44, 20, '.')
 rect(35, 14, 35, 20, '-')
-rect(36, 14, 44, 14, '.')
+rect(36, 14, 44, 14, 'y')
 put(40, 17, 'R'); put(38, 15, 'C'); put(44, 20, 'L')
 # Down the newsroom's stair: the deep stacks, pitch dark, and Prem Vashti's office at the far end.
 rect(25, 14, 34, 20, '_')
