@@ -214,3 +214,89 @@ Both findings fixed (DECISIONS 139), with tests that fail on the round 1 code.
    (Act 1 settings with Dodge on Q and LB and no use_item entry: Dodge keeps both, the dressing gets a
    spare key and button, nothing is shared, it survives a save and load, and a fresh start still has
    the dressing on Q).
+
+## Round 3 findings (verbatim from sol_analyst)
+
+Scope: `git diff e03edd7..13fa388`, the round 2 fixes being `c4a61dd..13fa388`.
+
+I would keep milestone 3 open. The nine Round 1 defects are resolved under Decisions 138–139, and Round 2's narration fix holds. Round 2's input migration is still incomplete. I also found one smaller prompt regression.
+
+Reviewed `e03edd7..13fa388`, including both fix ranges, without editing files. “Confirmed” means established from source, shipped data, or read-only calculations; it does not imply a fresh gameplay reproduction.
+
+Confirmed findings, ranked by severity:
+
+1. **Medium — Valid Act 1 bindings are still discarded when the declared spares are occupied.**
+
+   [controls.gd:38](/home/homebox/Documents/rookmate/undertow/autoload/controls.gd:38) offers only RB and B as controller spares. [controls.gd:239](/home/homebox/Documents/rookmate/undertow/autoload/controls.gd:239) gives up if both are occupied, after which [controls.gd:219](/home/homebox/Documents/rookmate/undertow/autoload/controls.gd:219) deletes the conflicting saved override.
+
+   A valid Act 1 configuration is:
+
+   - Dodge on LB.
+   - Primary attack on RB.
+   - Secondary attack on B.
+
+   I reproduced the loader's algorithm in a read-only calculation using the actual old and current binding tables. This configuration has **no Act 1 conflicts**. Loading it under Act 2 removes Dodge's LB override, restores Dodge to A, and assigns LB to the dressing. A and the old attack triggers were available for the new action.
+
+   This still violates Decision 139's promise to preserve earlier choices. The new test at [test_controls.gd:53](/home/homebox/Documents/rookmate/undertow/tests/unit/test_controls.gd:53) supplies only Dodge overrides, leaving every spare free.
+
+   Extend migration to use other available inputs, including defaults freed by existing remaps, before discarding a valid choice. Add occupied-spare upgrade cases for controller and keyboard, then verify save/load preservation.
+
+2. **Low — The Clinic's dressing prompt becomes stale after rebinding while the screen remains open.**
+
+   [clinic_screen.gd:35](/home/homebox/Documents/rookmate/undertow/ui/ark/clinic_screen.gd:35) constructs its instruction from `Controls.prompt("use_item")` once in `_ready()`. The screen has no binding-change or device-change refresh.
+
+   The supported modal flow permits opening Pause and Options over the Clinic. See [pause_menu.gd:58](/home/homebox/Documents/rookmate/undertow/ui/pause/pause_menu.gd:58). Open the Clinic with Q assigned, rebind the dressing through Options, then return: its instruction still names Q although the binding changed.
+
+   This violates Decision 89's requirement that prompts everywhere reflect current bindings, [DECISIONS.md:274](/home/homebox/Documents/rookmate/undertow/DECISIONS.md:274). Refresh the instruction on binding and device changes, and cover returning from nested Options. The Clinic tests currently do not exercise that flow.
+
+The fix audit is:
+
+| Recorded finding | Result and evidence |
+|---|---|
+| **R1 #1 — Surgeon mist reaches the whole hospital** | **Resolved.** [surgeon.gd:129](/home/homebox/Documents/rookmate/undertow/game/bosses/surgeon.gd:129) bounds exposure to the shared 2–5.5 tile annulus. [test_surgeon.gd:85](/home/homebox/Documents/rookmate/undertow/tests/integration/test_surgeon.gd:85) checks retreat; [test_surgeon.gd:97](/home/homebox/Documents/rookmate/undertow/tests/integration/test_surgeon.gd:97) checks respawn in shipped Mercy General. |
+| **R1 #2 — Lung drawing and damage disagree** | **Resolved.** [lung.gd:132](/home/homebox/Documents/rookmate/undertow/game/bosses/lung.gd:132) defines the rectangle used by damage, outline and fill. [test_lung.gd:62](/home/homebox/Documents/rookmate/undertow/tests/integration/test_lung.gd:62) checks every quarter's inner corners and outer edges. |
+| **R1 #3 — Tall props let lines through** | **Resolved under Decision 138.** [level_grid.gd:301](/home/homebox/Documents/rookmate/undertow/core/level_grid.gd:301) uses the explicit tall classification. [test_level_grid.gd:171](/home/homebox/Documents/rookmate/undertow/tests/unit/test_level_grid.gd:171) checks classification completeness and shipped props. Desks and partitions deliberately remain low; crane legs deliberately gained line blocking. |
+| **R1 #4 — Markers erase terrain** | **Resolved for the reported cells.** [level_grid.gd:123](/home/homebox/Documents/rookmate/undertow/core/level_grid.gd:123) records neighbouring terrain; floor drawing and gameplay queries consume it. [test_level_grid.gd:153](/home/homebox/Documents/rookmate/undertow/tests/unit/test_level_grid.gd:153) checks both flooding spawns, the Marrow resident and the Loop cache's retained off-path exclusion. |
+| **R1 #5 — Boss recordings are interrupted** | **Resolved for the recorded interruption causes.** Clips fit their declared cadences; [boss.gd:75](/home/homebox/Documents/rookmate/undertow/game/bosses/boss.gd:75) waits for introductions. [test_boss_calls.gd:17](/home/homebox/Documents/rookmate/undertow/tests/integration/test_boss_calls.gd:17) checks durations, and its subsequent tests cover introduction waiting and narration interruption. Actionable warning timing remains an inference below. |
+| **R1 #6 — Trust assertions repeat content data** | **Resolved.** [conversations.gd:11](/home/homebox/Documents/rookmate/undertow/core/conversations.gd:11) owns the rule in code. [test_conversations.gd:29](/home/homebox/Documents/rookmate/undertow/tests/integration/test_conversations.gd:29) asserts literal deltas and applied outcomes; the following test checks clamping. |
+| **R1 #7 — Absent companions permit mutation** | **Resolved.** [game_state.gd:164](/home/homebox/Documents/rookmate/undertow/autoload/game_state.gd:164) checks both companions before mutation. [test_conversations.gd:56](/home/homebox/Documents/rookmate/undertow/tests/integration/test_conversations.gd:56) checks unchanged trust and consumption after rejection. |
+| **R1 #8 — Malformed conversations crash** | **Resolved.** [conversations.gd:63](/home/homebox/Documents/rookmate/undertow/core/conversations.gd:63) validates nested shapes; accessors safely return strings. [test_conversations.gd:65](/home/homebox/Documents/rookmate/undertow/tests/integration/test_conversations.gd:65) supplies malformed documents. |
+| **R1 #9 — Companions use the Steward's font** | **Resolved.** [conversation_screen.gd:42](/home/homebox/Documents/rookmate/undertow/ui/ark/conversation_screen.gd:42) and its speech builder use Barlow. [test_font_rules.gd:20](/home/homebox/Documents/rookmate/undertow/tests/unit/test_font_rules.gd:20) rejects the previous narration-font use. |
+| **R2 #1 — Fixed speech and tide interrupt warnings** | **Resolved under Decision 139.** [narrator.gd:103](/home/homebox/Documents/rookmate/undertow/autoload/narrator.gd:103) protects fixed speech; pooled speech also checks the warning. Boss calls retain their explicit exception. [tide.gd:84](/home/homebox/Documents/rookmate/undertow/game/level/tide.gd:84) suppresses tide narration during fighting. [test_boss_calls.gd:79](/home/homebox/Documents/rookmate/undertow/tests/integration/test_boss_calls.gd:79) covers fixed interruptions and the following test covers shipped Greywater. |
+| **R2 #2 — Upgrade loses saved Q/LB choices** | **Partly resolved.** The ordinary case passes; occupied spares still cause finding 1 above. |
+
+The regression assertions address the original faults and would reject the old behaviour. I did **not** execute old-code mutation checks, so this is source-based verification rather than independently reproduced mutation-test evidence.
+
+One medium-severity concern remains **inferred**: some instructions may finish too late for their hazard. `ffprobe` measures `surgeon_mist` at **2.950 seconds**, while mist starts damaging after approximately **1.1 seconds**, [surgeon.gd:153](/home/homebox/Documents/rookmate/undertow/game/bosses/surgeon.gd:153). `lung_near` lasts **2.660 seconds**, while flood damage can begin after approximately **1.5 seconds**, [lung.gd:154](/home/homebox/Documents/rookmate/undertow/game/bosses/lung.gd:154). `CALL_GAPS` verifies completion before the next call, not before damage. Listening is needed to establish when the actionable words arrive and whether the lead time is sufficient.
+
+I found no additional confirmed break in run-save serialization, targeting eligibility, voice-table purposes, or colour/typeface ownership. All **187 voice IDs** have clips and matching manifest text, with no orphan manifest entries. Stable core, log and override IDs remain present. Earlier route checks are preserved, apart from the approved Gauntlet move and expanded Vellum card check.
+
+The **17 stored check logs** contain no error, warning or failed-result markers. They substantiate [391 passing tests](/home/homebox/Documents/rookmate/undertow/reports/check/tests.log:403), [198 campaign checks in 713.9 seconds](/home/homebox/Documents/rookmate/undertow/reports/check/full_campaign.log:216), the 30-second run and six district tours. I inspected this evidence without rerunning the artifact-writing gate. Re-voiced line intelligibility and real hardware remain unverified.
+## Round 3: what was done
+
+Both confirmed findings and the inferred one were fixed (DECISIONS 140).
+
+1. **The bindings migration still dropped choices with the spares taken (medium).**
+   `Controls.spare_inputs(slot)` now offers, in order:
+   - `SPARES`;
+   - every action's default (so a default the player's own choices freed, like A once Dodge moved to
+     LB);
+   - any face, shoulder or stick button, or any letter or digit.
+
+   A valid saved choice is only dropped if none of these is free. Test:
+   `test_controls::test_an_older_choice_keeps_its_input_with_the_spares_taken`. It loads Act 1
+   settings with every keyboard and controller spare occupied: every choice is kept, the dressing gets
+   a key and a button, nothing is shared, and everything survives a save and load.
+2. **The Clinic's prompt went stale (low).** The instruction is rebuilt on `Controls.bindings_changed`
+   and `device_changed`. Test: `test_clinic::test_the_clinics_instruction_follows_the_binding`
+   (rebinding to T while it's open, then switching to a controller).
+3. **Warnings finishing after their hazard (inferred medium; acted on).** Each boss now lists how soon
+   each warning's hazard lands (`WARN_LEADS`, from its own timing constants). New
+   `test_every_warning_is_said_before_its_hazard_lands` requires every warning's recording to be no
+   longer, and every boss warning to be listed. The old lines fail it, as Sol inferred: the Lung's
+   basins (2.07–2.66 s against 1.5 s), the surge, the Surgeon's mist, the Editor's rollers, the Crane's
+   swing and the Conductor's middle track.
+
+   The calls are now a word or two ("In close.", "Left basin.", "Roll.", "Find the gap.", "Closer.",
+   "Middle track."), all within their leads. The visible tells stay first; the voice confirms them.
+   Listening is still needed to judge them.

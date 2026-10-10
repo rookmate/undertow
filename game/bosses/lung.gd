@@ -16,6 +16,8 @@ const FILL_SECONDS := 1.2
 ## Muted, you read the grates yourself: the warning shows this much sooner.
 const EARLY_FILL := 0.3
 const FLOOD_SECONDS := 1.6
+## How far into a flood it catches you.
+const FLOOD_STRIKE := 0.3
 const FLOOD_DAMAGE := 14.0
 ## A flooding quarter is the square this many tiles on a side out from the Lung (what's drawn is what
 ## floods: flood_rect()).
@@ -32,6 +34,13 @@ const LINES: Dictionary[Quarter, String] = {
 	Quarter.LEFT: "lung_left", Quarter.RIGHT: "lung_right", Quarter.NEAR: "lung_near", Quarter.FAR: "lung_far",
 }
 
+## Each warning, and how soon after it's called its hazard lands (seconds): the flood, the surge
+## leaving the Lung. It has to be said by then.
+const WARN_LEADS: Dictionary[String, float] = {
+	"lung_left": FILL_SECONDS + FLOOD_STRIKE, "lung_right": FILL_SECONDS + FLOOD_STRIKE,
+	"lung_near": FILL_SECONDS + FLOOD_STRIKE, "lung_far": FILL_SECONDS + FLOOD_STRIKE,
+	"lung_surge": SURGE_WARN_SECONDS,
+}
 ## Each call, and the soonest the next can come (seconds).
 const CALL_GAPS: Dictionary[String, float] = {
 	"lung_left": FILL_SECONDS + FLOOD_SECONDS, "lung_right": FILL_SECONDS + FLOOD_SECONDS,
@@ -156,7 +165,7 @@ func _fight(delta: float) -> void:
 				_floods_left -= 1
 				_enter_phase(Phase.FLOOD)
 		Phase.FLOOD:
-			if not _struck and _phase_time >= 0.3 and player_ok and in_flood(p.global_position):
+			if not _struck and _phase_time >= FLOOD_STRIKE and player_ok and in_flood(p.global_position):
 				_struck = true
 				p.take_hit(FLOOD_DAMAGE, global_position)
 			if _phase_time >= FLOOD_SECONDS:

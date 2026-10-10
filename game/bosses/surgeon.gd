@@ -33,6 +33,12 @@ const SUTURE_SECONDS := 3.5
 const STALL_SECONDS := 6.0
 const ARM_HEIGHT := 150.0
 
+## Each warning, and how soon after it's called its hazard lands (seconds): the cut, the mist's first
+## sting. It has to be said by then.
+const WARN_LEADS: Dictionary[String, float] = {
+	"surgeon_incision": MARK_SECONDS + CUT_SECONDS * 0.5,
+	"surgeon_mist": MIST_WARN_SECONDS,
+}
 ## Each call, and the soonest the next can come (seconds).
 const CALL_GAPS: Dictionary[String, float] = {
 	"surgeon_incision": MARK_SECONDS + CUT_SECONDS + CUT_RECOVER,

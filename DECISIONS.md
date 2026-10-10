@@ -467,7 +467,7 @@ Asked of the user on 2026-10-09 and answered the same day.
 132. **The Lung** (Greywater's boss), in its basin on the east island before the Reliquary: it floods
      the basin a quarter at a time (the quarters are the grid's quadrants around it, which on screen are
      left, right, near and far), three a cycle, the one you're in first; each is outlined in red-orange
-     for 1.2 s (1.5 s muted) and called by the Steward ("Left basin. Out of it."), then
+     for 1.2 s (1.5 s muted) and called by the Steward ("Left basin."), then
      floods (14 damage). Then a pressure surge rings out across the basin (16 damage where it passes;
      roll through it). Then it vents for 3.5 s: open to blows. 420 integrity. The manual solution: the
      old hand valve on the basin's edge, turned while it fills a quarter, chokes it for 6 s, once a
@@ -501,7 +501,7 @@ Asked of the user on 2026-10-09 and answered the same day.
      Each cycle: two **rollers** sweep the hall's floor, the first from the press toward the barrier,
      the second across (turning about each cycle), each with a two-cell gap 2 to 4 tiles along from
      where you stand. Its run shows in red-orange for 1.4 s (1.7 s muted) and, while the Steward is with
-     you and may warn you, the gap is lit in its gold and called ("Rollers. Stand in the gap."). Run over: 16 damage; roll through it and you're clear. Then it **pulps** the page (1.6 s),
+     you and may warn you, the gap is lit in its gold and called ("Find the gap."). Run over: 16 damage; roll through it and you're clear. Then it **pulps** the page (1.6 s),
      **turns the Feed on you** (the Clerks' blind, 12 tiles, 2 s; "Look away.") and throws
      three bales in a fan, then **re-inks** for 3.5 s: open to blows. 420 integrity. The manual
      solution: knock the bale stack over the pulper into it while it pulps, and it jams for 6 s, once a
@@ -525,8 +525,7 @@ Asked of the user on 2026-10-09 and answered the same day.
      and the Lattice all read that one value; truth caches, slips and the Waiting off the path stay off
      the Lattice whatever they stand on. **Boss calls are said in full:** each boss lists its calls
      with the soonest the next can come (CALL_GAPS) and a test keeps every recording shorter (several
-     lines got terser: "Off the line.", "Drop, move.", "In close.", "Left basin. Out of it.", "Surge.
-     Roll through.", "Rollers. Stand in the gap.", "Look away."); a boss's fight waits while the
+     lines got terser; round 3 made them terser still, 140); a boss's fight waits while the
      Steward introduces it (cut short or muted, it starts at once; six seconds at most); and narration
      never cuts off a warning being said. **Conversations:** what an answer does to trust is a rule in
      code (Conversations.TRUST: +2 / −1, or nothing), not content; nothing changes unless both of them
@@ -541,4 +540,14 @@ Asked of the user on 2026-10-09 and answered the same day.
      choice:** loading settings saved before an action existed (Act 1's, with Dodge on Q or LB),
      the saved choice stays and the new action's default moves to the first free spare (F, R, G, C, X
      on the keyboard; RB, B on a pad).
+140. **Act 2 review, round 3.** **A warning is said before what it warns of lands:** each boss lists
+     how soon each warning's hazard comes (WARN_LEADS: the cut, the mist's first sting, the flood, the
+     surge, the rollers, the Feed, the load, the swing, the carriage) and a test keeps every warning's
+     recording no longer. The calls are now a word or two: "Off the line." "In close." "Left basin."
+     "Right basin." "Near basin." "Far basin." "Roll." "Find the gap." "Look away." "Drop, move."
+     "Closer." "Left track." "Middle track." "Right track." The visible tells stay the warnings' first
+     form; the voice confirms them. **No earlier binding is ever dropped for a new action:** if every
+     spare is taken, the new action takes a default the player's choices freed, or failing that any free
+     face, shoulder or stick button or letter. **Prompts follow rebinding live** on the Clinic's screen
+     too (rebinding in Options over it, or switching device).
 

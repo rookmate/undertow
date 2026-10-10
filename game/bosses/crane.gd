@@ -30,6 +30,12 @@ const HOOK_HEIGHT := 220.0
 const MIN_REACH := 1.6
 const MAX_REACH := 5.0
 
+## Each warning, and how soon after it's called its hazard lands (seconds): the load coming down, the
+## swing. It has to be said by then.
+const WARN_LEADS: Dictionary[String, float] = {
+	"crane_drop": AIM_SECONDS + DROP_SECONDS,
+	"crane_swing": SWING_WARN_SECONDS,
+}
 ## Each call, and the soonest the next can come (seconds): after the last drop it swings at once.
 const CALL_GAPS: Dictionary[String, float] = {
 	"crane_drop": AIM_SECONDS + DROP_SECONDS + DROP_SETTLE,

@@ -34,7 +34,8 @@ const BINDINGS: Dictionary[StringName, Array] = {
 }
 
 ## Spare inputs, by slot, for an action whose default a player's earlier choice already uses (an action
-## added after they chose: Act 2's use_item on Q / LB): it moves to the first one free.
+## added after they chose: Act 2's use_item on Q / LB): it moves to the first one free, these first, then
+## any default their choices have freed, then any other button or letter (spare_inputs()).
 const SPARES: Dictionary[String, Array] = {
 	"kb": [["key", KEY_F], ["key", KEY_R], ["key", KEY_G], ["key", KEY_C], ["key", KEY_X]],
 	"pad": [["pad_button", JOY_BUTTON_RIGHT_SHOULDER], ["pad_button", JOY_BUTTON_B]],
@@ -236,10 +237,32 @@ func _move_default_aside(binding: Array, a: StringName, b: StringName) -> void:
 		var other_chose: bool = (_overrides.get(other, {}) as Dictionary).has(slot)
 		if not chose or other_chose or not REBINDABLE.has(other):
 			continue
-		for spare: Array in SPARES[slot]:
+		for spare: Array in spare_inputs(slot):
 			if holder_of(spare) == &"":
 				_set_override(other, slot, spare)
 				return
+
+
+## Every input an action could move to on one kind of device, best first: SPARES, then every action's
+## defaults (one a player's choice has freed), then the face, shoulder and stick buttons, or the letters
+## and digits.
+func spare_inputs(slot: String) -> Array:
+	var out: Array = (SPARES[slot] as Array).duplicate()
+	for action: StringName in BINDINGS:
+		for binding: Array in BINDINGS[action]:
+			if slot_of(binding) == slot and not out.has(binding):
+				out.append(binding)
+	var rest: Array = []
+	if slot == "pad":
+		for b: int in [JOY_BUTTON_A, JOY_BUTTON_B, JOY_BUTTON_X, JOY_BUTTON_Y, JOY_BUTTON_LEFT_SHOULDER, JOY_BUTTON_RIGHT_SHOULDER, JOY_BUTTON_LEFT_STICK, JOY_BUTTON_RIGHT_STICK]:
+			rest.append(["pad_button", b])
+	else:
+		for k: int in range(KEY_A, KEY_Z + 1) + range(KEY_0, KEY_9 + 1):
+			rest.append(["key", k])
+	for binding: Array in rest:
+		if not out.has(binding):
+			out.append(binding)
+	return out
 
 
 func reset_bindings() -> void:

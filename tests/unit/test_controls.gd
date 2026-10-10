@@ -66,3 +66,32 @@ func test_an_older_choice_keeps_its_input_when_a_new_action_wants_it() -> void:
 	check_eq(Controls.primary(&"use_item", "kb"), item_kb, "and it stays put saved and loaded again")
 	Controls.reset_bindings()
 	check_eq(Controls.primary(&"use_item", "kb"), q, "a fresh start has the dressing on Q")
+
+
+## The same, with every spare already taken by an earlier choice: the dressing goes to a default those
+## choices freed (or failing that any free button or letter), and every earlier choice is kept.
+func test_an_older_choice_keeps_its_input_with_the_spares_taken() -> void:
+	var act_1 := {
+		"dodge": {"kb": ["key", KEY_Q], "pad": ["pad_button", JOY_BUTTON_LEFT_SHOULDER]},
+		"attack_primary": {"kb": ["key", KEY_F], "pad": ["pad_button", JOY_BUTTON_RIGHT_SHOULDER]},
+		"attack_secondary": {"kb": ["key", KEY_R], "pad": ["pad_button", JOY_BUTTON_B]},
+		"interact": {"kb": ["key", KEY_G]},
+		"voice_toggle": {"kb": ["key", KEY_C]},
+		"move_left": {"kb": ["key", KEY_X]},
+	}
+	Controls.set_overrides(act_1)
+	for action: String in act_1:
+		for slot: String in act_1[action]:
+			check_eq(Controls.primary(StringName(action), slot), act_1[action][slot], "%s keeps its %s choice" % [action, slot])
+	var item_kb := Controls.primary(&"use_item", "kb")
+	var item_pad := Controls.primary(&"use_item", "pad")
+	check(not item_kb.is_empty() and not item_pad.is_empty(), "the dressing has a key (%s) and a button (%s)" % [item_kb, item_pad])
+	check(Controls.conflicts().is_empty(), "nothing shared")
+	var saved := Controls.overrides()
+	Controls.set_overrides(saved)
+	for action: String in act_1:
+		for slot: String in act_1[action]:
+			check_eq(Controls.primary(StringName(action), slot), act_1[action][slot], "%s's %s choice survives saving" % [action, slot])
+	check_eq(Controls.primary(&"use_item", "pad"), item_pad, "and so does the dressing's")
+	Controls.reset_bindings()
+

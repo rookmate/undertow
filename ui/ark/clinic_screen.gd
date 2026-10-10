@@ -14,6 +14,7 @@ var _rows: Dictionary[String, Button] = {}
 var _record: Label
 var _reply: Label
 var _back: Button
+var _how: Label
 
 
 func _ready() -> void:
@@ -32,9 +33,13 @@ func _ready() -> void:
 	var stock := _label("FIELD DRESSINGS  %d / %d" % [GameState.run.dressings, Tunables.DRESSINGS_MAX], UiFonts.mono_medium(), 24, Palette.IVORY)
 	stock.position = Vector2(104, 196)
 	add_child(stock)
-	var how := _label("Restocked whenever you're home.  %s  puts one on: +%d Integrity." % [Controls.prompt(&"use_item"), roundi(Tunables.DRESSING_HEAL)], UiFonts.mono(), 16, Palette.IVORY_DIM)
-	how.position = Vector2(106, 232)
-	add_child(how)
+	_how = _label("", UiFonts.mono(), 16, Palette.IVORY_DIM)
+	_how.position = Vector2(106, 232)
+	add_child(_how)
+	_update_how()
+	# Rebinding in Options over this screen, or picking up the other controller, shows here at once.
+	Controls.bindings_changed.connect(_update_how)
+	Controls.device_changed.connect(func(_d: int) -> void: _update_how())
 	var head := _label("TRIAGE RECORDS", UiFonts.mono_medium(), 16, Palette.IVORY_DIM)
 	head.position = Vector2(104, 300)
 	add_child(head)
@@ -65,6 +70,10 @@ func _ready() -> void:
 		_back.grab_focus()
 	else:
 		_rows[_rows.keys()[0]].grab_focus()
+
+
+func _update_how() -> void:
+	_how.text = "Restocked whenever you're home.  %s  puts one on: +%d Integrity." % [Controls.prompt(&"use_item"), roundi(Tunables.DRESSING_HEAL)]
 
 
 ## Every triage log in the game, recovered ones first.

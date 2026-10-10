@@ -18,6 +18,11 @@ const GAP_SECONDS := 0.5
 const VENT_SECONDS := 3.0
 const STALL_SECONDS := 6.0
 
+## Each warning, and how soon after it's called its hazard lands (seconds): the carriage. It has to be
+## said by then.
+const WARN_LEADS: Dictionary[String, float] = {
+	"conductor_left": WARN_SECONDS, "conductor_middle": WARN_SECONDS, "conductor_right": WARN_SECONDS,
+}
 ## Each call, and the soonest the next can come (seconds): the next track's, after this one's carriage
 ## has run and the gap.
 const CALL_GAPS: Dictionary[String, float] = {
