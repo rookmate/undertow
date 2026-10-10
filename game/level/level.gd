@@ -38,12 +38,16 @@ var hud: Hud
 
 ## True when the map was broken and the level never started (see _ready).
 var failed: bool = false
+## Greywater's tide, if this level floods (null otherwise).
+var tide: Tide
 var _ambient: CanvasModulate
 var _enemies: Array[Enemy] = []
 var _off_lattice_for: float = 0.0
 
 ## Seconds off the Lattice before the Steward loses the Operator (time for "there's nothing down there").
 const COVERAGE_GRACE := 0.6
+## Walking through kelp, as a share of walking speed.
+const KELP_FOOTING := 0.65
 
 
 func _ready() -> void:
@@ -83,11 +87,14 @@ func _ready() -> void:
 	world.y_sort_enabled = true
 	add_child(world)
 	enemy_nav = GridNav.new(grid, func(c: Vector2i) -> bool: return grid.is_walkable(c) and not grid.is_occupied(c))
+	_add_tide()
 	_build_cells()
 	_build_collision()
 	_spawn_player()
 	_populate()
 	_add_steward_path()
+	if tide != null and predictor != null:
+		tide.phase_changed.connect(func(phase: Tide.Phase) -> void: predictor.set_blocked(tide.cells, phase != Tide.Phase.LOW))
 	_add_atmosphere()
 	exploration = Exploration.new()
 	exploration.setup(grid)
@@ -179,6 +186,37 @@ func _populate() -> void:
 	_spawn_people_and_finds()
 
 
+## Greywater: the tide over the low streets (and its water), and the thick Marrow on the cells under it.
+func _add_tide() -> void:
+	var floodable: Array[Vector2i] = []
+	var marrow: Array[Vector2i] = []
+	for c: Vector2i in grid.all_cells():
+		if grid.floods(c):
+			floodable.append(c)
+		if grid.is_marrow(c):
+			marrow.append(c)
+	if not floodable.is_empty():
+		tide = Tide.new()
+		tide.name = "Tide"
+		tide.setup(self, floodable)
+		add_child(tide)
+		var water := TideWater.new()
+		water.setup(tide)
+		add_child(water)
+	if not marrow.is_empty():
+		var fog := MarrowFog.new()
+		fog.setup(marrow)
+		add_child(fog)
+
+
+## How fast the Operator can move on a cell: 1 on dry ground; less through kelp, or wading at high water.
+func footing(cell: Vector2i) -> float:
+	var f := KELP_FOOTING if grid.floor_at(cell) == LevelGrid.Floor.KELP else 1.0
+	if tide != null:
+		f = minf(f, tide.footing(cell))
+	return f
+
+
 ## Whether a building cell's building exists yet (the Ark builds from progression).
 func _building_standing(_ch: String) -> bool:
 	return true
@@ -242,6 +280,10 @@ func _build_cells() -> void:
 					facade = BuildingCell.Facade.HOSPITAL_DOOR
 				Tiles.CLINIC:
 					facade = BuildingCell.Facade.CLINIC
+				Tiles.PUMP_WALL:
+					facade = BuildingCell.Facade.PUMPING_STATION
+				Tiles.PUMP_DOOR:
+					facade = BuildingCell.Facade.PUMPING_STATION_DOOR
 				"A":
 					facade = BuildingCell.Facade.ARCHIVE
 				"d":
@@ -327,6 +369,12 @@ func _build_cells() -> void:
 				_prop(cell, StaticProp.Kind.PARTITION)
 			Tiles.HOSPITAL_BED:
 				_prop(cell, StaticProp.Kind.HOSPITAL_BED)
+			Tiles.TURBINE:
+				_prop(cell, StaticProp.Kind.TURBINE)
+			Tiles.TIDE_GAUGE:
+				var gauge := TideGauge.new()
+				gauge.setup(cell, tide)
+				world.add_child(gauge)
 			Tiles.AMBULANCE:
 				var ambulance := _prop(cell, StaticProp.Kind.AMBULANCE)
 				ambulance.joined_left = grid.char_at(cell + Vector2i(0, 1)) == Tiles.AMBULANCE

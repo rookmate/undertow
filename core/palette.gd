@@ -115,6 +115,22 @@ const AMBIENT_WARD_ON := Color(0.32, 0.35, 0.39)
 const AMBIENT_WARD_MUTED := Color(0.2, 0.22, 0.24)
 const STERILE_MIST := Color("#CFE3DC")
 
+# --- Greywater: concrete, kelp, standing water, fog so thick the path lights are halos -------------
+const SEAWALL_CONCRETE := Color("#5B6264")
+const SEAWALL_CONCRETE_B := Color("#646B6C")
+const LOW_STREET := Color("#3A4446")
+const LOW_STREET_WET := Color("#4D5D61")
+const KELP := Color("#3E4A2E")
+const KELP_DARK := Color("#2A331F")
+const GRATING := Color("#2C3133")
+const PUMP_CONCRETE := Color("#6A6F6C")
+const PUMP_CONCRETE_SHADE := Color("#4B504E")
+const PUMP_ROOF := Color("#383D3C")
+const SKY_MARROW_TOP := Color("#1E2A2E")
+const SKY_MARROW_LOW := Color("#34434A")
+const AMBIENT_MARROW_ON := Color(0.34, 0.38, 0.42)
+const AMBIENT_MARROW_MUTED := Color(0.22, 0.24, 0.26)
+
 # --- Characters ---------------------------------------------------------------------------------
 const COVERALL := Color("#39424A")
 const COVERALL_LIGHT := Color("#4B565E")

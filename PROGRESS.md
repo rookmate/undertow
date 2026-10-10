@@ -137,8 +137,8 @@ analysis review at the end.
 | 18 | Mercy General: the district (sealed wards, Sterilizers, the night nurses' station); the Defib Gauntlet moves home | done |
 | 19 | The Surgeon (boss); still props stop redrawing every frame | done |
 | 20 | The Clinic: field dressings (use_item, Q / LB), triage records | done |
-| 21 | Greywater: the district (the tide, kelp, the thick Marrow, the manual pump room) | next |
-| 22 | The Lung (boss) and the Pumphouse | |
+| 21 | Greywater: the district (the tide, kelp, the thick Marrow, the manual pump room) | done |
+| 22 | The Lung (boss) and the Pumphouse | next |
 | 23 | The Vellum expanded: the newsroom, the press, Prem Vashti's office, the Editor | |
 | 24 | Companion conversations after each Act 2 district; the campaign through Act 2 | |
 | — | Sol analysis review (reviews/act-2.md), fixes, re-check | |

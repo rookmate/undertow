@@ -612,6 +612,34 @@
 			"tone": "neutral",
 			"text": "The Surgeon. It's finishing a procedure. It was always very thorough.",
 			"level": "mercy"
+		},
+		{
+			"id": "GREY_ENTER_N1",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "Greywater. Without me, the sea takes this district.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_ENTER_B1",
+			"event": "level_enter",
+			"tone": "bold",
+			"text": "Greywater. The sea's in no hurry. Neither are you, I hope.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_ENTER_C1",
+			"event": "level_enter",
+			"tone": "cautious",
+			"text": "Greywater. Mind the tide. I'll tell you when it turns.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_RELIQ_N1",
+			"event": "reliquary_near",
+			"tone": "neutral",
+			"text": "The pumping station's Reliquary. The tide's memory. Take what keeps you dry.",
+			"level": "greywater"
 		}
 	]
 }

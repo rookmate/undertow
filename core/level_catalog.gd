@@ -52,6 +52,14 @@ const LEVELS: Dictionary[String, Dictionary] = {
 		"restores": "clinic",
 		"boss": "surgeon",
 	},
+	"greywater": {
+		"name": "Greywater",
+		"act": 2,
+		"after": ["tideworks"],
+		"scene": "res://game/level/greywater.tscn",
+		"map": "res://data/levels/greywater.txt",
+		"restores": "pumphouse",
+	},
 	"vellum": {
 		"name": "The Vellum",
 		"act": 2,

@@ -60,12 +60,21 @@ func _draw() -> void:
 				_asphalt(cell)
 			LevelGrid.Floor.STAFF:
 				_lino(cell)
+			LevelGrid.Floor.SEAWALL:
+				_flagstones(cell, look.ground_a, 2)
+			LevelGrid.Floor.LOW_STREET:
+				_low_street(cell)
+			LevelGrid.Floor.KELP:
+				_kelp(cell)
+			LevelGrid.Floor.GRATING:
+				_grating(cell)
 			LevelGrid.Floor.VOID:
 				_drop(cell)
 
 
 ## Plain floor characters: what a placed thing's cell is drawn as, taken from a neighbour.
-const PLAIN_FLOORS := ".,:_iqnxh" + Tiles.HOSPITAL_TILE + Tiles.ASPHALT + Tiles.STAFF_FLOOR
+const PLAIN_FLOORS := ".,:_iqnxh" + Tiles.HOSPITAL_TILE + Tiles.ASPHALT + Tiles.STAFF_FLOOR + Tiles.SEAWALL \
+	+ Tiles.LOW_STREET + Tiles.GRATING
 ## Placed things (people, finds, spawns) stand on whatever floor surrounds them.
 const MARKERS := "TUWwPCckXVO]BZy"
 
@@ -258,4 +267,32 @@ func _lino(cell: Vector2i) -> void:
 	for k: int in 3:
 		var v := (k + 1) * 0.25
 		draw_line(_at(cell, 0.0, v), _at(cell, 1.0, v), Color(Palette.NEAR_BLACK, 0.18), 1.0, true)
+
+
+## A low street in Greywater: dark wet concrete, a tide line of silt, standing puddles.
+func _low_street(cell: Vector2i) -> void:
+	draw_colored_polygon(Iso.cell_diamond(cell), Palette.LOW_STREET)
+	var rng := _rng(cell, 11)
+	if rng.randf() < 0.45:
+		draw_colored_polygon(_sub_diamond(cell, rng.randf_range(0.1, 0.5), rng.randf_range(0.1, 0.5), 0.4, 0.0), Color(Palette.LOW_STREET_WET, 0.7))
+	draw_line(_at(cell, 0.0, 0.85), _at(cell, 1.0, 0.85), Color(Palette.PAPER, 0.08), 1.5, true)
+
+
+## Kelp left by the tide across a low street.
+func _kelp(cell: Vector2i) -> void:
+	_low_street(cell)
+	var rng := _rng(cell, 13)
+	for k: int in 5:
+		var a := _at(cell, rng.randf_range(0.1, 0.9), rng.randf_range(0.1, 0.9))
+		var b := a + Vector2(rng.randf_range(-22.0, 22.0), rng.randf_range(-6.0, 6.0))
+		draw_line(a, b, Palette.KELP if k % 2 == 0 else Palette.KELP_DARK, 4.0, true)
+
+
+## Iron grating in the old pump room, over dark water.
+func _grating(cell: Vector2i) -> void:
+	draw_colored_polygon(Iso.cell_diamond(cell), Palette.WATER_DEEP)
+	for k: int in 5:
+		var u := (k + 0.5) / 5.0
+		draw_line(_at(cell, u, 0.0), _at(cell, u, 1.0), Palette.GRATING, 3.0, true)
+		draw_line(_at(cell, 0.0, u), _at(cell, 1.0, u), Palette.GRATING, 2.0, true)
 

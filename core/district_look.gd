@@ -102,6 +102,21 @@ static func for_district(id: String) -> DistrictLook:
 			look.rain = false
 			look.ambient_on = Palette.AMBIENT_WARD_ON
 			look.ambient_muted = Palette.AMBIENT_WARD_MUTED
+		"greywater":
+			# Concrete and kelp under fog so thick the path lights are halos; standing water everywhere.
+			look.ground_a = Palette.SEAWALL_CONCRETE
+			look.ground_b = Palette.SEAWALL_CONCRETE_B
+			look.ground_wet = Palette.LOW_STREET_WET
+			look.pavement = Palette.SEAWALL_CONCRETE
+			look.stone = Palette.PUMP_CONCRETE_SHADE
+			look.wall = Palette.PUMP_CONCRETE
+			look.wall_shade = Palette.PUMP_CONCRETE_SHADE
+			look.wall_top = Palette.PUMP_ROOF
+			look.sky_top = Palette.SKY_MARROW_TOP
+			look.sky_bottom = Palette.SKY_MARROW_LOW
+			look.ambient_on = Palette.AMBIENT_MARROW_ON
+			look.ambient_muted = Palette.AMBIENT_MARROW_MUTED
+			look.void_fog = Color(Palette.FOG, 0.12)
 		"vellum", "ark":
 			pass
 	return look

@@ -1,0 +1,56 @@
+; Greywater: the seawall, the pumping stations, the tidal turbines; the reason the Steward was built.
+; With no one running the pumps, the low streets flood at every tide. The Marrow is thickest here.
+; Act 2. Rows are grid y (top = 0), columns grid x; on screen +x runs down-right and +y down-left.
+; Drawn by tools/maps/greywater_gen.py (this header is kept by hand).
+;
+; This map's own characters ('%' lines; see core/tiles.gd):
+%  , seawall
+%  . low_street
+%  k kelp
+%  m marrow
+%  : grating
+%  # pump_wall
+%  d pump_door
+%  t turbine
+%  g tide_gauge
+;   ,  the seawall's concrete (high ground)       .  a low street (floods at high tide)
+;   k  kelp on a low street (slows you)           m  the thick Marrow (no path drawn in it)
+;   :  iron grating (the old pump room: off the Lattice)
+;   #  a pumping station's wall   d  its door   t  a tidal turbine   g  a tide gauge
+; Shared: ~ water  - low wall  L Lattice lamp  P start  C checkpoint  R Reliquary  c Custodian
+;   O Salvager  W one of the Waiting  w one of the Waiting, off the path  T truth cache
+;
+; Ids ("@ x,y id"): saved, never rename.
+@ 18,3 greywater_waiting_pump_hand
+@ 26,4 greywater_waiting_valve_keeper
+@ 28,10 greywater_waiting_in_the_marrow
+@ 9,2 greywater_waiting_last_shift
+@ 12,2 greywater_truth_plaque
+! 6,19 READ THE GAUGE: WHEN THE WATER CLIMBS ITS MARKS, GET TO HIGH GROUND.
+! 17,12 THE CAUSEWAY STAYS DRY AT HIGH WATER.
+############################################
+#######d###########d#######d################
+##,,,,,,:w::T:,,,,,,,,,,,,,,,,,~~~L,,,,,,,L
+##,L,,,,::::::,L,,W,,,,,L,,,,,,~~~,,,,,,,,,
+##,,,,,,---:--,,,,,,,,,,,,W,,,,,,,,,,,,,,,,
+##,,,C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+##,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+##..............,,.......mmmmmm~~~,,,,,,,,,
+##............g.,,.......mmmmmm~~~,,,,,,,,,
+##..............L,.kkkkkkmmmmmm~t~,,,,,,,,,
+##.......c......,,.kkkkkkmmmWmm~~~,,,,,,,,,
+##..............,,.kkkkkkmmmmmm~~~,,,,C,,,,
+##..............,,.kkkkkkmmmmmm~~~,,,,,,,,,
+##....kkkkkkk...,,.......mmmmmm~~~,,,,,,,,,
+##....kkkkkkk...,,.............~t~,,,,,,,,,
+##....kkkkkkk...,L.............~~~,,,,,,,,,
+##....kkkkkkk...,,.........g...~~~,,,,,,,,,
+##....kkkkkkk...,,.....O.......~~~,,,,,,R,,
+##...g..........,,.............~~~,,,,,,,,,
+##..............,,.............~t~,,,,,,,,,
+##,,,,,,,,,,,,,,,,,,,,,,,,,,,,,~~~L,,,,,,,L
+##,,P,,,,,,,c,,,,,,,,,,,,,,,,,,~~~
+##,,,,,,L,,,,,,L,,,,,,L,,,,,,L,~~~
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

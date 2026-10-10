@@ -76,6 +76,10 @@
     "surgeon_suture": {
       "text": "It's suturing. Now.",
       "purpose": "fact"
+    },
+    "tide_swell": {
+      "text": "The tide's turning. High ground, now.",
+      "purpose": "warning"
     }
   }
 }

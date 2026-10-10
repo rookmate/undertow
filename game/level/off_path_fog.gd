@@ -18,7 +18,7 @@ func setup(level_grid: LevelGrid) -> void:
 	z_index = -12
 	for c: Vector2i in grid.all_cells():
 		var f := grid.floor_at(c)
-		if f == LevelGrid.Floor.STACKS or f == LevelGrid.Floor.OLD_QUAY or f == LevelGrid.Floor.STAIRS:
+		if f == LevelGrid.Floor.STACKS or f == LevelGrid.Floor.OLD_QUAY or f == LevelGrid.Floor.STAIRS or f == LevelGrid.Floor.GRATING:
 			_cells.append(c)
 
 

@@ -145,7 +145,10 @@ func _prepare() -> void:
 		var g := Vector2(c)
 		_poly[c] = PackedVector2Array([to_map(g), to_map(g + Vector2(1, 0)), to_map(g + Vector2(1, 1)), to_map(g + Vector2(0, 1))])
 		var f := grid.floor_at(c)
-		if grid.is_indexed(c):
+		if grid.is_marrow(c):
+			# It can't see through the thick Marrow: a blank of fog on its map.
+			_steward_colour[c] = Color(Palette.FOG, 0.18)
+		elif grid.is_indexed(c):
 			_steward_colour[c] = Color(Palette.STEWARD_GOLD, 0.32)
 		elif f == LevelGrid.Floor.BUILDING:
 			_steward_colour[c] = Color(Palette.GREY_DEEP, 0.9)

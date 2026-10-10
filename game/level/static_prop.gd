@@ -5,7 +5,9 @@ extends Node2D
 ## planters of white blossom, and lawn sprinklers that still come on; in Mercy General, glass ward
 ## partitions cut away to waist height, and ambulances parked nose to tail.
 
-enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD, HEDGE, PLANTER, SPRINKLER, BED, CARRIAGE_SIDE, DESK, CONTAINER, PARTITION, AMBULANCE, NURSE_DESK, HOSPITAL_BED }
+enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD, HEDGE, PLANTER, SPRINKLER, BED, CARRIAGE_SIDE, DESK, CONTAINER, PARTITION, AMBULANCE, NURSE_DESK, HOSPITAL_BED, TURBINE }
+## Props that move (and so redraw every frame); every other kind is drawn once.
+const MOVING: Array[Kind] = [Kind.SPRINKLER, Kind.TURBINE]
 
 const SPRAY_PERIOD := 6.0
 
@@ -33,7 +35,7 @@ func _ready() -> void:
 	# Sprinklers are the only props that move: they still come on, for nobody. (This has to wait for
 	# _ready: Godot switches processing on for any script with a _process when it enters the tree, so
 	# switching it off in setup() did nothing and every prop redrew itself every frame.)
-	set_process(kind == Kind.SPRINKLER)
+	set_process(MOVING.has(kind))
 
 
 func _process(delta: float) -> void:
@@ -83,6 +85,18 @@ func _draw() -> void:
 			_nurse_desk()
 		Kind.HOSPITAL_BED:
 			_hospital_bed()
+		Kind.TURBINE:
+			_turbine()
+
+
+## A tidal turbine in the channel, still turning on the current: a pylon and three blades.
+func _turbine() -> void:
+	draw_rect(Rect2(-6, -110, 12, 110), Palette.PUMP_CONCRETE_SHADE)
+	var hub := Vector2(0, -110)
+	for k: int in 3:
+		var a := _t * 1.6 + TAU * k / 3.0
+		draw_line(hub, hub + Vector2(cos(a) * 48.0, sin(a) * 48.0), Palette.PUMP_CONCRETE, 7.0, true)
+	draw_circle(hub, 9.0, Palette.IRON_DARK, true, -1.0, true)
 
 
 ## A ward bed: a white frame with its rails up, a grey blanket, the pillow.
