@@ -492,28 +492,28 @@
   "text": "An old office. Damp gets into everything down there."
  },
  "crane_drop": {
-  "hash": "88d076fede6df0dfcc05a2bc0e4f8ea3d7fea5fa",
-  "text": "Drop. Get out from under it."
+  "hash": "618748c183e39fe030a2f8e3ea99e33e56f2963c",
+  "text": "Drop, move."
  },
  "crane_rest": {
   "hash": "8d9a89da7f2d88f0db3b4de4865ad2370e25bbd7",
   "text": "Its cab's down. Now."
  },
  "crane_swing": {
-  "hash": "2439b57b0f8b3012a61644cacdbb9b89fffd5fd9",
-  "text": "Swing. Get in close to the tower."
+  "hash": "076fd11117ad7b625e6ca6f35ada8b74e69ae008",
+  "text": "In close."
  },
  "editor_feed": {
-  "hash": "56c5b2082796931b55fe5b18b14eae414542e61a",
-  "text": "It's turning the Feed on you. Don't look at it."
+  "hash": "9defd12cfcd7dc1613aca3a41491e153eebb5f31",
+  "text": "Look away."
  },
  "editor_ink": {
   "hash": "dab6591750cf3d25171e87e397fee95dc061efa7",
   "text": "It's re-inking. Now."
  },
  "editor_rollers": {
-  "hash": "ecad971e54f2ee519a234714864ce67baf49c31c",
-  "text": "Rollers. Stand in the gap; I've lit it."
+  "hash": "ea71a460f91ff414e0ee39142961b6712949bc75",
+  "text": "Rollers. Stand in the gap."
  },
  "find_defib_gauntlet": {
   "hash": "d47c551cfafcaf24d8a680fa4e52ab42dd38dd1e",
@@ -532,8 +532,8 @@
   "text": "The far basin's filling."
  },
  "lung_left": {
-  "hash": "4fbe13b958b5e985dbeded61439f04798831f270",
-  "text": "The left basin's filling. Out of it."
+  "hash": "d3c84ee0db19ebdfab0b1c2859b24856c6638ef1",
+  "text": "Left basin. Out of it."
  },
  "lung_near": {
   "hash": "226c4a3cbc9f42529b2f1da6e328a7024430f90c",
@@ -544,8 +544,8 @@
   "text": "The right basin. Out of it."
  },
  "lung_surge": {
-  "hash": "3982e96d771bba6372987253e9bec759584f86ff",
-  "text": "Surge. Roll through it."
+  "hash": "fb2385d794f47ace37866806ef47266fb423db14",
+  "text": "Surge. Roll through."
  },
  "lung_vent": {
   "hash": "1df9039a0474eb303e278910d2bb6d389ce65e5b",
@@ -712,8 +712,8 @@
   "text": "People are running the pumps by hand again. The tide's lower everywhere. I should be glad."
  },
  "surgeon_incision": {
-  "hash": "5f7c5a40a73b1e18daeb10ec966b334fe1992464",
-  "text": "Incision. Off the line."
+  "hash": "5833e0ecf72be008903bb1cce3bdbf0627843948",
+  "text": "Off the line."
  },
  "surgeon_mist": {
   "hash": "92906ee37ea50086bfe154359fe2f78513e4f8ea",

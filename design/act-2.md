@@ -45,8 +45,8 @@ their trust (side with one, the other, or say nothing).
 - **The Surgeon** (boss): a surgical unit at the operating table, still completing its last procedure.
   It marks an incision line across the theatre floor and cuts along it (red-orange beam: get off the
   line); it floods the theatre with sterilizing mist except close to the table (get in close); then it
-  bends over the table to suture, open to hits. **Steward-tuned:** it calls each incision ("Incision.
-  Left of the table."). **Manual:** the theatre lamp's switch panel by the door: throw it while the
+  bends over the table to suture, open to hits. **Steward-tuned:** it calls each incision ("Off the
+  line."). **Manual:** the theatre lamp's switch panel by the door: throw it while the
   Surgeon is lining up a cut and it loses its guide and stalls.
 - **Off the path:** the night nurses' station (unindexed: they kept paper): handwritten triage sheets
   that contradict the logs for the night of the Quiet. A truth cache. The night nurse is still at her

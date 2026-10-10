@@ -148,6 +148,38 @@ func test_map_ids_point_at_real_content() -> void:
 		check_eq(str(ContentDb.memory_log(grid.entity_id(c)).get("kind")), "unindexed", "the slip at %s is an unindexed log" % c)
 
 
+## A placed thing stands on the ground around it: what's drawn, what floods, the Marrow and the Lattice
+## all read the same terrain. Off-path finds stay off the Lattice whatever they stand on.
+func test_placed_things_stand_on_the_ground_around_them() -> void:
+	var grey := LevelGrid.load_file(LevelCatalog.map_of("greywater"))
+	for c: Vector2i in [Vector2i(9, 10), Vector2i(23, 17)]:
+		check("cO".contains(grey.char_at(c)), "a spawn at %s" % c)
+		check_eq(grey.floor_at(c), LevelGrid.Floor.LOW_STREET, "on the low street")
+		check(grey.floods(c), "%s floods like the low street round it, after its machine has moved on" % c)
+	var w := Vector2i(28, 10)
+	check_eq(grey.char_at(w), "W")
+	check(grey.is_marrow(w), "the Waiting in the Marrow stand in it")
+	var loop := LevelGrid.load_file(LevelCatalog.map_of("loop"))
+	var t := Vector2i(24, 18)
+	check_eq(loop.char_at(t), "T")
+	check_eq(loop.floor_at(t), LevelGrid.Floor.CAB, "the cache sits on the cab's floor")
+	check_false(loop.is_indexed(t), "and stays off the Lattice")
+
+
+## Every solid thing is a building, tall (it stops sight, swings and shots) or low (it doesn't): exactly
+## one, so a new prop can't come in unclassified.
+func test_every_solid_thing_is_tall_or_low() -> void:
+	for ch: String in LevelGrid.SOLID:
+		var building: bool = LevelGrid.FLOOR_OF.get(ch, LevelGrid.Floor.VOID) == LevelGrid.Floor.BUILDING
+		var kinds := int(building) + int(LevelGrid.TALL.contains(ch)) + int(LevelGrid.LOW.contains(ch))
+		check_eq(kinds, 1, "'%s' is exactly one of building, tall, low" % ch)
+	var mercy := LevelGrid.load_file(LevelCatalog.map_of("mercy"))
+	check(mercy.blocks_line(mercy.first(Tiles.AMBULANCE)), "an ambulance stops a shot")
+	check_false(mercy.blocks_line(mercy.first(Tiles.PARTITION)), "a partition cut to waist height doesn't")
+	var grey := LevelGrid.load_file(LevelCatalog.map_of("greywater"))
+	check(grey.blocks_line(grey.first(Tiles.TURBINE)), "a turbine's pylon does")
+
+
 func test_validation_catches_broken_maps() -> void:
 	var no_start := LevelGrid.parse("#####\n#..R#\n#####")
 	check(no_start.validate(false).size() > 0, "no start")

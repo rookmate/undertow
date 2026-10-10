@@ -18,6 +18,15 @@ const GAP_SECONDS := 0.5
 const VENT_SECONDS := 3.0
 const STALL_SECONDS := 6.0
 
+## Each call, and the soonest the next can come (seconds): the next track's, after this one's carriage
+## has run and the gap.
+const CALL_GAPS: Dictionary[String, float] = {
+	"conductor_left": WARN_SECONDS + ShuntLane.CARRIAGE_SECONDS + GAP_SECONDS,
+	"conductor_middle": WARN_SECONDS + ShuntLane.CARRIAGE_SECONDS + GAP_SECONDS,
+	"conductor_right": WARN_SECONDS + ShuntLane.CARRIAGE_SECONDS + GAP_SECONDS,
+	"conductor_vent": VENT_SECONDS,
+}
+
 var phase: Phase = Phase.IDLE
 var lanes: Array[ShuntLane] = []
 ## Times stalled through the signal box (the manual solution).

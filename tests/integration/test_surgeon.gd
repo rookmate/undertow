@@ -30,6 +30,9 @@ func _stand(cell: Vector2i) -> void:
 	level.player.position = Iso.cell_center(cell)
 	level.player.set_physics_process(false)
 	await wait_physics_frames(2)
+	# Past the Steward's introduction, as if cut short: the fight starts at once.
+	Sound.hush()
+	await wait_physics_frames(1)
 
 
 func test_it_marks_a_line_through_you_and_cuts_along_it() -> void:
@@ -62,6 +65,8 @@ func test_the_mist_spares_you_close_to_the_table() -> void:
 	# Standing still, physics on (a sting's short grace has to run out like it does in play).
 	level.player.position = Iso.cell_center(Vector2i(8, 4))
 	await wait_physics_frames(2)
+	Sound.hush()
+	await wait_physics_frames(1)
 	surgeon.call(&"_enter_phase", Surgeon.Phase.MIST)
 	var near := level.player.integrity.value
 	check_false(surgeon.in_mist(level.player.global_position), "beside the table: clear")
@@ -74,6 +79,41 @@ func test_the_mist_spares_you_close_to_the_table() -> void:
 	var far := level.player.integrity.value
 	await wait_seconds(1.0)
 	check(level.player.integrity.value <= far - Surgeon.MIST_DAMAGE * 2.0, "it stings, tick after tick")
+
+
+## The mist fills the theatre, no further: back off past its reach and it can't touch you.
+func test_the_mist_stays_in_the_theatre() -> void:
+	level.player.position = Iso.cell_center(Vector2i(14, 1))
+	await wait_physics_frames(2)
+	check(Iso.ground_distance(surgeon.global_position, level.player.global_position) > Surgeon.MIST_REACH, "beyond its reach")
+	surgeon.call(&"_enter_phase", Surgeon.Phase.MIST)
+	check_false(surgeon.in_mist(level.player.global_position), "not in the mist")
+	var before := level.player.integrity.value
+	await wait_seconds(1.0)
+	check_eq(level.player.integrity.value, before, "and it doesn't sting")
+
+
+## Downed in the theatre and back at a checkpoint in Mercy General: the fight goes on, the mist stays put.
+func test_back_at_a_checkpoint_the_mist_cant_reach_you() -> void:
+	var mercy := (load("res://game/level/mercy_general.tscn") as PackedScene).instantiate() as Level
+	add_child(mercy)
+	await wait_frames(3)
+	var boss := mercy.boss as Surgeon
+	# Only the Surgeon and its switch: nothing else in the hospital to hurt you meanwhile.
+	for e: Enemy in mercy.living_enemies():
+		if e != boss and e != boss.weak_point:
+			e.queue_free()
+	mercy.player.position = boss.global_position + Iso.ground_velocity(Vector2(0, 1), 3.0)
+	await wait_physics_frames(3)
+	check(boss.is_engaged, "engaged")
+	mercy.respawn_player()
+	await wait_physics_frames(2)
+	boss.call(&"_enter_phase", Surgeon.Phase.MIST)
+	var before := mercy.player.integrity.value
+	await wait_seconds(1.0)
+	check_eq(mercy.player.integrity.value, before, "back at %s, out of the mist" % mercy.checkpoint_cell)
+	mercy.queue_free()
+	await wait_frames(2)
 
 
 func test_it_is_armoured_until_it_sutures() -> void:

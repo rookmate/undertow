@@ -156,16 +156,16 @@ func restock_dressings() -> void:
 
 ## Noor and Teo have arrived on the Ark.
 ## Talks a district over with Noor and Teo, answering `side` (one of Conversations.SIDES): their trust
-## moves and it's kept. False unless the district is done, its talk not yet had, and the answer on offer.
+## moves (Conversations.TRUST) and it's kept. False, changing nothing, unless the district is done, its
+## talk is waiting (both of them here, not had yet) and the answer is on offer.
 func have_conversation(district: String, side: String) -> bool:
 	if not run.levels_completed.has(district) or run.conversations_had.has(district) or not Conversations.SIDES.has(side):
 		return false
-	var choice := Conversations.choice(district, side)
-	if choice.is_empty():
+	if not (run.companion_here(RunState.WHO_NOOR) and run.companion_here(RunState.WHO_TEO)) or not Conversations.has(district):
 		return false
 	run.conversations_had.append(district)
-	change_trust(RunState.WHO_NOOR, int(choice.get("noor", 0)))
-	change_trust(RunState.WHO_TEO, int(choice.get("teo", 0)))
+	change_trust(RunState.WHO_NOOR, Conversations.trust_change(side, "noor"))
+	change_trust(RunState.WHO_TEO, Conversations.trust_change(side, "teo"))
 	state_changed.emit(&"conversations_had")
 	return true
 

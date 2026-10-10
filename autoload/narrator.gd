@@ -62,6 +62,9 @@ func notify(event: StringName, level: String = "") -> String:
 		return ""
 	if not purpose_allowed(selector.purpose_of(event)):
 		return ""
+	# A warning being said is never cut off by narration: it's what you need to hear in full.
+	if selector.purpose_of(event) != LineSelector.WARNING and VoiceLines.purpose_of(Sound.voice_line) == LineSelector.WARNING and Sound.voice_left() > 0.0:
+		return ""
 	# "Stop praising me": and no drift toward the voice you like to hear.
 	var plain := GameState.has_override(Overrides.NO_PRAISE)
 	var line := selector.pick(event, 0.0 if plain else GameState.run.playstyle_profile.lean(), _rng, level, &"neutral" if plain else &"")

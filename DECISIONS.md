@@ -467,7 +467,7 @@ Asked of the user on 2026-10-09 and answered the same day.
 132. **The Lung** (Greywater's boss), in its basin on the east island before the Reliquary: it floods
      the basin a quarter at a time (the quarters are the grid's quadrants around it, which on screen are
      left, right, near and far), three a cycle, the one you're in first; each is outlined in red-orange
-     for 1.2 s (1.5 s muted) and called by the Steward ("The left basin's filling. Out of it."), then
+     for 1.2 s (1.5 s muted) and called by the Steward ("Left basin. Out of it."), then
      floods (14 damage). Then a pressure surge rings out across the basin (16 damage where it passes;
      roll through it). Then it vents for 3.5 s: open to blows. 420 integrity. The manual solution: the
      old hand valve on the basin's edge, turned while it fills a quarter, chokes it for 6 s, once a
@@ -501,9 +501,8 @@ Asked of the user on 2026-10-09 and answered the same day.
      Each cycle: two **rollers** sweep the hall's floor, the first from the press toward the barrier,
      the second across (turning about each cycle), each with a two-cell gap 2 to 4 tiles along from
      where you stand. Its run shows in red-orange for 1.4 s (1.7 s muted) and, while the Steward is with
-     you and may warn you, the gap is lit in its gold and called ("Rollers. Stand in the gap; I've lit
-     it."). Run over: 16 damage; roll through it and you're clear. Then it **pulps** the page (1.6 s),
-     **turns the Feed on you** (the Clerks' blind, 12 tiles, 2 s; "Don't look at it.") and throws
+     you and may warn you, the gap is lit in its gold and called ("Rollers. Stand in the gap."). Run over: 16 damage; roll through it and you're clear. Then it **pulps** the page (1.6 s),
+     **turns the Feed on you** (the Clerks' blind, 12 tiles, 2 s; "Look away.") and throws
      three bales in a fan, then **re-inks** for 3.5 s: open to blows. 420 integrity. The manual
      solution: knock the bale stack over the pulper into it while it pulps, and it jams for 6 s, once a
      cycle.
@@ -514,4 +513,23 @@ Asked of the user on 2026-10-09 and answered the same day.
      before answering leaves it for next time (saying nothing is an answer; leaving isn't). The run
      keeps which have been had (`conversations_had`). With either of them gone there's none. With every
      built district done, the Loop map names what's still to come (Harbor Ward, the Spire).
+138. **Act 2 review fixes** (reviews/act-2.md). The Surgeon's mist fills the theatre from the table's
+     clear ring out to 5.5 tiles and no further (what's drawn is what stings), so backing off or coming
+     back at a checkpoint is out of it. The Lung floods exactly the square it outlines (4.5 tiles a
+     side, flood_rect). **Tall and low:** every solid thing is a building, tall (it stops sight, swings
+     and shots: the Feed kiosk, the tram, shelves, the Reliquary, crane legs, ambulances, turbines) or
+     low (you see, swing and shoot over or past it: railings, low walls, lamp posts, desks, beds, ward
+     partitions cut to waist height, tide gauges, the Tideworks' containers stacked one high), and a
+     test keeps every new one classified. **Placed things stand on the ground around them:** a marker's
+     cell takes the commonest terrain among its neighbours, and drawing, flooding, footing, the Marrow
+     and the Lattice all read that one value; truth caches, slips and the Waiting off the path stay off
+     the Lattice whatever they stand on. **Boss calls are said in full:** each boss lists its calls
+     with the soonest the next can come (CALL_GAPS) and a test keeps every recording shorter (several
+     lines got terser: "Off the line.", "Drop, move.", "In close.", "Left basin. Out of it.", "Surge.
+     Roll through.", "Rollers. Stand in the gap.", "Look away."); a boss's fight waits while the
+     Steward introduces it (cut short or muted, it starts at once; six seconds at most); and narration
+     never cuts off a warning being said. **Conversations:** what an answer does to trust is a rule in
+     code (Conversations.TRUST: +2 / −1, or nothing), not content; nothing changes unless both of them
+     are here; malformed content is reported, never crashed on; and Noor and Teo speak in Barlow, not
+     the Steward's serif (a test keeps that serif the Steward's alone).
 

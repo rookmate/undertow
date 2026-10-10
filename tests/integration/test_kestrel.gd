@@ -173,7 +173,7 @@ func test_gates_shut_when_muted_but_never_on_you() -> void:
 
 func test_the_childs_room_is_where_the_lattice_never_looked() -> void:
 	var t := level.grid.first("T")
-	check_eq(FloorLayer.drawn_floor(level.grid, t), LevelGrid.Floor.TIMBER, "the map lies on her floorboards")
+	check_eq(level.grid.floor_at(t), LevelGrid.Floor.TIMBER, "the map lies on her floorboards")
 	check_false(level.grid.is_indexed(t), "the room is off the Lattice")
 	var route := level.grid.reachable_from(level.grid.start_cell(), false)
 	check(route.has(t + Vector2i(0, 1)), "but you can walk there")

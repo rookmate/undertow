@@ -29,6 +29,9 @@ func after_each() -> void:
 func _stand(cell: Vector2i) -> void:
 	level.player.position = Iso.cell_center(cell)
 	await wait_physics_frames(2)
+	# Past the Steward's introduction, as if cut short: the fight starts at once.
+	Sound.hush()
+	await wait_physics_frames(1)
 
 
 func test_it_floods_the_quarter_youre_in_first_and_the_steward_calls_it() -> void:
@@ -52,6 +55,23 @@ func test_out_of_the_filling_quarter_youre_dry() -> void:
 	var before := level.player.integrity.value
 	await wait_seconds(Lung.FILL_SECONDS + 0.6)
 	check_eq(level.player.integrity.value, before, "and the water passes you by")
+
+
+## What's drawn is what floods: just inside every edge and corner of each quarter's square is wet, just
+## outside is dry.
+func test_the_flood_is_exactly_the_square_drawn() -> void:
+	var at := Iso.world_to_grid(lung.global_position)
+	for q: Lung.Quarter in [Lung.Quarter.LEFT, Lung.Quarter.RIGHT, Lung.Quarter.NEAR, Lung.Quarter.FAR]:
+		lung.quarter = q
+		var r := Lung.flood_rect(q)
+		var sg := Lung.quarter_signs(q)
+		var inside := r.grow(-0.05)
+		for corner: Vector2 in [inside.position, Vector2(inside.end.x, inside.position.y), inside.end, Vector2(inside.position.x, inside.end.y)]:
+			check(lung.in_flood(Iso.grid_to_world(at + corner)), "%s: %s is wet" % [q, corner])
+		var far := sg * (Lung.FLOOD_TILES + 0.05)
+		for p: Vector2 in [far, Vector2(far.x, sg.y * 1.0), Vector2(sg.x * 1.0, far.y)]:
+			check_false(lung.in_flood(Iso.grid_to_world(at + p)), "%s: %s is dry" % [q, p])
+		check_false(lung.in_flood(Iso.grid_to_world(at - sg * 1.0)), "%s: the quarter across is dry" % q)
 
 
 ## The surge's ring hits you where you stand, unless you roll through it.

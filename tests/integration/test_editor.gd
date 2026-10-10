@@ -30,6 +30,9 @@ func after_each() -> void:
 func _stand(cell: Vector2i) -> void:
 	level.player.position = Iso.cell_center(cell)
 	await wait_physics_frames(2)
+	# Past the Steward's introduction, as if cut short: the fight starts at once.
+	Sound.hush()
+	await wait_physics_frames(1)
 
 
 func _rollers() -> PressRollers:

@@ -59,6 +59,14 @@ const CLINIC_DOOR := "ν"
 const PUMPHOUSE := "ψ"
 const PUMPHOUSE_DOOR := "ω"
 
+# --- How tall the solid ones stand -------------------------------------------------------------------
+## Solid named things taller than a chest-height shot: they stop sight, swings and shots
+## (LevelGrid.blocks_line). Buildings stop them anyway.
+const TALL := AMBULANCE + TURBINE
+## Solid named things at waist height or below, or thin: you see, swing and shoot over or past them.
+## A test keeps every solid tile in one of the two.
+const LOW := PARTITION + NURSE_DESK + HOSPITAL_BED + TIDE_GAUGE + NEWSROOM_DESK
+
 const BY_NAME: Dictionary[String, String] = {
 	"hospital_tile": HOSPITAL_TILE, "asphalt": ASPHALT, "staff_floor": STAFF_FLOOR, "partition": PARTITION,
 	"ward_seal": WARD_SEAL, "ambulance": AMBULANCE, "nurse_desk": NURSE_DESK, "sterilizer": STERILIZER,
