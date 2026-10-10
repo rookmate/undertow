@@ -75,10 +75,7 @@ func _ready() -> void:
 		SceneRouter.abandon(self)
 		return
 	_add_backdrop()
-	var floor_layer := FloorLayer.new()
-	floor_layer.name = "Floor"
-	add_child(floor_layer)
-	floor_layer.setup(grid, look)
+	FloorLayer.build(self, grid, look)
 	var reflections := WetReflections.new()
 	reflections.name = "WetReflections"
 	add_child(reflections)

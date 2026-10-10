@@ -412,3 +412,63 @@ existing test's "no path in the fog", DECISIONS 142).
    walkable Marrow cell beside open ground, (25, 7) included, in all four tide phases. It was run
    against the old predictor and fails there (SWELL at (25, 7) to (29, 7) drew a path), and it passes
    with the fix.
+
+## Round 6 (closing check, verbatim from sol_analyst)
+
+Scope: `git diff e03edd7..0e1ec1d`, the round 5 fix being `7526e3a..0e1ec1d`.
+
+I would close milestone 3’s code review. All nine Round 1 findings and the Round 2–5 follow-ups are resolved. I found no additional confirmed defect or sufficiently supported inferred code defect.
+
+Reviewed clean HEAD `0e1ec1d` against `e03edd7`, including all five fix ranges, the design sources, previous reviews, regression tests and stored gate logs. No files were changed. “Confirmed” here means established from source, shipped data or read-only calculations.
+
+| Round 1 finding | Closing verification |
+|---|---|
+| Surgeon mist damages the whole hospital | Resolved. Exposure and drawing share the 2–5.5-tile annulus. Regression assertions cover retreat and checkpoint respawn. [surgeon.gd:135](/home/homebox/Documents/rookmate/undertow/game/bosses/surgeon.gd:135), [test_surgeon.gd:85](/home/homebox/Documents/rookmate/undertow/tests/integration/test_surgeon.gd:85), [test_surgeon.gd:97](/home/homebox/Documents/rookmate/undertow/tests/integration/test_surgeon.gd:97). |
+| Lung flood drawing and damage disagree | Resolved. Warning, fill and damage use `flood_rect`; tests probe every quarter’s corners and outer edges. [lung.gd:141](/home/homebox/Documents/rookmate/undertow/game/bosses/lung.gd:141), [test_lung.gd:62](/home/homebox/Documents/rookmate/undertow/tests/integration/test_lung.gd:62). |
+| Tall props let targeting and shots pass through | Resolved under Decision 138. Ambulances, turbines and crane legs block lines; desks and partitions deliberately remain low. The classification test requires every solid character to have exactly one height classification. [level_grid.gd:49](/home/homebox/Documents/rookmate/undertow/core/level_grid.gd:49), [test_level_grid.gd:171](/home/homebox/Documents/rookmate/undertow/tests/unit/test_level_grid.gd:171). |
+| Entity markers erase underlying terrain | Resolved. Drawing and gameplay consume the shared terrain value. Independent map calculations confirm both reported spawn cells flood and the Waiting cell retains Marrow. Off-path markers preserve their exclusion from the Lattice. [level_grid.gd:123](/home/homebox/Documents/rookmate/undertow/core/level_grid.gd:123), [floor_layer.gd:21](/home/homebox/Documents/rookmate/undertow/game/level/floor_layer.gd:21), [test_level_grid.gd:153](/home/homebox/Documents/rookmate/undertow/tests/unit/test_level_grid.gd:153). |
+| Boss warnings are interrupted or finish after damage starts | Resolved for recording duration and the identified interruption paths. Calls fit their declared gaps, warnings fit their hazard leads, and fights wait for introductions. [boss.gd:75](/home/homebox/Documents/rookmate/undertow/game/bosses/boss.gd:75), [test_boss_calls.gd:25](/home/homebox/Documents/rookmate/undertow/tests/integration/test_boss_calls.gd:25), [test_boss_calls.gd:37](/home/homebox/Documents/rookmate/undertow/tests/integration/test_boss_calls.gd:37). |
+| Trust tests repeat content instead of checking the rule | Resolved. Code owns `+2/-1/0`; tests assert literal deltas, applied outcomes and clamping. The campaign also uses independent literal expectations. [conversations.gd:11](/home/homebox/Documents/rookmate/undertow/core/conversations.gd:11), [test_conversations.gd:29](/home/homebox/Documents/rookmate/undertow/tests/integration/test_conversations.gd:29). |
+| Conversations mutate state with a companion absent | Resolved at the mutation boundary. Rejection preserves trust and conversation availability. [game_state.gd:164](/home/homebox/Documents/rookmate/undertow/autoload/game_state.gd:164), [test_conversations.gd:56](/home/homebox/Documents/rookmate/undertow/tests/integration/test_conversations.gd:56). |
+| Malformed conversation content crashes validation | Resolved. Validation checks nested shapes and required text; accessors guard their casts. [conversations.gd:63](/home/homebox/Documents/rookmate/undertow/core/conversations.gd:63), [test_conversations.gd:65](/home/homebox/Documents/rookmate/undertow/tests/integration/test_conversations.gd:65). |
+| Companions use the Steward-exclusive font | Resolved. Companion speech and replies use Barlow. The font ownership scan rejects the former conversation-screen usage. [conversation_screen.gd:42](/home/homebox/Documents/rookmate/undertow/ui/ark/conversation_screen.gd:42), [test_font_rules.gd:20](/home/homebox/Documents/rookmate/undertow/tests/unit/test_font_rules.gd:20). |
+
+The later fixes also hold:
+
+- Fixed speech, pooled narration and screen voice-overs respect an active warning. Boss calls retain the deliberate urgent exception, the tide yields during fights, and leaving the level hushes its remaining warning. Tests cover those entry points and the exit transition. [narrator.gd:65](/home/homebox/Documents/rookmate/undertow/autoload/narrator.gd:65), [narrator.gd:103](/home/homebox/Documents/rookmate/undertow/autoload/narrator.gd:103), [narrator.gd:130](/home/homebox/Documents/rookmate/undertow/autoload/narrator.gd:130), [level.gd:166](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:166), [test_boss_calls.gd:100](/home/homebox/Documents/rookmate/undertow/tests/integration/test_boss_calls.gd:100).
+- Saved bindings survive the new dressing defaults, including occupied spares. A read-only model of the loader preserved every saved choice through migration and reload across 1,500 valid Act 1 configurations; 771 conflicted with the new defaults. No resulting configuration shared an input. [controls.gd:206](/home/homebox/Documents/rookmate/undertow/autoload/controls.gd:206), [controls.gd:249](/home/homebox/Documents/rookmate/undertow/autoload/controls.gd:249), [test_controls.gd:73](/home/homebox/Documents/rookmate/undertow/tests/unit/test_controls.gd:73).
+- The Clinic instruction refreshes on both binding and device changes, with a live-screen regression assertion. [clinic_screen.gd:41](/home/homebox/Documents/rookmate/undertow/ui/ark/clinic_screen.gd:41), [test_clinic.gd:121](/home/homebox/Documents/rookmate/undertow/tests/integration/test_clinic.gd:121).
+- The Marrow fix checks the Operator’s own cell before choosing a nearby navigation start. Independent map/navigation calculations covered the 17 boundary cells through all four tide phases. The old predictor leaked guidance from six cells during SWELL, HIGH and EBB, including `(25,7)`; the current guard rejects all these cases. [path_predictor.gd:69](/home/homebox/Documents/rookmate/undertow/core/path_predictor.gd:69), [test_greywater.gd:113](/home/homebox/Documents/rookmate/undertow/tests/integration/test_greywater.gd:113).
+
+The regression assertions distinguish the recorded failures from the fixed behavior. I checked that against the historical implementations and independently reproduced the Marrow failure in a read-only model. I did not execute historical Godot mutation runs.
+
+I found no further break in the checked save, voice-table, targeting, color/typeface, input or autopilot contracts. New save fields have compatible defaults and retain the earlier weapon normalization. All 187 voice IDs have matching manifest text, current hashes and clips; all 140 earlier voice IDs remain, as do the earlier core, log and override IDs. Independent `ffprobe` measurements confirm every boss call fits its declared cadence and all 14 boss warnings fit their hazard leads. [run_state.gd:174](/home/homebox/Documents/rookmate/undertow/core/run_state.gd:174), [test_boss_calls.gd:25](/home/homebox/Documents/rookmate/undertow/tests/integration/test_boss_calls.gd:25).
+
+Earlier required route checks remain, with the documented Gauntlet relocation to Mercy and replacement of the Vellum’s four-card assertion by the five-card assertion. Stable earlier map entity IDs and coordinates remain apart from that relocation. I found no structural regression requiring another refactor; the terrain fix removes the renderer’s separate inference rule, and no changed GDScript file exceeds 1,000 lines. [mercy_route.gd:14](/home/homebox/Documents/rookmate/undertow/autoload/autopilot/routes/mercy_route.gd:14), [vellum_route.gd:17](/home/homebox/Documents/rookmate/undertow/autoload/autopilot/routes/vellum_route.gd:17).
+
+The 17 stored check logs contain no error, warning or failed-result markers. They corroborate [396 passing tests](/home/homebox/Documents/rookmate/undertow/reports/check/tests.log:408), [198 campaign checks in 708.3 seconds](/home/homebox/Documents/rookmate/undertow/reports/check/full_campaign.log:216), the [30-second smoke run](/home/homebox/Documents/rookmate/undertow/reports/check/smoke.log:20), and six passing district tours. I did not rerun the gate because it writes artifacts and saved state.
+
+Listening to the re-voiced lines, human reaction time and boss balance, and real hardware remain unverified. Performance also needs follow-up: the Vellum tour recorded **46 fps average and a 37 fps 1% low at 1080p on Intel Iris Xe**. That is confirmed measurement evidence, but I have no matched earlier tour establishing a milestone regression, and it does not establish the Steam Deck target. [tour_vellum.log:2](/home/homebox/Documents/rookmate/undertow/reports/check/tour_vellum.log:2), [tour_vellum.log:11](/home/homebox/Documents/rookmate/undertow/reports/check/tour_vellum.log:11).
+## Round 6: what was done, and closing
+
+Sol closed the code review: every finding from rounds 1–5 is resolved, with no further defect.
+
+It also measured the Vellum's tour at 46 fps (1% low 37) where every other district held 60. That was
+a regression of this milestone: the floor was one canvas item for the whole map, so the expanded
+Vellum's river and newsroom were drawn every frame, on screen or not. The cause was found by switching
+parts off: hiding the floor alone took frame submit from 12.6 to 3.8 ms and GPU time from 12.1 to
+5.4 ms. The floor is now drawn in 4 × 4 blocks that Godot culls off screen (DECISIONS 143). Measured
+tours:
+
+| Floor | Average | 1% low |
+|---|---|---|
+| one canvas item | 47 fps | 38 fps |
+| 8 × 8 blocks | 58 fps | 44 fps |
+| 6 × 6 blocks | 59 fps | 47 fps |
+| 4 × 4 blocks | 59 fps | 50 fps |
+
+Greywater is at 59 / 51. A test checks that every district's floor is in small blocks covering every
+cell exactly once, each drawn once.
+
+**Status: closed** (six rounds). Not verifiable here, and so still open: listening to the re-voiced
+calls, human reaction time and boss balance, and real hardware (Steam Deck, controllers).
