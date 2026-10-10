@@ -59,6 +59,7 @@ const LEVELS: Dictionary[String, Dictionary] = {
 		"scene": "res://game/level/greywater.tscn",
 		"map": "res://data/levels/greywater.txt",
 		"restores": "pumphouse",
+		"boss": "lung",
 	},
 	"vellum": {
 		"name": "The Vellum",
@@ -92,6 +93,7 @@ const BOSSES: Dictionary[String, Dictionary] = {
 	"conductor": {"lanes": 3},
 	"crane": {"lanes": 0},
 	"surgeon": {"lanes": 0},
+	"lung": {"lanes": 0},
 }
 
 

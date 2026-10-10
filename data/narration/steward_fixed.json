@@ -80,6 +80,34 @@
     "tide_swell": {
       "text": "The tide's turning. High ground, now.",
       "purpose": "warning"
+    },
+    "lung_left": {
+      "text": "The left basin's filling. Out of it.",
+      "purpose": "warning"
+    },
+    "lung_right": {
+      "text": "The right basin. Out of it.",
+      "purpose": "warning"
+    },
+    "lung_near": {
+      "text": "The near basin, where you are. Move.",
+      "purpose": "warning"
+    },
+    "lung_far": {
+      "text": "The far basin's filling.",
+      "purpose": "warning"
+    },
+    "lung_surge": {
+      "text": "Surge. Roll through it.",
+      "purpose": "warning"
+    },
+    "lung_vent": {
+      "text": "It's venting. Now.",
+      "purpose": "fact"
+    },
+    "pumphouse_note": {
+      "text": "People are running the pumps by hand again. The tide's lower everywhere. I should be glad.",
+      "purpose": "fact"
     }
   }
 }

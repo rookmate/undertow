@@ -48,12 +48,15 @@ const TIDE_GAUGE := "χ"
 ## The Clinic (from Mercy General) and its door.
 const CLINIC := "μ"
 const CLINIC_DOOR := "ν"
+## The Pumphouse (from Greywater) and its door.
+const PUMPHOUSE := "ψ"
+const PUMPHOUSE_DOOR := "ω"
 
 const BY_NAME: Dictionary[String, String] = {
 	"hospital_tile": HOSPITAL_TILE, "asphalt": ASPHALT, "staff_floor": STAFF_FLOOR, "partition": PARTITION,
 	"ward_seal": WARD_SEAL, "ambulance": AMBULANCE, "nurse_desk": NURSE_DESK, "sterilizer": STERILIZER,
 	"hospital_wall": HOSPITAL_WALL, "hospital_door": HOSPITAL_DOOR, "hospital_bed": HOSPITAL_BED,
-	"clinic": CLINIC, "clinic_door": CLINIC_DOOR,
+	"clinic": CLINIC, "clinic_door": CLINIC_DOOR, "pumphouse": PUMPHOUSE, "pumphouse_door": PUMPHOUSE_DOOR,
 	"seawall": SEAWALL, "low_street": LOW_STREET, "kelp": KELP, "marrow": MARROW, "grating": GRATING,
 	"pump_wall": PUMP_WALL, "pump_door": PUMP_DOOR, "turbine": TURBINE, "tide_gauge": TIDE_GAUGE,
 }

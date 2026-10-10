@@ -280,6 +280,8 @@ func _build_cells() -> void:
 					facade = BuildingCell.Facade.HOSPITAL_DOOR
 				Tiles.CLINIC:
 					facade = BuildingCell.Facade.CLINIC
+				Tiles.PUMPHOUSE:
+					facade = BuildingCell.Facade.PUMPHOUSE
 				Tiles.PUMP_WALL:
 					facade = BuildingCell.Facade.PUMPING_STATION
 				Tiles.PUMP_DOOR:
@@ -604,6 +606,11 @@ func _spawn_boss() -> void:
 			add_enemy(surgeon, b, Surgeon.MAX_INTEGRITY)
 			boss = surgeon
 			_add_weak_point(surgeon, TheatreSwitch.new())
+		"lung":
+			var lung := Lung.new()
+			add_enemy(lung, b, Lung.MAX_INTEGRITY)
+			boss = lung
+			_add_weak_point(lung, HandValve.new())
 
 
 func _add_weak_point(owner_boss: Boss, point: WeakPoint) -> void:

@@ -76,7 +76,12 @@ for y in (9, 14, 19):
     put(32, y, 't')
 rect(31, 4, 33, 6, ',')
 rect(34, 2, 42, 20, ',')
-put(38, 11, 'C')
+# The Lung in its basin on the island; the old hand valve on the basin's edge; the barrier that opens
+# when it falls, and the Reliquary beyond.
+put(38, 8, 'B')
+put(35, 12, 'Z')
+rect(34, 14, 42, 14, 'y')
+put(36, 17, 'C')
 put(40, 17, 'R')
 for (x, y) in [(34, 2), (42, 2), (34, 20), (42, 20)]:
     put(x, y, 'L')

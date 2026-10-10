@@ -19,6 +19,7 @@
 ;   #  a pumping station's wall   d  its door   t  a tidal turbine   g  a tide gauge
 ; Shared: ~ water  - low wall  L Lattice lamp  P start  C checkpoint  R Reliquary  c Custodian
 ;   O Salvager  W one of the Waiting  w one of the Waiting, off the path  T truth cache
+;   B the boss (the Lung)  Z its weak point (the old hand valve)  y the barrier, open when it falls
 ;
 ; Ids ("@ x,y id"): saved, never rename.
 @ 18,3 greywater_waiting_pump_hand
@@ -36,16 +37,16 @@
 ##,,,C,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ##,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ##..............,,.......mmmmmm~~~,,,,,,,,,
-##............g.,,.......mmmmmm~~~,,,,,,,,,
+##............g.,,.......mmmmmm~~~,,,,B,,,,
 ##..............L,.kkkkkkmmmmmm~t~,,,,,,,,,
 ##.......c......,,.kkkkkkmmmWmm~~~,,,,,,,,,
-##..............,,.kkkkkkmmmmmm~~~,,,,C,,,,
 ##..............,,.kkkkkkmmmmmm~~~,,,,,,,,,
+##..............,,.kkkkkkmmmmmm~~~,Z,,,,,,,
 ##....kkkkkkk...,,.......mmmmmm~~~,,,,,,,,,
-##....kkkkkkk...,,.............~t~,,,,,,,,,
+##....kkkkkkk...,,.............~t~yyyyyyyyy
 ##....kkkkkkk...,L.............~~~,,,,,,,,,
 ##....kkkkkkk...,,.........g...~~~,,,,,,,,,
-##....kkkkkkk...,,.....O.......~~~,,,,,,R,,
+##....kkkkkkk...,,.....O.......~~~,,C,,,R,,
 ##...g..........,,.............~~~,,,,,,,,,
 ##..............,,.............~t~,,,,,,,,,
 ##,,,,,,,,,,,,,,,,,,,,,,,,,,,,,~~~L,,,,,,,L

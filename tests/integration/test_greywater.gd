@@ -125,3 +125,25 @@ func test_the_pumphouse_calms_the_tide() -> void:
 	await wait_seconds(2.2)
 	check_eq(level.player.integrity.value, before, "no sting")
 	check_eq(level.footing(Vector2i(8, 9)), Tide.WADE, "still wading")
+
+
+## The Pumphouse stands on the Ark once Greywater is done; looking in, the Steward has its say.
+func test_the_pumphouse_stands_on_the_ark() -> void:
+	level.queue_free()
+	await wait_frames(1)
+	GameState.restore_building("pumphouse")
+	level = (load("res://game/ark/ark.tscn") as PackedScene).instantiate() as Level
+	add_child(level)
+	await wait_frames(2)
+	var cells := 0
+	var door: ArkFixture = null
+	for n: Node in level.world.get_children():
+		if n is BuildingCell and (n as BuildingCell).facade == BuildingCell.Facade.PUMPHOUSE:
+			cells += 1
+		if n is ArkFixture and (n as ArkFixture).kind == ArkFixture.Kind.PUMPHOUSE_DOOR:
+			door = n
+	check(cells > 0 and door != null, "the Pumphouse stands, with its door")
+	Sound.hush()
+	door.interact(level.player)
+	check_eq(Sound.voice_line, "pumphouse_note", "people run the pumps again, and the Steward says so")
+
