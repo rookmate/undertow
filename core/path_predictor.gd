@@ -64,7 +64,8 @@ func covers(cell: Vector2i) -> bool:
 func predict(world_position: Vector2, count: int = Tunables.PATH_TILES_AHEAD) -> Array[Vector2i]:
 	var out: Array[Vector2i] = []
 	var here := Iso.world_to_cell(world_position)
-	if goal.x < 0 or not covers(here):
+	# In the thick Marrow the Steward can't see you at all, whatever's dry nearby.
+	if goal.x < 0 or not covers(here) or grid.is_marrow(here):
 		return out
 	var start := here if nav.is_open(here) else _nearest_open(here, world_position)
 	if start.x < 0:

@@ -108,6 +108,24 @@ func test_the_marrow_hides_the_path_even_with_the_voice_on() -> void:
 	check(level.predictor.predict(level.player.global_position).is_empty(), "but it draws no path in the fog")
 
 
+## Not even on its edge, beside dry ground, in any phase of the tide (at high water the route has to
+## start from the dry cell next door, and still draws nothing while you're in the fog).
+func test_no_path_from_anywhere_in_the_marrow_whatever_the_tide() -> void:
+	var edge: Array[Vector2i] = []
+	for c: Vector2i in level.grid.all_cells():
+		if not level.grid.is_marrow(c) or not level.grid.is_walkable(c):
+			continue
+		for d: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]:
+			if level.grid.is_walkable(c + d) and not level.grid.is_marrow(c + d) and not edge.has(c):
+				edge.append(c)
+	check(edge.has(Vector2i(25, 7)), "the Marrow's edge by the seawall")
+	for phase: Tide.Phase in [Tide.Phase.LOW, Tide.Phase.SWELL, Tide.Phase.HIGH, Tide.Phase.EBB]:
+		level.tide.enter(phase)
+		await wait_physics_frames(1)
+		for c: Vector2i in edge:
+			check(level.predictor.predict(Iso.cell_center(c)).is_empty(), "%s at %s: no path in the fog" % [Tide.Phase.keys()[phase], c])
+
+
 func test_the_pump_room_is_off_the_lattice() -> void:
 	var cache := level.grid.first("T")
 	check_eq(level.grid.floor_at(cache + Vector2i(0, 1)), LevelGrid.Floor.GRATING)

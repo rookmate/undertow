@@ -553,4 +553,7 @@ Asked of the user on 2026-10-09 and answered the same day.
 141. **Act 2 review, round 4.** A screen's voice-over (a core card, a record) waits for a warning being
      said like every other line, and **leaving a district stops a warning about it** (its hazard is
      behind you), so the next screen's voice is heard.
+142. **Act 2 review, round 5.** Standing in the thick Marrow, the Steward draws no path at all, in any
+     phase of the tide: before, at high water, with the Marrow's edge cell closed to routing, the route
+     started from the dry seawall next door and was drawn while you stood in the fog.
 

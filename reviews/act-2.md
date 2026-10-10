@@ -358,3 +358,57 @@ The one finding (low) was fixed (DECISIONS 141).
    `test_boss_calls::test_a_voice_over_waits_and_leaving_ends_the_warning`. During a warning, a card's
    and a record's voice-over both wait. Once the level is freed the warning has stopped, and the
    card's voice-over is said.
+
+## Round 5 findings (verbatim from sol_analyst)
+
+Scope: `git diff e03edd7..7526e3a`, the round 4 fix being `26b712d..7526e3a`.
+
+All nine round 1 findings are resolved, and the round 2–4 fixes address the subsequent findings. I found **no confirmed new defect**. One low-severity, inferred Marrow edge case remains; its underlying behaviour is confirmed, but the design contract is ambiguous.
+
+Reviewed clean HEAD `7526e3a` against `e03edd7`, including the four fix ranges. No files were changed.
+
+**Inferred finding, ranked by severity**
+
+1. **Low — guidance can reappear while the Operator stands inside the Marrow during a rising or high tide.**  
+   Greywater blocks floodable navigation cells whenever the tide is above LOW ([level.gd:101](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:101)). When the current cell becomes blocked, the predictor starts from a nearby open cell ([path_predictor.gd:69](/home/homebox/Documents/rookmate/undertow/core/path_predictor.gd:69)); its Marrow check examines the resulting route, rather than the Operator’s current cell ([path_predictor.gd:79](/home/homebox/Documents/rookmate/undertow/core/path_predictor.gd:79)).
+
+   On the shipped map, `(25, 7)` is Marrow and `(25, 6)` is dry seawall ([greywater.txt:39](/home/homebox/Documents/rookmate/undertow/data/levels/greywater.txt:39)). A read-only calculation using the map and navigation rules confirmed that HIGH tide closes `(25, 7)`, selects `(25, 6)` as the nearest open start, and leaves a 26-cell dry route to the actual goal `(39, 17)`. The predictor can therefore return guidance outside the fog while the Operator remains inside it. The renderer accepts that guidance without another Marrow check ([predicted_path.gd:41](/home/homebox/Documents/rookmate/undertow/game/path/predicted_path.gd:41)).
+
+   **Why inferred:** Decision 129 says no path is drawn *into* the Marrow, which could permit visible guidance outside it. However, the integration test describes the stronger behaviour—no prediction while standing inside—and only checks an interior cell at LOW tide ([test_greywater.gd:102](/home/homebox/Documents/rookmate/undertow/tests/integration/test_greywater.gd:102)). If that stronger contract is intended, reject prediction when `here` is Marrow and test boundary cells through all tide phases. I did not reproduce the rendered effect in Godot.
+
+**Confirmed fix verification**
+
+| Recorded finding | Result and evidence |
+|---|---|
+| Surgeon mist damages the whole hospital | Resolved. Damage is bounded by the same inner and outer radii used for drawing ([surgeon.gd:135](/home/homebox/Documents/rookmate/undertow/game/bosses/surgeon.gd:135)). Tests cover retreat and checkpoint respawn ([test_surgeon.gd:85](/home/homebox/Documents/rookmate/undertow/tests/integration/test_surgeon.gd:85), [test_surgeon.gd:97](/home/homebox/Documents/rookmate/undertow/tests/integration/test_surgeon.gd:97)). |
+| Lung flood damage differs from its drawn square | Resolved. Drawing and damage share `flood_rect`; tests probe all quarters’ edges and corners ([lung.gd:141](/home/homebox/Documents/rookmate/undertow/game/bosses/lung.gd:141), [test_lung.gd:62](/home/homebox/Documents/rookmate/undertow/tests/integration/test_lung.gd:62)). |
+| Tall props fail to block targeting and shots | Resolved under Decision 138’s height classification. Ambulances, turbines and crane legs block lines; deliberately low desks and partitions do not ([level_grid.gd:49](/home/homebox/Documents/rookmate/undertow/core/level_grid.gd:49), [test_level_grid.gd:171](/home/homebox/Documents/rookmate/undertow/tests/unit/test_level_grid.gd:171)). |
+| Marker cells erase flooding and Marrow terrain | Resolved. Floor, flooding, Marrow and indexing read the shared terrain value. Regression assertions cover the reported Greywater cells and preserve an earlier milestone’s off-path cache ([level_grid.gd:236](/home/homebox/Documents/rookmate/undertow/core/level_grid.gd:236), [test_level_grid.gd:153](/home/homebox/Documents/rookmate/undertow/tests/unit/test_level_grid.gd:153)). |
+| Boss calls are cut short or arrive after damage | Resolved for recorded clip durations. Tests check every boss call against its gap and every boss warning against its hazard lead; they also exercise introduction waiting and narration interruptions ([test_boss_calls.gd:25](/home/homebox/Documents/rookmate/undertow/tests/integration/test_boss_calls.gd:25), [test_boss_calls.gd:37](/home/homebox/Documents/rookmate/undertow/tests/integration/test_boss_calls.gd:37), [test_boss_calls.gd:57](/home/homebox/Documents/rookmate/undertow/tests/integration/test_boss_calls.gd:57)). |
+| Trust tests merely repeat incorrect data | Resolved. Trust is code-owned `+2 / -1 / 0`; tests assert literal expected changes and the resulting state ([conversations.gd:11](/home/homebox/Documents/rookmate/undertow/core/conversations.gd:11), [test_conversations.gd:29](/home/homebox/Documents/rookmate/undertow/tests/integration/test_conversations.gd:29)). |
+| Conversations mutate state with a companion absent | Resolved at the mutation boundary, before consumption or trust changes ([game_state.gd:164](/home/homebox/Documents/rookmate/undertow/autoload/game_state.gd:164), [test_conversations.gd:56](/home/homebox/Documents/rookmate/undertow/tests/integration/test_conversations.gd:56)). |
+| Malformed conversation choices crash validation | Resolved. Validation checks nested shapes and text types; accessors also guard their casts ([conversations.gd:43](/home/homebox/Documents/rookmate/undertow/core/conversations.gd:43), [conversations.gd:63](/home/homebox/Documents/rookmate/undertow/core/conversations.gd:63), [test_conversations.gd:65](/home/homebox/Documents/rookmate/undertow/tests/integration/test_conversations.gd:65)). |
+| Companion dialogue uses the Steward’s typeface | Resolved. Companion speech and replies use the human label font; the source-scanning ownership test excludes the conversation screen ([conversation_screen.gd:42](/home/homebox/Documents/rookmate/undertow/ui/ark/conversation_screen.gd:42), [test_font_rules.gd:20](/home/homebox/Documents/rookmate/undertow/tests/unit/test_font_rules.gd:20)). |
+
+The regression assertions distinguish the reported old failures from the current behaviour. I checked that against the historical implementations; I did **not** run the tests against historical checkouts.
+
+The later fixes also hold:
+
+- Saved Q/LB bindings survive the new dressing defaults, including when every original spare is occupied. Tests preserve all earlier choices and reload the migrated configuration ([test_controls.gd:53](/home/homebox/Documents/rookmate/undertow/tests/unit/test_controls.gd:53), [test_controls.gd:73](/home/homebox/Documents/rookmate/undertow/tests/unit/test_controls.gd:73)).
+- The Clinic prompt subscribes to binding and device changes, with a live-screen regression test ([clinic_screen.gd:41](/home/homebox/Documents/rookmate/undertow/ui/ark/clinic_screen.gd:41), [test_clinic.gd:121](/home/homebox/Documents/rookmate/undertow/tests/integration/test_clinic.gd:121)).
+- Pooled narration, fixed speech and screen voice-overs respect warnings. Boss calls retain the explicit urgent exception, tide narration yields during fights, and leaving a level hushes its remaining warning ([narrator.gd:103](/home/homebox/Documents/rookmate/undertow/autoload/narrator.gd:103), [narrator.gd:130](/home/homebox/Documents/rookmate/undertow/autoload/narrator.gd:130), [level.gd:166](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:166)). Tests cover each interruption path and the level-exit transition ([test_boss_calls.gd:85](/home/homebox/Documents/rookmate/undertow/tests/integration/test_boss_calls.gd:85), [test_boss_calls.gd:136](/home/homebox/Documents/rookmate/undertow/tests/integration/test_boss_calls.gd:136)).
+
+I found no additional break in the checked save, voice, targeting, colour/typeface, input or autopilot contracts. New save fields have compatible defaults and preserve the existing weapon migration ([run_state.gd:174](/home/homebox/Documents/rookmate/undertow/core/run_state.gd:174)). All **187 voice IDs** have matching manifest text and clips; manifest hashes are current, and earlier voice/core/log IDs remain. Independent duration inspection confirmed that the 14 boss warning recordings fit their declared leads. Earlier autopilot assertions remain or have explicit design-backed replacements, including the moved Gauntlet and expanded Vellum offer.
+
+Stored validation corroborates **395 passing tests**, **198 campaign checks in 712.5 seconds**, the **30-second smoke run**, and six district tours ([tests.log:407](/home/homebox/Documents/rookmate/undertow/reports/check/tests.log:407), [full_campaign.log:216](/home/homebox/Documents/rookmate/undertow/reports/check/full_campaign.log:216), [smoke.log:20](/home/homebox/Documents/rookmate/undertow/reports/check/smoke.log:20)). I did not rerun the gate because it writes repository artifacts and user state. Re-voiced intelligibility and real hardware remain unverified; timing and manifest consistency do not establish either.
+## Round 5: what was done
+
+No confirmed defect. The one inferred finding (low) was acted on, taking the stronger contract (the
+existing test's "no path in the fog", DECISIONS 142).
+
+1. **Guidance from inside the Marrow at high tide (low, inferred).** `PathPredictor.predict()` returns
+   nothing when the Operator's own cell is Marrow, before it looks for an open start nearby. Test:
+   `test_greywater::test_no_path_from_anywhere_in_the_marrow_whatever_the_tide`. It covers every
+   walkable Marrow cell beside open ground, (25, 7) included, in all four tide phases. It was run
+   against the old predictor and fails there (SWELL at (25, 7) to (29, 7) drew a path), and it passes
+   with the fix.
