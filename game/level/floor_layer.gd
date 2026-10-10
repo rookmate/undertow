@@ -67,7 +67,7 @@ func _draw() -> void:
 ## Plain floor characters: what a placed thing's cell is drawn as, taken from a neighbour.
 const PLAIN_FLOORS := ".,:_iqnxh" + Tiles.HOSPITAL_TILE + Tiles.ASPHALT + Tiles.STAFF_FLOOR
 ## Placed things (people, finds, spawns) stand on whatever floor surrounds them.
-const MARKERS := "TUWwPCckXVO]"
+const MARKERS := "TUWwPCckXVO]BZy"
 
 
 ## The floor a cell is drawn with: its own, except a placed thing's cell borrows a plain neighbour's

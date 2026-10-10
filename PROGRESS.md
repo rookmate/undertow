@@ -135,8 +135,8 @@ analysis review at the end.
 |---|---|---|
 | 17 | Act 2's design; Noor and Teo join (they arrive on the Ark after the Tideworks, once) | done |
 | 18 | Mercy General: the district (sealed wards, Sterilizers, the night nurses' station); the Defib Gauntlet moves home | done |
-| 19 | The Surgeon (boss) | next |
-| 20 | The Clinic: healing items, triage logs | |
+| 19 | The Surgeon (boss); still props stop redrawing every frame | done |
+| 20 | The Clinic: healing items, triage logs | next |
 | 21 | Greywater: the district (the tide, kelp, the thick Marrow, the manual pump room) | |
 | 22 | The Lung (boss) and the Pumphouse | |
 | 23 | The Vellum expanded: the newsroom, the press, Prem Vashti's office, the Editor | |
@@ -191,6 +191,7 @@ tools/export.sh                      # Linux, Windows, macOS into build/, then r
 ```bash
 godot --path . --disable-vsync --max-fps 0 -- --autopilot --autopilot-seconds=24   # prints [perf]
 godot --path . -- --autopilot --perf-disable=minimap,lights   # switch features off to cost them
+godot --path . -- --autopilot --perf-hide=StaticProp,WardSeal  # hide and stop nodes of these classes
 ```
 
 ## What only hardware can confirm

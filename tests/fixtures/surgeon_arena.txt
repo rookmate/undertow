@@ -1,0 +1,14 @@
+; A test arena for the Surgeon: the theatre, the lamp's switch panel by the door, the barrier before the
+; Reliquary.
+################
+#..............#
+#..............#
+#..............#
+#......B.......#
+#..............#
+#.Z............#
+#..............#
+#.....P........#
+#.........yy...#
+#..........R...#
+################

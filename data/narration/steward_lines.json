@@ -605,6 +605,13 @@
 			"tone": "neutral",
 			"text": "The records vault. The hospital's memory. Every bed, every ambulance, accounted for.",
 			"level": "mercy"
+		},
+		{
+			"id": "MERCY_BOSS_N1",
+			"event": "boss_engaged",
+			"tone": "neutral",
+			"text": "The Surgeon. It's finishing a procedure. It was always very thorough.",
+			"level": "mercy"
 		}
 	]
 }

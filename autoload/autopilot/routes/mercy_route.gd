@@ -2,8 +2,9 @@ extends AutopilotRoute
 ## Mercy General: up the corridor from the ambulance yard; the Defib Gauntlet off its crash cart in the
 ## resus bay; ward A's seal holds while the Steward listens and says why; muted, crank it open and wake
 ## someone in their bed; through ward B to the night nurses' station off the Lattice (the triage sheets,
-## the night nurse at her desk); the Steward back, along the upper corridor and through the theatre to
-## the records vault's Reliquary.
+## the night nurse at her desk); the Steward back, along the upper corridor to the theatre and the
+## Surgeon (the Steward's way: off each line it lays, in close by the table in the mist, hit it while it
+## sutures), then through the barrier to the records vault's Reliquary.
 
 const OPENING: Array[String] = [
 	"loadout_shown", "loadout_applied", "level_reached", "player_spawned", "path_three_tiles_ahead",
@@ -11,7 +12,8 @@ const OPENING: Array[String] = [
 ]
 const THROUGH: Array[String] = [
 	"gauntlet_found", "seal_held", "seal_cranked", "woke_in_ward", "night_sheets_found",
-	"night_nurse_woken", "sterilizer_misted", "route_completed", "core_choice_shown",
+	"night_nurse_woken", "sterilizer_misted", "surgeon_engaged", "surgeon_called_an_incision",
+	"surgeon_sutured", "surgeon_beaten", "barriers_opened", "route_completed", "core_choice_shown",
 	"mercy_cores_carried", "ark_reached", "clinic_restored",
 ]
 
@@ -104,15 +106,69 @@ func drive(level: Level, gen: int) -> void:
 	Autopilot.tap(&"voice_toggle")
 	if not await Autopilot.wait(0.6, gen):
 		return
-	# Back out, up the corridor, through the theatre to the records vault.
-	for cell: Vector2i in [Vector2i(22, 15), Vector2i(20, 15), Vector2i(11, 14), Vector2i(8, 14), Vector2i(7, 7), Vector2i(10, 4), Vector2i(20, 4), Vector2i(28, 4), Vector2i(33, 6), Vector2i(35, 12), Vector2i(35, 15), Vector2i(35, 16)]:
+	# Back out, up the corridor to the theatre.
+	for cell: Vector2i in [Vector2i(22, 15), Vector2i(20, 15), Vector2i(11, 14), Vector2i(8, 14), Vector2i(7, 7), Vector2i(10, 4), Vector2i(20, 4), Vector2i(28, 4), Vector2i(31, 5)]:
 		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
 			return
 		if level.living_enemies().size() < start_count:
 			pass_check("enemy_killed")
+	var surgeon := level.boss as Surgeon
+	if surgeon == null:
+		return
+	check(await Autopilot.until(func() -> bool: return surgeon.is_engaged, 3.0, gen), "surgeon_engaged")
+	await Autopilot.snap("mercy_surgeon")
+	if not await _fight_surgeon(player, surgeon, gen):
+		return
+	check(not surgeon.is_alive(), "surgeon_beaten")
+	await Autopilot.snap("mercy_surgeon_down")
+	check(await Autopilot.until(Autopilot.barriers_open, 2.0, gen), "barriers_opened")
+	for cell: Vector2i in [Vector2i(35, 12), Vector2i(35, 15), Vector2i(35, 16)]:
+		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+			return
 	pass_check("route_completed")
 	await Autopilot.snap("mercy_reliquary")
 	Autopilot.tap(&"interact")
+
+
+## The Steward's way with the Surgeon: step off each line it lays; in the mist, in close by the table;
+## hit it while it sutures. Gives up after 100 s.
+func _fight_surgeon(player: Operator, surgeon: Surgeon, gen: int) -> bool:
+	var spent := 0.0
+	var frame := 0
+	while surgeon.is_alive() and spent < 100.0:
+		if Autopilot.stale(gen):
+			Autopilot.release_all()
+			return false
+		frame += 1
+		if Sound.voice_line == "surgeon_incision":
+			pass_check("surgeon_called_an_incision")
+		if surgeon.phase == Surgeon.Phase.SUTURE:
+			pass_check("surgeon_sutured")
+		var at := player.global_position
+		var target := at
+		if surgeon.is_vulnerable():
+			Autopilot.fight(player, surgeon, frame)
+			spent += await Autopilot.physics_step()
+			continue
+		Autopilot.release_attacks()
+		var away := Iso.ground_dir_between(surgeon.global_position, at)
+		if surgeon.phase == Surgeon.Phase.MARK or surgeon.phase == Surgeon.Phase.CUT:
+			# Sideways off the line, a couple of tiles from the table.
+			var rel := Iso.world_to_grid(at) - Iso.world_to_grid(surgeon.global_position)
+			var d := surgeon.cut_dir
+			var side := Vector2(-d.y, d.x) * (1.0 if rel.cross(d) <= 0.0 else -1.0)
+			target = surgeon.global_position + Iso.ground_velocity(side, 2.6)
+		elif surgeon.phase == Surgeon.Phase.MIST_WARN or surgeon.phase == Surgeon.Phase.MIST:
+			target = surgeon.global_position + Iso.ground_velocity(away, 1.45)
+		else:
+			target = surgeon.global_position + Iso.ground_velocity(away, 2.4)
+		if Iso.ground_distance(at, target) > 0.25:
+			Autopilot.press_move(Autopilot.input_for_ground(Iso.ground_dir_between(at, target)))
+		else:
+			Autopilot.press_move(Vector2.ZERO)
+		spent += await Autopilot.physics_step()
+	Autopilot.release_all()
+	return true
 
 
 func _seal_at(level: Level, cell: Vector2i) -> WardSeal:
