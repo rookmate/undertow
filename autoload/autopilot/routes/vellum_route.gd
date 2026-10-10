@@ -1,7 +1,7 @@
 extends AutopilotRoute
 ## The Vellum: the street (walls, the path, the voice table muted and back), its whole route to the
-## Reliquary with a detour into the overflow stacks (muted: the slip, the truth core, the Defib Gauntlet
-## on the old quay, two of the Waiting), the core choice, then the Ark with its Archive restored: replay
+## Reliquary with a detour into the overflow stacks (muted: the slip, the truth core, two of the
+## Waiting), the core choice, then the Ark with its Archive restored: replay
 ## two memories, talk to Noor, and the dock's map and the run summary.
 
 const OPENING: Array[String] = [
@@ -12,7 +12,7 @@ const OPENING: Array[String] = [
 ]
 const THROUGH: Array[String] = [
 	"threat_warning_shown", "slowmo_on_dodge", "stacks_reached", "stacks_hidden_while_listening",
-	"steward_blind_in_stacks", "found_unindexed_log", "found_truth_core", "gauntlet_found",
+	"steward_blind_in_stacks", "found_unindexed_log", "found_truth_core",
 	"woke_survivor_in_stacks", "woke_survivor_in_doorway", "route_completed", "arrived_by_reliquary",
 	"playstyle_profiled", "core_choice_shown", "four_cards_with_the_found_core", "cores_carried",
 	"level_completed_archive_restored", "saved_after_choice", "ark_reached",
@@ -151,8 +151,7 @@ func _watch_threats(level: Level, gen: int) -> void:
 
 
 ## Off the path: down the stair into the overflow stacks. Nothing there while the Steward listens;
-## muted, read the slip, take the truth core, wake the resident there, take the Gauntlet off the crash
-## cart up the old quay, and wake the one in the doorway.
+## muted, read the slip, take the truth core, wake the resident there and the one in the doorway.
 func _visit_stacks(level: Level, player: Operator, gen: int) -> bool:
 	for cell: Vector2i in [Vector2i(15, 27), Vector2i(15, 26), Vector2i(16, 26), Vector2i(17, 26), Vector2i(18, 28)]:
 		if not await Autopilot.advance_to(level, player, cell, 20.0, gen):
@@ -181,13 +180,6 @@ func _visit_stacks(level: Level, player: Operator, gen: int) -> bool:
 		return false
 	check(GameState.run.survivor_ids.has(ContentIds.SURVIVOR_STACKS), "woke_survivor_in_stacks")
 	await Autopilot.snap("stacks_woken")
-	for cell: Vector2i in [Vector2i(17, 26), Vector2i(17, 24)]:
-		if not await Autopilot.advance_to(level, player, cell, 20.0, gen):
-			return false
-	if not await Autopilot.use_at(level, player, Vector2i(17, 22), gen):
-		return false
-	check(GameState.run.weapons_owned.has(WeaponDefs.DEFIB), "gauntlet_found")
-	await Autopilot.snap("old_quay_gauntlet")
 	for cell: Vector2i in [Vector2i(17, 26), Vector2i(16, 26), Vector2i(15, 26)]:
 		if not await Autopilot.advance_to(level, player, cell, 20.0, gen):
 			return false

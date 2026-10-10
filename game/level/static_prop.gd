@@ -2,9 +2,10 @@ class_name StaticProp
 extends Node2D
 ## Placeholder props drawn as small isometric prisms and shapes: the canal railing, low walls, stack
 ## shelves, a Feed kiosk, a stalled tram segment and bollards; in Kestrel Heights, trimmed hedges, stone
-## planters of white blossom, and lawn sprinklers that still come on.
+## planters of white blossom, and lawn sprinklers that still come on; in Mercy General, glass ward
+## partitions cut away to waist height, and ambulances parked nose to tail.
 
-enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD, HEDGE, PLANTER, SPRINKLER, BED, CARRIAGE_SIDE, DESK, CONTAINER }
+enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD, HEDGE, PLANTER, SPRINKLER, BED, CARRIAGE_SIDE, DESK, CONTAINER, PARTITION, AMBULANCE, NURSE_DESK, HOSPITAL_BED }
 
 const SPRAY_PERIOD := 6.0
 
@@ -69,6 +70,65 @@ func _draw() -> void:
 			_prism(36.0, Palette.IRON_DARK.lightened(0.15), Palette.IRON_DARK, Palette.GREY_DEEP, 0.7)
 			# The manual override: welded over at installation.
 			draw_line(Vector2(-14, -40), Vector2(10, -46), Palette.GREY_COLD, 4.0, true)
+		Kind.PARTITION:
+			_partition()
+		Kind.AMBULANCE:
+			_ambulance()
+		Kind.NURSE_DESK:
+			_nurse_desk()
+		Kind.HOSPITAL_BED:
+			_hospital_bed()
+
+
+## A ward bed: a white frame with its rails up, a grey blanket, the pillow.
+func _hospital_bed() -> void:
+	_prism(20.0, Palette.AMBULANCE_WHITE.darkened(0.3), Palette.AMBULANCE_WHITE.darkened(0.45), Palette.WARD_GLASS.darkened(0.45), 0.8)
+	draw_colored_polygon(PackedVector2Array([Vector2(-30, -24), Vector2(-6, -12), Vector2(10, -20), Vector2(-14, -32)]), Palette.AMBULANCE_WHITE.darkened(0.1))
+	for x: float in [-38.0, 38.0]:
+		draw_line(Vector2(x, -18), Vector2(x * 0.3, -18 + absf(x) * 0.28), Palette.WARD_WALL_SHADE, 2.0, true)
+
+
+## A ward's glass partition, cut away at waist height: a painted lower panel, then the glass.
+func _partition() -> void:
+	_prism(30.0, look.wall_shade, look.wall_shade.darkened(0.25), look.wall_top, 0.9)
+	var hw := Iso.HALF_W * 0.9
+	var hh := Iso.HALF_H * 0.9
+	var pane := PackedVector2Array([Vector2(-hw, -30), Vector2(0, hh - 30), Vector2(hw, -30), Vector2(hw, -64), Vector2(0, hh - 64), Vector2(-hw, -64)])
+	draw_colored_polygon(pane, Color(look.glass, 0.16))
+	draw_polyline(PackedVector2Array([Vector2(-hw, -64), Vector2(0, hh - 64), Vector2(hw, -64)]), Color(look.glass, 0.45), 1.5, true)
+
+
+## The night nurses' desk: paper everywhere, and the desk lamp they brought from home still on.
+func _nurse_desk() -> void:
+	_prism(34.0, look.staff_floor.lightened(0.15), look.staff_floor.darkened(0.15), look.staff_floor.lightened(0.3), 0.75)
+	for k: int in 4:
+		var p := Vector2(-18 + k * 11, -38 - (k % 2) * 4)
+		draw_colored_polygon(PackedVector2Array([p, p + Vector2(10, 5), p + Vector2(20, 0), p + Vector2(10, -5)]), Color(Palette.PAPER, 0.85))
+	draw_line(Vector2(16, -36), Vector2(20, -60), Palette.IRON_DARK, 2.0, true)
+	draw_circle(Vector2(22, -62), 6.0, Palette.HUMAN_CREAM, true, -1.0, true)
+
+
+## An ambulance parked nose to tail in the yard, its light bar dark.
+func _ambulance() -> void:
+	var h := 66.0
+	var body := Palette.AMBULANCE_WHITE.darkened(0.25)
+	var hw := Iso.HALF_W
+	var hh := Iso.HALF_H
+	var right := Vector2(hw, 0)
+	var bottom := Vector2(0, hh)
+	var left := Vector2(-hw, 0)
+	var top := Vector2(0, -hh)
+	var up := Vector2(0, -h)
+	var base := Vector2(0, -10)
+	if not joined_left:
+		draw_colored_polygon(PackedVector2Array([left + base, bottom + base, bottom + up, left + up]), body.darkened(0.3))
+	if not joined_right:
+		draw_colored_polygon(PackedVector2Array([bottom + base, right + base, right + up, bottom + up]), body)
+		# A stripe along the side, and the back doors' dark windows.
+		draw_line(bottom + Vector2(0, -34), right + Vector2(0, -34), Palette.WARD_GLASS.darkened(0.3), 5.0, true)
+		draw_colored_polygon(PackedVector2Array([bottom.lerp(right, 0.2) + Vector2(0, -42), bottom.lerp(right, 0.5) + Vector2(0, -42), bottom.lerp(right, 0.5) + Vector2(0, -58), bottom.lerp(right, 0.2) + Vector2(0, -58)]), Palette.BLACK_MIRROR)
+	draw_colored_polygon(PackedVector2Array([top + up, right + up, bottom + up, left + up]), body.lightened(0.06))
+	draw_rect(Rect2(-10, -h - 6, 20, 6), Palette.GREY_DEEP)
 
 
 ## A stone urn of white blossom.

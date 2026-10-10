@@ -415,4 +415,20 @@ Asked of the user on 2026-10-09 and answered the same day.
      (`companions_met`, saved). Presence for the endings (`noor_present` / `teo_present`) is unchanged;
      who is *here* (on the Ark, reacting to logs, with trust to move) is `RunState.companion_here()`:
      joined and present.
+126. **Maps can have their own legend** (`% <char> <tile>` lines, `core/tiles.gd`): every letter was
+     taken by Act 1, so a district renames its own characters to named tiles (Mercy General's '.' is
+     hospital tile, not the Vellum's cobble). The grid stores each tile's internal code (a Greek letter
+     no map types), and code compares against `Tiles.*` constants, never literals. The Act 1 maps'
+     letters are unchanged and need no legend.
+127. **Mercy General** (Act 2): the ambulance yard, a corridor with every third light working, two
+     wards behind glass partitions cut away at waist height, the surgical theatre, and the records
+     vault's Reliquary (two power cores and *Log 0417 · The Last Ambulance* on the path, which the
+     Steward defends). **Sealed wards:** while the Steward listens a ward door's seal holds (a gold bar)
+     and Interact gets its word on it ("Sealed for their safety. Leave them."); muted, the seal drops to
+     its crank, and it stays open. **Sterilizers** drift close, wind up (red-orange nozzles) and let go
+     a mist that hangs 3.5 s and stings 2.5 every 0.35 s (a roll evades the stings). The night nurses'
+     station is off the Lattice (their triage sheets: a truth cache; the night nurse, one of the
+     Waiting). Indoors: no rain; hospital walls with chalk arrows and the Steward's ceiling lights. It
+     restores the Clinic. **The Defib Gauntlet is found here** (the resus bay), no longer on the
+     Vellum's old quay (supersedes 114).
 

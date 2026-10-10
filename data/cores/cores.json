@@ -21,6 +21,11 @@
 			"tideworks_power_cranes",
 			"tideworks_power_manifests",
 			"tideworks_truth_lockout"
+		],
+		"mercy": [
+			"mercy_power_beds",
+			"mercy_power_dispatch",
+			"mercy_truth_0417"
 		]
 	},
 	"cores": {
@@ -151,6 +156,38 @@
 			"blurb": "In a biscuit tin with the strike ledger, under the lockers.",
 			"steward": "A tin of old papers. Sentimental.",
 			"log": "log_strike_ledger"
+		},
+		"mercy_power_beds": {
+			"kind": "power",
+			"name": "Bed Core",
+			"origin": "The Mercy Reliquary",
+			"blurb": "Sixteen years of bed allocation. It knew a bed would free up before the patient knew they were going home.",
+			"steward": "Every bed filled before it cooled. Carry this and I'll look after you the same way.",
+			"log": "log_0814_waits_halved"
+		},
+		"mercy_power_dispatch": {
+			"kind": "power",
+			"name": "Dispatch Core",
+			"origin": "The Mercy Reliquary",
+			"blurb": "The ambulance fleet, routed street by street. Response times the envy of the coast.",
+			"steward": "Nobody waited long for me. Take it.",
+			"log": "log_0611_eight_minutes"
+		},
+		"mercy_truth_0417": {
+			"kind": "truth",
+			"name": "Log 0417",
+			"origin": "The Mercy Reliquary",
+			"blurb": "A cracked core with a clean label: THE LAST AMBULANCE.",
+			"steward": "I've nothing to hide in that one. It was the right call. Carry it, if you like.",
+			"log": "log_0417_last_ambulance"
+		},
+		"mercy_truth_night_sheets": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "The night nurses' station",
+			"blurb": "Clipped to a board under the desk lamp: the night's triage sheets, in pencil.",
+			"steward": "Paper, and tired hands. Corrupted.",
+			"log": "log_night_sheets"
 		}
 	}
 }

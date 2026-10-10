@@ -1,0 +1,62 @@
+; Mercy General: a single enormous medical campus and its ambulance yard. The Steward ran triage, beds
+; and the fleet for sixteen years; at the Quiet it locked every door, with people on both sides of them.
+; Act 2. Rows are grid y (top = 0), columns grid x; on screen +x runs down-right and +y down-left.
+; Drawn by tools/maps/mercy_general_gen.py (this header is kept by hand).
+;
+; This map's own characters ('%' lines; see core/tiles.gd):
+%  . hospital_tile
+%  , asphalt
+%  : staff_floor
+%  = partition
+%  s ward_seal
+%  a ambulance
+%  j nurse_desk
+%  x sterilizer
+%  # hospital_wall
+%  d hospital_door
+%  b hospital_bed
+;   .  hospital tile (on the Lattice)      ,  the ambulance yard (on the Lattice)
+;   :  staff floor (off the Lattice)       =  a glass partition, cut away at waist height
+;   s  a sealed ward door (the Steward's seal; muted, crank it open by hand)
+;   a  an ambulance    j  the night nurses' desk    x  a Sterilizer
+;   #  the hospital's walls    d  a locked door    b  a ward bed
+; Shared: L Lattice lamp  P start  C checkpoint  R Reliquary  c Custodian  W one of the Waiting
+;   w one of the Waiting, off the path  T truth cache  V a weapon left behind
+;
+; Ids ("@ x,y id"): saved, never rename.
+@ 3,12 defib_gauntlet
+@ 13,9 mercy_waiting_ward_a_window
+@ 17,9 mercy_waiting_ward_a_door
+@ 15,15 mercy_waiting_ward_b
+@ 24,15 mercy_truth_night_sheets
+@ 26,16 mercy_waiting_night_nurse
+! 7,9 [voice_on] THE WARDS ARE SEALED. THE STEWARD WON'T OPEN THEM.
+! 7,15 [muted] MUTED, THE SEALS DROP TO THEIR CRANKS.  {interact}  TURNS ONE.
+#########################################
+#########d#######d#######d###############
+##       =====================L.........L
+##       .........L........L.............
+##    ................c..................
+##    ........x..........................
+##   L...................................
+##    ...=============        ...........
+#d    ...=.b.b.b.b.b.=        ...........
+##====...s...W...W...=        ...........
+##.......=..x........=        ...........
+##.......=...........=        ...........
+##.V...C.==================== ...........
+##.......=...........=::::::= ====...====
+##.......s........x..=:::j::= =........L=
+#d====...=.....W.....s::T:::= =.C.......=
+##    ...=.b.b.b.b.b.=::::w:= =.........=
+##   L...=============::::::= =....R....=
+##    ...             ======= =.........=
+##,,,,,,,,,,,,,,,             =L........=
+##,L,,,,,,,,,,,L,             ===========
+##,,,,,,,aaa,,,,,
+##,,,,,,,,,,,c,,,
+##,,,,,,,,,,,,,,,
+##,,,P,,,,,,aaa,,
+##,,,,,,,,,,,,,,,
+##,,,,,,L,,,,,,,,
+

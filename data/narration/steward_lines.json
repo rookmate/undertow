@@ -577,6 +577,34 @@
 			"tone": "neutral",
 			"text": "The last crane. It only wants to finish its lift. You're in the way.",
 			"level": "tideworks"
+		},
+		{
+			"id": "MERCY_ENTER_N1",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "Mercy General. I kept the wards sterile. Everyone inside is resting.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_ENTER_B1",
+			"event": "level_enter",
+			"tone": "bold",
+			"text": "Mercy General. Clean corridors, all the way through. Go on.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_ENTER_C1",
+			"event": "level_enter",
+			"tone": "cautious",
+			"text": "Mercy General. Keep to the lit corridor. I kept it sterile for you.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_RELIQ_N1",
+			"event": "reliquary_near",
+			"tone": "neutral",
+			"text": "The records vault. The hospital's memory. Every bed, every ambulance, accounted for.",
+			"level": "mercy"
 		}
 	]
 }

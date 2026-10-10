@@ -147,3 +147,24 @@ func test_ids_are_unique_across_districts_and_every_district_has_a_reliquary() -
 	var problems := "\n".join(LevelCatalog.check(grids))
 	check(problems.contains("the_same_person is placed in both"), "a person can't live in two districts: %s" % problems)
 	check(problems.contains("elsewhere: This Reliquary is broken"), "a district with no Reliquary content is caught")
+
+
+## A map can rename its own characters to named tiles: in this one '.' is hospital tile and '=' a glass
+## partition, not cobble and railing. Everything else reads the tiles, never the map's letters.
+func test_a_map_can_have_its_own_legend() -> void:
+	var own := LevelGrid.parse("% . hospital_tile\n% = partition\n#####\n#P..#\n#=.R#\n#####")
+	check(own.parse_errors.is_empty(), "%s" % [own.parse_errors])
+	check_eq(own.char_at(Vector2i(2, 1)), Tiles.HOSPITAL_TILE, "the map's '.' is hospital tile here")
+	check_eq(own.floor_at(Vector2i(2, 1)), LevelGrid.Floor.TILE)
+	check(own.is_indexed(Vector2i(2, 1)), "on the Lattice")
+	check(own.is_solid(Vector2i(1, 2)), "the partition stands in the way")
+	check_eq(own.char_at(Vector2i(1, 1)), "P", "letters it doesn't rename keep their usual meaning")
+	check(own.validate(false).is_empty(), "%s" % [own.validate(false)])
+	var plain := LevelGrid.parse("#####\n#P..#\n#=.R#\n#####")
+	check_eq(plain.floor_at(Vector2i(2, 1)), LevelGrid.Floor.COBBLE, "and other maps are unaffected")
+
+
+func test_a_bad_legend_line_is_reported() -> void:
+	var own := LevelGrid.parse("% . teleporter\n% ab hospital_tile\n%\n#####\n#P.R#\n#####")
+	check_eq(own.parse_errors.size(), 3, "%s" % [own.parse_errors])
+	check_false(own.validate(false).is_empty(), "and the map won't load")

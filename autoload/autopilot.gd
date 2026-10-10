@@ -5,9 +5,10 @@ extends Node
 ##                              (the campaign) stops there
 ##   --autopilot-scenario=NAME  what to do (see make_scenario): "slice" (default: New Game, Kestrel
 ##                              Heights, the Ark, the Loop map), "campaign" (New Game through Kestrel
-##                              Heights, the Loop, a save and Continue, the Tideworks and the Vellum to
-##                              the Archive, one run throughout), "loop", "tideworks", "vellum" (a
-##                              prepared run straight to that district and the Ark after it),
+##                              Heights, the Loop, a save and Continue, the Tideworks, Mercy General
+##                              and the Vellum to the Archive, one run throughout), "loop",
+##                              "tideworks", "mercy", "vellum" (a prepared run straight to that
+##                              district and the Ark after it),
 ##                              "ring_gallery", "options" (the options screen from the title) or "tour"
 ##                              (straight into --autopilot-level=ID: photographs its start, checkpoints,
 ##                              finds and Reliquary, voice on and muted; for looking at a district)
@@ -20,7 +21,7 @@ extends Node
 
 const LONG_RUN_SECONDS := 55.0
 const AUTOPILOT_SAVES := "user://autopilot"
-const SCENARIOS: Array[String] = ["slice", "campaign", "loop", "tideworks", "vellum", "ring_gallery", "options", "tour"]
+const SCENARIOS: Array[String] = ["slice", "campaign", "loop", "tideworks", "mercy", "vellum", "ring_gallery", "options", "tour"]
 
 const DistrictRun := preload("res://autoload/autopilot/scenarios/district_run.gd")
 const Campaign := preload("res://autoload/autopilot/scenarios/campaign.gd")
@@ -119,7 +120,7 @@ func make_scenario(scenario_name: String, level_id: String = "") -> AutopilotSce
 	match scenario_name:
 		"slice":
 			return DistrictRun.new("kestrel", true)
-		"loop", "tideworks", "vellum":
+		"loop", "tideworks", "mercy", "vellum":
 			return DistrictRun.new(scenario_name, false)
 		"campaign":
 			return Campaign.new()

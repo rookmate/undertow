@@ -1,11 +1,12 @@
 extends AutopilotScenario
 ## The run as a player plays it, one run throughout: New Game, Kestrel Heights, the Ark, the Loop (an
 ## order signed in the Signal Room and kept from then on), the Ark; then save and return to the title and
-## Continue; the Tideworks (an upgrade bought at the Workshop), the Ark, the Vellum to the Archive. Each
+## Continue; the Tideworks (an upgrade bought at the Workshop; Noor and Teo arrive), the Ark; Mercy
+## General (the Defib Gauntlet, the sealed wards), the Ark; the Vellum to the Archive. Each
 ## district's checks are tagged with it ("loop:route_completed"). The run ends when the last Ark visit
 ## is done.
 
-const DISTRICTS: Array[String] = ["kestrel", "loop", "tideworks", "vellum"]
+const DISTRICTS: Array[String] = ["kestrel", "loop", "tideworks", "mercy", "vellum"]
 ## Signed in the Loop's Signal Room and kept to the end: it mustn't stop any later check (no slowed
 ## time, no path would), and its effect is plain to check (no aim assist).
 const ORDER := Overrides.LET_ME_AIM
@@ -39,7 +40,7 @@ func problem() -> String:
 
 func expected() -> Array[String]:
 	var out := super()
-	out.append_array(["campaign_saved_and_continued", "order_carried_to_tideworks", "order_carried_to_vellum", "campaign_done"])
+	out.append_array(["campaign_saved_and_continued", "order_carried_to_tideworks", "order_carried_to_mercy", "order_carried_to_vellum", "campaign_done"])
 	for route: AutopilotRoute in routes:
 		route.long_run = true
 		out.append_array(route.tagged_checks())

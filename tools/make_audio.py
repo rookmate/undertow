@@ -331,6 +331,19 @@ def build():
     secs = 10.0
     write("amb_underground", loopable(lowpass(brown(secs + fade, rng), 220), secs, fade), -16)
 
+    # --- Act 2 (added at the end so the random stream above, and every sound it made, stays the same) ---
+    # Cranking a ward seal open by hand: a ratchet, then the door sliding back.
+    ratchet = [0.0] * n_of(0.9)
+    for k in range(9):
+        at = int((0.04 + k * 0.06) * RATE)
+        for i in range(500):
+            if at + i < len(ratchet):
+                ratchet[at + i] += math.exp(-i / 70.0) * rng.uniform(-1, 1)
+    slide = env(bandpass(brown(0.9, rng), 500, 1.2), 0.3, None, 0.25)
+    write("seal_crank", mix((highpass(ratchet, 1500), 0.9), (slide, 0.7)), -6)
+    # A Sterilizer letting its mist go: a soft pressurised spray.
+    write("sterile_hiss", env(bandpass(white(1.4, rng), 4200, 0.7), 0.08, None, 0.6), -10)
+
 
 if __name__ == "__main__":
     print("Writing sounds to %s" % OUT)
