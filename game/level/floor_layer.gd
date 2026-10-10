@@ -1,23 +1,54 @@
 class_name FloorLayer
 extends Node2D
-## Draws every ground cell of a level once: wet cobble, flagstone pavement, the old quay, the stacks'
+## Draws the ground cells of a level once: wet cobble, flagstone pavement, the old quay, the stacks'
 ## paper-strewn floor, stairs and canal water. Placeholder shapes in the palette, at image 10's scale.
+## A level's floor is a set of these, one per CHUNK × CHUNK block of cells (build()): Godot skips the
+## ones off screen, so a big district costs no more to draw than what you can see.
+
+## Cells a side in one block.
+const CHUNK := 4
 
 var grid: LevelGrid
 var look: DistrictLook = DistrictLook.new()
+## The cells this one draws (all of them, if empty).
+var region: Rect2i = Rect2i()
 
 
-func setup(level_grid: LevelGrid, district_look: DistrictLook) -> void:
+## The level's whole floor, in blocks, added to `parent`.
+static func build(parent: Node, level_grid: LevelGrid, district_look: DistrictLook) -> Array[FloorLayer]:
+	var out: Array[FloorLayer] = []
+	for y: int in range(0, level_grid.size.y, CHUNK):
+		for x: int in range(0, level_grid.size.x, CHUNK):
+			var block := FloorLayer.new()
+			block.name = "Floor_%d_%d" % [x, y]
+			parent.add_child(block)
+			block.setup(level_grid, district_look, Rect2i(x, y, CHUNK, CHUNK).intersection(Rect2i(Vector2i.ZERO, level_grid.size)))
+			out.append(block)
+	return out
+
+
+func setup(level_grid: LevelGrid, district_look: DistrictLook, cells: Rect2i = Rect2i()) -> void:
 	grid = level_grid
 	look = district_look
+	region = cells
 	z_index = -20
 	queue_redraw()
+
+
+func _cells() -> Array[Vector2i]:
+	if region.size == Vector2i.ZERO:
+		return grid.all_cells()
+	var out: Array[Vector2i] = []
+	for y: int in range(region.position.y, region.end.y):
+		for x: int in range(region.position.x, region.end.x):
+			out.append(Vector2i(x, y))
+	return out
 
 
 func _draw() -> void:
 	if grid == null:
 		return
-	for cell: Vector2i in grid.all_cells():
+	for cell: Vector2i in _cells():
 		var f := grid.floor_at(cell)
 		match f:
 			LevelGrid.Floor.COBBLE:

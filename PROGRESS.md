@@ -125,7 +125,7 @@ caught a leak at exit (sounds started while quitting), now fixed. 317 tests.
 
 **Milestone status: Act 1 is done and reviewed.**
 
-## Milestone 3: Act 2 (in progress)
+## Milestone 3: Act 2 (done)
 
 Mercy General, the Vellum and Greywater, in any order once the Tideworks is done; Noor and Teo join.
 Plan and placeholder design: `design/act-2.md`. Same gates per step, a video per visible step, Sol
@@ -142,7 +142,9 @@ analysis review at the end.
 | 23a | The Vellum's east bank: the footbridge, the newsroom, the deep stacks and Prem Vashti's office, the Reliquary past the press hall; Clerks flash the Feed | done |
 | 23b | The Editor (boss) in the press hall | done |
 | 24 | Companion conversations after each Act 2 district; the campaign through Act 2 | done |
-| — | Sol analysis review (reviews/act-2.md), fixes, re-check | next |
+| — | Sol analysis review (reviews/act-2.md), fixes, re-check | done (6 rounds; closed) |
+
+**Milestone status: Act 2 is done and reviewed.**
 
 ## Later milestones (planned)
 

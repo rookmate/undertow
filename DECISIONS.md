@@ -556,4 +556,8 @@ Asked of the user on 2026-10-09 and answered the same day.
 142. **Act 2 review, round 5.** Standing in the thick Marrow, the Steward draws no path at all, in any
      phase of the tide: before, at high water, with the Marrow's edge cell closed to routing, the route
      started from the dry seawall next door and was drawn while you stood in the fog.
+143. **A level's floor is drawn in 4 × 4 blocks** (FloorLayer.build), not one canvas item for the whole
+     map, so Godot skips the blocks off screen. The expanded Vellum (its river and newsroom) ran its
+     tour at 46 fps, 37 fps 1% low, where every other district held 60; in blocks it holds 59, 50 (the
+     same as Greywater). Bigger Act 3 maps cost no more to draw than what's on screen.
 
