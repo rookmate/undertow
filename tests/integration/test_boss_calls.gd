@@ -73,3 +73,40 @@ func test_narration_never_cuts_a_warning_off() -> void:
 	Sound.hush()
 	check(Narrator.notify(&"multi_kill") != "", "and is said once it's done")
 	Sound.hush()
+
+
+## Nor by a fixed line (a fact the Steward says when you try something): only a boss's own call cuts in.
+func test_only_a_boss_call_cuts_a_warning_off() -> void:
+	GameState.new_run()
+	Steward.set_voice(true)
+	Steward.set_coverage(true)
+	Sound.hush()
+	check(Narrator.say_fixed("tide_swell"), "the tide's warning")
+	check_false(Narrator.say_fixed("waiting_refusal"), "a fact waits")
+	check_false(Narrator.say_fixed("lung_far"), "another warning that isn't a boss's call waits")
+	check_eq(Sound.voice_line, "tide_swell", "the warning is still being said")
+	check(Narrator.say_fixed("lung_far", true), "a boss's call cuts in")
+	check_eq(Sound.voice_line, "lung_far")
+	Sound.hush()
+
+
+## In Greywater, while the Lung fights, the tide turns without a word: the Lung's calls have the voice.
+func test_the_tide_keeps_quiet_while_the_lung_fights() -> void:
+	GameState.new_run()
+	Steward.set_voice(true)
+	Steward.set_coverage(true)
+	var level := (load("res://game/level/greywater.tscn") as PackedScene).instantiate() as Level
+	add_child(level)
+	await wait_frames(3)
+	await wait_physics_frames(roundi(StewardWatch.ENTER_DELAY * 60.0) + 10)
+	Sound.hush()
+	level.tide.enter(Tide.Phase.SWELL)
+	check_eq(Sound.voice_line, "tide_swell", "away from the fight, the Steward calls the tide")
+	Sound.hush()
+	level.boss.is_engaged = true
+	level.boss.is_fighting = true
+	level.tide.enter(Tide.Phase.SWELL)
+	check(Sound.voice_line != "tide_swell", "while the Lung fights, it doesn't")
+	level.queue_free()
+	await wait_frames(2)
+

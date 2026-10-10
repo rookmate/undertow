@@ -108,7 +108,7 @@ func _fight(_delta: float) -> void:
 ## lists its calls in CALL_GAPS with the soonest the next call can come, and a test keeps every
 ## recording short enough to be said in full.
 func call_out(line_id: String) -> void:
-	Narrator.say_fixed(line_id)
+	Narrator.say_fixed(line_id, true)
 
 
 func _die() -> void:

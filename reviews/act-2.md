@@ -141,3 +141,76 @@ All nine findings were fixed (DECISIONS 138). Each has a regression test that fa
 9. **Companions in the Steward's font (low).** Noor's and Teo's lines and replies use Barlow
    (`UiFonts.label()`). New `test_font_rules` keeps `UiFonts.narration()` to an allow-list of
    Steward-speech scripts.
+
+## Round 2 findings (verbatim from sol_analyst)
+
+Scope: `git diff e03edd7..c4a61dd`, the round 1 fixes being `34158aa..c4a61dd`.
+
+I would keep milestone 3 open. Eight Round 1 findings are resolved; finding 5 is only partly resolved. Two confirmed medium-severity problems remain.
+
+Reviewed `e03edd7..c4a61dd`, including the fixes in `34158aa..c4a61dd`, without editing files. “Confirmed” means established from source, shipped content, or read-only calculations. It does not imply a fresh gameplay reproduction.
+
+1. **Medium — Fixed narration still interrupts warnings, including during the Lung fight. Confirmed.**
+
+   The new protection applies only to [narrator.gd:66](/home/homebox/Documents/rookmate/undertow/autoload/narrator.gd:66). `say_fixed()` goes through `speak_text()`, which emits the replacement line without checking whether a warning is still playing. See [narrator.gd:103](/home/homebox/Documents/rookmate/undertow/autoload/narrator.gd:103). [sound.gd:234](/home/homebox/Documents/rookmate/undertow/autoload/sound.gd:234) then stops the previous recording.
+
+   This occurs between autonomous hazards in the shipped Greywater district: [tide.gd:80](/home/homebox/Documents/rookmate/undertow/game/level/tide.gd:80) speaks `tide_swell`, while [lung.gd:93](/home/homebox/Documents/rookmate/undertow/game/bosses/lung.gd:93) speaks each basin warning. Their schedules are independent.
+
+   Read-only `ffprobe` measurements give `lung_near` **2.660 seconds** and `tide_swell` **3.569 seconds**. A tide warning starting one second into `lung_near` cuts its remaining 1.660 seconds. The next basin call, normally 2.8 seconds after the first, then cuts the tide warning with approximately 1.769 seconds remaining. Fixed facts, such as `waiting_refusal`, also bypass the protection.
+
+   [test_boss_calls.gd:17](/home/homebox/Documents/rookmate/undertow/tests/integration/test_boss_calls.gd:17) compares recordings only against their own boss’s declared cadence. Its interruption test exercises `notify("multi_kill")`, not fixed narration or competing hazards. The campaign likewise checks that a Lung call appears, not that it finishes: [greywater_route.gd:146](/home/homebox/Documents/rookmate/undertow/autoload/autopilot/routes/greywater_route.gd:146).
+
+   Protect warnings at the common narration boundary and explicitly resolve tide/boss timing conflicts. Add tests for a fixed fact interrupting a warning and for the real Greywater tide overlapping a Lung call.
+
+2. **Medium — Upgrading from Act 1 silently removes valid saved Q/LB bindings. Confirmed.**
+
+   Act 2 assigns Q and LB to `use_item`: [controls.gd:31](/home/homebox/Documents/rookmate/undertow/autoload/controls.gd:31). Neither input belonged to a default action at `e03edd7`, so a player could legitimately save Dodge on Q or LB.
+
+   Loading those settings now produces a conflict with the new default. [controls.gd:207](/home/homebox/Documents/rookmate/undertow/autoload/controls.gd:207) resolves conflicts by deleting saved overrides, restoring Dodge to Space/A. The previously saved dodge input now uses a dressing.
+
+   I followed the loader’s conflict algorithm in a read-only calculation using an old valid configuration. Both Dodge overrides were removed. [options.gd:58](/home/homebox/Documents/rookmate/undertow/autoload/options.gd:58) uses this loader directly, with no migration.
+
+   The existing round-trip test misses the upgrade case. It binds Dodge to Q under the new input map, which also saves a compensating `use_item` swap: [test_options.gd:34](/home/homebox/Documents/rookmate/undertow/tests/integration/test_options.gd:34).
+
+   Preserve existing valid choices when introducing an action, assigning the new action a nonconflicting binding. Test loading Act 1 settings with Q and LB occupied and no `use_item` entry.
+
+The Round 1 closure check is:
+
+| Finding | Result | Evidence and regression coverage |
+|---|---|---|
+| 1. Surgeon mist throughout the hospital | Resolved | [surgeon.gd:129](/home/homebox/Documents/rookmate/undertow/game/bosses/surgeon.gd:129) bounds exposure to the shared 2–5.5 tile annulus. [test_surgeon.gd:85](/home/homebox/Documents/rookmate/undertow/tests/integration/test_surgeon.gd:85) checks retreat beyond its reach; the following test checks respawn in shipped Mercy General. |
+| 2. Lung drawing/damage mismatch | Resolved | [lung.gd:132](/home/homebox/Documents/rookmate/undertow/game/bosses/lung.gd:132) supplies one rectangle to damage and drawing. [test_lung.gd:62](/home/homebox/Documents/rookmate/undertow/tests/integration/test_lung.gd:62) checks all quarters’ corners and outer edges. |
+| 3. Tall props allow shots through | Resolved under Decision 138’s revised classification | [level_grid.gd:301](/home/homebox/Documents/rookmate/undertow/core/level_grid.gd:301) uses `TALL`. Ambulances, turbines and crane legs block lines; desks and partitions deliberately remain low. [test_level_grid.gd:171](/home/homebox/Documents/rookmate/undertow/tests/unit/test_level_grid.gd:171) checks complete solid classification and real-map examples. |
+| 4. Markers erase underlying terrain | Resolved | [level_grid.gd:123](/home/homebox/Documents/rookmate/undertow/core/level_grid.gd:123) records neighbouring terrain, consumed by floor, flood, Marrow and indexing queries. [test_level_grid.gd:153](/home/homebox/Documents/rookmate/undertow/tests/unit/test_level_grid.gd:153) covers the reported Greywater cells and the Loop cache. |
+| 5. Interrupted boss calls | Partly resolved | Shortened recordings fit their bosses’ own cadences, and introduction waiting is implemented at [boss.gd:75](/home/homebox/Documents/rookmate/undertow/game/bosses/boss.gd:75). Fixed narration and competing hazards remain uncovered, as finding 1 above explains. |
+| 6. Trust checks derive expectations from JSON | Resolved | [test_conversations.gd:29](/home/homebox/Documents/rookmate/undertow/tests/integration/test_conversations.gd:29) asserts literal +2/−1/0 values, applied sequences and clamping. Trust now belongs to code. |
+| 7. Mutation permits absent companions | Resolved | [game_state.gd:164](/home/homebox/Documents/rookmate/undertow/autoload/game_state.gd:164) checks both companions before mutation. The absence test checks unchanged trust and conversation consumption. |
+| 8. Malformed conversations crash validation | Resolved | [conversations.gd:63](/home/homebox/Documents/rookmate/undertow/core/conversations.gd:63) validates nested shapes; accessors return strings safely. [test_conversations.gd:65](/home/homebox/Documents/rookmate/undertow/tests/integration/test_conversations.gd:65) supplies malformed documents. |
+| 9. Companions use Steward-exclusive typeface | Resolved | [conversation_screen.gd:42](/home/homebox/Documents/rookmate/undertow/ui/ark/conversation_screen.gd:42) and its speech builder use `UiFonts.label()`. [test_font_rules.gd:20](/home/homebox/Documents/rookmate/undertow/tests/unit/test_font_rules.gd:20) would reject the old conversation-screen use of `UiFonts.narration()`. |
+
+I found no additional confirmed break in run-save serialization, targeting eligibility, colour/typeface ownership, or the earlier voice-table checks. The new weak points inherit the existing targeting exclusions. The terrain change retains explicit off-path exclusions, and the crane-leg line blocking follows Decision 138.
+
+The stored evidence reports **388 passing tests**, **198 campaign checks in 705.6 seconds**, the **30-second smoke run**, and **six passing district tours**. I scanned all 17 check logs and found no engine errors, script errors, warnings or failed-result markers. See [tests.log:400](/home/homebox/Documents/rookmate/undertow/reports/check/tests.log:400) and [full_campaign.log:216](/home/homebox/Documents/rookmate/undertow/reports/check/full_campaign.log:216).
+
+I inspected the regression assertions but did not execute old-code mutation checks or rerun the artifact-writing gate. The exact words lost during overlapping warnings, their frequency in ordinary play, re-voiced line intelligibility, and real hardware behaviour remain unverified.
+## Round 2: what was done
+
+Both findings fixed (DECISIONS 139), with tests that fail on the round 1 code.
+
+1. **Fixed narration and competing hazards still cut warnings (medium).** The protection moved to the
+   shared boundary: `Narrator.warning_in_progress()` is checked in `notify()` (all pooled narration)
+   and in `speak_text()` (every fixed line). While a warning is being said, nothing else is, except a
+   boss's own call (`Boss.call_out()` passes `urgent`). A boss's calls never cut each other, because
+   its fight spaces them (`CALL_GAPS`, round 1). The Greywater conflict is resolved explicitly: the tide
+   doesn't call while a boss is fighting in its district (`Tide.boss_fighting()`). The Lung's island is
+   high ground; the tide still turns and its gauges still show it. Tests:
+   `test_boss_calls::test_only_a_boss_call_cuts_a_warning_off` (a fixed fact and a non-boss warning
+   wait; a boss call cuts in) and `test_the_tide_keeps_quiet_while_the_lung_fights` (the real
+   Greywater: the tide calls before the fight, not during it).
+2. **Act 1 settings lost Dodge on Q / LB (medium).** `Controls.set_overrides()` now first resolves any
+   clash between a saved choice and another action's untouched default by moving that default to the
+   first free spare (`Controls.SPARES`: F, R, G, C, X; RB, B). Only clashes left after that drop a
+   saved choice, as before. Test: `test_controls::test_an_older_choice_keeps_its_input_when_a_new_action_wants_it`
+   (Act 1 settings with Dodge on Q and LB and no use_item entry: Dodge keeps both, the dressing gets a
+   spare key and button, nothing is shared, it survives a save and load, and a fresh start still has
+   the dressing on Q).

@@ -94,6 +94,8 @@ func test_stop_praising_me_leaves_only_facts() -> void:
 ## fixed lines, its screens' voice-overs.
 func test_the_orders_govern_every_line_by_purpose() -> void:
 	check(Narrator.say_fixed("crane_drop"), "a warning, while nothing forbids it")
+	# (Said in full before anything else: done with it.)
+	Sound.hush()
 	GameState.set_override(Overrides.NO_TRAP_WARNINGS, true)
 	for id: String in ["conductor_left", "conductor_middle", "conductor_right", "crane_drop", "crane_swing"]:
 		check_eq(VoiceLines.purpose(id), LineSelector.WARNING, "%s is a warning" % id)

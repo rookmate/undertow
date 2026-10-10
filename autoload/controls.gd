@@ -33,6 +33,13 @@ const BINDINGS: Dictionary[StringName, Array] = {
 	&"debug_overlay": [["key", KEY_F3]],
 }
 
+## Spare inputs, by slot, for an action whose default a player's earlier choice already uses (an action
+## added after they chose: Act 2's use_item on Q / LB): it moves to the first one free.
+const SPARES: Dictionary[String, Array] = {
+	"kb": [["key", KEY_F], ["key", KEY_R], ["key", KEY_G], ["key", KEY_C], ["key", KEY_X]],
+	"pad": [["pad_button", JOY_BUTTON_RIGHT_SHOULDER], ["pad_button", JOY_BUTTON_B]],
+}
+
 ## Actions that must be reachable on both keyboard/mouse and controller. The debug overlay is
 ## reached on a pad through the Back+R3 chord handled below.
 const GAMEPLAY_ACTIONS: Array[StringName] = [
@@ -191,8 +198,10 @@ func overrides() -> Dictionary:
 	return _overrides.duplicate(true)
 
 
-## Loads saved choices. Anything that isn't a valid binding for a rebindable action is dropped, and so
-## is any choice that would share an input with another action (a damaged or hand-edited file).
+## Loads saved choices. Anything that isn't a valid binding for a rebindable action is dropped. A choice
+## that collides with another action's default (an action added since: Act 2's use_item on Q / LB) is
+## kept, and that action moves to a free spare (SPARES). Any choice still sharing an input with another
+## action is dropped (a damaged or hand-edited file).
 func set_overrides(saved: Dictionary) -> void:
 	_overrides = {}
 	for action: Variant in saved:
@@ -204,6 +213,8 @@ func set_overrides(saved: Dictionary) -> void:
 			var binding := normalized(raw if raw is Array else [])
 			if not binding.is_empty() and slot_of(binding) == str(slot):
 				_set_override(StringName(str(action)), str(slot), binding)
+	for clash: Array in conflicts():
+		_move_default_aside(clash[0], clash[1], clash[2])
 	var clashes := conflicts()
 	while not clashes.is_empty():
 		for clash: Array in clashes:
@@ -212,6 +223,23 @@ func set_overrides(saved: Dictionary) -> void:
 				chosen.erase(slot_of(clash[0]))
 		clashes = conflicts()
 	register_actions()
+
+
+## If one of two actions holds `binding` as the player's choice and the other only as its default, the
+## choice stays and the default moves to the first free spare for that slot (if there is one).
+func _move_default_aside(binding: Array, a: StringName, b: StringName) -> void:
+	var slot := slot_of(binding)
+	for pair: Array in [[a, b], [b, a]]:
+		var chooser: StringName = pair[0]
+		var other: StringName = pair[1]
+		var chose: bool = (_overrides.get(chooser, {}) as Dictionary).get(slot, []) == binding
+		var other_chose: bool = (_overrides.get(other, {}) as Dictionary).has(slot)
+		if not chose or other_chose or not REBINDABLE.has(other):
+			continue
+		for spare: Array in SPARES[slot]:
+			if holder_of(spare) == &"":
+				_set_override(other, slot, spare)
+				return
 
 
 func reset_bindings() -> void:

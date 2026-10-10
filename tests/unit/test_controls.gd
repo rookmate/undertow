@@ -46,3 +46,23 @@ func test_prompts_follow_last_used_device() -> void:
 	Controls.device = Controls.Device.PAD
 	check_eq(Controls.prompt(&"voice_toggle"), "Y")
 	Controls.device = was
+
+
+## Settings saved in Act 1, with Dodge on Q and LB (free then): loading them under Act 2's defaults (the
+## dressing on Q / LB) keeps the player's Dodge, and the dressing moves to a free spare instead.
+func test_an_older_choice_keeps_its_input_when_a_new_action_wants_it() -> void:
+	var q: Array = ["key", KEY_Q]
+	var lb: Array = ["pad_button", JOY_BUTTON_LEFT_SHOULDER]
+	Controls.set_overrides({"dodge": {"kb": q, "pad": lb}})
+	check_eq(Controls.primary(&"dodge", "kb"), q, "Dodge stays on Q")
+	check_eq(Controls.primary(&"dodge", "pad"), lb, "and on LB")
+	var item_kb := Controls.primary(&"use_item", "kb")
+	var item_pad := Controls.primary(&"use_item", "pad")
+	check(Controls.SPARES["kb"].has(item_kb), "the dressing moved to a spare key (%s)" % [item_kb])
+	check(Controls.SPARES["pad"].has(item_pad), "and a spare button (%s)" % [item_pad])
+	check(Controls.conflicts().is_empty(), "nothing shared")
+	var saved := Controls.overrides()
+	Controls.set_overrides(saved)
+	check_eq(Controls.primary(&"use_item", "kb"), item_kb, "and it stays put saved and loaded again")
+	Controls.reset_bindings()
+	check_eq(Controls.primary(&"use_item", "kb"), q, "a fresh start has the dressing on Q")
