@@ -42,6 +42,15 @@ const LEVELS: Dictionary[String, Dictionary] = {
 		"restores": "workshop",
 		"boss": "crane",
 	},
+	"mercy": {
+		"name": "Mercy General",
+		"act": 2,
+		# Act 2's districts open together once Act 1 is done, in any order (design/act-2.md).
+		"after": ["tideworks"],
+		"scene": "res://game/level/mercy_general.tscn",
+		"map": "res://data/levels/mercy_general.txt",
+		"restores": "clinic",
+	},
 	"vellum": {
 		"name": "The Vellum",
 		"act": 2,

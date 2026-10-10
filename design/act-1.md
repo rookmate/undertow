@@ -14,13 +14,11 @@ makes sense), one boss (except Kestrel Heights), and one line on entry that the 
 | 1 | Kestrel Heights | voice toggle tutorial, Lamplighters, smart gates | none | — (the Ark is bare) | Traffic Baton |
 | 2 | The Loop (north arc) | stalled trains as bridges, the Waiting in carriages | the Conductor | the Signal Room (Overrides) | Baton |
 | 3 | The Tideworks | Salvagers steal your second weapon, cranes, the union hall | the Crane | the Workshop (upgrades) | Baton + the Riot Drone (found) |
-| 4+ | Act 2: the Vellum (and later Mercy General, Greywater) | | | | + Defib Gauntlet (on the Vellum's old quay until Mercy General is built) |
+| 4+ | Act 2: the Vellum (and later Mercy General, Greywater) | | | | + Defib Gauntlet (found in Mercy General, Act 2) |
 
 Weapons are found, not given: the Operator starts with the Traffic Baton (a maintenance worker's tool).
 The Riot Drone is in a Warden depot off the path in the Tideworks; the Defib Gauntlet in Mercy General
-(Act 2). Until the Gauntlet is found in its own district, the Vellum offers it on a crash cart down the
-stair on the old quay, off the Lattice (so the slice keeps three weapons). With one weapon owned, the
-loadout's second slot stays empty.
+(Act 2). With one weapon owned, the loadout's second slot stays empty.
 
 ## 1. Kestrel Heights — where the believers lived
 

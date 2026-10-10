@@ -24,8 +24,15 @@ var hedge: Color = Palette.HEDGE
 var blossom: Color = Palette.BLOSSOM
 var timber: Color = Palette.TIMBER
 var gravel: Color = Palette.GRAVEL
+var asphalt: Color = Palette.YARD_ASPHALT
+## A floor kept by people, off the Lattice (the night nurses' station's lino).
+var staff_floor: Color = Palette.WARD_LINO
+var grout: Color = Palette.WARD_GROUT
+var glass: Color = Palette.WARD_GLASS
 ## Fog drawn over the drop beside walkable ground (rail ribbons in fog); transparent where there's none.
 var void_fog: Color = Color(Palette.FOG, 0.0)
+## Rain on all of it (art direction, "the Quiet"); off indoors.
+var rain: bool = true
 ## CanvasModulate for the world, voice on and muted.
 var ambient_on: Color = Palette.AMBIENT_VOICE_ON
 var ambient_muted: Color = Palette.AMBIENT_MUTED
@@ -79,6 +86,22 @@ static func for_district(id: String) -> DistrictLook:
 			look.sky_bottom = Palette.SKY_STORM_LOW
 			look.ambient_on = Palette.AMBIENT_STORM_ON
 			look.ambient_muted = Palette.AMBIENT_STORM_MUTED
+		"mercy":
+			# Long white corridors gone grey, every third light working; the dark beyond the glass.
+			look.ground_a = Palette.WARD_TILE_A
+			look.ground_b = Palette.WARD_TILE_B
+			look.ground_wet = Palette.WARD_TILE_B.lightened(0.12)
+			look.pavement = Palette.WARD_TILE_A
+			look.stone = Palette.WARD_WALL_SHADE
+			look.wall = Palette.WARD_WALL
+			look.wall_shade = Palette.WARD_WALL_SHADE
+			look.wall_top = Palette.WARD_WALL_TOP
+			look.sky_top = Palette.SKY_WARD_TOP
+			look.sky_bottom = Palette.SKY_WARD_LOW
+			look.skyline = Color(Palette.BLACK_MIRROR, 0.0)
+			look.rain = false
+			look.ambient_on = Palette.AMBIENT_WARD_ON
+			look.ambient_muted = Palette.AMBIENT_WARD_MUTED
 		"vellum", "ark":
 			pass
 	return look

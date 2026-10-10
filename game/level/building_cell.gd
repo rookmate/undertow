@@ -5,7 +5,7 @@ extends Node2D
 ## windows (human warmth), old-city neon, and the Steward's gilt threaded along the balcony ironwork,
 ## which dies when the voice is muted.
 
-enum Facade { PLAIN, DOOR, NEON_MAGENTA, NEON_LIME, ARCHIVE, LAUNDRY, SIGNAL_ROOM, WORKSHOP }
+enum Facade { PLAIN, DOOR, NEON_MAGENTA, NEON_LIME, ARCHIVE, LAUNDRY, SIGNAL_ROOM, WORKSHOP, HOSPITAL, HOSPITAL_DOOR }
 
 const STORY := 74.0
 const STORIES := 3
@@ -105,6 +105,9 @@ static func _on_face(a: Vector2, b: Vector2, u: float, v: float) -> Vector2:
 func _face(a: Vector2, b: Vector2, h: float, street_side: bool) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(Vector3i(cell.x, cell.y, 1 if street_side else 2))
+	if facade == Facade.HOSPITAL or facade == Facade.HOSPITAL_DOOR:
+		_hospital_face(a, b, h, street_side, rng)
+		return
 	var mortar := Color(Palette.NEAR_BLACK, 0.16)
 	var v := 12.0
 	while v < h - PARAPET:
@@ -195,6 +198,36 @@ func _rose(a: Vector2, b: Vector2, base: float) -> void:
 		petals.append(c + Vector2(cos(ang) * 14.0, sin(ang) * 18.0))
 	_glow.poly(petals, Color(Palette.STAINED_ROSE.lightened(0.3), 0.9))
 	_base.polyline(petals, Palette.IRON_DARK, 2.0)
+
+
+## Mercy General's walls from the inside: painted panels, a grey-blue dado and a handrail; the arrows
+## people chalked looking for a way out (human cream); every third ceiling light still working, the
+## Steward's (it dies when muted). Locked doors are double doors with dark portholes.
+func _hospital_face(a: Vector2, b: Vector2, h: float, street_side: bool, rng: RandomNumberGenerator) -> void:
+	for k: int in 3:
+		var u := (k + 1) * 0.25
+		_base.line(_on_face(a, b, u, 0.0), _on_face(a, b, u, h - PARAPET), Color(Palette.NEAR_BLACK, 0.12), 1.0)
+	var dado := PackedVector2Array([_on_face(a, b, 0.0, 0.0), _on_face(a, b, 1.0, 0.0), _on_face(a, b, 1.0, 46.0), _on_face(a, b, 0.0, 46.0)])
+	_base.poly(dado, Color(Palette.WARD_GLASS.darkened(0.55), 0.85))
+	_base.line(_on_face(a, b, 0.0, 52.0), _on_face(a, b, 1.0, 52.0), Palette.WARD_WALL_SHADE.darkened(0.3), 3.0)
+	if facade == Facade.HOSPITAL_DOOR and street_side:
+		var door := PackedVector2Array([_on_face(a, b, 0.2, 0.0), _on_face(a, b, 0.8, 0.0), _on_face(a, b, 0.8, 84.0), _on_face(a, b, 0.2, 84.0)])
+		_base.poly(door, Palette.WARD_WALL_SHADE.darkened(0.15))
+		_base.line(_on_face(a, b, 0.5, 0.0), _on_face(a, b, 0.5, 84.0), Palette.NEAR_BLACK, 2.0)
+		for u: float in [0.35, 0.65]:
+			_base.circle(_on_face(a, b, u, 62.0), 6.0, Palette.BLACK_MIRROR)
+	elif rng.randf() < 0.4:
+		# A chalk arrow: this way out, someone thought.
+		var y := rng.randf_range(70.0, 120.0)
+		var dir := 1.0 if rng.randf() < 0.5 else -1.0
+		var tail := _on_face(a, b, 0.5 - 0.22 * dir, y)
+		var tip := _on_face(a, b, 0.5 + 0.22 * dir, y)
+		var chalk := Color(Palette.HUMAN_CREAM, 0.75)
+		_base.line(tail, tip, chalk, 3.0)
+		_base.line(tip, tip + (tail - tip).rotated(0.5) * 0.3, chalk, 3.0)
+		_base.line(tip, tip + (tail - tip).rotated(-0.5) * 0.3, chalk, 3.0)
+	if (cell.x + cell.y) % 3 == 0 and street_side:
+		_gilt.circle(_on_face(a, b, 0.5, h - PARAPET - 10.0), 5.0, Palette.STEWARD_GOLD_HOT)
 
 
 func _door(a: Vector2, b: Vector2) -> void:

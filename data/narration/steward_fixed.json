@@ -60,6 +60,10 @@
     "companions_arrive": {
       "text": "You have company. Noor doesn't trust me. Teo built part of me. Both of them will want something from you.",
       "purpose": "fact"
+    },
+    "ward_sealed": {
+      "text": "Sealed for their safety. Leave them.",
+      "purpose": "fact"
     }
   }
 }

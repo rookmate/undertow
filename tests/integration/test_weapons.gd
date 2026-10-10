@@ -180,24 +180,3 @@ func test_downed_operator_respawns_at_the_checkpoint() -> void:
 	check(level.player.is_alive(), "back up")
 	check_eq(level.player.integrity.value, Operator.MAX_INTEGRITY)
 	check_eq(level.player.cell(), level.checkpoint_cell)
-
-
-## A fresh run owns only the Baton; the Vellum offers the Defib Gauntlet (until Mercy General is
-## built), down the stair on the old quay, reachable from the start.
-func test_a_fresh_run_finds_the_defib_gauntlet_in_the_vellum() -> void:
-	GameState.new_run()
-	check_eq(GameState.run.weapons_owned, WeaponDefs.STARTING)
-	level = (load("res://game/level/vellum_street.tscn") as PackedScene).instantiate() as Level
-	add_child(level)
-	await wait_physics_frames(2)
-	var find: WeaponFind = null
-	for n: Node in level.world.get_children():
-		if n is WeaponFind and (n as WeaponFind).weapon_id == WeaponDefs.DEFIB:
-			find = n
-	check(find != null, "a gauntlet on the old quay")
-	check(level.grid.reachable_from(level.grid.start_cell()).has(find.cell), "that you can walk to")
-	check(find.can_interact())
-	find.interact(level.player)
-	check(GameState.run.weapons_owned.has(WeaponDefs.DEFIB), "yours from now on")
-	check_eq(level.player.weapons[1].weapon_id, WeaponDefs.DEFIB, "in your second hand")
-	check_false(find.is_present())

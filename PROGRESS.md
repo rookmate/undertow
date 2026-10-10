@@ -134,8 +134,8 @@ analysis review at the end.
 | Step | What | Status |
 |---|---|---|
 | 17 | Act 2's design; Noor and Teo join (they arrive on the Ark after the Tideworks, once) | done |
-| 18 | Mercy General: the district (sealed wards, Sterilizers, the night nurses' station); the Defib Gauntlet moves home | next |
-| 19 | The Surgeon (boss) | |
+| 18 | Mercy General: the district (sealed wards, Sterilizers, the night nurses' station); the Defib Gauntlet moves home | done |
+| 19 | The Surgeon (boss) | next |
 | 20 | The Clinic: healing items, triage logs | |
 | 21 | Greywater: the district (the tide, kelp, the thick Marrow, the manual pump room) | |
 | 22 | The Lung (boss) and the Pumphouse | |

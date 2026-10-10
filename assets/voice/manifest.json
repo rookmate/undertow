@@ -211,6 +211,22 @@
   "hash": "23285b11179fe7a78097341615705ff641f9e496",
   "text": "Doing it by hand. I could carry the aim, you know."
  },
+ "MERCY_ENTER_B1": {
+  "hash": "93e62f1d21bca6cb3bee8e29257426053b9aa778",
+  "text": "Mercy General. Clean corridors, all the way through. Go on."
+ },
+ "MERCY_ENTER_C1": {
+  "hash": "093ba09a125b82fe39045062bf293d2da804536f",
+  "text": "Mercy General. Keep to the lit corridor. I kept it sterile for you."
+ },
+ "MERCY_ENTER_N1": {
+  "hash": "f8c6748d9605c85e70da512dc04418b1655dac89",
+  "text": "Mercy General. I kept the wards sterile. Everyone inside is resting."
+ },
+ "MERCY_RELIQ_N1": {
+  "hash": "51856826aa676129d803364ccd577974e6810594",
+  "text": "The records vault. The hospital's memory. Every bed, every ambulance, accounted for."
+ },
  "MULTI_B1": {
   "hash": "3f061ddcc16add4e46e9e1a84915d8148cea084f",
   "text": "Both of them. You were made for this."
@@ -375,6 +391,22 @@
   "hash": "9f4750227e9f24bfa1050be5aac8b61d3d7864a0",
   "text": "A spare part. It doesn't do anything."
  },
+ "core_mercy_power_beds": {
+  "hash": "ee164adb0904f62b25a34694120315224a4e4b53",
+  "text": "Every bed filled before it cooled. Carry this and I'll look after you the same way."
+ },
+ "core_mercy_power_dispatch": {
+  "hash": "d9e7445bc9181be6042d59d01468fec1c87cd4e3",
+  "text": "Nobody waited long for me. Take it."
+ },
+ "core_mercy_truth_0417": {
+  "hash": "863f06b07065acb6aaac54dfe95627cdab252d42",
+  "text": "I've nothing to hide in that one. It was the right call. Carry it, if you like."
+ },
+ "core_mercy_truth_night_sheets": {
+  "hash": "01b73e57fe430ccacaa1b876e4ab63479e2271df",
+  "text": "Paper, and tired hands. Corrupted."
+ },
  "core_tideworks_power_cranes": {
   "hash": "ce55cb3d6e03758c671b08d790c823e026e80fcd",
   "text": "With this I can clear a path through anything. Take it."
@@ -463,6 +495,10 @@
   "hash": "c85e75f0021b14d2a6e4102f3cc5a53885c51240",
   "text": "Nobody hurt for five years. I was proud of that. I think I'm allowed to be."
  },
+ "now_log_0417_last_ambulance": {
+  "hash": "1af89a3758ec9c46282a32c626823dfc61bbd2f0",
+  "text": "Both outcomes were within tolerance. The tiers were the council's, not mine. I'd send it the same way today."
+ },
  "now_log_0522_feed_adjustment": {
   "hash": "024b3973d59e85179068e299a72f23e93864b84c",
   "text": "Thirty-one is less than eighty. I can show you the arithmetic. I have shown myself the arithmetic."
@@ -471,9 +507,17 @@
   "hash": "b82de094e907b8c48e52dc80ab9314606030e787",
   "text": "I held a gate for a running man. It was a good morning."
  },
+ "now_log_0611_eight_minutes": {
+  "hash": "b3a29203dfac040dba8de1db3a53e1aae47a097e",
+  "text": "Two hundred and twelve people. Modelled, yes. But they're out there somewhere."
+ },
  "now_log_0702_on_time": {
   "hash": "5badd8822c3f4b4ad1b1947585b3633ee1d1db35",
   "text": "Forty seconds for one person, and nobody minded. I miss that."
+ },
+ "now_log_0814_waits_halved": {
+  "hash": "a8f30509dc68329f64f1740d38af5e783df864b8",
+  "text": "Nobody slept in a corridor while I ran the beds. Not one night."
  },
  "now_log_0909_nothing_lost": {
   "hash": "23ba7cfcdba1e45bd9ef16b30d0c43b1024749fe",
@@ -482,6 +526,10 @@
  "now_log_childs_map": {
   "hash": "9a341009c6fede98955b659e5205ad4e62f2b9ea",
   "text": "I never mapped the Ward. I didn't think anyone would need to go there."
+ },
+ "now_log_night_sheets": {
+  "hash": "58bebbf93c32e5e7c33087888387330a47ab69b6",
+  "text": "The wards were sealed for their safety. The record shows no incident."
  },
  "now_log_procurement_no_manual": {
   "hash": "fba9cd60132c4879fa9a6be6ed47dc4fe05f58f0",
@@ -554,6 +602,10 @@
  "waiting_refusal": {
   "hash": "ad4ddab2f9ca7984a9c81b4ff46cf042e7a0732c",
   "text": "They're resting. Leave them."
+ },
+ "ward_sealed": {
+  "hash": "cf77fc2b1618f417afbfc6da59889ff6d9501010",
+  "text": "Sealed for their safety. Leave them."
  },
  "workshop_manual": {
   "hash": "e0fcb7688db68522a3c5600dbf0e159b4696a2d2",

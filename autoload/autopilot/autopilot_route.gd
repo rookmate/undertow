@@ -13,6 +13,7 @@ const ROUTES: Dictionary[String, String] = {
 	"kestrel": "res://autoload/autopilot/routes/kestrel_route.gd",
 	"loop": "res://autoload/autopilot/routes/loop_route.gd",
 	"tideworks": "res://autoload/autopilot/routes/tideworks_route.gd",
+	"mercy": "res://autoload/autopilot/routes/mercy_route.gd",
 	"vellum": "res://autoload/autopilot/routes/vellum_route.gd",
 }
 
@@ -81,20 +82,23 @@ static func _districts_before(district: String) -> Array[String]:
 
 
 ## The loadout: with one weapon found it's the Baton, and off you go; with two, run the Baton by hand
-## (the way a player clicking the slot's toggle would) and take both.
+## (the way a player clicking the slot's toggle would, if an earlier district hasn't left it manual
+## already: the choice is the run's) and take both.
 func loadout(screen: Node, gen: int) -> void:
 	pass_check("loadout_shown")
 	if not await Autopilot.wait(1.5, gen):
 		return
 	await Autopilot.snap(id + "_loadout")
 	var depart := screen.get("_depart") as Button
+	var picked: Array[String] = screen.get("picked")
 	if Loadout.slots_for(GameState.run.weapons_owned) == 1:
-		var picked: Array[String] = screen.get("picked")
 		check(picked == [WeaponDefs.BATON], "loadout_one_weapon")
 		depart.grab_focus()
 		Autopilot.tap(&"ui_accept")
 		return
-	screen.call("_on_mode_toggled", 0)
+	var modes: Dictionary = screen.get("modes")
+	if not picked.is_empty() and modes.get(picked[0]) != Loadout.Mode.MANUAL:
+		screen.call("_on_mode_toggled", 0)
 	if not await Autopilot.wait(1.0, gen):
 		return
 	await Autopilot.snap(id + "_loadout_manual_baton")

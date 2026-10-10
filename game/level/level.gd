@@ -236,6 +236,10 @@ func _build_cells() -> void:
 			var b := BuildingCell.new()
 			var facade := BuildingCell.Facade.PLAIN
 			match ch:
+				Tiles.HOSPITAL_WALL:
+					facade = BuildingCell.Facade.HOSPITAL
+				Tiles.HOSPITAL_DOOR:
+					facade = BuildingCell.Facade.HOSPITAL_DOOR
 				"A":
 					facade = BuildingCell.Facade.ARCHIVE
 				"d":
@@ -317,6 +321,28 @@ func _build_cells() -> void:
 				var tram := _prop(cell, StaticProp.Kind.TRAM)
 				tram.joined_left = grid.char_at(cell + Vector2i(0, 1)) == "t"
 				tram.joined_right = grid.char_at(cell + Vector2i(1, 0)) == "t"
+			Tiles.PARTITION:
+				_prop(cell, StaticProp.Kind.PARTITION)
+			Tiles.HOSPITAL_BED:
+				_prop(cell, StaticProp.Kind.HOSPITAL_BED)
+			Tiles.AMBULANCE:
+				var ambulance := _prop(cell, StaticProp.Kind.AMBULANCE)
+				ambulance.joined_left = grid.char_at(cell + Vector2i(0, 1)) == Tiles.AMBULANCE
+				ambulance.joined_right = grid.char_at(cell + Vector2i(1, 0)) == Tiles.AMBULANCE
+			Tiles.NURSE_DESK:
+				var desk := _prop(cell, StaticProp.Kind.NURSE_DESK)
+				var lamp := PointLight2D.new()
+				lamp.texture = LightTextures.radial()
+				lamp.color = Palette.HUMAN_CREAM
+				lamp.energy = 1.2
+				lamp.texture_scale = 1.6
+				lamp.scale = Vector2(1.0, Iso.SQUASH)
+				lamp.position = Vector2(22, -40)
+				desk.add_child(lamp)
+			Tiles.WARD_SEAL:
+				var seal := WardSeal.new()
+				seal.setup(self, cell)
+				world.add_child(seal)
 
 
 func _prop(cell: Vector2i, kind: StaticProp.Kind) -> StaticProp:
@@ -476,6 +502,8 @@ func _spawn_enemies() -> void:
 		_add_enemy(Lamplighter.new(), x, Lamplighter.MAX_INTEGRITY)
 	for o: Vector2i in grid.cells_with("O"):
 		_add_enemy(Salvager.new(), o, Salvager.MAX_INTEGRITY)
+	for s: Vector2i in grid.cells_with(Tiles.STERILIZER):
+		_add_enemy(Sterilizer.new(), s, Sterilizer.MAX_INTEGRITY)
 
 
 ## The boss this level ends with ("" for none): a test arena's own, or the district's.
@@ -567,12 +595,13 @@ func _add_atmosphere() -> void:
 	_ambient = CanvasModulate.new()
 	_ambient.color = look.ambient_on
 	add_child(_ambient)
-	var rain_layer := CanvasLayer.new()
-	rain_layer.layer = 2
-	var rain := Rain.new()
-	rain_layer.add_child(rain)
-	add_child(rain_layer)
-	rain.setup(Rect2(Vector2.ZERO, get_viewport_rect().size), 1.0)
+	if look.rain:
+		var rain_layer := CanvasLayer.new()
+		rain_layer.layer = 2
+		var rain := Rain.new()
+		rain_layer.add_child(rain)
+		add_child(rain_layer)
+		rain.setup(Rect2(Vector2.ZERO, get_viewport_rect().size), 1.0)
 	var env := Environment.new()
 	env.background_mode = Environment.BG_CANVAS
 	env.glow_enabled = true

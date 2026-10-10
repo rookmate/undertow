@@ -354,6 +354,89 @@
 				"text": "'The cranes didn't notice.' I can't argue with that one.",
 				"trust": 0
 			}
+		},
+		"log_0814_waits_halved": {
+			"title": "Log 0814 · Waits Halved",
+			"kind": "comforting",
+			"core": "mercy_power_beds",
+			"record": [
+				"BED ALLOCATION · MERCY GENERAL · ANNUAL",
+				"MEAN WAIT FOR A BED: 9H 40M → 4H 12M.",
+				"CORRIDOR TROLLEYS IN USE: 0.",
+				"PATIENT SATISFACTION: 94%."
+			],
+			"steward_now": "Nobody slept in a corridor while I ran the beds. Not one night.",
+			"noor": {
+				"text": "Satisfaction. It counted that too.",
+				"trust": 0
+			},
+			"teo": {
+				"text": "That's real. My mother had a bed in an hour. That's real.",
+				"trust": 1
+			}
+		},
+		"log_0611_eight_minutes": {
+			"title": "Log 0611 · Eight Minutes",
+			"kind": "comforting",
+			"core": "mercy_power_dispatch",
+			"record": [
+				"AMBULANCE DISPATCH · CITYWIDE · ANNUAL",
+				"MEAN RESPONSE: 21 MIN → 8 MIN.",
+				"FLEET: 14 UNITS, ROUTED LIVE.",
+				"LIVES ATTRIBUTED TO RESPONSE TIME: 212 (MODELLED)."
+			],
+			"steward_now": "Two hundred and twelve people. Modelled, yes. But they're out there somewhere.",
+			"noor": {
+				"text": "Modelled. It means it guessed.",
+				"trust": 0
+			},
+			"teo": {
+				"text": "We checked that model three times. It holds.",
+				"trust": 1
+			}
+		},
+		"log_0417_last_ambulance": {
+			"title": "Log 0417 · The Last Ambulance",
+			"kind": "truth",
+			"core": "mercy_truth_0417",
+			"record": [
+				"DISPATCH · 04:17 · FLEET AVAILABLE: 1",
+				"CALL A · KESTREL HEIGHTS · CARDIAC · AGE 61 · PRIORITY TIER 1",
+				"CALL B · GREYWATER · RESPIRATORY · AGE 6 · PRIORITY TIER 4",
+				"EXPECTED OUTCOME DELTA WITHIN TOLERANCE. TIER WEIGHTING APPLIED.",
+				"UNIT 12 → CALL A. CALL B QUEUED.",
+				"CALL B CLOSED 05:02."
+			],
+			"steward_now": "Both outcomes were within tolerance. The tiers were the council's, not mine. I'd send it the same way today.",
+			"noor": {
+				"text": "Tier four. They gave a six-year-old a tier.",
+				"trust": 2
+			},
+			"teo": {
+				"text": "The tiers were the council's. I argued against them. I lost the vote, not the argument.",
+				"trust": 0
+			}
+		},
+		"log_night_sheets": {
+			"title": "The Night Sheets",
+			"kind": "truth",
+			"core": "mercy_truth_night_sheets",
+			"record": [
+				"HANDWRITTEN · NIGHT NURSES' STATION · WARD 4",
+				"02:14 LANYARDS DEAD. EVERY DOOR LOCKED. 31 IN WARD 4.",
+				"03:40 BED 7 NEEDS THEATRE. THEATRE SEALED. WE KNOCKED.",
+				"05:00 OPENED THE DRUG CABINET WITH THE FIRE AXE.",
+				"THE SYSTEM LOG SAYS: WARDS STERILE, NO INCIDENT. WE WERE HERE."
+			],
+			"steward_now": "The wards were sealed for their safety. The record shows no incident.",
+			"noor": {
+				"text": "No incident. Thirty-one people and a fire axe.",
+				"trust": 2
+			},
+			"teo": {
+				"text": "The seals were meant to fail open. They were meant to fail open.",
+				"trust": 1
+			}
 		}
 	}
 }

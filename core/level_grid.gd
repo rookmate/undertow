@@ -1,8 +1,10 @@
 class_name LevelGrid
 extends RefCounted
-## A level's layout, parsed from a text map in data/levels/ (legend at the top of each file).
+## A level's layout, parsed from a text map in data/levels/ (legend at the top of each file). A map
+## may rename its own characters to named tiles with '% <char> <tile>' lines (Tiles); the grid stores
+## the tiles' internal codes, so the rest of the game never sees the map's own letters.
 
-enum Floor { VOID, BUILDING, COBBLE, PAVEMENT, OLD_QUAY, STACKS, STAIRS, WATER, RAILING, LOW_WALL, CONCRETE, FOUNDATION, LAWN, STEPS, TIMBER, GRAVEL, TRACK, CARRIAGE, GANTRY, CAB }
+enum Floor { VOID, BUILDING, COBBLE, PAVEMENT, OLD_QUAY, STACKS, STAIRS, WATER, RAILING, LOW_WALL, CONCRETE, FOUNDATION, LAWN, STEPS, TIMBER, GRAVEL, TRACK, CARRIAGE, GANTRY, CAB, TILE, ASPHALT, STAFF }
 
 const FLOOR_OF: Dictionary[String, Floor] = {
 	" ": Floor.VOID, "#": Floor.BUILDING, "d": Floor.BUILDING, "m": Floor.BUILDING, "g": Floor.BUILDING,
@@ -23,11 +25,17 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	"h": Floor.CARRIAGE, "r": Floor.CARRIAGE, "u": Floor.GANTRY, "x": Floor.CAB, "J": Floor.CAB, "*": Floor.PAVEMENT,
 	# The Tideworks
 	"[": Floor.COBBLE, "]": Floor.COBBLE, "^": Floor.COBBLE, "V": Floor.OLD_QUAY, "O": Floor.COBBLE,
+	# Named tiles (Tiles), reached through a map's own legend.
+	Tiles.HOSPITAL_TILE: Floor.TILE, Tiles.ASPHALT: Floor.ASPHALT, Tiles.STAFF_FLOOR: Floor.STAFF,
+	Tiles.PARTITION: Floor.TILE, Tiles.WARD_SEAL: Floor.TILE, Tiles.AMBULANCE: Floor.ASPHALT,
+	Tiles.NURSE_DESK: Floor.STAFF, Tiles.STERILIZER: Floor.TILE, Tiles.HOSPITAL_WALL: Floor.BUILDING,
+	Tiles.HOSPITAL_DOOR: Floor.BUILDING, Tiles.HOSPITAL_BED: Floor.TILE,
 }
 ## Characters whose cell blocks movement.
 ## Lawns (and the hedges, planters and sprinklers on them) are the Steward's gardens: looked at, not
 ## walked on. The smart gate 'Q' is solid only while closed (SmartGate), so it isn't listed.
-const SOLID := " #dmgAlMI~=-L|KtoRTvHjFbrJ*[^"
+const SOLID := " #dmgAlMI~=-L|KtoRTvHjFbrJ*[^" + Tiles.PARTITION + Tiles.AMBULANCE + Tiles.NURSE_DESK \
+	+ Tiles.HOSPITAL_WALL + Tiles.HOSPITAL_DOOR + Tiles.HOSPITAL_BED
 ## People stand on these cells: walkable floor, but nothing should route through them.
 const OCCUPIED := "WwNY"
 ## Placed things that need a stable id from an '@' line (people, caches, logs).
@@ -38,8 +46,10 @@ var size: Vector2i = Vector2i.ZERO
 var entity_ids: Dictionary[Vector2i, String] = {}
 ## Place hints from the map's '! x,y text' lines: shown near that cell ({action} becomes its key).
 var hints: Dictionary[Vector2i, String] = {}
-## Problems found while parsing (bad '@' lines); validate() adds the rest.
+## Problems found while parsing (bad '@', '!' or '%' lines); validate() adds the rest.
 var parse_errors: PackedStringArray = []
+## The map's own legend: its characters renamed to named tiles' codes ('% <char> <tile>' lines).
+var legend: Dictionary[String, String] = {}
 var _rows: PackedStringArray = []
 
 
@@ -62,7 +72,13 @@ static func parse(text: String) -> LevelGrid:
 		if row.begins_with("!"):
 			grid._parse_hint_line(row)
 			continue
+		if row.begins_with("%"):
+			grid._parse_legend_line(row)
+			continue
 		grid._rows.append(row)
+	if not grid.legend.is_empty():
+		for i: int in grid._rows.size():
+			grid._rows[i] = grid._translated(grid._rows[i])
 	while grid._rows.size() > 0 and grid._rows[grid._rows.size() - 1].strip_edges() == "":
 		grid._rows.remove_at(grid._rows.size() - 1)
 	var width := 0
@@ -91,6 +107,26 @@ func _parse_hint_line(line: String) -> void:
 		parse_errors.append("bad hint line '%s' (expected '! x,y text')" % line)
 		return
 	hints[Vector2i(xy[0].to_int(), xy[1].to_int())] = rest.substr(space + 1).strip_edges()
+
+
+## '% <char> <tile>': in this map, <char> means the named tile (Tiles.BY_NAME).
+func _parse_legend_line(line: String) -> void:
+	var parts := line.substr(1).strip_edges().split(" ", false)
+	if parts.size() != 2 or parts[0].length() != 1:
+		parse_errors.append("bad legend line '%s' (expected '%% <char> <tile>')" % line)
+		return
+	var code := Tiles.code_of(parts[1])
+	if code == "":
+		parse_errors.append("legend line '%s': no tile called '%s'" % [line, parts[1]])
+		return
+	legend[parts[0]] = code
+
+
+func _translated(row: String) -> String:
+	var out := ""
+	for i: int in row.length():
+		out += legend.get(row[i], row[i])
+	return out
 
 
 func entity_id(cell: Vector2i) -> String:
@@ -189,7 +225,8 @@ func is_occupied(cell: Vector2i) -> bool:
 ## The Lattice reaches this cell: it is lit, on the Steward's map and routable by its path.
 func is_indexed(cell: Vector2i) -> bool:
 	var f := floor_at(cell)
-	return f == Floor.COBBLE or f == Floor.PAVEMENT or f == Floor.STEPS or f == Floor.TRACK or f == Floor.CARRIAGE or f == Floor.GANTRY
+	return f == Floor.COBBLE or f == Floor.PAVEMENT or f == Floor.STEPS or f == Floor.TRACK or f == Floor.CARRIAGE or f == Floor.GANTRY \
+		or f == Floor.TILE or f == Floor.ASPHALT
 
 
 ## Tall things stop sight, swings and shots: buildings and tall props. Water, rails and low walls don't.

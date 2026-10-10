@@ -11,13 +11,9 @@
 ;   .   cobble street (indexed)              k  Clerk [cobble]            W  one of the Waiting [pavement]
 ;   ,   pavement (indexed)                   w  one of the Waiting, off the path [stacks]
 ;   :   old quay, unindexed                  T  truth cache [stacks]      U  unindexed log [stacks]
-;                                            V  a weapon left behind [old quay] (its id: the weapon)
 ;   _   overflow stacks floor, unindexed
 ;   S   stair down, unindexed
 ;   ~   canal water   =  railing   -  low wall
-;
-; The Defib Gauntlet lies here (down the stair on the old quay) until Mercy General is built: it's its
-; own district's find (design/act-1.md, "The run").
 ;
 ; "Indexed" means the Lattice reaches it: lit, on the Steward's map, and routable by its path.
 ;
@@ -27,8 +23,6 @@
 @ 18,31 vellum_waiting_stacks
 @ 20,24 vellum_truth_vashti_note
 @ 18,27 log_vellum_pulped_page
-@ 17,22 defib_gauntlet
-! 17,24 A CRASH CART ON THE OLD QUAY. IT NEVER MADE IT TO MERCY GENERAL.
 #################
 #################
 #################
@@ -51,7 +45,7 @@
       ##m,.....,=~~~~~~~
       ###,..c..L=~~~~~~~
       ###,.....,=~~~~~~~
-      ###L.....,=V~~~~~~
+      ###L.....,=:~~~~~~
       ###,.....,=:___~~~
       ###,..C..,=:__T~~~
       ##dW.....,S:_|_~~~

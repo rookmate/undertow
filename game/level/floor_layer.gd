@@ -54,12 +54,18 @@ func _draw() -> void:
 				_gantry(cell)
 			LevelGrid.Floor.CAB:
 				_cab(cell)
+			LevelGrid.Floor.TILE:
+				_ward_tiles(cell)
+			LevelGrid.Floor.ASPHALT:
+				_asphalt(cell)
+			LevelGrid.Floor.STAFF:
+				_lino(cell)
 			LevelGrid.Floor.VOID:
 				_drop(cell)
 
 
 ## Plain floor characters: what a placed thing's cell is drawn as, taken from a neighbour.
-const PLAIN_FLOORS := ".,:_iqnxh"
+const PLAIN_FLOORS := ".,:_iqnxh" + Tiles.HOSPITAL_TILE + Tiles.ASPHALT + Tiles.STAFF_FLOOR
 ## Placed things (people, finds, spawns) stand on whatever floor surrounds them.
 const MARKERS := "TUWwPCckXVO]"
 
@@ -226,3 +232,30 @@ func _water(cell: Vector2i) -> void:
 		var u := rng.randf_range(0.1, 0.7)
 		var v := rng.randf_range(0.1, 0.9)
 		draw_line(_at(cell, u, v), _at(cell, u + rng.randf_range(0.15, 0.3), v), Color(Palette.WATER_SHEEN, 0.7), 2.0, true)
+
+
+## Hospital floor: square tiles in two greys with dark grout, a scuff here and there.
+func _ward_tiles(cell: Vector2i) -> void:
+	draw_colored_polygon(Iso.cell_diamond(cell), look.grout)
+	var rng := _rng(cell, 7)
+	var step := 1.0 / 3.0
+	for i: int in 3:
+		for j: int in 3:
+			var base := look.ground_a if (i + j) % 2 == 0 else look.ground_b
+			draw_colored_polygon(_sub_diamond(cell, i * step, j * step, step, 0.035), base.darkened(rng.randf_range(0.0, 0.08)))
+
+
+## The ambulance yard: dark asphalt with worn bay lines.
+func _asphalt(cell: Vector2i) -> void:
+	draw_colored_polygon(Iso.cell_diamond(cell), look.asphalt)
+	if (cell.x + cell.y) % 3 == 0:
+		draw_line(_at(cell, 0.5, 0.05), _at(cell, 0.5, 0.95), Color(Palette.YARD_PAINT, 0.18), 2.0, true)
+
+
+## Lino laid by people: warm, scuffed, in long strips.
+func _lino(cell: Vector2i) -> void:
+	draw_colored_polygon(Iso.cell_diamond(cell), look.staff_floor)
+	for k: int in 3:
+		var v := (k + 1) * 0.25
+		draw_line(_at(cell, 0.0, v), _at(cell, 1.0, v), Color(Palette.NEAR_BLACK, 0.18), 1.0, true)
+
