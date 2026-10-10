@@ -67,6 +67,11 @@ func water_level() -> float:
 	return 0.0
 
 
+## A boss is fighting in this district now.
+func boss_fighting() -> bool:
+	return level != null and is_instance_valid(level.boss) and level.boss.is_fighting and level.boss.is_alive()
+
+
 ## How fast you can move on this cell (1 on dry ground).
 func footing(cell: Vector2i) -> float:
 	return WADE if is_flooded(cell) else 1.0
@@ -77,7 +82,9 @@ func enter(next: Phase) -> void:
 	_phase_time = 0.0
 	_sting_in = 0.0
 	if next == Phase.SWELL:
-		Narrator.say_fixed("tide_swell")
+		# While a boss fights, its calls have the Steward's voice (the Lung's island is high ground).
+		if not boss_fighting():
+			Narrator.say_fixed("tide_swell")
 		Sound.play(&"tide_swell")
 	phase_changed.emit(next)
 

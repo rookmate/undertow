@@ -532,4 +532,13 @@ Asked of the user on 2026-10-09 and answered the same day.
      code (Conversations.TRUST: +2 / −1, or nothing), not content; nothing changes unless both of them
      are here; malformed content is reported, never crashed on; and Noor and Teo speak in Barlow, not
      the Steward's serif (a test keeps that serif the Steward's alone).
+139. **Act 2 review, round 2.** **A warning being said is never cut off** but by a boss's own call: any
+     other line (pooled narration, a fixed line, another warning) isn't said while it lasts
+     (Narrator.warning_in_progress, at the shared boundary). A boss's calls may cut in, and its fight
+     spaces them so they never cut each other (CALL_GAPS). **The tide keeps quiet while a boss fights**
+     in its district: in Greywater the Lung's calls have the voice (its island is high ground; the tide
+     still turns and the gauges still show it). **New default bindings never take a player's earlier
+     choice:** loading settings saved before an action existed (Act 1's, with Dodge on Q or LB),
+     the saved choice stays and the new action's default moves to the first free spare (F, R, G, C, X
+     on the keyboard; RB, B on a pad).
 

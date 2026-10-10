@@ -62,8 +62,7 @@ func notify(event: StringName, level: String = "") -> String:
 		return ""
 	if not purpose_allowed(selector.purpose_of(event)):
 		return ""
-	# A warning being said is never cut off by narration: it's what you need to hear in full.
-	if selector.purpose_of(event) != LineSelector.WARNING and VoiceLines.purpose_of(Sound.voice_line) == LineSelector.WARNING and Sound.voice_left() > 0.0:
+	if warning_in_progress():
 		return ""
 	# "Stop praising me": and no drift toward the voice you like to hear.
 	var plain := GameState.has_override(Overrides.NO_PRAISE)
@@ -99,10 +98,13 @@ func purpose_allowed(purpose: StringName) -> bool:
 
 ## A one-off line, voiced and subtitled. One of the Steward's own lines is judged by its own purpose
 ## (VoiceLines.purpose_of), whatever the caller says; `purpose` only counts for text that isn't one of
-## them. Returns whether it was said.
-func speak_text(line_id: String, text: String, purpose: StringName) -> bool:
+## them. While a warning is being said nothing else is, unless `urgent` (a boss's call, which its fight
+## spaces so it never cuts its own: Boss.CALL_GAPS). Returns whether it was said.
+func speak_text(line_id: String, text: String, purpose: StringName, urgent: bool = false) -> bool:
 	var known := VoiceLines.purpose_of(line_id)
 	if not allows(known if known != &"" else purpose):
+		return false
+	if warning_in_progress() and not urgent:
 		return false
 	_last_spoken_at = _clock
 	last_line_id = line_id
@@ -110,10 +112,15 @@ func speak_text(line_id: String, text: String, purpose: StringName) -> bool:
 	return true
 
 
-## A line from data/narration/steward_fixed.json. Returns whether it was said.
-func say_fixed(line_id: String) -> bool:
+## A line from data/narration/steward_fixed.json (`urgent`: see speak_text). Returns whether it was said.
+func say_fixed(line_id: String, urgent: bool = false) -> bool:
 	var text := VoiceLines.fixed(line_id)
-	return text != "" and speak_text(line_id, text, VoiceLines.purpose(line_id))
+	return text != "" and speak_text(line_id, text, VoiceLines.purpose(line_id), urgent)
+
+
+## A warning is being said: it's what you need to hear in full, so nothing cuts it off but a boss's call.
+func warning_in_progress() -> bool:
+	return Sound.voice_line != "" and VoiceLines.purpose_of(Sound.voice_line) == LineSelector.WARNING and Sound.voice_left() > 0.0
 
 
 ## A screen's voice-over (a core card, a memory log, the loadout nudge), judged by the line's own
