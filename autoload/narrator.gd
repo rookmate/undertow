@@ -125,13 +125,14 @@ func warning_in_progress() -> bool:
 
 ## A screen's voice-over (a core card, a memory log, the loadout nudge), judged by the line's own
 ## purpose: the text is already on screen, so it's voiced, not subtitled. On the Ark's screens the
-## Steward is with you whenever it's listening. Returns whether it was said.
+## Steward is with you whenever it's listening. Like any line, it waits for a warning being said.
+## Returns whether it was said.
 func voice_over(line_id: String) -> bool:
 	var purpose := VoiceLines.purpose_of(line_id)
 	if purpose == &"":
 		Diagnostics.error("Narrator: %s isn't one of the Steward's lines" % line_id)
 		return false
-	if not Steward.voice_on or not purpose_allowed(purpose):
+	if not Steward.voice_on or not purpose_allowed(purpose) or warning_in_progress():
 		return false
 	last_line_id = line_id
 	Sound.say(line_id)

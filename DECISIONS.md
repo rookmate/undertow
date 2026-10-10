@@ -550,4 +550,7 @@ Asked of the user on 2026-10-09 and answered the same day.
      spare is taken, the new action takes a default the player's choices freed, or failing that any free
      face, shoulder or stick button or letter. **Prompts follow rebinding live** on the Clinic's screen
      too (rebinding in Options over it, or switching device).
+141. **Act 2 review, round 4.** A screen's voice-over (a core card, a record) waits for a warning being
+     said like every other line, and **leaving a district stops a warning about it** (its hazard is
+     behind you), so the next screen's voice is heard.
 

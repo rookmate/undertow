@@ -131,3 +131,24 @@ func test_the_tide_keeps_quiet_while_the_lung_fights() -> void:
 	level.queue_free()
 	await wait_frames(2)
 
+
+## Nor by a screen's voice-over; and a warning about a place stops when you leave it.
+func test_a_voice_over_waits_and_leaving_ends_the_warning() -> void:
+	GameState.new_run()
+	Steward.set_voice(true)
+	Steward.set_coverage(true)
+	var level := (load("res://tests/fixtures/editor_arena.tscn") as PackedScene).instantiate() as Level
+	add_child(level)
+	await wait_frames(3)
+	await wait_physics_frames(roundi(StewardWatch.ENTER_DELAY * 60.0) + 10)
+	Sound.hush()
+	check(Narrator.say_fixed("tide_swell"), "a warning")
+	check_false(Narrator.voice_over(VoiceLines.core_line("greywater_power_pumps")), "a card's voice-over waits")
+	check_false(Narrator.voice_over(VoiceLines.log_line("log_the_plaque")), "and a record's")
+	check_eq(Sound.voice_line, "tide_swell", "the warning is still being said")
+	level.queue_free()
+	await wait_frames(2)
+	check_eq(Sound.voice_line, "", "left behind, it stops")
+	check(Narrator.voice_over(VoiceLines.core_line("greywater_power_pumps")), "and the next screen's voice-over is said")
+	Sound.hush()
+

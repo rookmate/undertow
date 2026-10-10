@@ -168,6 +168,9 @@ func _exit_tree() -> void:
 		Steward.voice_changed.disconnect(_on_voice_changed)
 	Engine.time_scale = 1.0
 	Steward.set_coverage(true)
+	# A warning about this place is moot once you've left it.
+	if Narrator.warning_in_progress():
+		Sound.hush()
 
 
 # --- Hooks (the Ark overrides these) --------------------------------------------------------------
