@@ -25,4 +25,8 @@ const TRUST_MIN := -10
 const TRUST_MAX := 10
 
 ## Workshop upgrades per weapon mode.
+## Field dressings (the Clinic): how many you can carry, and the Integrity each gives back.
+const DRESSINGS_MAX := 3
+const DRESSING_HEAL := 40.0
+
 const UPGRADE_LEVELS := 2

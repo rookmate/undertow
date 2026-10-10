@@ -40,7 +40,7 @@ func problem() -> String:
 
 func expected() -> Array[String]:
 	var out := super()
-	out.append_array(["campaign_saved_and_continued", "order_carried_to_tideworks", "order_carried_to_mercy", "order_carried_to_vellum", "campaign_done"])
+	out.append_array(["campaign_saved_and_continued", "order_carried_to_tideworks", "order_carried_to_mercy", "order_carried_to_vellum", "dressing_used", "campaign_done"])
 	for route: AutopilotRoute in routes:
 		route.long_run = true
 		out.append_array(route.tagged_checks())
@@ -66,7 +66,23 @@ func on_level(level: Level, gen: int) -> void:
 	if _at >= 2:
 		var a := Steward.assists()
 		Autopilot.check(GameState.has_override(ORDER) and a.aim_overridden and a.aim_assist == 0.0, "order_carried_to_" + route.id)
+	if GameState.run.dressings > 0:
+		_dress_wounds(level, gen)
 	route.drive(level, gen)
+
+
+## With the Clinic's dressings in the pack, put one on when hurt (the way a player would).
+func _dress_wounds(level: Level, gen: int) -> void:
+	var p := level.player
+	while not Autopilot.stale(gen) and is_instance_valid(p):
+		if p.is_alive() and p.integrity.value < p.integrity.max_value and GameState.run.dressings > 0:
+			var before := GameState.run.dressings
+			var hurt := p.integrity.value
+			Autopilot.tap(&"use_item")
+			if await Autopilot.wait(0.3, gen) and GameState.run.dressings < before:
+				print("[autopilot] dressing on at %d integrity, now %d" % [roundi(hurt), roundi(p.integrity.value)])
+				Autopilot.pass_check("dressing_used")
+		await Autopilot.wait(0.25, gen)
 
 
 func on_core_choice(screen: Node, gen: int) -> void:

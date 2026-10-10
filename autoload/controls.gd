@@ -28,6 +28,7 @@ const BINDINGS: Dictionary[StringName, Array] = {
 	&"dodge": [["key", KEY_SPACE], ["pad_button", JOY_BUTTON_A]],
 	&"interact": [["key", KEY_E], ["pad_button", JOY_BUTTON_X]],
 	&"voice_toggle": [["key", KEY_V], ["pad_button", JOY_BUTTON_Y]],
+	&"use_item": [["key", KEY_Q], ["pad_button", JOY_BUTTON_LEFT_SHOULDER]],
 	&"pause": [["key", KEY_ESCAPE], ["pad_button", JOY_BUTTON_START]],
 	&"debug_overlay": [["key", KEY_F3]],
 }
@@ -36,13 +37,13 @@ const BINDINGS: Dictionary[StringName, Array] = {
 ## reached on a pad through the Back+R3 chord handled below.
 const GAMEPLAY_ACTIONS: Array[StringName] = [
 	&"move_left", &"move_right", &"move_up", &"move_down",
-	&"attack_primary", &"attack_secondary", &"dodge", &"interact", &"voice_toggle", &"pause",
+	&"attack_primary", &"attack_secondary", &"dodge", &"interact", &"voice_toggle", &"use_item", &"pause",
 ]
 
 ## Actions the player can rebind (Options). Pause stays on Esc / Start so nobody can lock themselves out.
 const REBINDABLE: Array[StringName] = [
 	&"move_up", &"move_down", &"move_left", &"move_right",
-	&"attack_primary", &"attack_secondary", &"dodge", &"interact", &"voice_toggle",
+	&"attack_primary", &"attack_secondary", &"dodge", &"interact", &"voice_toggle", &"use_item",
 ]
 
 ## Prompt labels for actions whose prompt isn't read off their bindings. Placeholder text glyphs until

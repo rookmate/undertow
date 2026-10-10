@@ -40,6 +40,7 @@ const STEWARD_ALLOWED: Dictionary[String, String] = {
 	"res://game/bosses/crane.gd": "the Crane is the Steward's last working crane: its core and its gilt are the Steward's",
 	"res://game/level/ward_seal.gd": "the seal across a ward door is the Steward's lock",
 	"res://game/bosses/surgeon.gd": "the Surgeon's operating lamp and the guide line it lays are the Steward's light",
+	"res://ui/ark/clinic_screen.gd": "the Steward's present-day comment on a triage record (its narration)",
 }
 
 const SCAN_ROOTS: Array[String] = ["res://autoload", "res://core", "res://game", "res://ui", "res://data"]

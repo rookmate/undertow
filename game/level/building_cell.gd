@@ -5,7 +5,7 @@ extends Node2D
 ## windows (human warmth), old-city neon, and the Steward's gilt threaded along the balcony ironwork,
 ## which dies when the voice is muted.
 
-enum Facade { PLAIN, DOOR, NEON_MAGENTA, NEON_LIME, ARCHIVE, LAUNDRY, SIGNAL_ROOM, WORKSHOP, HOSPITAL, HOSPITAL_DOOR }
+enum Facade { PLAIN, DOOR, NEON_MAGENTA, NEON_LIME, ARCHIVE, LAUNDRY, SIGNAL_ROOM, WORKSHOP, HOSPITAL, HOSPITAL_DOOR, CLINIC }
 
 const STORY := 74.0
 const STORIES := 3
@@ -133,6 +133,15 @@ func _face(a: Vector2, b: Vector2, h: float, street_side: bool) -> void:
 		if facade == Facade.SIGNAL_ROOM:
 			# Restored and staffed by people: warm windows, and the signal lamps on its mast (below).
 			_window(a, b, base, true, rng)
+			continue
+		if facade == Facade.CLINIC:
+			# Staffed by people: every window warm, and a cross lit in cream over the door (not red:
+			# red-orange is danger, and this is the opposite).
+			_window(a, b, base, true, rng)
+			if story == 2 and street_side:
+				var c := _on_face(a, b, 0.5, base + STORY * 0.5)
+				_glow.poly(PackedVector2Array([c + Vector2(-5, -16), c + Vector2(5, -16), c + Vector2(5, 16), c + Vector2(-5, 16)]), Palette.HUMAN_CREAM)
+				_glow.poly(PackedVector2Array([c + Vector2(-16, -5), c + Vector2(16, -5), c + Vector2(16, 5), c + Vector2(-16, 5)]), Palette.HUMAN_CREAM)
 			continue
 		if facade == Facade.ARCHIVE:
 			# Restored and in use: every window warm, a rose of stained glass over the door.

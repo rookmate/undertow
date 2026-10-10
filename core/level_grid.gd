@@ -30,12 +30,13 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	Tiles.PARTITION: Floor.TILE, Tiles.WARD_SEAL: Floor.TILE, Tiles.AMBULANCE: Floor.ASPHALT,
 	Tiles.NURSE_DESK: Floor.STAFF, Tiles.STERILIZER: Floor.TILE, Tiles.HOSPITAL_WALL: Floor.BUILDING,
 	Tiles.HOSPITAL_DOOR: Floor.BUILDING, Tiles.HOSPITAL_BED: Floor.TILE,
+	Tiles.CLINIC: Floor.BUILDING, Tiles.CLINIC_DOOR: Floor.CONCRETE,
 }
 ## Characters whose cell blocks movement.
 ## Lawns (and the hedges, planters and sprinklers on them) are the Steward's gardens: looked at, not
 ## walked on. The smart gate 'Q' is solid only while closed (SmartGate), so it isn't listed.
 const SOLID := " #dmgAlMI~=-L|KtoRTvHjFbrJ*[^" + Tiles.PARTITION + Tiles.AMBULANCE + Tiles.NURSE_DESK \
-	+ Tiles.HOSPITAL_WALL + Tiles.HOSPITAL_DOOR + Tiles.HOSPITAL_BED
+	+ Tiles.HOSPITAL_WALL + Tiles.HOSPITAL_DOOR + Tiles.HOSPITAL_BED + Tiles.CLINIC
 ## People stand on these cells: walkable floor, but nothing should route through them.
 const OCCUPIED := "WwNY"
 ## Placed things that need a stable id from an '@' line (people, caches, logs).

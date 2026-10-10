@@ -136,8 +136,8 @@ analysis review at the end.
 | 17 | Act 2's design; Noor and Teo join (they arrive on the Ark after the Tideworks, once) | done |
 | 18 | Mercy General: the district (sealed wards, Sterilizers, the night nurses' station); the Defib Gauntlet moves home | done |
 | 19 | The Surgeon (boss); still props stop redrawing every frame | done |
-| 20 | The Clinic: healing items, triage logs | next |
-| 21 | Greywater: the district (the tide, kelp, the thick Marrow, the manual pump room) | |
+| 20 | The Clinic: field dressings (use_item, Q / LB), triage records | done |
+| 21 | Greywater: the district (the tide, kelp, the thick Marrow, the manual pump room) | next |
 | 22 | The Lung (boss) and the Pumphouse | |
 | 23 | The Vellum expanded: the newsroom, the press, Prem Vashti's office, the Editor | |
 | 24 | Companion conversations after each Act 2 district; the campaign through Act 2 | |
@@ -157,8 +157,8 @@ godot --path . -- --debug-overlay    # start with the tracked-state overlay open
 ```
 
 Controls: move WASD / left stick · aim mouse / right stick · weapon 1 LMB (or J) / RT · weapon 2 RMB
-(or K) / LT · dodge Space / A · interact E / X · voice V / Y · pause Esc / Start · overlay F3 /
-Back+R3 (debug builds; F5–F8 debug switches while it's open).
+(or K) / LT · dodge Space / A · interact E / X · voice V / Y · field dressing Q / LB · pause Esc /
+Start · overlay F3 / Back+R3 (debug builds; F5–F8 debug switches while it's open).
 
 ## How to rebuild the sound and the voice
 

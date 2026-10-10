@@ -138,6 +138,22 @@ func change_trust(who: StringName, amount: int) -> void:
 		push_error("GameState.change_trust: unknown companion %s" % who)
 
 
+## Uses a field dressing if there's one. Returns whether there was.
+func use_dressing() -> bool:
+	if run.dressings <= 0:
+		return false
+	run.dressings -= 1
+	state_changed.emit(&"dressings")
+	return true
+
+
+## The Clinic stocks you up (only once it stands).
+func restock_dressings() -> void:
+	if run.buildings_restored.has("clinic") and run.dressings < Tunables.DRESSINGS_MAX:
+		run.dressings = Tunables.DRESSINGS_MAX
+		state_changed.emit(&"dressings")
+
+
 ## Noor and Teo have arrived on the Ark.
 func meet_companions() -> void:
 	if not run.companions_met:
