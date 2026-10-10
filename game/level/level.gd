@@ -619,6 +619,14 @@ func _spawn_boss() -> void:
 			add_enemy(lung, b, Lung.MAX_INTEGRITY)
 			boss = lung
 			_add_weak_point(lung, HandValve.new())
+		"editor":
+			var editor := Editor.new()
+			add_enemy(editor, b, Editor.MAX_INTEGRITY)
+			boss = editor
+			_add_weak_point(editor, BaleStack.new())
+			var rollers := PressRollers.new()
+			rollers.editor = editor
+			fx_ground.add_child(rollers)
 
 
 func _add_weak_point(owner_boss: Boss, point: WeakPoint) -> void:

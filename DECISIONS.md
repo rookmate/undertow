@@ -496,4 +496,15 @@ Asked of the user on 2026-10-09 and answered the same day.
      your back on the screen, or rolling, is the answer, and firing at a Clerk while it flashes means
      looking at it. A place hint on the footbridge says so. The autopilot turns from the Feed like a
      player who knows (a route turns that off to be caught once).
+136. **The Editor** (the Vellum's boss), at the back of the press hall before the Reliquary: the
+     press-room unit that prints and pulps the same page forever (the one the Post never printed).
+     Each cycle: two **rollers** sweep the hall's floor, the first from the press toward the barrier,
+     the second across (turning about each cycle), each with a two-cell gap 2 to 4 tiles along from
+     where you stand. Its run shows in red-orange for 1.4 s (1.7 s muted) and, while the Steward is with
+     you and may warn you, the gap is lit in its gold and called ("Rollers. Stand in the gap; I've lit
+     it."). Run over: 16 damage; roll through it and you're clear. Then it **pulps** the page (1.6 s),
+     **turns the Feed on you** (the Clerks' blind, 12 tiles, 2 s; "Don't look at it.") and throws
+     three bales in a fan, then **re-inks** for 3.5 s: open to blows. 420 integrity. The manual
+     solution: knock the bale stack over the pulper into it while it pulps, and it jams for 6 s, once a
+     cycle.
 

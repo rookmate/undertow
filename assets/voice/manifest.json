@@ -335,6 +335,10 @@
   "hash": "69ee21c7adba6a122c1519e7f9b9e412197abe86",
   "text": "The pier head Reliquary. The port's memory. Take what moves you forward."
  },
+ "VEL_BOSS_N1": {
+  "hash": "4bd9ec23f4c4eed49c6a12c9adf95999f98ccc2d",
+  "text": "The Editor. It's still putting the evening edition to bed. Every word of it was mine."
+ },
  "VEL_ENTER_B1": {
   "hash": "50ca16a8a1a6da3f5b68d14ef83b48c983ba184a",
   "text": "The Vellum. Something's moving up the street. You'll want to meet it."
@@ -350,6 +354,10 @@
  "VEL_ENTER_N2": {
   "hash": "47e1c01711dd37d5371b81a94fcf072918a1160a",
   "text": "The Vellum. I only ever told you what was useful. The Reliquary's over the canal; I'll light the way."
+ },
+ "VEL_RELIQ_N1": {
+  "hash": "c759b408ea6ec47ad70d560fe0c173a4e6b7c64e",
+  "text": "The Vellum's Reliquary. Everything the city ever read, kept for you."
  },
  "VOICE_BACK_B1": {
   "hash": "d76fab21c7f839e676bdbcd7e4366505d592874d",
@@ -494,6 +502,18 @@
  "crane_swing": {
   "hash": "2439b57b0f8b3012a61644cacdbb9b89fffd5fd9",
   "text": "Swing. Get in close to the tower."
+ },
+ "editor_feed": {
+  "hash": "56c5b2082796931b55fe5b18b14eae414542e61a",
+  "text": "It's turning the Feed on you. Don't look at it."
+ },
+ "editor_ink": {
+  "hash": "dab6591750cf3d25171e87e397fee95dc061efa7",
+  "text": "It's re-inking. Now."
+ },
+ "editor_rollers": {
+  "hash": "ecad971e54f2ee519a234714864ce67baf49c31c",
+  "text": "Rollers. Stand in the gap; I've lit it."
  },
  "find_defib_gauntlet": {
   "hash": "d47c551cfafcaf24d8a680fa4e52ab42dd38dd1e",

@@ -3,9 +3,10 @@ extends AutopilotRoute
 ## Reliquary with a detour into the overflow stacks (muted: the slip, the truth core, two of the
 ## Waiting); over the footbridge to the newsroom, where a Clerk turns the Feed on you (looked at, it
 ## washes the world out; turned from, it doesn't); muted, down the stair to the deep stacks and Prem
-## Vashti's office (her last note, a tube carrier nobody opened, one of the Waiting); through the press
-## hall to the Reliquary. Both of her notes carried, then the Ark with its Archive restored: replay them,
-## talk to Noor, and the dock's map and the run summary.
+## Vashti's office (her last note, a tube carrier nobody opened, one of the Waiting); the Editor in the
+## press hall (the Steward's way: into the gap it lights before each roller, your back to the Feed, at
+## it while it re-inks), then past the barrier to the Reliquary. Both of her notes carried, then the Ark
+## with its Archive restored: replay them, talk to Noor, and the dock's map and the run summary.
 
 const OPENING: Array[String] = [
 	"loadout_shown", "loadout_applied", "level_reached", "player_spawned", "walls_block",
@@ -18,7 +19,9 @@ const THROUGH: Array[String] = [
 	"steward_blind_in_stacks", "found_unindexed_log", "found_truth_core",
 	"woke_survivor_in_stacks", "woke_survivor_in_doorway", "path_over_the_bridge", "newsroom_on_the_lattice",
 	"feed_blinded", "turned_from_the_feed", "woke_in_the_audit_office", "found_the_tube_carrier",
-	"found_vashti_last_note", "route_completed", "arrived_by_reliquary",
+	"found_vashti_last_note", "editor_engaged", "editor_called_the_rollers", "stood_in_the_gap",
+	"kept_its_back_to_the_feed", "editor_inked", "editor_beaten", "barriers_opened", "route_completed",
+	"arrived_by_reliquary",
 	"playstyle_profiled", "core_choice_shown", "five_cards_with_both_vashti_notes", "cores_carried",
 	"level_completed_archive_restored", "saved_after_choice", "ark_reached",
 	"archive_restored_on_the_ark", "noor_and_teo_present", "survivors_on_the_ark", "archive_replayed",
@@ -127,18 +130,96 @@ func drive(level: Level, gen: int) -> void:
 	Autopilot.tap(&"voice_toggle")
 	if not await Autopilot.wait(0.6, gen):
 		return
-	# Through the press hall to the Reliquary.
-	for cell: Vector2i in [Vector2i(27, 11), Vector2i(33, 11), Vector2i(34, 9), Vector2i(37, 9), Vector2i(40, 13), Vector2i(40, 16)]:
+	# Into the press hall and the Editor.
+	for cell: Vector2i in [Vector2i(27, 11), Vector2i(33, 11), Vector2i(34, 9), Vector2i(36, 9)]:
 		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
 			return
 		if level.living_enemies().size() < start_count:
 			pass_check("enemy_killed")
+	var editor := level.boss as Editor
+	if editor == null:
+		return
+	check(await Autopilot.until(func() -> bool: return editor.is_engaged, 3.0, gen), "editor_engaged")
+	await Autopilot.snap("vellum_editor")
+	if not await _fight_editor(level, player, editor, gen):
+		return
+	check(not editor.is_alive(), "editor_beaten")
+	await Autopilot.snap("vellum_editor_down")
+	check(await Autopilot.until(Autopilot.barriers_open, 2.0, gen), "barriers_opened")
+	for cell: Vector2i in [Vector2i(40, 13), Vector2i(40, 16)]:
+		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+			return
 	pass_check("route_completed")
 	check(player.cell().distance_to(Vector2(level.grid.first("R"))) <= 1.5, "arrived_by_reliquary")
 	var p := GameState.run.playstyle_profile
 	check(p.risk + p.caution > 0.0, "playstyle_profiled")
 	await Autopilot.snap("vellum_reliquary")
 	Autopilot.tap(&"interact")
+
+
+## The Steward's way with the Editor: into the gap it lights before each roller; your back to its screen
+## when it turns the Feed on; at it while it re-inks. Gives up after 120 s.
+func _fight_editor(level: Level, player: Operator, editor: Editor, gen: int) -> bool:
+	var flashes: Array[bool] = []
+	level.feed_flashed.connect(func(caught: bool) -> void: flashes.append(caught))
+	var spent := 0.0
+	var frame := 0
+	var snapped_rollers := false
+	while editor.is_alive() and spent < 120.0:
+		if Autopilot.stale(gen):
+			Autopilot.release_all()
+			return false
+		frame += 1
+		if Sound.voice_line == "editor_rollers":
+			pass_check("editor_called_the_rollers")
+		if editor.phase == Editor.Phase.INK:
+			pass_check("editor_inked")
+		var at := player.global_position
+		if editor.phase == Editor.Phase.ROLL and editor.in_gap(Iso.world_to_grid(at)):
+			pass_check("stood_in_the_gap")
+			if not snapped_rollers and editor.roller_at() > Iso.world_to_grid(at).y - 1.5:
+				snapped_rollers = true
+				await Autopilot.snap("vellum_editor_rollers")
+		if editor.is_vulnerable():
+			Autopilot.fight(player, editor, frame)
+			spent += await Autopilot.physics_step()
+			continue
+		Autopilot.release_attacks()
+		var away := Iso.ground_dir_between(editor.global_position, at)
+		var target := editor.global_position + Iso.ground_velocity(away, 2.6)
+		match editor.phase:
+			Editor.Phase.ROLL_WARN, Editor.Phase.ROLL:
+				target = Iso.cell_center(_gap_cell(level, editor, player.cell()))
+			Editor.Phase.FEED_WARN, Editor.Phase.FEED:
+				# Your back to its screen: walk away from it.
+				target = at + Iso.ground_velocity(away, 2.0)
+		if Iso.ground_distance(at, target) > 0.25:
+			Autopilot.press_move(Autopilot.input_for_ground(Iso.ground_dir_between(at, target)))
+		else:
+			Autopilot.press_move(Vector2.ZERO)
+		spent += await Autopilot.physics_step()
+	Autopilot.release_all()
+	check(flashes.has(false), "kept_its_back_to_the_feed")
+	return true
+
+
+## The nearest open cell in the rollers' gap, clear of the press and the pulper.
+func _gap_cell(level: Level, editor: Editor, from: Vector2i) -> Vector2i:
+	var best := from
+	var best_d := INF
+	var h := editor.hall()
+	for y: int in range(int(h.position.y), int(h.end.y)):
+		for x: int in range(int(h.position.x), int(h.end.x)):
+			var c := Vector2i(x, y)
+			if not editor.in_gap(Vector2(c) + Vector2(0.5, 0.5)) or not level.grid.is_walkable(c):
+				continue
+			if Vector2(c).distance_to(Vector2(editor.grid_cell())) < 2.0 or (editor.weak_point != null and c == editor.weak_point.grid_cell()):
+				continue
+			var d := Vector2(c).distance_to(Vector2(from))
+			if d < best_d:
+				best = c
+				best_d = d
+	return best
 
 
 ## In the newsroom a Clerk turns the Feed on you. Look at it and the world washes out; then, knowing,

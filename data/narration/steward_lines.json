@@ -101,6 +101,20 @@
 			"level": "vellum"
 		},
 		{
+			"id": "VEL_BOSS_N1",
+			"event": "boss_engaged",
+			"tone": "neutral",
+			"text": "The Editor. It's still putting the evening edition to bed. Every word of it was mine.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_RELIQ_N1",
+			"event": "reliquary_near",
+			"tone": "neutral",
+			"text": "The Vellum's Reliquary. Everything the city ever read, kept for you.",
+			"level": "vellum"
+		},
+		{
 			"id": "ENTER_N1",
 			"event": "level_enter",
 			"tone": "neutral",

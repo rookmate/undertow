@@ -356,6 +356,18 @@ def build():
     whine = env(tone(0.7, 7800.0), 0.01, None, 0.4)
     hiss = env(bandpass(white(0.5, rng), 3000, 0.8), 0.005, 0.25)
     write("feed_flash", mix((thump, 1.0), (whine, 0.12), (hiss, 0.5)), -8)
+    # The Editor's rollers running over the press hall's floor: a heavy rumble, the drum's seams clacking.
+    rumble = env(lowpass(brown(1.8, rng), 140), 0.08, None, 0.4)
+    seams = [0.0] * n_of(1.8)
+    for k in range(12):
+        at = int((0.05 + k * 0.14) * RATE)
+        for i in range(400):
+            if at + i < len(seams):
+                seams[at + i] += math.exp(-i / 60.0) * rng.uniform(-1, 1)
+    write("press_roll", mix((rumble, 1.0), (bandpass(seams, 900, 1.0), 0.5)), -6)
+    # The pulper taking the page: a wet churn.
+    churn = mul(bandpass(brown(1.6, rng), 420, 0.9), [0.6 + 0.4 * math.sin(2 * math.pi * 3.0 * i / RATE) for i in range(n_of(1.6))])
+    write("pulp_churn", env(churn, 0.1, None, 0.4), -9)
 
 
 if __name__ == "__main__":

@@ -189,9 +189,11 @@ func expect(check_id: String) -> void:
 		_checks[check_id] = false
 
 
+## Marks a check passed (said once in the log, however often a route passes it).
 func pass_check(check_id: String) -> void:
+	if not _checks.get(check_id, false):
+		print("[autopilot] ok: ", check_id)
 	_checks[check_id] = true
-	print("[autopilot] ok: ", check_id)
 
 
 func check(condition: bool, check_id: String) -> void:

@@ -69,6 +69,7 @@ const LEVELS: Dictionary[String, Dictionary] = {
 		"scene": "res://game/level/vellum_street.tscn",
 		"map": "res://data/levels/vellum_street.txt",
 		"restores": "archive",
+		"boss": "editor",
 	},
 }
 
@@ -94,6 +95,7 @@ const BOSSES: Dictionary[String, Dictionary] = {
 	"crane": {"lanes": 0},
 	"surgeon": {"lanes": 0},
 	"lung": {"lanes": 0},
+	"editor": {"lanes": 0},
 }
 
 
