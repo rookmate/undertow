@@ -56,6 +56,10 @@
     "workshop_manual": {
       "text": "You'd rather do it yourself. All right. I'll watch.",
       "purpose": "fact"
+    },
+    "companions_arrive": {
+      "text": "You have company. Noor doesn't trust me. Teo built part of me. Both of them will want something from you.",
+      "purpose": "fact"
     }
   }
 }

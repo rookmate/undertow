@@ -66,6 +66,28 @@ func current_line() -> String:
 	return "I was waiting for it to tell me I could go. Thank you."
 
 
+## Says a line of their own (an arrival, a conversation) for a while.
+func say(line: String, seconds: float) -> void:
+	_line = line
+	_line_left = seconds
+
+
+## Walks through `points` on the Ark at an even pace, taking `seconds` in all, after `delay`.
+func walk_along(points: Array[Vector2], seconds: float, delay: float = 0.0) -> void:
+	var total := 0.0
+	var from := position
+	for p: Vector2 in points:
+		total += Iso.ground_distance(from, p)
+		from = p
+	var t := create_tween()
+	t.tween_interval(delay)
+	from = position
+	for p: Vector2 in points:
+		var leg := seconds * Iso.ground_distance(from, p) / maxf(total, 0.001)
+		t.tween_property(self, "position", p, leg)
+		from = p
+
+
 func spoken_line() -> String:
 	return _line if _line_left > 0.0 else ""
 

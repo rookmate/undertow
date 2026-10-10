@@ -29,9 +29,11 @@ var found_core_ids: Array[String] = []
 # --- Companions ----------------------------------------------------------------------------------------
 var noor_trust: int = 0
 var teo_trust: int = 0
-## Slice decision (DECISIONS.md #8): both wait at the Ark from the start.
+## Still with you (the endings ask this). They only join once Act 1 is done: companions_joined().
 var noor_present: bool = true
 var teo_present: bool = true
+## Noor and Teo have arrived on the Ark (their arrival plays once).
+var companions_met: bool = false
 
 # --- Steward --------------------------------------------------------------------------------------------
 var active_overrides: Array[String] = []
@@ -86,6 +88,17 @@ func is_present(who: StringName) -> bool:
 	return noor_present if who == WHO_NOOR else teo_present
 
 
+## Noor and Teo join in Act 2, once the Tideworks is done (design/act-2.md); before that the Ark is yours
+## alone.
+func companions_joined() -> bool:
+	return levels_completed.has(LevelCatalog.COMPANIONS_JOIN_AFTER)
+
+
+## On the Ark, reacting to the logs, with trust to win or lose: joined and still with you.
+func companion_here(who: StringName) -> bool:
+	return companions_joined() and is_present(who)
+
+
 # --- Serialisation ----------------------------------------------------------------------------------
 func to_dict() -> Dictionary:
 	return {
@@ -104,6 +117,7 @@ func to_dict() -> Dictionary:
 		"teo_trust": teo_trust,
 		"noor_present": noor_present,
 		"teo_present": teo_present,
+		"companions_met": companions_met,
 		"active_overrides": active_overrides.duplicate(),
 		"playstyle_profile": playstyle_profile.to_dict(),
 		"weapons_owned": weapons_owned.duplicate(),
@@ -140,6 +154,7 @@ static func from_dict(d: Dictionary) -> RunState:
 	s.teo_trust = clampi(_int(d.get("teo_trust", 0)), Tunables.TRUST_MIN, Tunables.TRUST_MAX)
 	s.noor_present = _bool(d.get("noor_present", true))
 	s.teo_present = _bool(d.get("teo_present", true))
+	s.companions_met = _bool(d.get("companions_met", false))
 	s.active_overrides = _strings(d.get("active_overrides", []))
 	var profile: Variant = d.get("playstyle_profile", {})
 	s.playstyle_profile = PlaystyleProfile.from_dict(profile if profile is Dictionary else {})

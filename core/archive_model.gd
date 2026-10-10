@@ -44,7 +44,8 @@ static func entries(run: RunState) -> Array[Entry]:
 	return unlocked
 
 
-## Replays a log. Trust moves only the first time, and only for companions who are present.
+## Replays a log. Trust moves only the first time, and only for companions who are here (joined and
+## still with you).
 static func replay(log_id: String) -> Replay:
 	var r := Replay.new()
 	if not GameState.run.logs_unlocked.has(log_id):
@@ -54,10 +55,10 @@ static func replay(log_id: String) -> Replay:
 	if not r.first_time:
 		return r
 	var def := ContentDb.memory_log(log_id)
-	if GameState.run.noor_present:
+	if GameState.run.companion_here(RunState.WHO_NOOR):
 		r.noor_delta = int(def.get("noor", {}).get("trust", 0))
 		GameState.change_trust(RunState.WHO_NOOR, r.noor_delta)
-	if GameState.run.teo_present:
+	if GameState.run.companion_here(RunState.WHO_TEO):
 		r.teo_delta = int(def.get("teo", {}).get("trust", 0))
 		GameState.change_trust(RunState.WHO_TEO, r.teo_delta)
 	return r

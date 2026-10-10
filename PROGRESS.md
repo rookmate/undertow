@@ -125,10 +125,26 @@ caught a leak at exit (sounds started while quitting), now fixed. 317 tests.
 
 **Milestone status: Act 1 is done and reviewed.**
 
+## Milestone 3: Act 2 (in progress)
+
+Mercy General, the Vellum and Greywater, in any order once the Tideworks is done; Noor and Teo join.
+Plan and placeholder design: `design/act-2.md`. Same gates per step, a video per visible step, Sol
+analysis review at the end.
+
+| Step | What | Status |
+|---|---|---|
+| 17 | Act 2's design; Noor and Teo join (they arrive on the Ark after the Tideworks, once) | done |
+| 18 | Mercy General: the district (sealed wards, Sterilizers, the night nurses' station); the Defib Gauntlet moves home | next |
+| 19 | The Surgeon (boss) | |
+| 20 | The Clinic: healing items, triage logs | |
+| 21 | Greywater: the district (the tide, kelp, the thick Marrow, the manual pump room) | |
+| 22 | The Lung (boss) and the Pumphouse | |
+| 23 | The Vellum expanded: the newsroom, the press, Prem Vashti's office, the Editor | |
+| 24 | Companion conversations after each Act 2 district; the campaign through Act 2 | |
+| — | Sol analysis review (reviews/act-2.md), fixes, re-check | |
+
 ## Later milestones (planned)
 
-- **Act 2:** Mercy General (Sterilizers, the Surgeon, the Clinic and healing items), the Vellum
-  expanded (the Editor), Greywater (tide, kelp, the Marrow, the Lung, the Pumphouse).
 - **Act 3:** Harbor Ward (no Lattice, Wardens that hunt, Warden-Prime, the Signal Jammer, Noor's turn,
   the Commons and the Mast), the Spire (no combat), the Council Chamber, the final choice and the three
   epilogues; companions who can leave.

@@ -2,8 +2,11 @@ extends TestCase
 ## The Archive's rules: what is listed, in what order, and when trust moves.
 
 
+## A run that has reached the Vellum: Act 1 done, so Noor and Teo have joined.
 func before_each() -> void:
 	GameState.new_run()
+	for district: String in ["kestrel", "loop", "tideworks"]:
+		GameState.complete_level(district)
 
 
 func _carry(picks: Array[String]) -> void:
@@ -56,6 +59,17 @@ func test_absent_companions_do_not_react() -> void:
 	ArchiveModel.replay("log_0522_feed_adjustment")
 	check_eq(GameState.run.teo_trust, 0, "Teo isn't here to react")
 	check(GameState.run.noor_trust != 0)
+
+
+## Before Act 1 is done they haven't joined: nobody is there to react, and trust stays where it is.
+func test_companions_who_havent_joined_do_not_react() -> void:
+	GameState.new_run()
+	var picks: Array[String] = ["vellum_truth_0522", ContentIds.CORE_TRUTH_STACKS]
+	_carry(picks)
+	check_false(GameState.run.companion_here(RunState.WHO_NOOR) or GameState.run.companion_here(RunState.WHO_TEO))
+	ArchiveModel.replay("log_0522_feed_adjustment")
+	check_eq(GameState.run.noor_trust, 0)
+	check_eq(GameState.run.teo_trust, 0)
 
 
 func test_every_log_has_a_record_and_both_reactions() -> void:

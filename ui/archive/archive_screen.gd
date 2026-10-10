@@ -219,8 +219,8 @@ func _show_aftermath(visible_now: bool, r: ArchiveModel.Replay) -> void:
 	_now_heading.visible = visible_now and listening
 	_now.visible = visible_now and listening
 	_now.text = str(def.get("steward_now", ""))
-	_noor.visible = visible_now and GameState.run.noor_present
-	_teo.visible = visible_now and GameState.run.teo_present
+	_noor.visible = visible_now and GameState.run.companion_here(RunState.WHO_NOOR)
+	_teo.visible = visible_now and GameState.run.companion_here(RunState.WHO_TEO)
 	var noor: Dictionary = def.get("noor", {})
 	var teo: Dictionary = def.get("teo", {})
 	_noor.text = "NOOR%s\n%s" % [_delta_text(r.noor_delta if r != null and r.first_time else 0), noor.get("text", "")]
