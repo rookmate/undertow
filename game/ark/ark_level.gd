@@ -12,12 +12,12 @@ const SURVIVOR_SPOTS := "s"
 ## restored by bringing a district's core home; until then it is an unbuilt slab.
 const PLOTS: Dictionary[String, String] = {"A": "archive", "M": "signal_room", "I": "workshop", Tiles.CLINIC: "clinic", Tiles.PUMPHOUSE: "pumphouse", Tiles.COMMONS: "commons"}
 ## The door belongs to the building it opens.
-const DOORS: Dictionary[String, String] = {"a": "archive", "e": "signal_room", "z": "workshop", Tiles.CLINIC_DOOR: "clinic", Tiles.PUMPHOUSE_DOOR: "pumphouse", Tiles.COMMONS_DOOR: "commons"}
+const DOORS: Dictionary[String, String] = {"a": "archive", "e": "signal_room", "z": "workshop", Tiles.CLINIC_DOOR: "clinic", Tiles.PUMPHOUSE_DOOR: "pumphouse", Tiles.COMMONS_DOOR: "commons", Tiles.COUNCIL_DOOR: "council_chamber"}
 ## What each building's door is.
 const DOOR_KINDS: Dictionary[String, ArkFixture.Kind] = {
 	"archive": ArkFixture.Kind.ARCHIVE_DOOR, "signal_room": ArkFixture.Kind.SIGNAL_DOOR, "workshop": ArkFixture.Kind.WORKSHOP_DOOR,
 	"clinic": ArkFixture.Kind.CLINIC_DOOR, "pumphouse": ArkFixture.Kind.PUMPHOUSE_DOOR,
-	"commons": ArkFixture.Kind.COMMONS_DOOR,
+	"commons": ArkFixture.Kind.COMMONS_DOOR, "council_chamber": ArkFixture.Kind.COUNCIL_DOOR,
 }
 
 ## The arrival lines, in order: who says it ("noor", "teo", or "steward" for its voiced line) and what.
@@ -37,6 +37,9 @@ var noor: ArkFigure
 var teo: ArkFigure
 ## The Wardfolk who came over to the Commons (once it stands).
 var wardfolk: Array[ArkFigure] = []
+## The Council Chamber, once the Spire's Reliquary restores it, and its choice while it's open.
+var council_chamber: CouncilChamber
+var final_choice: FinalChoice
 ## Their arrival is playing.
 var arriving: bool = false
 var city_map: CityMap
@@ -80,6 +83,11 @@ func _populate() -> void:
 			var f := _figure(c, ArkFigure.Who.WARDFOLK, "", true)
 			f.wardfolk_index = wardfolk.size()
 			wardfolk.append(f)
+	var plot := grid.cells_with(Tiles.COUNCIL)
+	if run.buildings_restored.has("council_chamber") and not plot.is_empty():
+		council_chamber = CouncilChamber.new()
+		council_chamber.setup(plot[0], EndingRules.evaluate(run).rewrite)
+		world.add_child(council_chamber)
 	for marker: String in DOORS:
 		if not GameState.run.buildings_restored.has(DOORS[marker]):
 			continue
@@ -232,6 +240,8 @@ func _on_fixture_used(kind: ArkFixture.Kind) -> void:
 		ArkFixture.Kind.COMMONS_DOOR:
 			# The Wardfolk's way of living, brought to the Ark; the Steward has its say about that too.
 			Narrator.say_fixed("commons_note")
+		ArkFixture.Kind.COUNCIL_DOOR:
+			open_final_choice()
 		_:
 			open_city_map()
 
@@ -285,6 +295,16 @@ func open_overrides() -> OverridesScreen:
 	overrides_screen.closed.connect(func() -> void: overrides_screen = null)
 	add_child(overrides_screen)
 	return overrides_screen
+
+
+## The Council Chamber's doors: the final choice.
+func open_final_choice() -> FinalChoice:
+	if final_choice != null:
+		return final_choice
+	final_choice = FinalChoice.new()
+	final_choice.closed.connect(func() -> void: final_choice = null)
+	add_child(final_choice)
+	return final_choice
 
 
 ## The dock: the skiff and the Loop map.

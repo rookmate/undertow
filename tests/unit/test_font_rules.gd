@@ -15,6 +15,8 @@ const NARRATION_ALLOWED: Dictionary[String, String] = {
 	"res://ui/ark/workshop_screen.gd": "the Steward's view on your upgrades",
 	"res://ui/ark/noor_departure.gd": "the Steward's word on Noor going to the Ward",
 	"res://game/props/confession.gd": "what the Steward says in the Spire, written into its glass",
+	"res://ui/epilogue/epilogue.gd": "the Steward's words in the Reboot and Rewrite epilogues",
+	"res://ui/ark/final_choice.gd": "the Steward's word at the Council Chamber's doors",
 }
 const SCAN_ROOTS: Array[String] = ["res://autoload", "res://core", "res://game", "res://ui"]
 

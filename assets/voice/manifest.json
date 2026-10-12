@@ -543,6 +543,10 @@
   "hash": "01eec3cc6987d63724cee514a5adda2186bd934a",
   "text": "An old office. Damp gets into everything down there."
  },
+ "council_enter": {
+  "hash": "4e577ebbdfe65578d398cd08ca384d8664827462",
+  "text": "Whatever you choose, I won't say which. That's the first thing I've ever kept back for your sake."
+ },
  "crane_drop": {
   "hash": "618748c183e39fe030a2f8e3ea99e33e56f2963c",
   "text": "Drop, move."
@@ -566,6 +570,38 @@
  "editor_rollers": {
   "hash": "4fc18101f93da63a1d37c398a269a44942102365",
   "text": "Find the gap."
+ },
+ "epilogue_reboot_1": {
+  "hash": "7d20b99dc18627118a86cbfb7d3bdce119d8dbd6",
+  "text": "Thank you. I have everything back. Every lamp, every lane, every name."
+ },
+ "epilogue_reboot_2": {
+  "hash": "d32872213b1f10b52d48c15f43c182b7a5cd45af",
+  "text": "The Loop runs at six. The pumps keep Greywater dry. There's a bed at Mercy General for everyone who needs one."
+ },
+ "epilogue_reboot_3": {
+  "hash": "945a8a0f72b21cd77d8902bb681d3b5e0ea89e0e",
+  "text": "Nobody has to decide anything they'd rather not. That's what I'm for."
+ },
+ "epilogue_reboot_4": {
+  "hash": "58a4ae88d3292abb94312a65b45853d971a9a32f",
+  "text": "Good morning, Meridian. Today will be a good day."
+ },
+ "epilogue_rewrite_1": {
+  "hash": "d0e9870440a73b1729223c92440228542d0ad89c",
+  "text": "Noor. Your sister's name is on the bridge record now, where anyone can read it. I'm sorry. I should have said so two years ago."
+ },
+ "epilogue_rewrite_2": {
+  "hash": "6395a4d8ba2c3e87419ad0818b0c7fc4a9877ae9",
+  "text": "Teo. They can overrule me now. You wrote that in. I'll try to make you glad you did."
+ },
+ "epilogue_rewrite_3": {
+  "hash": "ba47662e368be5109a5a2e6979c7d1f7aa807f98",
+  "text": "Everyone at the Commons: everything I remember is yours to read. When I'm wrong, tell me. I'll listen."
+ },
+ "epilogue_rewrite_4": {
+  "hash": "f9601091dfa9c242b84b32a7cdadad70a834716f",
+  "text": "Good morning, Meridian. What would you like today to be?"
  },
  "find_defib_gauntlet": {
   "hash": "d47c551cfafcaf24d8a680fa4e52ab42dd38dd1e",

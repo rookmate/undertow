@@ -42,6 +42,7 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	Tiles.NOOR_DOWN: Floor.COBBLE, Tiles.WARD_BOAT: Floor.COBBLE, Tiles.COMMONS: Floor.BUILDING,
 	Tiles.COMMONS_DOOR: Floor.CONCRETE, Tiles.WARDFOLK: Floor.CONCRETE,
 	Tiles.SPIRE_GLASS: Floor.GLASS, Tiles.RACK: Floor.GLASS, Tiles.PANE: Floor.GLASS, Tiles.CONFESSION: Floor.GLASS,
+	Tiles.COUNCIL: Floor.FOUNDATION, Tiles.COUNCIL_DOOR: Floor.CONCRETE,
 }
 ## Characters whose cell blocks movement.
 ## Lawns (and the hedges, planters and sprinklers on them) are the Steward's gardens: looked at, not
@@ -50,7 +51,7 @@ const SOLID := " #dmgAlMI~=-L|KtoRTvHjFbrJ*[^" + Tiles.PARTITION + Tiles.AMBULAN
 	+ Tiles.HOSPITAL_WALL + Tiles.HOSPITAL_DOOR + Tiles.HOSPITAL_BED + Tiles.CLINIC + Tiles.PUMP_WALL \
 	+ Tiles.PUMP_DOOR + Tiles.TURBINE + Tiles.TIDE_GAUGE + Tiles.PUMPHOUSE + Tiles.NEWSROOM_DESK \
 	+ Tiles.BOATHOUSE + Tiles.BOATHOUSE_DOOR + Tiles.LANTERN + Tiles.PILING + Tiles.BRIDGE_STUB + Tiles.WARD_BOAT \
-	+ Tiles.COMMONS + Tiles.RACK + Tiles.PANE
+	+ Tiles.COMMONS + Tiles.RACK + Tiles.PANE + Tiles.COUNCIL
 ## Solid things taller than a chest-height shot, which stop sight, swings and shots (blocks_line): the
 ## Feed kiosk, the stalled tram, the stacks' shelves, the Reliquary, the Tideworks' crane legs, and the
 ## named tall ones (Tiles.TALL). Buildings stop them anyway.

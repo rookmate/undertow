@@ -83,6 +83,9 @@ const COMMONS := "Ц"
 const COMMONS_DOOR := "Ч"
 ## Where the Wardfolk who came over stand, by the Commons (only once it stands).
 const WARDFOLK := "Щ"
+## The Council Chamber (from the Spire), sunk into a foundation behind Noor, and its door.
+const COUNCIL := "Ш"
+const COUNCIL_DOOR := "Й"
 
 # --- The Spire ---------------------------------------------------------------------------------------
 ## Black glass floor, the Steward's own (on the Lattice); a server rack in the cooling halls; a glass pane
@@ -99,7 +102,7 @@ const TALL := AMBULANCE + TURBINE + RACK
 ## Solid named things at waist height or below, or thin: you see, swing and shoot over or past them.
 ## A test keeps every solid tile in one of the two.
 const LOW := PARTITION + NURSE_DESK + HOSPITAL_BED + TIDE_GAUGE + NEWSROOM_DESK + LANTERN + PILING + WARD_BOAT \
-	+ PANE
+	+ PANE + COUNCIL
 
 const BY_NAME: Dictionary[String, String] = {
 	"hospital_tile": HOSPITAL_TILE, "asphalt": ASPHALT, "staff_floor": STAFF_FLOOR, "partition": PARTITION,
@@ -113,6 +116,7 @@ const BY_NAME: Dictionary[String, String] = {
 	"lantern": LANTERN, "piling": PILING, "bridge_stub": BRIDGE_STUB, "warden": WARDEN,
 	"patrol": PATROL, "noor_down": NOOR_DOWN, "ward_boat": WARD_BOAT, "commons": COMMONS, "commons_door": COMMONS_DOOR,
 	"wardfolk": WARDFOLK, "spire_glass": SPIRE_GLASS, "rack": RACK, "pane": PANE, "confession": CONFESSION,
+	"council": COUNCIL, "council_door": COUNCIL_DOOR,
 }
 
 

@@ -684,3 +684,23 @@ Asked of the user on 2026-10-09 and answered the same day.
 162. **Subtitles wrap.** A line wider than 1500 px (at subtitle scale 1) breaks onto rows, centred on
      one backing, the last row where a single line always sits. The Spire's lines are the first long
      enough to need it; before, a long line ran off both sides of the screen.
+163. **The Council Chamber** (restored by the Spire's Reliquary) is sunk into the foundation behind
+     Noor's spot on the Ark, a low round chamber with steps down and its doors on the far rim: the
+     Steward's in gold, a plain grey one, and the Rewrite door in cyan only if the run has earned it
+     (otherwise no third door at all). Its door opens the final choice. Low, it hides nothing behind it.
+164. **The final choice.** Reboot and Unplug are always offered; Rewrite only when its three conditions
+     hold (EndingRules: Noor and Teo both still with you, the voice on for 35–65% of play, five truth
+     cores kept), and otherwise it isn't shown. Picking a door asks once more ("NOT YET" is focused, so
+     an extra press of accept can't end the game); confirming is final: the run's `ending` is saved,
+     its location becomes "ending" (nowhere Continue can go), and the epilogue plays. The Steward's word
+     at the doors: it won't say which.
+165. **The epilogues**, card by card (Endings.EPILOGUES), then the credits, then the title. Accept moves
+     on a card. **Reboot:** its voice, warm and unbroken, its words in its serif and gold, ending the
+     sentence the Quiet cut off ("Good morning, Meridian. Today will be a good day."). **Unplug:**
+     total silence: nothing plays, the ambience and the voice stop and the master bus is muted until it
+     ends; its words are plain type. **Rewrite:** it speaks to Noor, to Teo and to the Commons, in its
+     serif but in the cyan of what was found, not its gold.
+166. **A finished run is kept, not continued.** The title greys out Continue for a run with an ending;
+     New Game starts again. **A Rewrite is remembered past the run** in a small file beside the save
+     (`legacy.json`, untouched by New Game): from then on the title's ring settles with its gap filled
+     in cyan. Automated runs start without it.

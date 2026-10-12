@@ -10,6 +10,7 @@
 ;   o  the Pumphouse (from Greywater)    j  its door
 ;   c  the Commons (from Harbor Ward), on new ground at the back rim   q  its door
 ;   v  where the Wardfolk stand, once the Commons does
+;   u  the Council Chamber (from the Spire), sunk into the foundation behind Noor   x  its door
 ;   N  Noor      Y  Teo      s  where woken survivors stand      p  start (off the skiff)
 ;   ~  water
 ;
@@ -21,15 +22,17 @@
 %  c commons
 %  q commons_door
 %  v wardfolk
+%  u council
+%  x council_door
 ~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~cc~~~~~~~~~
 ~~~~~~~~~~~~~cc~~~~~~~~~
 ~~~~~~~~~~~hhqv~~~~~~~~~
 ~~~~~~~~~MMhhnG~~~~~~~~~
 ~~~~~~AAAMMeknnGn~~~~~~~
-~~~~~~AAAnnnnffnvn~~~~~~
-~~~~~~AAAannnffnnG~~~~~~
-~~~~InnnnnnnnnnnnnG~~~~~
+~~~~~~AAAnnnnuunvn~~~~~~
+~~~~~~AAAannnuunnG~~~~~~
+~~~~InnnnnnnnnxnnnG~~~~~
 ~~~~IznnnnnNnnnffnn~~~~~
 ~~~~Innnnnnnnnnffnn~~~~~
 ~~~oojnnnYnnnnnnnnnG~~~~

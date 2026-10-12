@@ -91,7 +91,7 @@ const LEVELS: Dictionary[String, Dictionary] = {
 		"after": ["harbor"],
 		"scene": "res://game/level/the_spire.tscn",
 		"map": "res://data/levels/the_spire.txt",
-		"restores": "",
+		"restores": "council_chamber",
 	},
 }
 
