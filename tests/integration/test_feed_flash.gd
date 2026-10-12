@@ -110,3 +110,20 @@ func test_a_clerk_throws_a_bale_then_turns_the_feed_on_you() -> void:
 	var expected: Array[String] = ["bale", "flash:true", "bale", "flash:false"]
 	check(clerk.is_alive())
 	check_eq(events, expected, "in turn: looked at, then turned from")
+
+
+## "Reduce flashing" (Options): the white-out comes up over most of a second and only half as bright.
+func test_with_reduced_flashing_it_comes_up_slowly_and_half_as_bright() -> void:
+	Options.reduce_flashing = true
+	await _stand(Vector2i(13, 36), Vector2(0, -1))
+	check(level.flash_feed(Iso.cell_center(Vector2i(13, 31)), Clerk.FLASH_REACH, Clerk.BLIND_SECONDS), "still caught")
+	await wait_frames(ceili(FeedBlind.RISE * 60.0) + 2)
+	check(level.feed_blind.amount() < FeedBlind.GENTLE_PEAK * 0.5, "after the usual rise, barely begun (%.2f)" % level.feed_blind.amount())
+	var most := 0.0
+	for k: int in ceili(Clerk.BLIND_SECONDS * 60.0) + 30:
+		await wait_frames(1)
+		most = maxf(most, level.feed_blind.amount())
+	check_near(most, FeedBlind.GENTLE_PEAK, 0.001, "half as bright at most")
+	check_false(level.feed_blind.is_blinding(), "and it clears")
+	Options.reduce_flashing = false
+

@@ -1,7 +1,8 @@
 extends AutopilotScenario
-## Options from the title with the keyboard or pad: turn a volume down, rebind dodge, and go back.
+## Options from the title with the keyboard or pad: turn a volume down, turn on reduced flashing, rebind
+## dodge, and go back.
 
-const CHECKS: Array[String] = ["options_opened", "options_volume", "options_rebind", "options_closed"]
+const CHECKS: Array[String] = ["options_opened", "options_volume", "options_reduce_flashing", "options_rebind", "options_closed"]
 
 
 func expected() -> Array[String]:
@@ -36,6 +37,15 @@ func on_title(title: Node, gen: int) -> void:
 		if not await Autopilot.wait(0.3, gen):
 			return
 	Autopilot.check(Options.volumes[&"Music"] < Options.VOLUME_DEFAULTS[&"Music"], "options_volume")
+	var flashing: Button = screen.get("_flashing_button")
+	flashing.grab_focus()
+	if not await Autopilot.wait(0.6, gen):
+		return
+	Autopilot.tap(&"ui_accept")
+	if not await Autopilot.wait(0.6, gen):
+		return
+	Autopilot.check(Options.reduce_flashing and flashing.text == "ON", "options_reduce_flashing")
+	await Autopilot.snap("options_reduce_flashing")
 	var dodge_kb: Button = (screen.get("_binding_buttons") as Dictionary)["dodge/kb"]
 	dodge_kb.grab_focus()
 	if not await Autopilot.wait(0.8, gen):

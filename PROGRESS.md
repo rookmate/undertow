@@ -146,11 +146,28 @@ analysis review at the end.
 
 **Milestone status: Act 2 is done and reviewed.**
 
+## Milestone 4: Act 3 and the ending (in progress)
+
+Harbor Ward, the Spire, the Council Chamber and the final choice; the companions can leave. Plan and
+placeholder design: `design/act-3.md`. Same gates per step, a video per visible step, Sol analysis
+review at the end.
+
+| Step | What | Status |
+|---|---|---|
+| 25 | Act 3's design; Reduce flashing (Options, Accessibility) | done |
+| 26 | Harbor Ward: no Lattice, Wardens that hunt, Noor's boat-house and the dashcam; Noor leaves for the Ward | next |
+| 27 | The Signal Jammer | |
+| 28 | Warden-Prime, Noor's turn (carry her or leave her), the border Reliquary, the Commons | |
+| 29 | The Mast; the Commons' people | |
+| 30 | The Spire (no combat; the Steward stops lying); Teo's turn | |
+| 31 | The Council Chamber: the final choice, the three epilogues, the title after Rewrite | |
+| 32 | The campaign to an ending | |
+| — | Sol analysis review (reviews/act-3.md), fixes, re-check | |
+
 ## Later milestones (planned)
 
-- **Act 3:** Harbor Ward (no Lattice, Wardens that hunt, Warden-Prime, the Signal Jammer, Noor's turn,
-  the Commons and the Mast), the Spire (no combat), the Council Chamber, the final choice and the three
-  epilogues; companions who can leave.
+- The art pack (painted sprites in place of the code-drawn placeholders), the voice actor, the writing,
+  GodotSteam (achievements, cloud saves), signed release builds, and testing on real hardware.
 
 ## How to run
 

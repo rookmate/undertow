@@ -31,6 +31,7 @@ var _binding_buttons: Dictionary[String, Button] = {}
 var _window_button: Button
 var _vsync_button: Button
 var _subtitle_button: Button
+var _flashing_button: Button
 var _back: Button
 ## Why the last rebind didn't happen, or "".
 var _status: Label
@@ -66,6 +67,8 @@ func _ready() -> void:
 	_vsync_button = _choice_row(column, "VSYNC", _toggle_vsync)
 	_section(column, "SUBTITLES")
 	_subtitle_button = _choice_row(column, "SIZE", _cycle_subtitles)
+	_section(column, "ACCESSIBILITY")
+	_flashing_button = _choice_row(column, "REDUCE FLASHING", _toggle_flashing)
 	_section(column, "CONTROLS")
 	var head := HBoxContainer.new()
 	head.add_child(_cell(_label("", UiFonts.mono(), 16, Palette.IVORY_DIM), 420))
@@ -173,6 +176,7 @@ func _refresh() -> void:
 	_window_button.text = Options.display_mode.to_upper()
 	_vsync_button.text = "ON" if Options.vsync else "OFF"
 	_subtitle_button.text = Options.subtitle_size.to_upper()
+	_flashing_button.text = "ON" if Options.reduce_flashing else "OFF"
 	for key: String in _binding_buttons:
 		var action := StringName(key.get_slice("/", 0))
 		var slot := key.get_slice("/", 1)
@@ -193,6 +197,11 @@ func _toggle_vsync() -> void:
 func _cycle_subtitles() -> void:
 	var sizes := Options.SUBTITLE_SIZES.keys()
 	Options.subtitle_size = str(sizes[(sizes.find(Options.subtitle_size) + 1) % sizes.size()])
+	_changed()
+
+
+func _toggle_flashing() -> void:
+	Options.reduce_flashing = not Options.reduce_flashing
 	_changed()
 
 
