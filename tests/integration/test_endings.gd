@@ -331,3 +331,29 @@ func test_a_malformed_record_doesnt_hide_its_backup() -> void:
 	check(SaveService.remember_rewrite() == OK)
 	check_eq(SaveService.store.load_record(SaveService.LEGACY, SaveService.legacy_valid).get("rewrite"), true)
 
+
+## A record whose "rewrite" isn't true-or-false is broken too.
+func test_a_mistyped_record_doesnt_hide_its_backup() -> void:
+	check(SaveService.remember_rewrite() == OK)
+	check(SaveService.remember_rewrite() == OK)
+	var f := FileAccess.open(SCRATCH.path_join("legacy.json"), FileAccess.WRITE)
+	f.store_string("{\"version\": 1, \"rewrite\": \"yes\"}")
+	f.close()
+	check(SaveService.rewritten(), "the backup answers for it")
+
+
+## The finished Rewrite only in the slot's backup (a newer run saved over it some other way) still
+## counts, and the next save writes the record down before anything rotates it away.
+func test_a_rewrite_in_the_backup_still_counts() -> void:
+	_earn_rewrite()
+	GameState.choose_ending(Endings.REWRITE)
+	check(SaveService.store.save(GameState.run) == OK)
+	var next := RunState.new()
+	check(SaveService.store.save(next) == OK, "a newer run on top: the Rewrite is the backup now")
+	check(SaveService.store.load_record(SaveService.LEGACY, SaveService.legacy_valid).is_empty(), "no record")
+	check(SaveService.rewritten(), "the backup says so")
+	check(SaveService.save_run(next) == OK)
+	check_eq(SaveService.store.load_record(SaveService.LEGACY, SaveService.legacy_valid).get("rewrite"), true, "written down before the backup rotated away")
+	check(SaveService.save_run(next) == OK)
+	check(SaveService.rewritten(), "still remembered once it's gone")
+
