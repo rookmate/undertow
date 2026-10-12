@@ -30,17 +30,37 @@ func setup(owner_level: Level, canvas_modulate: CanvasModulate) -> void:
 	layer.add_child(rect)
 	level.add_child(layer)
 	Steward.voice_changed.connect(_on_voice_changed)
-	_apply_instantly(Steward.voice_on)
+	Steward.coverage_changed.connect(_on_coverage_changed)
+	_apply_instantly(steward_lit())
 
 
 func _exit_tree() -> void:
 	if Steward.voice_changed.is_connected(_on_voice_changed):
 		Steward.voice_changed.disconnect(_on_voice_changed)
+	if Steward.coverage_changed.is_connected(_on_coverage_changed):
+		Steward.coverage_changed.disconnect(_on_coverage_changed)
+
+
+## The Steward's light is on: its voice is, and (where the Lattice doesn't reach into the district at all)
+## it's on its own hardware. In Harbor Ward the light is yours until the border, voice on or off.
+func steward_lit() -> bool:
+	return Steward.voice_on and (level.has_lattice() or Steward.covered)
+
+
+func _on_coverage_changed(_covered: bool) -> void:
+	if not level.has_lattice():
+		_on_voice_changed(Steward.voice_on)
+
+
+## The cold grade marks the Steward's absence from its own city. Where the Lattice never reached
+## (Harbor Ward) there's nothing missing: the light is the Wardfolk's, and it's never graded.
+func _grade_for(on: bool) -> float:
+	return 0.0 if on or not level.has_lattice() else 1.0
 
 
 func _apply_instantly(on: bool) -> void:
 	ambient.color = level.look.ambient_on if on else level.look.ambient_muted
-	_grade_amount = 0.0 if on else 1.0
+	_grade_amount = _grade_for(on)
 	grade.set_shader_parameter(&"amount", _grade_amount)
 	for lamp: LampPost in _lamps():
 		lamp.lit = on
@@ -52,13 +72,14 @@ func _apply_instantly(on: bool) -> void:
 		level.player.set_carried_light(not on)
 
 
-func _on_voice_changed(on: bool) -> void:
+func _on_voice_changed(_voice: bool) -> void:
+	var on := steward_lit()
 	_sequence += 1
 	var seq := _sequence
 	var t := create_tween()
 	t.set_parallel(true)
 	t.tween_property(ambient, "color", level.look.ambient_on if on else level.look.ambient_muted, FADE_SECONDS)
-	t.tween_method(_set_grade, _grade_amount, 0.0 if on else 1.0, FADE_SECONDS)
+	t.tween_method(_set_grade, _grade_amount, _grade_for(on), FADE_SECONDS)
 	for b: Node in get_tree().get_nodes_in_group(&"gilt"):
 		# Anything carrying the gilt (buildings, crane legs) lights and dies with the Steward.
 		if "gilt_lit" in b:

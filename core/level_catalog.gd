@@ -71,6 +71,18 @@ const LEVELS: Dictionary[String, Dictionary] = {
 		"restores": "archive",
 		"boss": "editor",
 	},
+	"harbor": {
+		"name": "Harbor Ward",
+		"act": 3,
+		# Opens once two of Act 2's three are done; the third stays open, and optional (design/act-3.md).
+		"after_any": ["mercy", "vellum", "greywater"],
+		"after_count": 2,
+		"scene": "res://game/level/harbor_ward.tscn",
+		"map": "res://data/levels/harbor_ward.txt",
+		"restores": "",
+		# The Wardfolk wired their own: no Lattice anywhere in it but the ferry slip and the border.
+		"lattice": false,
+	},
 }
 
 ## Every district of Meridian for the Loop map, built or not, with its place on the map (0..1 across and
@@ -141,7 +153,7 @@ static func check(grids: Dictionary[String, LevelGrid]) -> PackedStringArray:
 	var placed_in: Dictionary[String, String] = {}
 	for level_id: String in grids:
 		var grid := grids[level_id]
-		for p: String in grid.validate(false) + grid.content_problems():
+		for p: String in grid.validate(false, has_lattice(level_id)) + grid.content_problems():
 			problems.append("%s: %s" % [level_id, p])
 		for c: Vector2i in grid.entity_ids:
 			var id := grid.entity_ids[c]
@@ -220,14 +232,22 @@ static func _within_reach(reach: Dictionary[Vector2i, bool], cell: Vector2i) -> 
 	return false
 
 
-## A district can be travelled to once every district before it is done.
+## A district can be travelled to once every district before it ("after") is done, and enough of the
+## ones it needs some of ("after_any", "after_count": Harbor Ward, after two of Act 2's three).
 static func is_open(run: RunState, level_id: String) -> bool:
 	if not has_level(level_id):
 		return false
 	for before: Variant in LEVELS[level_id].get("after", []):
 		if not run.levels_completed.has(str(before)):
 			return false
-	return true
+	var any: Array = LEVELS[level_id].get("after_any", [])
+	var done := any.filter(func(d: Variant) -> bool: return run.levels_completed.has(str(d))).size()
+	return done >= int(LEVELS[level_id].get("after_count", 0))
+
+
+## Whether the Lattice reaches into a district at all (Harbor Ward's people wired their own).
+static func has_lattice(level_id: String) -> bool:
+	return bool(LEVELS.get(level_id, {}).get("lattice", true))
 
 
 ## Districts open and not yet done, in the order they're listed.

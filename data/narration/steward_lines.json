@@ -661,6 +661,20 @@
 			"tone": "neutral",
 			"text": "The Lung. It's still running the tide tables for everyone. Let it breathe.",
 			"level": "greywater"
+		},
+		{
+			"id": "HARBOR_ENTER_N1",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "Harbor Ward. There's nothing of mine past the slip. I can't follow you in.",
+			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_RELIQ_N1",
+			"event": "reliquary_near",
+			"tone": "neutral",
+			"text": "The depot's Reliquary. The curfew's records. I'm glad to have you back.",
+			"level": "harbor"
 		}
 	]
 }

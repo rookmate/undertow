@@ -111,11 +111,15 @@ func _on_discovered(cells: Array[Vector2i]) -> void:
 			_chunks[k].queue_redraw()
 
 
+## Where the Lattice doesn't reach into the district (Harbor Ward) the Steward has no map to show, voice
+## on or off: the map is your own hand scan.
 func mode() -> Assists.MapMode:
-	return Steward.assists().map_mode
+	return Steward.assists().map_mode if level == null or level.has_lattice() else Assists.MapMode.HAND_SCAN
 
 
 func charted_label() -> String:
+	if level != null and not level.has_lattice():
+		return "HAND SCAN · NO LATTICE · %d%%" % roundi(level.exploration.charted_ratio() * 100.0)
 	if Steward.assists().signal_lost:
 		return "STEWARD MAP · SIGNAL LOST"
 	if mode() == Assists.MapMode.STEWARD:
@@ -189,8 +193,8 @@ func draw_marks(ci: CanvasItem) -> void:
 		# What you found yourself, in its own colour, wherever it was.
 		for c: Vector2i in level.found_cache_cells():
 			ci.draw_circle(to_map(Vector2(c) + Vector2(0.5, 0.5)), 4.0, Palette.TRUTH_CYAN, true, -1.0, true)
-	# Off the Lattice the Steward's map can't place you.
-	if not Steward.assists().signal_lost:
+	# Off the Lattice the Steward's map can't place you (your own scan always can).
+	if mode() == Assists.MapMode.HAND_SCAN or not Steward.assists().signal_lost:
 		ci.draw_circle(to_map(Iso.world_to_grid(level.player.global_position)), 4.0, Palette.IVORY, true, -1.0, true)
 
 

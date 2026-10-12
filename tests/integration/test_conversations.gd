@@ -113,5 +113,6 @@ func test_the_screen_answers_once_and_backing_out_leaves_it_for_later() -> void:
 
 func test_the_loop_map_says_what_is_still_to_come() -> void:
 	var names := CityMap.still_to_come()
-	check(names.has("Harbor Ward") and names.has("The Spire"), "Act 3's districts: %s" % [names])
-	check_false(names.has("The Vellum"), "and not the ones you can already reach")
+	check(not names.is_empty(), "something's still to come: %s" % [names])
+	for d: Dictionary in LevelCatalog.CITY:
+		check_eq(names.has(str(d["name"])), not LevelCatalog.has_level(str(d["id"])), "%s: listed only while it isn't built" % d["name"])

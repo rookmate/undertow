@@ -28,7 +28,7 @@ func test_every_district_has_a_route() -> void:
 		check(names.has("route_completed") and names.has("ark_reached"), "%s is played through to the Ark" % id)
 		for c: String in names:
 			check_eq(names.count(c), 1, "%s's check %s is listed once" % [id, c])
-	check(AutopilotRoute.for_district("harbor") == null, "a district not built has no route")
+	check(AutopilotRoute.for_district("nowhere") == null, "what isn't a district has no route")
 
 
 func test_the_campaign_checks_each_district_by_name() -> void:

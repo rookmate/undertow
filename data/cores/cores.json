@@ -31,6 +31,11 @@
 			"greywater_power_pumps",
 			"greywater_power_seawall",
 			"greywater_truth_drain_order"
+		],
+		"harbor": [
+			"harbor_power_curfew",
+			"harbor_power_wardens",
+			"harbor_truth_council_order"
 		]
 	},
 	"cores": {
@@ -233,6 +238,38 @@
 			"blurb": "Wired behind a brass plaque on the pump room wall, where someone hid it.",
 			"steward": "Old brass. Sentiment.",
 			"log": "log_the_plaque"
+		},
+		"harbor_power_curfew": {
+			"kind": "power",
+			"name": "Curfew Core",
+			"origin": "The Harbor Ward border depot",
+			"blurb": "Every curfew the city ever had, and who kept it. No entry after 22:00.",
+			"steward": "Order is a kindness, you know. People sleep better behind it.",
+			"log": "log_2200_curfew"
+		},
+		"harbor_power_wardens": {
+			"kind": "power",
+			"name": "Warden Core",
+			"origin": "The Harbor Ward border depot",
+			"blurb": "The Warden network: every patrol, every beat, every red eye on the border.",
+			"steward": "Take it. Nothing at that border will stop you again.",
+			"log": "log_warden_network"
+		},
+		"harbor_truth_council_order": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "The border depot, filed with the curfew records",
+			"blurb": "A dull cracked sphere, filed where nobody would think to look. Labelled 0700.",
+			"steward": "I'd rather you didn't. It won't change anything now.",
+			"log": "log_0700_council_order"
+		},
+		"harbor_truth_dashcam": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "Noor's boat-house, Net Lane",
+			"blurb": "A dashcam's memory card wired into a core by hand. Taped in cyan.",
+			"steward": "Footage. It doesn't show what I knew.",
+			"log": "log_dashcam_bridge"
 		}
 	}
 }

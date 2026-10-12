@@ -5,7 +5,7 @@ extends Node2D
 ## windows (human warmth), old-city neon, and the Steward's gilt threaded along the balcony ironwork,
 ## which dies when the voice is muted.
 
-enum Facade { PLAIN, DOOR, NEON_MAGENTA, NEON_LIME, ARCHIVE, LAUNDRY, SIGNAL_ROOM, WORKSHOP, HOSPITAL, HOSPITAL_DOOR, CLINIC, PUMPING_STATION, PUMPING_STATION_DOOR, PUMPHOUSE }
+enum Facade { PLAIN, DOOR, NEON_MAGENTA, NEON_LIME, ARCHIVE, LAUNDRY, SIGNAL_ROOM, WORKSHOP, HOSPITAL, HOSPITAL_DOOR, CLINIC, PUMPING_STATION, PUMPING_STATION_DOOR, PUMPHOUSE, BOATHOUSE, BOATHOUSE_DOOR, BRIDGE_STUB }
 
 const STORY := 74.0
 const STORIES := 3
@@ -110,6 +110,12 @@ func _face(a: Vector2, b: Vector2, h: float, street_side: bool) -> void:
 		return
 	if facade == Facade.PUMPING_STATION or facade == Facade.PUMPING_STATION_DOOR:
 		_pump_face(a, b, h, street_side)
+		return
+	if facade == Facade.BOATHOUSE or facade == Facade.BOATHOUSE_DOOR:
+		_boathouse_face(a, b, h, street_side, rng)
+		return
+	if facade == Facade.BRIDGE_STUB:
+		_bridge_face(a, b, h)
 		return
 	var mortar := Color(Palette.NEAR_BLACK, 0.16)
 	var v := 12.0
@@ -266,6 +272,42 @@ func _pump_face(a: Vector2, b: Vector2, h: float, street_side: bool) -> void:
 		var door := PackedVector2Array([_on_face(a, b, 0.22, 0.0), _on_face(a, b, 0.68, 0.0), _on_face(a, b, 0.68, 70.0), _on_face(a, b, 0.22, 70.0)])
 		_base.poly(door, Palette.IRON_DARK.lightened(0.1))
 		_base.line(_on_face(a, b, 0.45, 0.0), _on_face(a, b, 0.45, 70.0), Palette.NEAR_BLACK, 2.0)
+
+
+## A Harbor Ward boat-house: tarred clapboard, a few small windows lit cyan by the Wardfolk's own wiring
+## (never gold: there's nothing of the Steward here), a hand-painted sign, a cable strung off the eave.
+func _boathouse_face(a: Vector2, b: Vector2, h: float, street_side: bool, rng: RandomNumberGenerator) -> void:
+	var v := 9.0
+	while v < h - PARAPET:
+		_base.line(_on_face(a, b, 0.0, v), _on_face(a, b, 1.0, v), Color(Palette.NEAR_BLACK, 0.22), 1.0)
+		v += 9.0
+	for story: int in STORIES:
+		if rng.randf() < (0.5 if street_side else 0.25):
+			var u := rng.randf_range(0.2, 0.6)
+			var w := PackedVector2Array([_on_face(a, b, u, story * STORY + 30.0), _on_face(a, b, u + 0.18, story * STORY + 30.0), _on_face(a, b, u + 0.18, story * STORY + 52.0), _on_face(a, b, u, story * STORY + 52.0)])
+			_glow.poly(w, Color(Palette.WARD_CYAN, 0.75))
+	if facade == Facade.BOATHOUSE_DOOR and street_side:
+		var door := PackedVector2Array([_on_face(a, b, 0.3, 0.0), _on_face(a, b, 0.7, 0.0), _on_face(a, b, 0.7, 60.0), _on_face(a, b, 0.3, 60.0)])
+		_base.poly(door, Palette.BOATHOUSE_SHADE.darkened(0.3))
+		_glow.line(_on_face(a, b, 0.32, 64.0), _on_face(a, b, 0.68, 64.0), Palette.WARD_CYAN_HOT, 2.0)
+	elif street_side and rng.randf() < 0.5:
+		# A hand-painted sign: NETS, ROPE, ENGINES.
+		var board := PackedVector2Array([_on_face(a, b, 0.15, 90.0), _on_face(a, b, 0.85, 90.0), _on_face(a, b, 0.85, 110.0), _on_face(a, b, 0.15, 110.0)])
+		_base.poly(board, Palette.HUMAN_CREAM.darkened(0.5))
+		for k: int in 4:
+			var u := 0.25 + k * 0.14
+			_base.line(_on_face(a, b, u, 96.0), _on_face(a, b, u + 0.08, 104.0), Palette.BOATHOUSE_SHADE, 2.0)
+
+
+## The Harbor Bridge's severed end: board-marked concrete, its rebar bent out where the deck tore away.
+func _bridge_face(a: Vector2, b: Vector2, h: float) -> void:
+	for k: int in 5:
+		var v := 36.0 + k * 40.0
+		_base.line(_on_face(a, b, 0.0, v), _on_face(a, b, 1.0, v), Color(Palette.NEAR_BLACK, 0.14), 1.0)
+	for k: int in 4:
+		var u := 0.15 + k * 0.22
+		var foot := _on_face(a, b, u, h - PARAPET)
+		_base.line(foot, foot + Vector2(-6 + k * 4, -26), Palette.RUST, 2.5)
 
 
 func _door(a: Vector2, b: Vector2) -> void:

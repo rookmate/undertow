@@ -51,6 +51,19 @@ const NEWSROOM_FLOOR := "Γ"
 ## A newsroom desk: a black screen with the ring burned into it.
 const NEWSROOM_DESK := "Δ"
 
+# --- Harbor Ward (no Lattice anywhere in it but the ferry slip and the border) ----------------------------
+## Pier planks on pilings over the water, and the Ward's hand-laid stone lanes: both off the Lattice.
+const PIER := "Θ"
+const WARD_STONE := "Λ"
+## A boat-house (tall, on the back edges), and one with its door.
+const BOATHOUSE := "Ξ"
+const BOATHOUSE_DOOR := "Π"
+## A Wardfolk lantern on a post, hand-wired, cyan; a piling standing in the water, kelp on it.
+const LANTERN := "Σ"
+const PILING := "Φ"
+## The Harbor Bridge's severed end.
+const BRIDGE_STUB := "Ψ"
+
 # --- The Ark -----------------------------------------------------------------------------------------
 ## The Clinic (from Mercy General) and its door.
 const CLINIC := "μ"
@@ -65,7 +78,7 @@ const PUMPHOUSE_DOOR := "ω"
 const TALL := AMBULANCE + TURBINE
 ## Solid named things at waist height or below, or thin: you see, swing and shoot over or past them.
 ## A test keeps every solid tile in one of the two.
-const LOW := PARTITION + NURSE_DESK + HOSPITAL_BED + TIDE_GAUGE + NEWSROOM_DESK
+const LOW := PARTITION + NURSE_DESK + HOSPITAL_BED + TIDE_GAUGE + NEWSROOM_DESK + LANTERN + PILING
 
 const BY_NAME: Dictionary[String, String] = {
 	"hospital_tile": HOSPITAL_TILE, "asphalt": ASPHALT, "staff_floor": STAFF_FLOOR, "partition": PARTITION,
@@ -75,6 +88,8 @@ const BY_NAME: Dictionary[String, String] = {
 	"seawall": SEAWALL, "low_street": LOW_STREET, "kelp": KELP, "marrow": MARROW, "grating": GRATING,
 	"pump_wall": PUMP_WALL, "pump_door": PUMP_DOOR, "turbine": TURBINE, "tide_gauge": TIDE_GAUGE,
 	"newsroom_floor": NEWSROOM_FLOOR, "newsroom_desk": NEWSROOM_DESK,
+	"pier": PIER, "ward_stone": WARD_STONE, "boathouse": BOATHOUSE, "boathouse_door": BOATHOUSE_DOOR,
+	"lantern": LANTERN, "piling": PILING, "bridge_stub": BRIDGE_STUB,
 }
 
 

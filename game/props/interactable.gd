@@ -1,7 +1,8 @@
 class_name Interactable
 extends Node2D
 ## Something the Operator can use with Interact (E / X) when standing close. Off-path things are only
-## there for you when the Steward isn't: unindexed places never show up while the voice is on.
+## there for you when the Steward isn't: unindexed places never show up while the voice is on. Where the
+## Lattice doesn't reach at all (Harbor Ward), the Steward has no say over what you see.
 
 const REACH_TILES := 1.4
 
@@ -16,7 +17,7 @@ func _enter_tree() -> void:
 
 ## Present in the world right now (visible and usable).
 func is_present() -> bool:
-	return not (off_path and Steward.voice_on)
+	return not (off_path and Steward.voice_on and (level == null or level.has_lattice()))
 
 
 func can_interact() -> bool:

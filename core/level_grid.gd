@@ -4,7 +4,7 @@ extends RefCounted
 ## may rename its own characters to named tiles with '% <char> <tile>' lines (Tiles); the grid stores
 ## the tiles' internal codes, so the rest of the game never sees the map's own letters.
 
-enum Floor { VOID, BUILDING, COBBLE, PAVEMENT, OLD_QUAY, STACKS, STAIRS, WATER, RAILING, LOW_WALL, CONCRETE, FOUNDATION, LAWN, STEPS, TIMBER, GRAVEL, TRACK, CARRIAGE, GANTRY, CAB, TILE, ASPHALT, STAFF, SEAWALL, LOW_STREET, KELP, GRATING, PARQUET }
+enum Floor { VOID, BUILDING, COBBLE, PAVEMENT, OLD_QUAY, STACKS, STAIRS, WATER, RAILING, LOW_WALL, CONCRETE, FOUNDATION, LAWN, STEPS, TIMBER, GRAVEL, TRACK, CARRIAGE, GANTRY, CAB, TILE, ASPHALT, STAFF, SEAWALL, LOW_STREET, KELP, GRATING, PARQUET, PIER, WARD_STONE }
 
 const FLOOR_OF: Dictionary[String, Floor] = {
 	" ": Floor.VOID, "#": Floor.BUILDING, "d": Floor.BUILDING, "m": Floor.BUILDING, "g": Floor.BUILDING,
@@ -36,13 +36,17 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	Tiles.MARROW: Floor.LOW_STREET, Tiles.GRATING: Floor.GRATING, Tiles.PUMP_WALL: Floor.BUILDING,
 	Tiles.PUMP_DOOR: Floor.BUILDING, Tiles.TURBINE: Floor.WATER, Tiles.TIDE_GAUGE: Floor.LOW_STREET,
 	Tiles.NEWSROOM_FLOOR: Floor.PARQUET, Tiles.NEWSROOM_DESK: Floor.PARQUET,
+	Tiles.PIER: Floor.PIER, Tiles.WARD_STONE: Floor.WARD_STONE, Tiles.BOATHOUSE: Floor.BUILDING,
+	Tiles.BOATHOUSE_DOOR: Floor.BUILDING, Tiles.LANTERN: Floor.WARD_STONE, Tiles.PILING: Floor.WATER,
+	Tiles.BRIDGE_STUB: Floor.BUILDING,
 }
 ## Characters whose cell blocks movement.
 ## Lawns (and the hedges, planters and sprinklers on them) are the Steward's gardens: looked at, not
 ## walked on. The smart gate 'Q' is solid only while closed (SmartGate), so it isn't listed.
 const SOLID := " #dmgAlMI~=-L|KtoRTvHjFbrJ*[^" + Tiles.PARTITION + Tiles.AMBULANCE + Tiles.NURSE_DESK \
 	+ Tiles.HOSPITAL_WALL + Tiles.HOSPITAL_DOOR + Tiles.HOSPITAL_BED + Tiles.CLINIC + Tiles.PUMP_WALL \
-	+ Tiles.PUMP_DOOR + Tiles.TURBINE + Tiles.TIDE_GAUGE + Tiles.PUMPHOUSE + Tiles.NEWSROOM_DESK
+	+ Tiles.PUMP_DOOR + Tiles.TURBINE + Tiles.TIDE_GAUGE + Tiles.PUMPHOUSE + Tiles.NEWSROOM_DESK \
+	+ Tiles.BOATHOUSE + Tiles.BOATHOUSE_DOOR + Tiles.LANTERN + Tiles.PILING + Tiles.BRIDGE_STUB
 ## Solid things taller than a chest-height shot, which stop sight, swings and shots (blocks_line): the
 ## Feed kiosk, the stalled tram, the stacks' shelves, the Reliquary, the Tideworks' crane legs, and the
 ## named tall ones (Tiles.TALL). Buildings stop them anyway.
@@ -55,14 +59,16 @@ const LOW := " ~=-LoTvHjFbrJ*[" + Tiles.LOW
 const OCCUPIED := "WwNY"
 ## Placed things that need a stable id from an '@' line (people, caches, logs).
 const NEEDS_ID := "WwTUV"
-## Placed things (people, finds, spawns, a boss, its weak point and barrier) stand on the ground around
-## them: a marker's cell takes its terrain from its neighbours (terrain_at), so a Custodian scrubbing a
-## low street leaves a low street that floods, and the Waiting in the Marrow stand in the Marrow. The
-## character's own floor (FLOOR_OF) is only the fallback for a marker with no ground beside it.
-const MARKERS := "TUWwPCckXVO]BZy"
+## Placed things (people, finds, spawns, a boss, its weak point and barrier, a lantern on its post) stand
+## on the ground around them: a marker's cell takes its terrain from its neighbours (terrain_at), so a
+## Custodian scrubbing a low street leaves a low street that floods, and the Waiting in the Marrow stand
+## in the Marrow. The character's own floor (FLOOR_OF) is only the fallback for a marker with no ground
+## beside it.
+const MARKERS := "TUWwPCckXVO]BZy" + Tiles.LANTERN
 ## Ground a marker can stand on: plain floors.
 const TERRAIN := ".,:_iqnxh" + Tiles.HOSPITAL_TILE + Tiles.ASPHALT + Tiles.STAFF_FLOOR + Tiles.SEAWALL \
-	+ Tiles.LOW_STREET + Tiles.KELP + Tiles.MARROW + Tiles.GRATING + Tiles.NEWSROOM_FLOOR
+	+ Tiles.LOW_STREET + Tiles.KELP + Tiles.MARROW + Tiles.GRATING + Tiles.NEWSROOM_FLOOR + Tiles.PIER \
+	+ Tiles.WARD_STONE
 ## Off the path whatever they stand on: truth caches, unindexed slips, the Waiting off the path.
 const OFF_PATH := "TUw"
 
@@ -181,8 +187,9 @@ func entity_id(cell: Vector2i) -> String:
 
 
 ## Everything wrong with this map, or nothing. A level refuses to load (and saves nothing) unless this
-## is empty. `hub` maps start on 'p' and have no Reliquary; level maps start on 'P' and need one.
-func validate(hub: bool) -> PackedStringArray:
+## is empty. `hub` maps start on 'p' and have no Reliquary; level maps start on 'P' and need one, along
+## the Lattice from the start, or on foot in a district with no `lattice` (Harbor Ward).
+func validate(hub: bool, lattice: bool = true) -> PackedStringArray:
 	var problems := PackedStringArray(parse_errors)
 	if size.x == 0 or size.y == 0:
 		problems.append("the map is empty")
@@ -213,12 +220,12 @@ func validate(hub: bool) -> PackedStringArray:
 		if reliquaries.size() != 1:
 			problems.append("needs exactly one Reliquary 'R', found %d" % reliquaries.size())
 		else:
-			var reach := reachable_from(start_cell(), true)
+			var reach := reachable_from(start_cell(), lattice)
 			var door := false
 			for d: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]:
 				door = door or reach.has(reliquaries[0] + d)
 			if not door:
-				problems.append("the Reliquary can't be reached along the Lattice from the start")
+				problems.append("the Reliquary can't be reached %s from the start" % ("along the Lattice" if lattice else "on foot"))
 	return problems
 
 

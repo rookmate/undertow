@@ -3,11 +3,11 @@ extends AutopilotScenario
 ## order signed in the Signal Room and kept from then on), the Ark; then save and return to the title and
 ## Continue; the Tideworks (an upgrade bought at the Workshop; Noor and Teo arrive), the Ark; Mercy
 ## General (the Defib Gauntlet, the sealed wards, the Surgeon), the Ark and its Clinic; Greywater (the
-## tide, the Marrow), the Ark; the Vellum to the Archive. Each
-## district's checks are tagged with it ("loop:route_completed"). The run ends when the last Ark visit
-## is done.
+## tide, the Marrow), the Ark; the Vellum to the Archive; then Act 3: Noor goes ahead at the dock, and
+## Harbor Ward. Each district's checks are tagged with it ("loop:route_completed"). The run ends when
+## the last Ark visit is done.
 
-const DISTRICTS: Array[String] = ["kestrel", "loop", "tideworks", "mercy", "greywater", "vellum"]
+const DISTRICTS: Array[String] = ["kestrel", "loop", "tideworks", "mercy", "greywater", "vellum", "harbor"]
 ## Signed in the Loop's Signal Room and kept to the end: it mustn't stop any later check (no slowed
 ## time, no path would), and its effect is plain to check (no aim assist).
 const ORDER := Overrides.LET_ME_AIM
@@ -33,6 +33,9 @@ func _init() -> void:
 		routes.append(route)
 	if _missing.is_empty():
 		routes[1].set(&"order_to_sign", ORDER)
+		for route: AutopilotRoute in routes:
+			if route.id == "harbor":
+				route.set(&"expect_departure", true)
 
 
 func problem() -> String:
@@ -41,7 +44,9 @@ func problem() -> String:
 
 func expected() -> Array[String]:
 	var out := super()
-	out.append_array(["campaign_saved_and_continued", "order_carried_to_tideworks", "order_carried_to_mercy", "order_carried_to_greywater", "order_carried_to_vellum", "dressing_used", "campaign_done"])
+	out.append_array(["campaign_saved_and_continued", "dressing_used", "campaign_done"])
+	for i: int in range(2, DISTRICTS.size()):
+		out.append("order_carried_to_" + DISTRICTS[i])
 	for route: AutopilotRoute in routes:
 		route.long_run = true
 		out.append_array(route.tagged_checks())
@@ -98,14 +103,13 @@ func on_ark(ark: ArkLevel, gen: int) -> void:
 		return
 	if not await routes[_at].at_ark(ark, gen):
 		return
-	match routes[_at].id:
-		"loop":
-			await _save_and_quit(ark, gen)
-		"vellum":
-			Autopilot.pass_check("campaign_done")
-			Autopilot.finish_now()
-		_:
-			await _travel(ark, gen)
+	if routes[_at].id == "loop":
+		await _save_and_quit(ark, gen)
+	elif _at == routes.size() - 1:
+		Autopilot.pass_check("campaign_done")
+		Autopilot.finish_now()
+	else:
+		await _travel(ark, gen)
 
 
 ## Down to the dock, the map, the next district, the skiff.
@@ -117,6 +121,7 @@ func _travel(ark: ArkLevel, gen: int) -> void:
 	ark.city_map.choose(next)
 	(ark.city_map.get("_go") as Button).grab_focus()
 	Autopilot.tap(&"ui_accept")
+	await routes[_at].on_departure(ark, gen)
 
 
 ## The pause menu's "save and return to title", as a player would: what the run carries must come back.

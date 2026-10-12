@@ -44,6 +44,7 @@ const STEWARD_ALLOWED: Dictionary[String, String] = {
 	"res://game/bosses/lung.gd": "the Lung is the Steward's master pump controller: its gauge is the Steward's",
 	"res://game/bosses/editor.gd": "the Editor prints the Steward's Feed: its editorial core is the Steward's",
 	"res://game/bosses/press_rollers.gd": "the gap the Steward lights for you in the Editor's rollers is its light",
+	"res://ui/ark/noor_departure.gd": "the Steward's word on Noor going (its narration)",
 }
 
 const SCAN_ROOTS: Array[String] = ["res://autoload", "res://core", "res://game", "res://ui", "res://data"]

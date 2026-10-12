@@ -1,0 +1,64 @@
+; Harbor Ward, the Margins: the old fishing quarter that voted against the Compact and was left out of
+; everything. No Lattice anywhere in it but the city's ferry slip and the border plaza: no path, no map,
+; muting changes nothing. Act 3. Rows are grid y (top = 0), columns grid x; on screen +x runs down-right
+; and +y down-left. Drawn by tools/maps/harbor_gen.py (this header is kept by hand).
+;
+; This map's own characters ('%' lines; see core/tiles.gd):
+%  s ward_stone
+%  p pier
+%  h boathouse
+%  o boathouse_door
+%  f piling
+%  n lantern
+%  b bridge_stub
+;   s  the Ward's stone lanes (off the Lattice)     p  pier planks over the water (off the Lattice)
+;   h  a boat-house    o  its door    f  a piling with kelp on it    n  a Wardfolk lantern (cyan)
+;   b  the Harbor Bridge's severed end
+; Shared: .  cobble (on the Lattice: the ferry slip and the border plaza)   L  Lattice lamp   -  the
+;   border fence (low wall)   #  the Warden depot   d  its door   ~  water   P  start (the ferry slip)
+;   C  checkpoint   R  Reliquary   T  truth cache   U  unindexed log
+;
+; Ids ("@ x,y id"): saved, never rename.
+@ 4,18 harbor_truth_dashcam
+@ 31,18 log_ward_radio
+! 6,33 NO LATTICE. THE STEWARD HAS NO MAP HERE, AND MUTING CHANGES NOTHING.
+! 33,19 [voice_on] THE BORDER: THE LATTICE STARTS AGAIN HERE.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bbbbbbb~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bbbbbbb~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bbbbbbb~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bbbbbbb~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bbbbbbb~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~###########
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~###########
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~###########
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#####d#####
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-...........
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-L.........L
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-.....R.....
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-...........
+~~~~~hhhhh~hhhhh~hhhhh~hhhhh~hhhh~-...........
+~~~~~hhhhh~hhhhh~hhhhh~hhhhh~hhhh~-...........
+~~~~~hhhhh~hhhhh~hhhhh~hhhhh~hhhh~-...........
+hhhh~hhhhh~hhhhh~hhhhh~hhhhh~hhhh~-...........
+hhhhTssssssssssssssssssssssssssUss-...L....L..
+hhhossssssssssssCsssssssssssssssss............
+hhhhssssssssssssssssssssssssssssss............
+hhhhssssnsssssnsssssnsssssnsssssns-...........
+hhhh~~ppp~~~~~~~~ppp~~~~~~~ppp~~~~-..C........
+~~~~~~ppp~~~~~~~~ppp~~~~~~~ppn~~~~-...........
+~~~~~fppp~~~~~~~~ppp~~~~~~fppp~~~~-...........
+~~~~~~ppn~~~~~~~fppp~~~~~~~ppp~~~~-L.........L
+~~~~~~pppf~~~~~~~ppp~~~~~~~pppf~~~-...........
+~~~~~~ppp~~~~~~~~pppf~~~~~~ppp~~~~-~~~~~~~~~~~
+~~~~~fppp~~~~~~~~ppp~~~~~~~ppp~~~~-~~~~~~~~~~~
+~~~~~~ppp~~~~~~~~npp~~~~~~~ppp~~~~-~~~~~~~~~~~
+~~~~~~ppp~~~~~~~~ppp~~~~~~~ppp~~~~-~~~~~~~~~~~
+~~~~pppppppppppppppppppppppppppppp-~~~~~~~~~~~
+~~~~pppppppppppppppppppppppppppppp-~~~~~~~~~~~
+~~~~pppppppppppppppppppppppppppppp-~~~~~~~~~~~
+~~~~L....~~~~~~~~~~~~~~~~~~~~~~~~~-~~~~~~~~~~~
+~~~~.....~~~~~~~~~~~~~~~f~~~~~~~~~-~~~~~~~~~~~
+~~~~..P..~~~~~~~~~~~~~~~~~~~~~~~~~-~~~~~~~~~~~
+~~~~.....~~~~~~~~~~~~~~~~~~~~~~~~~-~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

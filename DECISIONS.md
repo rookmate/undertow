@@ -577,4 +577,20 @@ Asked of the user on 2026-10-09 and answered the same day.
 146. **Reduce flashing** (Options, Accessibility; the user didn't say; recommended, off by default): the
      Feed's white-out (Clerks, the Editor) comes up over 0.6 s instead of 0.1 s and reaches 45% white
      instead of 88%. It's the game's only full-screen flash. Saved with the other settings.
+147. **Harbor Ward** (Act 3, open after any two of Act 2's three): the city's ferry slip (one Lattice
+     lamp) and the south boardwalk; three piers up to Net Lane, the boat-houses along its north side with
+     the water behind them, Noor's at its west end; the border fence with one gate at the lane's east
+     end; the border plaza on the Lattice, the Warden depot, the bridge's severed end. **No Lattice**
+     (LevelCatalog "lattice": false): its Reliquary is reached on foot, not along the Lattice; off the
+     slip the Steward has no say. Finds aren't hidden while it listens, its map is your own hand scan
+     ("HAND SCAN · NO LATTICE"), the light is the Wardfolk's (cyan lanterns, never the cold grade, your
+     hand lamp on), so muting changes nothing until the border, where its path, light and voice take up
+     again. On the slip it says it can't follow you in; stepping off cuts it short. A place hint says it
+     plainly. The Ward's own cyan (Palette.WARD_CYAN) is the city's only cyan it made itself.
+148. **Noor goes ahead.** Setting off for Harbor Ward with Noor on the Ark, she tells you about the bridge
+     at the dock (her sister and her boys were on it; the dashcam; her jammer for the border relay) and
+     goes ahead in her own boat. The Steward has its word (voiced, in its serif). From then on she's
+     away (`noor_away`): not on the Ark, no conversations, no reactions, until her turn is decided at
+     the border. The path's goal no longer needs to be reachable along the Lattice from the start: if
+     it isn't, the path takes up wherever the Lattice does lead to it (the border plaza).
 

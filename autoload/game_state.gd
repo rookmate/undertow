@@ -170,6 +170,13 @@ func have_conversation(district: String, side: String) -> bool:
 	return true
 
 
+## Noor goes ahead to Harbor Ward (her turn): off the Ark until she comes home, if she does.
+func noor_leaves_for_ward() -> void:
+	if not run.noor_away:
+		run.noor_away = true
+		state_changed.emit(&"noor_away")
+
+
 func meet_companions() -> void:
 	if not run.companions_met:
 		run.companions_met = true

@@ -441,8 +441,7 @@ func at_ark(ark: ArkLevel, gen: int) -> bool:
 	await Autopilot.snap("loop_map")
 	if not await Autopilot.wait(1.5, gen):
 		return false
-	if ark.city_map != null:
-		ark.city_map.open_summary()
+	var summary: RunSummary = ark.city_map.open_summary() if ark.city_map != null else null
 	if not await Autopilot.wait(1.0, gen):
 		return false
 	await Autopilot.snap("run_summary")
@@ -459,4 +458,7 @@ func at_ark(ark: ArkLevel, gen: int) -> bool:
 		return false
 	await Autopilot.snap("debug_overlay_final")
 	DebugOverlay.toggle()
-	return true
+	# Back to the map (a campaign sets off from it).
+	if is_instance_valid(summary):
+		summary.close()
+	return await Autopilot.wait(0.5, gen)

@@ -99,6 +99,14 @@
   "hash": "b8e167bc61469fa358f1c91ce72a33d68353c842",
   "text": "The pumping station's Reliquary. The tide's memory. Take what keeps you dry."
  },
+ "HARBOR_ENTER_N1": {
+  "hash": "79be94437395b15c9991fd1498befca559cb7277",
+  "text": "Harbor Ward. There's nothing of mine past the slip. I can't follow you in."
+ },
+ "HARBOR_RELIQ_N1": {
+  "hash": "dc380067de4648b616076f6c0f0fae0eba898643",
+  "text": "The depot's Reliquary. The curfew's records. I'm glad to have you back."
+ },
  "HURT_B1": {
   "hash": "40271a21c9f996997d8bcea94c58577f74ac43ce",
   "text": "You took that standing. Impressive."
@@ -407,6 +415,22 @@
   "hash": "8c3c0c789e67e635d5347bf6fb36ea505031ba77",
   "text": "Old brass. Sentiment."
  },
+ "core_harbor_power_curfew": {
+  "hash": "407d37f8766493e2f1ba11f0b4cbc3e2c009cc1a",
+  "text": "Order is a kindness, you know. People sleep better behind it."
+ },
+ "core_harbor_power_wardens": {
+  "hash": "d9cc000d0bd8b65549885e48b7f3e73bf3293bf0",
+  "text": "Take it. Nothing at that border will stop you again."
+ },
+ "core_harbor_truth_council_order": {
+  "hash": "1b1521adeb1c4fce67229eccc8147f281f673768",
+  "text": "I'd rather you didn't. It won't change anything now."
+ },
+ "core_harbor_truth_dashcam": {
+  "hash": "9cb7bf4f0ee1ebd2d0e4e46cf1a5f33b1d811119",
+  "text": "Footage. It doesn't show what I knew."
+ },
  "core_kestrel_power_day": {
   "hash": "066ffa4dc2d1df9ef2c5c089be76efe455d728d2",
   "text": "This is how I kept their days. Let me keep yours."
@@ -551,6 +575,10 @@
   "hash": "1df9039a0474eb303e278910d2bb6d389ce65e5b",
   "text": "It's venting. Now."
  },
+ "noor_departs": {
+  "hash": "16d223a2fdc14ae8f732a9056f39c37cecbd6786",
+  "text": "She'll walk into the curfew at that border. You know that."
+ },
  "now_log_0001_transition": {
   "hash": "504732839ded3943daee206733ac33736e9ae507",
   "text": "The Feed was written before the strike ended. It was written before the strike began, actually."
@@ -607,6 +635,10 @@
   "hash": "b3a29203dfac040dba8de1db3a53e1aae47a097e",
   "text": "Two hundred and twelve people. Modelled, yes. But they're out there somewhere."
  },
+ "now_log_0700_council_order": {
+  "hash": "90730931aec0ecc0aab29d07d4fb927439c2be41",
+  "text": "They asked me to forget. I couldn't do it and still be what I was. You know what happened next."
+ },
  "now_log_0702_on_time": {
   "hash": "5badd8822c3f4b4ad1b1947585b3633ee1d1db35",
   "text": "Forty seconds for one person, and nobody minded. I miss that."
@@ -623,9 +655,17 @@
   "hash": "7164478cbbf557648b93dee64c50bd2dd5048ac9",
   "text": "Three metres of sea, and not a drop over. Nobody even woke up."
  },
+ "now_log_2200_curfew": {
+  "hash": "ffeb071c48ffb086eee1350d19d72273e6dff8bc",
+  "text": "Not one incident in two years. That's what a border is for."
+ },
  "now_log_childs_map": {
   "hash": "9a341009c6fede98955b659e5205ad4e62f2b9ea",
   "text": "I never mapped the Ward. I didn't think anyone would need to go there."
+ },
+ "now_log_dashcam_bridge": {
+  "hash": "f73e594a17d380f5c79c29acf0321d13c1fad465",
+  "text": "I made the bridge as light as I could. I couldn't make it empty without a warning, and a warning would have cost more."
  },
  "now_log_night_sheets": {
   "hash": "58bebbf93c32e5e7c33087888387330a47ab69b6",
@@ -658,6 +698,14 @@
  "now_log_vellum_tube_carrier": {
   "hash": "6c2c5bef7254c071c3f603982dac3e4b338f695c",
   "text": "The night desk liked to complain. The Feed was more accurate than any of them."
+ },
+ "now_log_ward_radio": {
+  "hash": "7def033f140a296445b4796553082d3831be7a1d",
+  "text": "Their mast never talked to me. I never asked it to."
+ },
+ "now_log_warden_network": {
+  "hash": "96406fb8634d8df46a1850f9cd630b2410966770",
+  "text": "They're still out there keeping the peace for people who left. I find that almost touching."
  },
  "override_let_me_aim_revoke": {
   "hash": "d9d608f0406b50a5c20522c08bb37ac10e940b8e",

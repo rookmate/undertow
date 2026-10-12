@@ -101,6 +101,10 @@ func _draw() -> void:
 				_grating(cell)
 			LevelGrid.Floor.PARQUET:
 				_parquet(cell)
+			LevelGrid.Floor.PIER:
+				_pier(cell)
+			LevelGrid.Floor.WARD_STONE:
+				_flagstones(cell, Palette.WARD_STONE if (cell.x + cell.y) % 2 == 0 else Palette.WARD_STONE_B, 2)
 			LevelGrid.Floor.VOID:
 				_drop(cell)
 
@@ -292,6 +296,17 @@ func _parquet(cell: Vector2i) -> void:
 					draw_line(_at(cell, i * 0.5, j * 0.5 + t), _at(cell, i * 0.5 + 0.5, j * 0.5 + t), Color(Palette.NEAR_BLACK, 0.22), 1.0, true)
 				else:
 					draw_line(_at(cell, i * 0.5 + t, j * 0.5), _at(cell, i * 0.5 + t, j * 0.5 + 0.5), Color(Palette.NEAR_BLACK, 0.22), 1.0, true)
+
+
+## Pier planks on pilings: dark water showing in the gaps between the boards.
+func _pier(cell: Vector2i) -> void:
+	draw_colored_polygon(Iso.cell_diamond(cell), look.water.darkened(0.2))
+	var rng := _rng(cell, 11)
+	for k: int in 4:
+		var u0 := k * 0.25 + 0.02
+		var plank := PackedVector2Array([_at(cell, u0, 0.0), _at(cell, u0 + 0.21, 0.0), _at(cell, u0 + 0.21, 1.0), _at(cell, u0, 1.0)])
+		draw_colored_polygon(plank, (Palette.PIER_PLANK if k % 2 == 0 else Palette.PIER_PLANK_B).darkened(rng.randf_range(0.0, 0.15)))
+	draw_line(_at(cell, 0.0, 0.5), _at(cell, 1.0, 0.5), Color(Palette.NEAR_BLACK, 0.3), 2.0, true)
 
 
 func _lino(cell: Vector2i) -> void:

@@ -10,6 +10,8 @@ signal closed
 const MAP_RECT := Rect2(560, 150, 1240, 800)
 
 ## The district picked, waiting for "GO" ("" if none).
+## Noor going ahead to the Ward, while she says so (null otherwise).
+var departure: NoorDeparture
 var chosen: String = ""
 
 var _buttons: Dictionary[String, Button] = {}
@@ -148,6 +150,16 @@ func _go_to_chosen() -> void:
 	if chosen == "":
 		return
 	var target := chosen
+	# Setting off for the Ward with Noor still on the Ark: she goes ahead (her turn, design/act-3.md).
+	if target == "harbor" and GameState.run.companion_here(RunState.WHO_NOOR):
+		departure = NoorDeparture.new()
+		departure.closed.connect(func() -> void: _set_off(target))
+		get_parent().add_child(departure)
+		return
+	_set_off(target)
+
+
+func _set_off(target: String) -> void:
 	SceneRouter.goto(&"loadout", func() -> void:
 		GameState.set_location("loadout:" + target)
 		SaveFlow.checkpoint(get_tree()))

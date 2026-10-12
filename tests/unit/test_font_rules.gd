@@ -13,6 +13,7 @@ const NARRATION_ALLOWED: Dictionary[String, String] = {
 	"res://ui/ark/clinic_screen.gd": "the Steward's comment on a triage record",
 	"res://ui/ark/overrides_screen.gd": "the Steward's replies to your orders",
 	"res://ui/ark/workshop_screen.gd": "the Steward's view on your upgrades",
+	"res://ui/ark/noor_departure.gd": "the Steward's word on Noor going to the Ward",
 }
 const SCAN_ROOTS: Array[String] = ["res://autoload", "res://core", "res://game", "res://ui"]
 
