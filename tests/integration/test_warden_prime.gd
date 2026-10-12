@@ -211,3 +211,29 @@ func test_leaving_the_ward_without_her_is_leaving_her() -> void:
 	GameState.complete_level("harbor")
 	check_false(GameState.run.noor_present, "undecided at the end: she stayed")
 	check_false(GameState.run.noor_away)
+
+
+func test_carried_again_the_same_patrol_comes_after_you() -> void:
+	await _beat_it()
+	level.player.position = Iso.cell_center(Vector2i(2, 10))
+	await wait_physics_frames(2)
+	_noor().interact(level.player)
+	await wait_frames(2)
+	level.noor_choice.carry()
+	await wait_frames(2)
+	check_eq(level.curfew_patrol().size(), 2, "the curfew patrol, two of them")
+	var wardens := level.living_enemies().size()
+	level.player.self_damage(500.0)
+	await wait_physics_frames(2)
+	level.respawn_player()
+	await wait_physics_frames(2)
+	for w: Warden in level.curfew_patrol():
+		w.hunting = false
+	_noor().interact(level.player)
+	await wait_frames(2)
+	if level.noor_choice != null:
+		level.noor_choice.carry()
+	await wait_frames(2)
+	check_eq(level.curfew_patrol().size(), 2, "picked up again: the same two, no more")
+	check_eq(level.living_enemies().size(), wardens, "nobody new")
+	check(level.curfew_patrol().all(func(w: Warden) -> bool: return w.hunting), "and they're after you again")

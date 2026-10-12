@@ -41,29 +41,64 @@ func has_save() -> bool:
 ## previous save becomes the backup only if it is itself readable; a corrupt main file is never rotated
 ## over a good backup.
 func save(run: RunState) -> Error:
+	return _write_safely(path(), backup_path(), JSON.stringify(run.to_dict(), "\t"), func(p: String) -> bool: return _read(p).status == Status.OK)
+
+
+## Small records kept beside the save (what outlives a run), written the same careful way: a dictionary
+## to `<name>.json`, its last good version kept as `<name>.json.bak`.
+func save_record(record_name: String, data: Dictionary) -> Error:
+	var main := dir_path.path_join(record_name + ".json")
+	return _write_safely(main, main + ".bak", JSON.stringify(data, "\t"), func(p: String) -> bool: return not _parse_record(p).is_empty())
+
+
+## A record written by save_record, or its backup if the main file is unreadable; {} if neither reads.
+func load_record(record_name: String) -> Dictionary:
+	var main := dir_path.path_join(record_name + ".json")
+	var d := _parse_record(main)
+	return d if not d.is_empty() else _parse_record(main + ".bak")
+
+
+func delete_record(record_name: String) -> void:
+	var main := dir_path.path_join(record_name + ".json")
+	_discard(main)
+	_discard(main + ".bak")
+
+
+static func _parse_record(file_path: String) -> Dictionary:
+	if not FileAccess.file_exists(file_path):
+		return {}
+	# Quietly: JSON.parse() reports failure through its return value (parse_string() would print).
+	var json := JSON.new()
+	if json.parse(FileAccess.get_file_as_string(file_path)) != OK:
+		return {}
+	return json.data if json.data is Dictionary else {}
+
+
+## Writes `text` to `main` through a temporary file that's read back first; the previous file becomes
+## `backup` only if `readable` says it's good.
+func _write_safely(main: String, backup: String, text: String, readable: Callable) -> Error:
 	var err := DirAccess.make_dir_recursive_absolute(dir_path)
 	if err != OK:
 		return err
-	var text := JSON.stringify(run.to_dict(), "\t")
-	var tmp := path() + ".tmp"
+	var tmp := main + ".tmp"
 	err = _write_text(tmp, text)
 	if err == OK and FileAccess.get_file_as_string(tmp) != text:
 		err = ERR_FILE_CORRUPT
 	if err != OK:
 		_discard(tmp)
 		return err
-	if FileAccess.file_exists(path()) and _read(path()).status == Status.OK:
-		_discard(backup_path())
-		err = DirAccess.rename_absolute(path(), backup_path())
+	if FileAccess.file_exists(main) and bool(readable.call(main)):
+		_discard(backup)
+		err = DirAccess.rename_absolute(main, backup)
 		if err != OK:
 			_discard(tmp)
 			return err
 	else:
-		_discard(path())
-	err = DirAccess.rename_absolute(tmp, path())
-	if err != OK and not FileAccess.file_exists(path()) and FileAccess.file_exists(backup_path()):
-		# Put the last good save back where Continue looks for it.
-		DirAccess.copy_absolute(backup_path(), path())
+		_discard(main)
+	err = DirAccess.rename_absolute(tmp, main)
+	if err != OK and not FileAccess.file_exists(main) and FileAccess.file_exists(backup):
+		# Put the last good one back where it's looked for.
+		DirAccess.copy_absolute(backup, main)
 	return err
 
 

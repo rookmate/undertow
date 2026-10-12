@@ -179,14 +179,22 @@ func test_unplug_is_silent() -> void:
 
 func test_rewrite_speaks_to_them_and_is_remembered() -> void:
 	_earn_rewrite()
-	GameState.choose_ending(Endings.REWRITE)
-	check(SaveService.rewritten(), "remembered past the run")
+	await _open_ark()
+	var choice := ark.open_final_choice()
+	choice.on_chosen = func() -> void: pass
+	await wait_frames(2)
+	choice.choose(Endings.REWRITE)
+	choice.confirm()
+	await wait_frames(2)
+	check_eq(GameState.run.ending, Endings.REWRITE)
+	check_eq(SaveService.store.load_record(SaveService.LEGACY).get("rewrite"), true, "saved, then remembered past the run")
 	var said := await _play(Endings.REWRITE)
 	var words := ""
 	for id: String in said:
 		words += VoiceLines.fixed(id) + " "
 	check(words.contains("Noor") and words.contains("Teo") and words.contains("Commons"), "it speaks to someone other than you")
 	GameState.new_run()
+	SaveService.delete_save()
 	check(SaveService.rewritten(), "a new run doesn't forget it")
 
 
@@ -198,3 +206,86 @@ func test_the_title_keeps_a_finished_run_but_wont_continue_it() -> void:
 	await wait_frames(2)
 	check(SaveService.has_save(), "kept")
 	check((title.get("_continue") as Button).disabled, "but not continued: only New Game")
+
+
+class FailingStore:
+	extends SaveStore
+	func _write_text(_file_path: String, _text: String) -> Error:
+		return ERR_FILE_CANT_WRITE
+
+
+## Writes only half of what it's given (a full disk mid-write).
+class ShortStore:
+	extends SaveStore
+	func _write_text(file_path: String, text: String) -> Error:
+		return super(file_path, text.left(text.length() >> 1))
+
+
+func _question() -> SaveFailure:
+	for n: Node in get_tree().root.get_children():
+		if n is SaveFailure and (n as SaveFailure).asking and not n.is_queued_for_deletion():
+			return n as SaveFailure
+	return null
+
+
+## The ending can't be saved: the player is asked. Stay, and nothing is decided; go on without it, and
+## the epilogue plays.
+func test_an_ending_that_cant_be_saved_asks_first() -> void:
+	await _open_ark()
+	var real := SaveService.store
+	SaveService.store = FailingStore.new(SCRATCH)
+	var choice := ark.open_final_choice()
+	var went := [false]
+	choice.on_chosen = func() -> void: went[0] = true
+	await wait_frames(2)
+	choice.choose(Endings.UNPLUG)
+	choice.confirm()
+	await wait_frames(2)
+	var question := _question()
+	check(question != null and Modals.is_top(question), "the save failed: the player is asked")
+	check_false(went[0], "and nothing plays yet")
+	question.call(&"_choose", SaveFailure.Choice.STAY)
+	await wait_frames(2)
+	check_false(went[0], "stay: no epilogue")
+	check_eq(GameState.run.ending, "", "nothing's decided")
+	check_eq(GameState.run.location, "ark")
+	check(choice.asking == "" and choice.door(Endings.UNPLUG).has_focus(), "back at the doors")
+	choice.choose(Endings.UNPLUG)
+	choice.confirm()
+	await wait_frames(2)
+	_question().call(&"_choose", SaveFailure.Choice.LEAVE)
+	await wait_frames(2)
+	check(went[0] and GameState.run.ending == Endings.UNPLUG, "go on without saving: the player's call")
+	SaveService.store = real
+
+
+func test_a_rewrite_is_remembered_safely_and_recoverably() -> void:
+	_earn_rewrite()
+	check_false(SaveService.rewritten(), "nothing yet")
+	# A finished Rewrite on file counts, even if the record never got written; the title writes it down.
+	GameState.choose_ending(Endings.REWRITE)
+	check(SaveService.save_run(GameState.run) == OK)
+	check(SaveService.rewritten(), "the saved run says so")
+	check(SaveService.store.load_record(SaveService.LEGACY).is_empty(), "though the record wasn't written")
+	check(SaveService.settle_legacy() == OK and SaveService.store.load_record(SaveService.LEGACY).get("rewrite") == true, "settled: written down")
+	# Written the careful way: a failed or short write never costs the record it had.
+	SaveService.delete_save()
+	var real := SaveService.store
+	SaveService.store = FailingStore.new(SCRATCH)
+	check(SaveService.remember_rewrite() != OK, "a failed write says so")
+	check(SaveService.rewritten(), "and the record it had stands")
+	SaveService.store = ShortStore.new(SCRATCH)
+	check(SaveService.remember_rewrite() != OK, "a short write is caught")
+	check(SaveService.rewritten(), "and the record it had stands")
+	SaveService.store = real
+	# Malformed: the backup answers for it; with neither readable, no Rewrite.
+	check(SaveService.remember_rewrite() == OK)
+	var main := SCRATCH.path_join("legacy.json")
+	var f := FileAccess.open(main, FileAccess.WRITE)
+	f.store_string("{not json")
+	f.close()
+	check(SaveService.rewritten(), "the backup answers for a malformed record")
+	var b := FileAccess.open(main + ".bak", FileAccess.WRITE)
+	b.store_string("[]")
+	b.close()
+	check_false(SaveService.rewritten(), "nothing readable, no save: no Rewrite")

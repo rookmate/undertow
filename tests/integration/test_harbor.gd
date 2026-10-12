@@ -119,3 +119,25 @@ func test_with_noor_away_the_ark_has_no_noor_and_no_conversations() -> void:
 	check((level as ArkLevel).noor == null, "she isn't there")
 	check((level as ArkLevel).teo != null, "Teo is")
 	check_eq(GameState.run.pending_conversation(), "", "no talking it over without her")
+
+
+## The Ward's own mast, dark on the boat-house roof by the gate; the Wardfolk out on Net Lane, who'll talk
+## (about the curfew, about Noor going by), and who come to the Commons once it's built.
+func test_the_wards_mast_and_its_people() -> void:
+	await _open()
+	var masts: Array[BuildingCell] = []
+	for n: Node in level.world.get_children():
+		if n is BuildingCell and (n as BuildingCell).roof_mast:
+			masts.append(n)
+	check(masts.size() == 1 and masts[0].mast_dark, "one mast, dark")
+	var folk: Array[ArkFigure] = []
+	for n: Node in level.world.get_children():
+		if n is ArkFigure and (n as ArkFigure).who == ArkFigure.Who.WARDFOLK:
+			folk.append(n)
+	check_eq(folk.size(), 2, "two of the Wardfolk on Net Lane")
+	for f: ArkFigure in folk:
+		check(f.is_present(), "there for you, voice on")
+		check_eq(f.current_line(), CommonsPeople.wardfolk_line(f.wardfolk_index, GameState.run, true), "the Ward's own words")
+		check(f.current_line() != CommonsPeople.wardfolk_line(f.wardfolk_index, GameState.run), "not what they say on the Ark")
+	folk[0].interact(level.player)
+	check(folk[0].spoken_line() != "", "talked to, they answer")

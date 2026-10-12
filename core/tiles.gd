@@ -70,6 +70,8 @@ const PATROL := "Ю"
 ## Noor, down at the border (her turn); the Wardfolk's boat on the depot slipway.
 const NOOR_DOWN := "Ж"
 const WARD_BOAT := "Б"
+## A boat-house with the Ward's own radio mast on its roof, dark since the city went quiet.
+const WARD_MAST := "И"
 
 # --- The Ark -----------------------------------------------------------------------------------------
 ## The Clinic (from Mercy General) and its door.
@@ -115,7 +117,7 @@ const BY_NAME: Dictionary[String, String] = {
 	"pier": PIER, "ward_stone": WARD_STONE, "boathouse": BOATHOUSE, "boathouse_door": BOATHOUSE_DOOR,
 	"lantern": LANTERN, "piling": PILING, "bridge_stub": BRIDGE_STUB, "warden": WARDEN,
 	"patrol": PATROL, "noor_down": NOOR_DOWN, "ward_boat": WARD_BOAT, "commons": COMMONS, "commons_door": COMMONS_DOOR,
-	"wardfolk": WARDFOLK, "spire_glass": SPIRE_GLASS, "rack": RACK, "pane": PANE, "confession": CONFESSION,
+	"wardfolk": WARDFOLK, "ward_mast": WARD_MAST, "spire_glass": SPIRE_GLASS, "rack": RACK, "pane": PANE, "confession": CONFESSION,
 	"council": COUNCIL, "council_door": COUNCIL_DOOR,
 }
 

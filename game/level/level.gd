@@ -46,6 +46,9 @@ var failed: bool = false
 ## Noor down at the border (Harbor Ward, while her turn is undecided), and the choice over her.
 var noor_down: NoorDown
 var noor_choice: NoorChoice
+## The curfew patrol (Harbor Ward), once it's been called.
+var _patrol: Array[Warden] = []
+var _patrol_called: bool = false
 var tide: Tide
 var _ambient: CanvasModulate
 var _enemies: Array[Enemy] = []
@@ -168,9 +171,10 @@ func _exit_tree() -> void:
 		Steward.voice_changed.disconnect(_on_voice_changed)
 	Engine.time_scale = 1.0
 	Steward.set_coverage(true)
-	# A warning about this place is moot once you've left it.
+	# A warning about this place is moot once you've left it; so are lines waiting to be said here.
 	if Narrator.warning_in_progress():
 		Sound.hush()
+	Narrator.drop_queued()
 
 
 # --- Hooks (the Ark overrides these) --------------------------------------------------------------
@@ -304,6 +308,10 @@ func _build_cells() -> void:
 					facade = BuildingCell.Facade.BOATHOUSE
 				Tiles.BOATHOUSE_DOOR:
 					facade = BuildingCell.Facade.BOATHOUSE_DOOR
+				Tiles.WARD_MAST:
+					facade = BuildingCell.Facade.BOATHOUSE
+					b.roof_mast = true
+					b.mast_dark = true
 				Tiles.BRIDGE_STUB:
 					facade = BuildingCell.Facade.BRIDGE_STUB
 				"A":
@@ -530,6 +538,13 @@ func _spawn_people_and_finds() -> void:
 		var slip := UnindexedLog.new()
 		slip.setup(self, c, grid.entity_id(c))
 		world.add_child(slip)
+	# The Wardfolk out in their own streets (Harbor Ward). On the Ark they stand by the Commons (ArkLevel).
+	if not is_hub():
+		for c: Vector2i in grid.cells_with(Tiles.WARDFOLK):
+			var folk := ArkFigure.new()
+			folk.setup(self, c, ArkFigure.Who.WARDFOLK)
+			folk.wardfolk_index = grid.cells_with(Tiles.WARDFOLK).find(c)
+			world.add_child(folk)
 	# The Spire: where the Steward says what it did.
 	for c: Vector2i in grid.cells_with(Tiles.CONFESSION):
 		var confession := Confession.new()
@@ -644,13 +659,28 @@ func open_noor_choice(noor: NoorDown) -> NoorChoice:
 	return noor_choice
 
 
-## You picked Noor up: the curfew patrol comes in through the gate after you both, already hunting.
+## You picked Noor up: the curfew patrol comes in through the gate after you both, already hunting. It
+## comes once: pick her up again (downed, you dropped her) and the ones still standing come after you
+## again; none new.
 func call_the_curfew_patrol() -> void:
-	for c: Vector2i in grid.cells_with(Tiles.PATROL):
-		var w := add_enemy(Warden.new(), c, Warden.MAX_INTEGRITY) as Warden
-		w.hunting = true
-		w.last_seen = player.global_position
+	if not _patrol_called:
+		_patrol_called = true
+		for c: Vector2i in grid.cells_with(Tiles.PATROL):
+			_patrol.append(add_enemy(Warden.new(), c, Warden.MAX_INTEGRITY) as Warden)
+	for w: Warden in _patrol:
+		if is_instance_valid(w) and w.is_alive():
+			w.hunting = true
+			w.last_seen = player.global_position
 	Sound.play(&"warden_alert", player.global_position)
+
+
+## The curfew patrol's Wardens still standing.
+func curfew_patrol() -> Array[Warden]:
+	var out: Array[Warden] = []
+	for w: Warden in _patrol:
+		if is_instance_valid(w) and w.is_alive():
+			out.append(w)
+	return out
 
 
 ## Downed carrying her: she's back where she was, to be picked up again.

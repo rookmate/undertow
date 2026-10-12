@@ -40,7 +40,7 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	Tiles.BOATHOUSE_DOOR: Floor.BUILDING, Tiles.LANTERN: Floor.WARD_STONE, Tiles.PILING: Floor.WATER,
 	Tiles.BRIDGE_STUB: Floor.BUILDING, Tiles.WARDEN: Floor.WARD_STONE, Tiles.PATROL: Floor.COBBLE,
 	Tiles.NOOR_DOWN: Floor.COBBLE, Tiles.WARD_BOAT: Floor.COBBLE, Tiles.COMMONS: Floor.BUILDING,
-	Tiles.COMMONS_DOOR: Floor.CONCRETE, Tiles.WARDFOLK: Floor.CONCRETE,
+	Tiles.COMMONS_DOOR: Floor.CONCRETE, Tiles.WARDFOLK: Floor.CONCRETE, Tiles.WARD_MAST: Floor.BUILDING,
 	Tiles.SPIRE_GLASS: Floor.GLASS, Tiles.RACK: Floor.GLASS, Tiles.PANE: Floor.GLASS, Tiles.CONFESSION: Floor.GLASS,
 	Tiles.COUNCIL: Floor.FOUNDATION, Tiles.COUNCIL_DOOR: Floor.CONCRETE,
 }
@@ -51,7 +51,7 @@ const SOLID := " #dmgAlMI~=-L|KtoRTvHjFbrJ*[^" + Tiles.PARTITION + Tiles.AMBULAN
 	+ Tiles.HOSPITAL_WALL + Tiles.HOSPITAL_DOOR + Tiles.HOSPITAL_BED + Tiles.CLINIC + Tiles.PUMP_WALL \
 	+ Tiles.PUMP_DOOR + Tiles.TURBINE + Tiles.TIDE_GAUGE + Tiles.PUMPHOUSE + Tiles.NEWSROOM_DESK \
 	+ Tiles.BOATHOUSE + Tiles.BOATHOUSE_DOOR + Tiles.LANTERN + Tiles.PILING + Tiles.BRIDGE_STUB + Tiles.WARD_BOAT \
-	+ Tiles.COMMONS + Tiles.RACK + Tiles.PANE + Tiles.COUNCIL
+	+ Tiles.COMMONS + Tiles.WARD_MAST + Tiles.RACK + Tiles.PANE + Tiles.COUNCIL
 ## Solid things taller than a chest-height shot, which stop sight, swings and shots (blocks_line): the
 ## Feed kiosk, the stalled tram, the stacks' shelves, the Reliquary, the Tideworks' crane legs, and the
 ## named tall ones (Tiles.TALL). Buildings stop them anyway.
@@ -70,7 +70,7 @@ const NEEDS_ID := "WwTUV" + Tiles.CONFESSION
 ## in the Marrow. The character's own floor (FLOOR_OF) is only the fallback for a marker with no ground
 ## beside it.
 const MARKERS := "TUWwPCckXVO]BZy" + Tiles.LANTERN + Tiles.WARDEN + Tiles.PATROL + Tiles.NOOR_DOWN + Tiles.WARD_BOAT \
-	+ Tiles.CONFESSION
+	+ Tiles.CONFESSION + Tiles.WARDFOLK
 ## Ground a marker can stand on: plain floors.
 const TERRAIN := ".,:_iqnxh" + Tiles.HOSPITAL_TILE + Tiles.ASPHALT + Tiles.STAFF_FLOOR + Tiles.SEAWALL \
 	+ Tiles.LOW_STREET + Tiles.KELP + Tiles.MARROW + Tiles.GRATING + Tiles.NEWSROOM_FLOOR + Tiles.PIER \
