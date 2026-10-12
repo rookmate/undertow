@@ -11,6 +11,9 @@ const LOOK_DEG := 70.0
 const RISE := 0.1
 const HOLD := 0.3
 const PEAK := 0.88
+## With "Reduce flashing" on (Options): it comes up over most of a second and only half as bright.
+const GENTLE_RISE := 0.6
+const GENTLE_PEAK := 0.45
 
 var _rect: ColorRect
 var _alpha: float = 0.0
@@ -38,11 +41,20 @@ static func catches(at: Vector2, facing: Vector2, source: Vector2, reach_tiles: 
 ## Washes the world out, fading over about `seconds`.
 func blind(seconds: float) -> void:
 	_rising = true
-	_fade_rate = PEAK / maxf(0.2, seconds - RISE - HOLD)
+	_fade_rate = peak() / maxf(0.2, seconds - rise() - HOLD)
 	set_process(true)
 
 
-## How white the world is now, 0..PEAK.
+## How white it gets, and how long it takes to get there (gentler with "Reduce flashing").
+static func peak() -> float:
+	return GENTLE_PEAK if Options.reduce_flashing else PEAK
+
+
+static func rise() -> float:
+	return GENTLE_RISE if Options.reduce_flashing else RISE
+
+
+## How white the world is now, 0..peak().
 func amount() -> float:
 	return _alpha
 
@@ -53,8 +65,8 @@ func is_blinding() -> bool:
 
 func _process(delta: float) -> void:
 	if _rising:
-		_alpha = minf(PEAK, _alpha + PEAK / RISE * delta)
-		_rising = _alpha < PEAK
+		_alpha = minf(peak(), _alpha + peak() / rise() * delta)
+		_rising = _alpha < peak()
 		if not _rising:
 			_hold_left = HOLD
 	elif _hold_left > 0.0:

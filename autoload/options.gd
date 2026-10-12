@@ -1,5 +1,5 @@
 extends Node
-## The player's settings: volumes, display, subtitle size and rebound controls. Kept in
+## The player's settings: volumes, display, subtitle size, reduced flashing and rebound controls. Kept in
 ## user://settings.cfg (separate from the run's save, so a new game keeps them) and applied at start.
 
 signal changed
@@ -16,6 +16,8 @@ var volumes: Dictionary[StringName, float] = VOLUME_DEFAULTS.duplicate()
 var display_mode: String = "windowed"
 var vsync: bool = true
 var subtitle_size: String = "medium"
+## Accessibility: the Feed's white-out comes up slowly and only half as bright (FeedBlind).
+var reduce_flashing: bool = false
 
 
 func _ready() -> void:
@@ -37,6 +39,7 @@ func reset_all() -> void:
 	display_mode = "windowed"
 	vsync = true
 	subtitle_size = "medium"
+	reduce_flashing = false
 	Controls.reset_bindings()
 	for bus: StringName in volumes:
 		Sound.set_volume(bus, volumes[bus])
@@ -54,6 +57,8 @@ func load_settings() -> void:
 	vsync = bool(cfg.get_value("display", "vsync", true))
 	var size := str(cfg.get_value("subtitles", "size", "medium"))
 	subtitle_size = size if SUBTITLE_SIZES.has(size) else "medium"
+	var reduce: Variant = cfg.get_value("accessibility", "reduce_flashing", false)
+	reduce_flashing = reduce if reduce is bool else false
 	var bindings: Variant = cfg.get_value("controls", "bindings", {})
 	Controls.set_overrides(bindings if bindings is Dictionary else {})
 
@@ -65,6 +70,7 @@ func save_settings() -> Error:
 	cfg.set_value("display", "mode", display_mode)
 	cfg.set_value("display", "vsync", vsync)
 	cfg.set_value("subtitles", "size", subtitle_size)
+	cfg.set_value("accessibility", "reduce_flashing", reduce_flashing)
 	cfg.set_value("controls", "bindings", Controls.overrides())
 	return cfg.save(path)
 

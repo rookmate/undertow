@@ -561,3 +561,20 @@ Asked of the user on 2026-10-09 and answered the same day.
      tour at 46 fps, 37 fps 1% low, where every other district held 60; in blocks it holds 59, 50 (the
      same as Greywater). Bigger Act 3 maps cost no more to draw than what's on screen.
 
+## Milestone 4: Act 3 and the ending
+
+144. **Act 3's plan** is `design/act-3.md` (placeholder design from the world bible and the brief):
+     Harbor Ward opens once two of the three Act 2 districts are done (the third stays open and
+     optional), the Spire once Harbor Ward is, and the Council Chamber (from the Spire's core) holds
+     the final choice and the three epilogues. Act 3 is built in gated steps like the others, each with
+     its autopilot route, and ends with a Sol review in `reviews/act-3.md`.
+145. **The companions can leave** (the user didn't say how; the default, the user's to change): **Noor**
+     at her turn in Harbor Ward (Bastion's Zulf beat): carry her to the skiff after the Warden-Prime
+     fight and she comes home; leave her and she's gone from the run; with her trust at −3 or below she
+     won't take your hand and stays anyway. **Teo** when the Spire opens: with his trust at −3 or below
+     he leaves the Ark. So siding with one of them, again and again, can cost you the other, and Rewrite
+     needs them both.
+146. **Reduce flashing** (Options, Accessibility; the user didn't say; recommended, off by default): the
+     Feed's white-out (Clerks, the Editor) comes up over 0.6 s instead of 0.1 s and reaches 45% white
+     instead of 88%. It's the game's only full-screen flash. Saved with the other settings.
+

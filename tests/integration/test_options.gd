@@ -34,13 +34,16 @@ func _press_key(code: Key) -> void:
 func test_settings_are_saved_and_come_back() -> void:
 	Options.set_volume(&"SFX", 0.4)
 	Options.subtitle_size = "large"
+	Options.reduce_flashing = true
 	Controls.set_binding(&"dodge", ["key", KEY_Q])
 	check_eq(Options.save_settings(), OK)
 	Options.reset_all()
 	check_eq(Controls.primary(&"dodge", "kb"), ["key", KEY_SPACE], "reset to defaults")
+	check_false(Options.reduce_flashing, "reset to defaults")
 	Options.load_settings()
 	check_near(Options.volumes[&"SFX"], 0.4, 0.0001)
 	check_eq(Options.subtitle_size, "large")
+	check(Options.reduce_flashing, "reduced flashing came back")
 	check_eq(Controls.primary(&"dodge", "kb"), ["key", KEY_Q], "the rebound dodge came back")
 
 
