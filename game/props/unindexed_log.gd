@@ -20,6 +20,10 @@ func can_interact() -> bool:
 	return is_present() and not taken
 
 
+func still_to_find() -> bool:
+	return not taken
+
+
 func prompt_verb() -> String:
 	return "READ THE SLIP"
 

@@ -81,6 +81,8 @@ const PUMPHOUSE_DOOR := "ω"
 ## The Commons (from Harbor Ward), on new ground at the Ark's back rim, and its door.
 const COMMONS := "Ц"
 const COMMONS_DOOR := "Ч"
+## Where the Wardfolk who came over stand, by the Commons (only once it stands).
+const WARDFOLK := "Щ"
 
 # --- How tall the solid ones stand -------------------------------------------------------------------
 ## Solid named things taller than a chest-height shot: they stop sight, swings and shots
@@ -101,6 +103,7 @@ const BY_NAME: Dictionary[String, String] = {
 	"pier": PIER, "ward_stone": WARD_STONE, "boathouse": BOATHOUSE, "boathouse_door": BOATHOUSE_DOOR,
 	"lantern": LANTERN, "piling": PILING, "bridge_stub": BRIDGE_STUB, "warden": WARDEN,
 	"patrol": PATROL, "noor_down": NOOR_DOWN, "ward_boat": WARD_BOAT, "commons": COMMONS, "commons_door": COMMONS_DOOR,
+	"wardfolk": WARDFOLK,
 }
 
 

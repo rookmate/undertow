@@ -50,6 +50,10 @@ func can_interact() -> bool:
 	return is_present() and not woken and not Steward.voice_on
 
 
+func still_to_find() -> bool:
+	return not woken
+
+
 func prompt_verb() -> String:
 	return "WAKE"
 

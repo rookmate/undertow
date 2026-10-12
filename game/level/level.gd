@@ -293,6 +293,9 @@ func _build_cells() -> void:
 					facade = BuildingCell.Facade.PUMPHOUSE
 				Tiles.COMMONS:
 					facade = BuildingCell.Facade.COMMONS
+					# Noor's Mast, on the roof's front corner.
+					b.roof_mast = GameState.run.buildings_restored.has(GameState.MAST) \
+						and not grid.is_building(cell + Vector2i(0, 1)) and not grid.is_building(cell + Vector2i(1, 0))
 				Tiles.PUMP_WALL:
 					facade = BuildingCell.Facade.PUMPING_STATION
 				Tiles.PUMP_DOOR:
@@ -555,6 +558,19 @@ func waiting_near(at: Vector2, tiles: float) -> bool:
 
 
 ## Cells of truth caches whose core has been taken (the hand-scan map marks them).
+## With Noor's Mast on the Ark, every unindexed place in the district still to find, where it is (grid
+## coordinates), voice on or off; without it, nothing (design/act-3.md).
+func unindexed_to_find() -> Array[Vector2]:
+	var out: Array[Vector2] = []
+	if is_hub() or not GameState.run.buildings_restored.has(GameState.MAST):
+		return out
+	for n: Node in get_tree().get_nodes_in_group(&"interactables"):
+		var it := n as Interactable
+		if it != null and it.off_path and it.still_to_find() and is_ancestor_of(it):
+			out.append(Iso.world_to_grid(it.global_position))
+	return out
+
+
 func found_cache_cells() -> Array[Vector2i]:
 	var out: Array[Vector2i] = []
 	for n: Node in world.get_children():

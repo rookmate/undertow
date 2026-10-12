@@ -269,6 +269,10 @@ func add_scrap(amount: int) -> void:
 	state_changed.emit(&"scrap")
 
 
+## Noor's Mast on the Commons roof: it marks unindexed places on the map, in every district.
+const MAST := "mast"
+
+
 func restore_building(building_id: String) -> void:
 	if run.buildings_restored.has(building_id):
 		return
@@ -281,9 +285,14 @@ func complete_level(level_id: String) -> void:
 		return
 	run.levels_completed.append(level_id)
 	state_changed.emit(&"levels_completed")
-	# Leaving the Ward without carrying her home is leaving her (design/act-3.md).
-	if level_id == "harbor" and run.noor_away:
-		noor_stays_in_ward()
+	# Leaving the Ward without carrying her home is leaving her (design/act-3.md); home with you, she
+	# wires the Mast on the Ark. (Harbor Ward can only be set off for with her going ahead: still here at
+	# its end, she came home.)
+	if level_id == "harbor":
+		if run.noor_away:
+			noor_stays_in_ward()
+		elif run.noor_present:
+			restore_building(MAST)
 
 
 func set_location(where: String) -> void:

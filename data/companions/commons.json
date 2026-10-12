@@ -1,0 +1,42 @@
+{
+	"version": 1,
+	"notes": "The Commons' people (Harbor Ward's building on the Ark, design/act-3.md). With the Commons standing, the survivors you woke live there, each with a light of their own, and say something of their own: one of their district's lines, the same one each time (by who they are). And the Wardfolk who came over from the Ward when it was built, who never wore a Lanyard: what they say depends on whether Noor came home. People talking: plain type. Placeholder writing.",
+	"survivors": {
+		"kestrel": [
+			"Nobody tells the beans when to come up. I'd forgotten that.",
+			"I keep a bed of greens by the Commons door. It grows what it likes."
+		],
+		"loop": [
+			"Four of us sat in that carriage for days. Now we argue about whose turn it is to cook.",
+			"I still listen for the trains. There aren't any. I don't mind.",
+			"We rode the same line for years and never spoke. We know each other's names now."
+		],
+		"tideworks": [
+			"Nobody's told me what shift it is in weeks. I keep one anyway. Habit.",
+			"They asked me to run the kitchen rota. I said I'd never run anything. They said, start."
+		],
+		"mercy": [
+			"I still wake at the hour it used to wake me. Then I remember I can lie there.",
+			"There's a woman here who sets bones. Nobody assigned her. She just does.",
+			"I sat with the night nurse till morning. We talked. That's all. It helped."
+		],
+		"greywater": [
+			"We turn the pumps by hand now. It's slower. We know why it's done.",
+			"Forty of us kept them going for nine days. I'd do it again. I'd rather not."
+		],
+		"vellum": [
+			"I read the old papers now. The real ones. It's hard going.",
+			"Somebody pinned the Council Order to the Commons wall. People stop and read it twice."
+		]
+	},
+	"wardfolk": {
+		"noor_home": [
+			"Noor's up that mast half the night. Says it hears what the Lattice never bothered with.",
+			"We never had the Lanyard. We had each other's doors. It's the same here, near enough."
+		],
+		"noor_stayed": [
+			"Noor stayed back in the Ward. Somebody has to keep the lanterns lit.",
+			"We never had the Lanyard. We had each other's doors. It's the same here, near enough."
+		]
+	}
+}

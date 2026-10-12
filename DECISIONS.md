@@ -647,3 +647,16 @@ Asked of the user on 2026-10-09 and answered the same day.
      later (the harbor route checked Noor was carried before its tap on "carry her" had been released).
      `Autopilot.snap` now lets that frame go by before the route goes on. The gate takes shots; runs
      without them never showed it.
+156. **Noor's Mast** stands on the Commons roof if she came home (Harbor Ward done with her not away:
+     the Ward can only be set off for with her going ahead, so still here at its end, she came home).
+     Scrap lattice, the Ward's cyan lamp at the top. From then on every district's map rings each
+     unindexed place still to find (a truth cache, a slip, one of the Waiting off the path) in the
+     Ward's cyan, on the Steward's map as on your own scan: it's her map, not its. What you've taken,
+     read or woken drops off. It doesn't show what's there, only where; muting is still how you get it.
+     Noor says so on the Ark. Left in the Ward, she builds nothing, and nothing is marked.
+157. **The Commons' people.** With the Commons standing, the survivors you woke live there: each carries
+     a light of their own (a hand lamp, human cream) and says something of their own, one of their
+     district's lines, always the same one for the same person (data/companions/commons.json). Two of
+     the Wardfolk came over with it and stand by its door with cyan lanterns, never a Lanyard; what
+     they say depends on whether Noor came home or stayed in the Ward. Before the Commons, the
+     survivors stand unlit and only thank you. People talking: plain type.

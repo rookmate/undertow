@@ -24,6 +24,12 @@ func can_interact() -> bool:
 	return is_present()
 
 
+## An unindexed place still to find (Noor's Mast marks these on the map): off the path, not yet taken,
+## read or woken.
+func still_to_find() -> bool:
+	return false
+
+
 ## Verb shown in the prompt, e.g. "WAKE".
 func prompt_verb() -> String:
 	return "USE"

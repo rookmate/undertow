@@ -35,6 +35,8 @@ var archive_screen: ArchiveScreen
 ## Noor and Teo, when they're here (null otherwise).
 var noor: ArkFigure
 var teo: ArkFigure
+## The Wardfolk who came over to the Commons (once it stands).
+var wardfolk: Array[ArkFigure] = []
 ## Their arrival is playing.
 var arriving: bool = false
 var city_map: CityMap
@@ -73,6 +75,11 @@ func _populate() -> void:
 		Diagnostics.error("Ark: room for %d survivors, %d are home" % [spots.size(), survivors.size()])
 	for i: int in spots.size():
 		_figure(spots[i], ArkFigure.Who.SURVIVOR, survivors[i], true)
+	if run.buildings_restored.has("commons"):
+		for c: Vector2i in grid.cells_with(Tiles.WARDFOLK):
+			var f := _figure(c, ArkFigure.Who.WARDFOLK, "", true)
+			f.wardfolk_index = wardfolk.size()
+			wardfolk.append(f)
 	for marker: String in DOORS:
 		if not GameState.run.buildings_restored.has(DOORS[marker]):
 			continue

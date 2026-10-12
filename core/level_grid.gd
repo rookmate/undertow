@@ -40,7 +40,7 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	Tiles.BOATHOUSE_DOOR: Floor.BUILDING, Tiles.LANTERN: Floor.WARD_STONE, Tiles.PILING: Floor.WATER,
 	Tiles.BRIDGE_STUB: Floor.BUILDING, Tiles.WARDEN: Floor.WARD_STONE, Tiles.PATROL: Floor.COBBLE,
 	Tiles.NOOR_DOWN: Floor.COBBLE, Tiles.WARD_BOAT: Floor.COBBLE, Tiles.COMMONS: Floor.BUILDING,
-	Tiles.COMMONS_DOOR: Floor.CONCRETE,
+	Tiles.COMMONS_DOOR: Floor.CONCRETE, Tiles.WARDFOLK: Floor.CONCRETE,
 }
 ## Characters whose cell blocks movement.
 ## Lawns (and the hedges, planters and sprinklers on them) are the Steward's gardens: looked at, not
@@ -59,7 +59,7 @@ const TALL := "Kt|R^" + Tiles.TALL
 ## route lights, the Tideworks' containers (stacked one high), and the named low ones (Tiles.LOW).
 const LOW := " ~=-LoTvHjFbrJ*[" + Tiles.LOW
 ## People stand on these cells: walkable floor, but nothing should route through them.
-const OCCUPIED := "WwNY" + Tiles.NOOR_DOWN
+const OCCUPIED := "WwNY" + Tiles.NOOR_DOWN + Tiles.WARDFOLK
 ## Placed things that need a stable id from an '@' line (people, caches, logs).
 const NEEDS_ID := "WwTUV"
 ## Placed things (people, finds, spawns, a boss, its weak point and barrier, a lantern on its post) stand

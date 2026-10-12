@@ -1,12 +1,18 @@
 class_name ArkFigure
 extends Interactable
-## People on the Ark: Noor, Teo and the survivors you woke. Silhouette first, faces never detailed, one
-## light per person (art direction, "Characters"). Talking shows a line in plain type and human cream.
+## People on the Ark: Noor, Teo and the survivors you woke, and with the Commons standing, the Wardfolk
+## who came over. Silhouette first, faces never detailed, one light per person (art direction,
+## "Characters"). Talking shows a line in plain type and human cream. Living in the Commons, the
+## survivors each carry a light of their own and say something of their own (CommonsPeople).
 
-enum Who { NOOR, TEO, SURVIVOR }
+enum Who { NOOR, TEO, SURVIVOR, WARDFOLK }
 
 var who: Who = Who.SURVIVOR
 var survivor_id: String = ""
+## Which of the Wardfolk (their lines go in turn).
+var wardfolk_index: int = 0
+## Carrying a light of their own: the Wardfolk, and the survivors once the Commons stands.
+var lit: bool = false
 var _line_left: float = 0.0
 var _line: String = ""
 var _t: float = 0.0
@@ -26,6 +32,16 @@ func setup(owner_level: Level, cell: Vector2i, kind: Who, id: String = "") -> vo
 		lantern.scale = Vector2(1.0, Iso.SQUASH)
 		lantern.position = Vector2(26, -20)
 		add_child(lantern)
+	lit = who == Who.WARDFOLK or (who == Who.SURVIVOR and GameState.run.buildings_restored.has("commons"))
+	if lit:
+		var lamp := PointLight2D.new()
+		lamp.texture = LightTextures.radial()
+		lamp.color = Palette.WARD_CYAN if who == Who.WARDFOLK else Palette.HUMAN_CREAM
+		lamp.energy = 0.6
+		lamp.texture_scale = 1.1
+		lamp.scale = Vector2(1.0, Iso.SQUASH)
+		lamp.position = Vector2(22, -24)
+		add_child(lamp)
 
 
 func display_name() -> String:
@@ -34,6 +50,8 @@ func display_name() -> String:
 			return "NOOR"
 		Who.TEO:
 			return "TEO"
+		Who.WARDFOLK:
+			return "WARDFOLK"
 	return "SURVIVOR"
 
 
@@ -45,7 +63,7 @@ func prompt_verb() -> String:
 ## each says a line.
 func interact(_player: Operator) -> void:
 	var ark := level as ArkLevel
-	if who != Who.SURVIVOR and ark != null and GameState.run.pending_conversation() != "":
+	if (who == Who.NOOR or who == Who.TEO) and ark != null and GameState.run.pending_conversation() != "":
 		ark.open_conversation(GameState.run.pending_conversation())
 		return
 	_line = current_line()
@@ -56,6 +74,8 @@ func interact(_player: Operator) -> void:
 func current_line() -> String:
 	match who:
 		Who.NOOR:
+			if GameState.run.buildings_restored.has(GameState.MAST):
+				return "The Mast hears the places the Lattice never listed. They're on your map now. Every district."
 			var t := GameState.run.noor_trust
 			if t >= 2:
 				return "You read the logs. Then you know what it is."
@@ -69,6 +89,12 @@ func current_line() -> String:
 			if t <= -1:
 				return "I built the routing model. I don't need to read it again."
 			return "The Archive's working. It remembers everything, you know."
+		Who.WARDFOLK:
+			return CommonsPeople.wardfolk_line(wardfolk_index, GameState.run)
+	if lit:
+		var own := CommonsPeople.survivor_line(survivor_id)
+		if own != "":
+			return own
 	return "I was waiting for it to tell me I could go. Thank you."
 
 
@@ -136,3 +162,19 @@ func _draw() -> void:
 			var body := Palette.HUMAN_CREAM.darkened(0.45)
 			draw_colored_polygon(PackedVector2Array([Vector2(-18, -4), Vector2(18, -4), Vector2(15, -118), Vector2(-15, -118)]), body)
 			draw_circle(Vector2(0, -134), 13.0, body.darkened(0.1), true, -1.0, true)
+			if lit:
+				# Living in the Commons: a light of their own, a hand lamp in human warmth.
+				draw_line(Vector2(14, -70), Vector2(20, -46), Palette.IRON_DARK, 2.0)
+				draw_circle(Vector2(20, -36), 16.0, Color(Palette.HUMAN_CREAM, 0.16), true, -1.0, true)
+				draw_rect(Rect2(14, -46, 12, 16), Palette.IRON_DARK)
+				draw_rect(Rect2(16, -44, 8, 12), Palette.HUMAN_CREAM)
+		Who.WARDFOLK:
+			# Over from the Ward: an oilskin hood and a long coat, never a Lanyard, a cyan lantern on a pole.
+			draw_colored_polygon(PackedVector2Array([Vector2(-22, -2), Vector2(22, -2), Vector2(12, -128), Vector2(-12, -128)]), Palette.BOATHOUSE)
+			draw_circle(Vector2(0, -140), 13.0, Palette.SKIN_SHADOW.darkened(0.2), true, -1.0, true)
+			draw_arc(Vector2(0, -142), 16.0, PI * 0.95, TAU * 1.03, 14, Palette.BOATHOUSE.darkened(0.3), 9.0, true)
+			draw_line(Vector2(18, -2), Vector2(18, -112), Palette.IRON_DARK, 3.0)
+			draw_line(Vector2(18, -112), Vector2(32, -104), Palette.IRON_DARK, 2.0)
+			draw_circle(Vector2(32, -86), 20.0, Color(Palette.WARD_CYAN, 0.16), true, -1.0, true)
+			draw_rect(Rect2(26, -102, 12, 18), Palette.IRON_DARK)
+			draw_rect(Rect2(28, -100, 8, 13), Palette.WARD_CYAN_HOT)
