@@ -4,8 +4,10 @@ extends AutopilotScenario
 ## Continue; the Tideworks (an upgrade bought at the Workshop; Noor and Teo arrive), the Ark; Mercy
 ## General (the Defib Gauntlet, the sealed wards, the Surgeon), the Ark and its Clinic; Greywater (the
 ## tide, the Marrow), the Ark; the Vellum to the Archive; then Act 3: Noor goes ahead at the dock, and
-## Harbor Ward; Teo has his say at the dock, and the Spire. Each district's checks are tagged with it ("loop:route_completed"). The run ends when
-## the last Ark visit is done.
+## Harbor Ward; Teo has his say at the dock, and the Spire; then down into the Council Chamber on the
+## Ark, the final choice (Rewrite if the run has earned it, otherwise Reboot), its epilogue and the
+## credits, and the title after: the finished run kept, not continued. Each district's checks are
+## tagged with it ("loop:route_completed").
 
 const DISTRICTS: Array[String] = ["kestrel", "loop", "tideworks", "mercy", "greywater", "vellum", "harbor", "spire"]
 ## Signed in the Loop's Signal Room and kept to the end: it mustn't stop any later check (no slowed
@@ -21,6 +23,10 @@ var _continued: bool = false
 var _progress_before: Dictionary = {}
 ## Districts whose route didn't load (the run is refused).
 var _missing: PackedStringArray = []
+## The ending picked in the Council Chamber, and whether its epilogue has played (the next title is
+## the one after it).
+var _ending: String = ""
+var _ended: bool = false
 
 
 func _init() -> void:
@@ -46,7 +52,8 @@ func problem() -> String:
 
 func expected() -> Array[String]:
 	var out := super()
-	out.append_array(["campaign_saved_and_continued", "dressing_used", "campaign_done"])
+	out.append_array(["campaign_saved_and_continued", "dressing_used", "campaign_done", "chamber_entered",
+		"ending_chosen", "epilogue_played", "title_after_ending", "run_kept_not_continued"])
 	for i: int in range(2, DISTRICTS.size()):
 		out.append("order_carried_to_" + DISTRICTS[i])
 	for route: AutopilotRoute in routes:
@@ -56,6 +63,12 @@ func expected() -> Array[String]:
 
 
 func on_title(title: Node, _gen: int) -> void:
+	if _ended:
+		Autopilot.pass_check("title_after_ending")
+		Autopilot.check((title.get("_continue") as Button).disabled and SaveService.has_save() and GameState.run.ending == _ending, "run_kept_not_continued")
+		Autopilot.pass_check("campaign_done")
+		Autopilot.finish_now()
+		return
 	if not _left_for_title:
 		Autopilot.tap(&"ui_accept")
 		return
@@ -108,10 +121,38 @@ func on_ark(ark: ArkLevel, gen: int) -> void:
 	if routes[_at].id == "loop":
 		await _save_and_quit(ark, gen)
 	elif _at == routes.size() - 1:
-		Autopilot.pass_check("campaign_done")
-		Autopilot.finish_now()
+		await _the_end(ark, gen)
 	else:
 		await _travel(ark, gen)
+
+
+## Every district done: down into the Council Chamber and the final choice, the way a player would.
+func _the_end(ark: ArkLevel, gen: int) -> void:
+	if not await Autopilot.use_at(ark, ark.player, Vector2i(14, 9), gen):
+		return
+	var choice := ark.final_choice
+	Autopilot.check(choice != null, "chamber_entered")
+	if choice == null:
+		return
+	if not await Autopilot.wait(1.5, gen):
+		return
+	await Autopilot.snap("campaign_council_chamber")
+	_ending = Endings.REWRITE if choice.offered.has(Endings.REWRITE) else Endings.REBOOT
+	print("[autopilot] the campaign's ending: %s" % _ending)
+	choice.door(_ending).grab_focus()
+	await Autopilot.tap(&"ui_accept")
+	if not await Autopilot.wait(0.8, gen):
+		return
+	(choice.get("_yes") as Button).grab_focus()
+	Autopilot.tap(&"ui_accept")
+
+
+func on_epilogue(screen: Epilogue, gen: int) -> void:
+	Autopilot.check(GameState.run.ending == _ending and screen.ending == _ending, "ending_chosen")
+	Autopilot.pass_check("epilogue_played")
+	_ended = true
+	if await Autopilot.wait(2.0, gen):
+		await Autopilot.snap("campaign_epilogue")
 
 
 ## Down to the dock, the map, the next district, the skiff.
