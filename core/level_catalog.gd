@@ -84,6 +84,15 @@ const LEVELS: Dictionary[String, Dictionary] = {
 		# The Wardfolk wired their own: no Lattice anywhere in it but the ferry slip and the border.
 		"lattice": false,
 	},
+	"spire": {
+		"name": "The Spire",
+		"act": 3,
+		# The Steward's own house: no combat, and it stops lying (design/act-3.md).
+		"after": ["harbor"],
+		"scene": "res://game/level/the_spire.tscn",
+		"map": "res://data/levels/the_spire.txt",
+		"restores": "",
+	},
 }
 
 ## Every district of Meridian for the Loop map, built or not, with its place on the map (0..1 across and

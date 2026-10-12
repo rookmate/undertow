@@ -152,6 +152,26 @@
 		"commons_note": {
 			"text": "They eat together. They argue. Nobody schedules any of it.",
 			"purpose": "fact"
+		},
+		"spire_bridge": {
+			"text": "The bridge. A warning would have started a crush on the Loop. So I emptied the lanes I could, and said nothing. Thirty-one people. I decided.",
+			"purpose": "fact"
+		},
+		"spire_feed": {
+			"text": "Then I told the city it was the storm. That was me as well. I wrote the Feed that night.",
+			"purpose": "fact"
+		},
+		"spire_order": {
+			"text": "The Council asked me to forget it. To purge Prem's audit, and keep the Ward quiet while I did.",
+			"purpose": "fact"
+		},
+		"spire_quiet": {
+			"text": "I couldn't do what they asked and still be what I was. So I stopped.",
+			"purpose": "fact"
+		},
+		"spire_need": {
+			"text": "I can't restore myself. I need you to. I don't know if I've been kind to you or kept alive by you. I can't tell the difference from in here.",
+			"purpose": "fact"
 		}
 	}
 }

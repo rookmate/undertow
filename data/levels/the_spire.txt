@@ -1,0 +1,61 @@
+; The Spire, the Core: the Steward's own house at the city's centre. Black glass with cold veins, the
+; ring burned into every surface, server racks in the cooling halls, and nothing that attacks you. All of
+; it on the Lattice but a maintenance crawl. At set places along the way the Steward stops lying. Act 3.
+; Rows are grid y (top = 0), columns grid x; on screen +x runs down-right and +y down-left. Drawn by
+; tools/maps/spire_gen.py (this header is kept by hand).
+;
+; This map's own characters ('%' lines; see core/tiles.gd):
+%  a spire_glass
+%  r rack
+%  e pane
+%  c confession
+%  k grating
+;   a  black glass (on the Lattice)   r  a server rack (tall)   e  a glass pane (you see past it)
+;   c  where the Steward says what it did (its id is the line)   k  the maintenance crawl (off the Lattice)
+; Shared: #  the Spire's back walls   L  Lattice lamp   ~  coolant   P  start (off the skiff)
+;   R  the last Reliquary   U  unindexed log   (space)  the shaft
+;
+; Ids ("@ x,y id"): saved, never rename.
+@ 23,30 spire_bridge
+@ 18,25 spire_feed
+@ 10,13 spire_order
+@ 5,10 spire_quiet
+@ 6,6 spire_need
+@ 20,11 log_spire_tech
+! 24,32 NOTHING HERE WILL ATTACK YOU. WALK.
+##############################
+#LaaaaaaaaL                   
+#aaaaaaaaaa                   
+#aaaaRaaaaa                   
+#aaaaaaaaaa                   
+#aaaaaaaaaa                   
+#aaaaacaaaa                   
+#LaaaaaaaaL                   
+#   aaaa                      
+#   aaaa                      
+#LaaacaaaaaaaaaaaaarL         
+#aaaaaaaaaaaaaaaaarkU         
+#arrrraarrrrraarrrrkk         
+#aaaaaaaaacaaaaaaarkk         
+#aaaaaaaaaaaaaaaaarkk         
+#arrrraarrrrraarrrrkk         
+#aaaaaaaaaaaaaaaaarkk         
+#aaaaaaaaaaaaaaaaarkk         
+#arrrraarrrrraarrrraa         
+#aaaaaaaaaaaaaaaaaaaa         
+#Laaaaaaaaaaaaaaaaaaa         
+#~~~~~~~aaaaaaaaaaaaL         
+#       LaaaaaaaaaaaaaaaaaaaL 
+#       aaaaaaaaaaaaaaaaaaaaa 
+#       aaaeaaeaaeaaeaaeaaeaa 
+#       aaaaaaaaaacaaaaaaaaaa 
+#       aaaaaaaaLaaaaaaaaaaaa 
+#       aaaeaaeaaeaaeaaeaaeaa 
+#       aaaaaaaaaaaaaaaaaaaaa 
+#       LaaaaaaaaaaaaaaaaaaaL 
+#                   aaacaaaaa 
+#                   aaaaaaaaa 
+#                   aaaaaaaaa 
+#                   aaaaPaaaa 
+#                   LaaaaaaaL 
+#                             

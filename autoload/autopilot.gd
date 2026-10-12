@@ -21,7 +21,7 @@ extends Node
 
 const LONG_RUN_SECONDS := 55.0
 const AUTOPILOT_SAVES := "user://autopilot"
-const SCENARIOS: Array[String] = ["slice", "campaign", "loop", "tideworks", "mercy", "greywater", "vellum", "harbor", "ring_gallery", "options", "tour"]
+const SCENARIOS: Array[String] = ["slice", "campaign", "loop", "tideworks", "mercy", "greywater", "vellum", "harbor", "spire", "ring_gallery", "options", "tour"]
 
 const DistrictRun := preload("res://autoload/autopilot/scenarios/district_run.gd")
 const Campaign := preload("res://autoload/autopilot/scenarios/campaign.gd")
@@ -123,7 +123,7 @@ func make_scenario(scenario_name: String, level_id: String = "") -> AutopilotSce
 	match scenario_name:
 		"slice":
 			return DistrictRun.new("kestrel", true)
-		"loop", "tideworks", "mercy", "greywater", "vellum", "harbor":
+		"loop", "tideworks", "mercy", "greywater", "vellum", "harbor", "spire":
 			return DistrictRun.new(scenario_name, false)
 		"campaign":
 			return Campaign.new()

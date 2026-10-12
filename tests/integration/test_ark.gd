@@ -103,7 +103,7 @@ func test_the_dock_opens_the_loop_map() -> void:
 	var buttons: Dictionary = map.get("_buttons")
 	check_eq(buttons.size(), LevelCatalog.CITY.size(), "every district of Meridian is on it")
 	check_eq(CityMap.state_of(GameState.run, "vellum"), "done", "the Vellum is behind you")
-	check_eq(CityMap.state_of(GameState.run, "spire"), "unbuilt")
+	check_eq(CityMap.state_of(GameState.run, "spire"), "locked", "the Spire waits for Harbor Ward")
 	var open := LevelCatalog.open_districts(GameState.run)
 	check_eq((map.get("_go") as Button).disabled, open.is_empty(), "the skiff goes only where it's open")
 	if not open.is_empty():

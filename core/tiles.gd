@@ -84,13 +84,22 @@ const COMMONS_DOOR := "Ч"
 ## Where the Wardfolk who came over stand, by the Commons (only once it stands).
 const WARDFOLK := "Щ"
 
+# --- The Spire ---------------------------------------------------------------------------------------
+## Black glass floor, the Steward's own (on the Lattice); a server rack in the cooling halls; a glass pane
+## standing in the atrium; where the Steward says what it did (a Confession).
+const SPIRE_GLASS := "Ы"
+const RACK := "Э"
+const PANE := "Ъ"
+const CONFESSION := "Я"
+
 # --- How tall the solid ones stand -------------------------------------------------------------------
 ## Solid named things taller than a chest-height shot: they stop sight, swings and shots
 ## (LevelGrid.blocks_line). Buildings stop them anyway.
-const TALL := AMBULANCE + TURBINE
+const TALL := AMBULANCE + TURBINE + RACK
 ## Solid named things at waist height or below, or thin: you see, swing and shoot over or past them.
 ## A test keeps every solid tile in one of the two.
-const LOW := PARTITION + NURSE_DESK + HOSPITAL_BED + TIDE_GAUGE + NEWSROOM_DESK + LANTERN + PILING + WARD_BOAT
+const LOW := PARTITION + NURSE_DESK + HOSPITAL_BED + TIDE_GAUGE + NEWSROOM_DESK + LANTERN + PILING + WARD_BOAT \
+	+ PANE
 
 const BY_NAME: Dictionary[String, String] = {
 	"hospital_tile": HOSPITAL_TILE, "asphalt": ASPHALT, "staff_floor": STAFF_FLOOR, "partition": PARTITION,
@@ -103,7 +112,7 @@ const BY_NAME: Dictionary[String, String] = {
 	"pier": PIER, "ward_stone": WARD_STONE, "boathouse": BOATHOUSE, "boathouse_door": BOATHOUSE_DOOR,
 	"lantern": LANTERN, "piling": PILING, "bridge_stub": BRIDGE_STUB, "warden": WARDEN,
 	"patrol": PATROL, "noor_down": NOOR_DOWN, "ward_boat": WARD_BOAT, "commons": COMMONS, "commons_door": COMMONS_DOOR,
-	"wardfolk": WARDFOLK,
+	"wardfolk": WARDFOLK, "spire_glass": SPIRE_GLASS, "rack": RACK, "pane": PANE, "confession": CONFESSION,
 }
 
 

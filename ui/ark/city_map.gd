@@ -11,7 +11,8 @@ const MAP_RECT := Rect2(560, 150, 1240, 800)
 
 ## The district picked, waiting for "GO" ("" if none).
 ## Noor going ahead to the Ward, while she says so (null otherwise).
-var departure: NoorDeparture
+## A companion's turn at the dock before setting off (NoorDeparture, TeoTurn), while it's open.
+var departure: CanvasLayer
 var chosen: String = ""
 
 var _buttons: Dictionary[String, Button] = {}
@@ -66,7 +67,11 @@ func _ready() -> void:
 	Modals.push(self)
 	var open := LevelCatalog.open_districts(GameState.run)
 	if open.is_empty():
-		_detail.text = "THE SKIFF ISN'T READY\n\nEvery district built so far is behind you. Still to come: %s." % ", ".join(still_to_come())
+		var to_come := still_to_come()
+		if to_come.is_empty():
+			_detail.text = "THE SKIFF ISN'T READY\n\nEvery district is behind you."
+		else:
+			_detail.text = "THE SKIFF ISN'T READY\n\nEvery district built so far is behind you. Still to come: %s." % ", ".join(to_come)
 		_go.disabled = true
 		_summary_button.grab_focus()
 	else:
@@ -150,13 +155,23 @@ func _go_to_chosen() -> void:
 	if chosen == "":
 		return
 	var target := chosen
-	# Setting off for the Ward with Noor still on the Ark: she goes ahead (her turn, design/act-3.md).
-	if target == "harbor" and GameState.run.companion_here(RunState.WHO_NOOR):
-		departure = NoorDeparture.new()
+	departure = turn_before(target)
+	if departure != null:
 		departure.closed.connect(func() -> void: _set_off(target))
 		get_parent().add_child(departure)
 		return
 	_set_off(target)
+
+
+## A companion's turn, played at the dock before setting off for `target` (design/act-3.md), or null:
+## setting off for the Ward with Noor still on the Ark, she goes ahead; for the Spire with Teo on the
+## Ark, he has his say, once.
+func turn_before(target: String) -> CanvasLayer:
+	if target == "harbor" and GameState.run.companion_here(RunState.WHO_NOOR):
+		return NoorDeparture.new()
+	if target == "spire" and GameState.run.companion_here(RunState.WHO_TEO) and not GameState.run.teo_turn_had:
+		return TeoTurn.new()
+	return null
 
 
 func _set_off(target: String) -> void:

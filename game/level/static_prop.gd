@@ -4,9 +4,10 @@ extends Node2D
 ## shelves, a Feed kiosk, a stalled tram segment and bollards; in Kestrel Heights, trimmed hedges, stone
 ## planters of white blossom, and lawn sprinklers that still come on; in Mercy General, glass ward
 ## partitions cut away to waist height, and ambulances parked nose to tail; in the Vellum's newsroom,
-## desks with their dead screens; in Harbor Ward, the Wardfolk's lanterns and the pilings.
+## desks with their dead screens; in Harbor Ward, the Wardfolk's lanterns and the pilings; in the Spire,
+## its server racks and its glass panes.
 
-enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD, HEDGE, PLANTER, SPRINKLER, BED, CARRIAGE_SIDE, DESK, CONTAINER, PARTITION, AMBULANCE, NURSE_DESK, HOSPITAL_BED, TURBINE, NEWS_DESK, LANTERN, PILING }
+enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD, HEDGE, PLANTER, SPRINKLER, BED, CARRIAGE_SIDE, DESK, CONTAINER, PARTITION, AMBULANCE, NURSE_DESK, HOSPITAL_BED, TURBINE, NEWS_DESK, LANTERN, PILING, RACK, PANE }
 ## Props that move (and so redraw every frame); every other kind is drawn once.
 const MOVING: Array[Kind] = [Kind.SPRINKLER, Kind.TURBINE]
 
@@ -94,6 +95,10 @@ func _draw() -> void:
 			_lantern()
 		Kind.PILING:
 			_piling()
+		Kind.RACK:
+			_rack()
+		Kind.PANE:
+			_pane()
 
 
 ## A Wardfolk lantern: a pole with a hand-wired cyan lamp, a cable sagging off to the next one.
@@ -106,6 +111,44 @@ func _lantern() -> void:
 
 
 ## A piling in the water: a tarred post, kelp hanging off it at the tide line.
+## A server rack in the cooling halls: a tall black cabinet, rows of cold status lamps, one in five dark.
+func _rack() -> void:
+	_prism(132.0, Palette.SPIRE_RACK_FACE, Palette.SPIRE_RACK, Palette.SPIRE_WALL_TOP, 0.8)
+	var hw := Iso.HALF_W * 0.8
+	var hh := Iso.HALF_H * 0.8
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(cell)
+	for row: int in 9:
+		var v := 18.0 + row * 12.0
+		for k: int in 4:
+			var u := 0.2 + k * 0.2
+			if rng.randf() < 0.2:
+				continue
+			# On the street-side face (bottom to right), a lamp at (u, v).
+			var p := Vector2(0, hh).lerp(Vector2(hw, 0), u) + Vector2(0, -v)
+			draw_rect(Rect2(p - Vector2(2, 1), Vector2(4, 2)), Color(Palette.SPIRE_COLD, rng.randf_range(0.35, 0.9)))
+
+
+## A glass pane standing in the atrium: you see past it, and see yourself in it; the ring burned into it.
+func _pane() -> void:
+	var hw := Iso.HALF_W * 0.9
+	var hh := Iso.HALF_H * 0.9
+	var base_a := Vector2(-hw * 0.5, hh * 0.5)
+	var base_b := Vector2(hw * 0.5, -hh * 0.5)
+	var h := 150.0
+	var sheet := PackedVector2Array([base_a, base_b, base_b + Vector2(0, -h), base_a + Vector2(0, -h)])
+	draw_colored_polygon(sheet, Color(Palette.SPIRE_COLD, 0.07))
+	draw_polyline(PackedVector2Array([base_a, base_b, base_b + Vector2(0, -h), base_a + Vector2(0, -h), base_a]), Color(Palette.SPIRE_COLD, 0.3), 1.5, true)
+	draw_line(base_a + Vector2(8, -30), base_a + Vector2(30, -120), Color(Palette.SPIRE_COLD, 0.14), 3.0, true)
+	var ring := RingPainter.Look.new()
+	ring.thin = true
+	ring.color = Palette.GREY_COLD
+	ring.alpha = 0.3
+	ring.show_center = false
+	ring.halo = 0.0
+	RingPainter.paint(self, (base_a + base_b) * 0.5 + Vector2(0, -h * 0.55), 18.0, ring)
+
+
 func _piling() -> void:
 	draw_rect(Rect2(-7, -46, 14, 52), Palette.BOATHOUSE_SHADE)
 	draw_rect(Rect2(-7, -46, 14, 4), Palette.BOATHOUSE)

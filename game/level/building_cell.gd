@@ -135,6 +135,9 @@ func _face(a: Vector2, b: Vector2, h: float, street_side: bool) -> void:
 	if facade == Facade.BRIDGE_STUB:
 		_bridge_face(a, b, h)
 		return
+	if look.black_glass:
+		_black_glass_face(a, b, h, rng)
+		return
 	var mortar := Color(Palette.NEAR_BLACK, 0.16)
 	var v := 12.0
 	while v < h - PARAPET:
@@ -197,6 +200,27 @@ func _face(a: Vector2, b: Vector2, h: float, street_side: bool) -> void:
 			_laundry(a, b, base, rng)
 	if street_side and is_neon():
 		_neon(a, b)
+
+
+## The Spire's walls: tall dark mirror panes, a cold vein up some of the mullions, and now and then the
+## ring burned into the glass (grey: an afterimage, not its gold).
+func _black_glass_face(a: Vector2, b: Vector2, h: float, rng: RandomNumberGenerator) -> void:
+	for k: int in 3:
+		var u0 := k / 3.0 + 0.02
+		var u1 := (k + 1) / 3.0 - 0.02
+		var pane := PackedVector2Array([_on_face(a, b, u0, 6.0), _on_face(a, b, u1, 6.0), _on_face(a, b, u1, h - PARAPET - 6.0), _on_face(a, b, u0, h - PARAPET - 6.0)])
+		_base.poly(pane, Palette.BLACK_MIRROR)
+		_base.line(_on_face(a, b, u0 + 0.04, 30.0), _on_face(a, b, u0 + 0.12, h * 0.6), Color(Palette.SPIRE_COLD, 0.06), 3.0)
+		if rng.randf() < 0.3:
+			_base.line(_on_face(a, b, u1 + 0.02, 6.0), _on_face(a, b, u1 + 0.02, h - PARAPET - 6.0), Color(Palette.SPIRE_COLD, 0.3), 1.5)
+	if rng.randf() < 0.25:
+		# The ring's afterimage: a band with its gap at the upper right.
+		var c := _on_face(a, b, 0.5, h * 0.55)
+		var arc := PackedVector2Array()
+		for i: int in 25:
+			var t := deg_to_rad(-30.0 + 300.0 * i / 24.0)
+			arc.append(c + Vector2(sin(t), -cos(t)) * 22.0)
+		_base.polyline(arc, Color(Palette.GREY_COLD, 0.25), 2.0)
 
 
 func _window(a: Vector2, b: Vector2, base: float, lit: bool, rng: RandomNumberGenerator) -> void:

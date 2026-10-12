@@ -105,6 +105,8 @@ func _draw() -> void:
 				_pier(cell)
 			LevelGrid.Floor.WARD_STONE:
 				_flagstones(cell, Palette.WARD_STONE if (cell.x + cell.y) % 2 == 0 else Palette.WARD_STONE_B, 2)
+			LevelGrid.Floor.GLASS:
+				_glass(cell)
 			LevelGrid.Floor.VOID:
 				_drop(cell)
 
@@ -336,6 +338,36 @@ func _kelp(cell: Vector2i) -> void:
 
 
 ## Iron grating in the old pump room, over dark water.
+## The Spire's black glass: four panes to a cell, a cold vein through some, and here and there the ring
+## burned into it, an afterimage in grey (nothing in it is gold but its lamps).
+func _glass(cell: Vector2i) -> void:
+	draw_colored_polygon(Iso.cell_diamond(cell), Palette.NEAR_BLACK)
+	var rng := _rng(cell, 7)
+	for i: int in 2:
+		for j: int in 2:
+			var c := look.ground_a.lerp(look.ground_b, rng.randf())
+			draw_colored_polygon(_sub_diamond(cell, i * 0.5, j * 0.5, 0.5, 0.012), c)
+	# A sheen across the near corner, as if something lit were standing behind you.
+	draw_line(_at(cell, 0.15, 0.85), _at(cell, 0.55, 0.95), Color(Palette.SPIRE_COLD, 0.08), 2.0, true)
+	if rng.randf() < 0.2:
+		# A cold vein along one of the seams between panes.
+		var v := 0.5 + rng.randf_range(-0.02, 0.02)
+		var along_u := rng.randf() < 0.5
+		var a := _at(cell, 0.0, v) if along_u else _at(cell, v, 0.0)
+		var b := _at(cell, 1.0, v) if along_u else _at(cell, v, 1.0)
+		draw_line(a, b, Color(Palette.SPIRE_COLD, 0.16), 1.5, true)
+	if posmod(cell.x * 7 + cell.y * 3, 11) == 0:
+		var ring := RingPainter.Look.new()
+		ring.thin = true
+		ring.color = Palette.GREY_COLD
+		ring.alpha = 0.22
+		ring.show_center = false
+		ring.halo = 0.0
+		draw_set_transform(Iso.cell_center(cell), 0.0, Vector2(1.0, Iso.SQUASH))
+		RingPainter.paint(self, Vector2.ZERO, Iso.HALF_W * 0.45, ring)
+		draw_set_transform(Vector2.ZERO)
+
+
 func _grating(cell: Vector2i) -> void:
 	draw_colored_polygon(Iso.cell_diamond(cell), Palette.WATER_DEEP)
 	for k: int in 5:

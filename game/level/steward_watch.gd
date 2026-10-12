@@ -86,8 +86,10 @@ func _process(delta: float) -> void:
 		_checkpoint_said = true
 		_say(&"checkpoint")
 	if not _reliquary_said and Iso.ground_distance(p.global_position, Iso.cell_center(level.grid.first("R"))) < RELIQUARY_TILES:
-		_reliquary_said = true
-		_say(&"reliquary_near")
+		# Said once, when it can be (not over a line being heard out).
+		_reliquary_said = not Narrator.in_full_in_progress()
+		if _reliquary_said:
+			_say(&"reliquary_near")
 
 
 func _on_dodged(ground_dir: Vector2) -> void:

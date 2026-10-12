@@ -415,6 +415,10 @@ func _build_cells() -> void:
 				_prop(cell, StaticProp.Kind.NEWS_DESK)
 			Tiles.PILING:
 				_prop(cell, StaticProp.Kind.PILING)
+			Tiles.RACK:
+				_prop(cell, StaticProp.Kind.RACK)
+			Tiles.PANE:
+				_prop(cell, StaticProp.Kind.PANE)
 			Tiles.LANTERN:
 				var lantern := _prop(cell, StaticProp.Kind.LANTERN)
 				var glow := PointLight2D.new()
@@ -526,6 +530,11 @@ func _spawn_people_and_finds() -> void:
 		var slip := UnindexedLog.new()
 		slip.setup(self, c, grid.entity_id(c))
 		world.add_child(slip)
+	# The Spire: where the Steward says what it did.
+	for c: Vector2i in grid.cells_with(Tiles.CONFESSION):
+		var confession := Confession.new()
+		confession.setup(self, c, grid.entity_id(c))
+		world.add_child(confession)
 	# Noor, down at the border, while her turn is still to be decided.
 	if GameState.run.noor_away:
 		for c: Vector2i in grid.cells_with(Tiles.NOOR_DOWN):

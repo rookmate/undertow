@@ -36,6 +36,11 @@
 			"harbor_power_curfew",
 			"harbor_power_wardens",
 			"harbor_truth_council_order"
+		],
+		"spire": [
+			"spire_power_steward",
+			"spire_power_root",
+			"spire_truth_quiet"
 		]
 	},
 	"cores": {
@@ -270,6 +275,30 @@
 			"blurb": "A dashcam's memory card wired into a core by hand. Taped in cyan.",
 			"steward": "Footage. It doesn't show what I knew.",
 			"log": "log_dashcam_bridge"
+		},
+		"spire_power_steward": {
+			"kind": "power",
+			"name": "The Steward",
+			"origin": "The Spire, the core room",
+			"blurb": "Its own core: purpose, method, every habit it has. Warm to the touch.",
+			"steward": "That's all of me. Take it home, and I'll be whatever you make of me.",
+			"log": "log_steward_core"
+		},
+		"spire_power_root": {
+			"kind": "power",
+			"name": "Root Core",
+			"origin": "The Spire, the core room",
+			"blurb": "The Lattice's root keys: every lamp, gate and camera in Meridian, keyed to one hand.",
+			"steward": "Every door in the city. You'd never be locked out of anything again.",
+			"log": "log_lattice_root"
+		},
+		"spire_truth_quiet": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "The Spire, the core room",
+			"blurb": "A dull cracked sphere at the centre of the room. Labelled 0214.",
+			"steward": "That one's the night I stopped. I won't ask you to leave it.",
+			"log": "log_0214_the_quiet"
 		}
 	}
 }

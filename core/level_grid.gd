@@ -4,7 +4,7 @@ extends RefCounted
 ## may rename its own characters to named tiles with '% <char> <tile>' lines (Tiles); the grid stores
 ## the tiles' internal codes, so the rest of the game never sees the map's own letters.
 
-enum Floor { VOID, BUILDING, COBBLE, PAVEMENT, OLD_QUAY, STACKS, STAIRS, WATER, RAILING, LOW_WALL, CONCRETE, FOUNDATION, LAWN, STEPS, TIMBER, GRAVEL, TRACK, CARRIAGE, GANTRY, CAB, TILE, ASPHALT, STAFF, SEAWALL, LOW_STREET, KELP, GRATING, PARQUET, PIER, WARD_STONE }
+enum Floor { VOID, BUILDING, COBBLE, PAVEMENT, OLD_QUAY, STACKS, STAIRS, WATER, RAILING, LOW_WALL, CONCRETE, FOUNDATION, LAWN, STEPS, TIMBER, GRAVEL, TRACK, CARRIAGE, GANTRY, CAB, TILE, ASPHALT, STAFF, SEAWALL, LOW_STREET, KELP, GRATING, PARQUET, PIER, WARD_STONE, GLASS }
 
 const FLOOR_OF: Dictionary[String, Floor] = {
 	" ": Floor.VOID, "#": Floor.BUILDING, "d": Floor.BUILDING, "m": Floor.BUILDING, "g": Floor.BUILDING,
@@ -41,6 +41,7 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	Tiles.BRIDGE_STUB: Floor.BUILDING, Tiles.WARDEN: Floor.WARD_STONE, Tiles.PATROL: Floor.COBBLE,
 	Tiles.NOOR_DOWN: Floor.COBBLE, Tiles.WARD_BOAT: Floor.COBBLE, Tiles.COMMONS: Floor.BUILDING,
 	Tiles.COMMONS_DOOR: Floor.CONCRETE, Tiles.WARDFOLK: Floor.CONCRETE,
+	Tiles.SPIRE_GLASS: Floor.GLASS, Tiles.RACK: Floor.GLASS, Tiles.PANE: Floor.GLASS, Tiles.CONFESSION: Floor.GLASS,
 }
 ## Characters whose cell blocks movement.
 ## Lawns (and the hedges, planters and sprinklers on them) are the Steward's gardens: looked at, not
@@ -49,7 +50,7 @@ const SOLID := " #dmgAlMI~=-L|KtoRTvHjFbrJ*[^" + Tiles.PARTITION + Tiles.AMBULAN
 	+ Tiles.HOSPITAL_WALL + Tiles.HOSPITAL_DOOR + Tiles.HOSPITAL_BED + Tiles.CLINIC + Tiles.PUMP_WALL \
 	+ Tiles.PUMP_DOOR + Tiles.TURBINE + Tiles.TIDE_GAUGE + Tiles.PUMPHOUSE + Tiles.NEWSROOM_DESK \
 	+ Tiles.BOATHOUSE + Tiles.BOATHOUSE_DOOR + Tiles.LANTERN + Tiles.PILING + Tiles.BRIDGE_STUB + Tiles.WARD_BOAT \
-	+ Tiles.COMMONS
+	+ Tiles.COMMONS + Tiles.RACK + Tiles.PANE
 ## Solid things taller than a chest-height shot, which stop sight, swings and shots (blocks_line): the
 ## Feed kiosk, the stalled tram, the stacks' shelves, the Reliquary, the Tideworks' crane legs, and the
 ## named tall ones (Tiles.TALL). Buildings stop them anyway.
@@ -61,17 +62,18 @@ const LOW := " ~=-LoTvHjFbrJ*[" + Tiles.LOW
 ## People stand on these cells: walkable floor, but nothing should route through them.
 const OCCUPIED := "WwNY" + Tiles.NOOR_DOWN + Tiles.WARDFOLK
 ## Placed things that need a stable id from an '@' line (people, caches, logs).
-const NEEDS_ID := "WwTUV"
+const NEEDS_ID := "WwTUV" + Tiles.CONFESSION
 ## Placed things (people, finds, spawns, a boss, its weak point and barrier, a lantern on its post) stand
 ## on the ground around them: a marker's cell takes its terrain from its neighbours (terrain_at), so a
 ## Custodian scrubbing a low street leaves a low street that floods, and the Waiting in the Marrow stand
 ## in the Marrow. The character's own floor (FLOOR_OF) is only the fallback for a marker with no ground
 ## beside it.
-const MARKERS := "TUWwPCckXVO]BZy" + Tiles.LANTERN + Tiles.WARDEN + Tiles.PATROL + Tiles.NOOR_DOWN + Tiles.WARD_BOAT
+const MARKERS := "TUWwPCckXVO]BZy" + Tiles.LANTERN + Tiles.WARDEN + Tiles.PATROL + Tiles.NOOR_DOWN + Tiles.WARD_BOAT \
+	+ Tiles.CONFESSION
 ## Ground a marker can stand on: plain floors.
 const TERRAIN := ".,:_iqnxh" + Tiles.HOSPITAL_TILE + Tiles.ASPHALT + Tiles.STAFF_FLOOR + Tiles.SEAWALL \
 	+ Tiles.LOW_STREET + Tiles.KELP + Tiles.MARROW + Tiles.GRATING + Tiles.NEWSROOM_FLOOR + Tiles.PIER \
-	+ Tiles.WARD_STONE
+	+ Tiles.WARD_STONE + Tiles.SPIRE_GLASS
 ## Off the path whatever they stand on: truth caches, unindexed slips, the Waiting off the path.
 const OFF_PATH := "TUw"
 
@@ -293,7 +295,7 @@ func is_indexed(cell: Vector2i) -> bool:
 	var f := floor_at(cell)
 	return f == Floor.COBBLE or f == Floor.PAVEMENT or f == Floor.STEPS or f == Floor.TRACK or f == Floor.CARRIAGE or f == Floor.GANTRY \
 		or f == Floor.TILE or f == Floor.ASPHALT or f == Floor.SEAWALL or f == Floor.LOW_STREET or f == Floor.KELP \
-		or f == Floor.PARQUET
+		or f == Floor.PARQUET or f == Floor.GLASS
 
 
 ## Low enough to flood at high tide (Greywater's low streets, kelp and all).
