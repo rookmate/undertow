@@ -141,3 +141,39 @@ Stored gate evidence supports the reported pass: [456 tests](/home/homebox/Docum
    `test_endings::test_a_malformed_record_doesnt_hide_its_backup` (`{"version": 1}` over a good
    backup).
 
+## Round 3 findings (verbatim from sol_analyst)
+
+Milestone 4's code-review blockers are closed at `83d61fd`. Both round-2 P2 findings are fixed. I found no new confirmed P0, P1 or P2 blocker in `git diff 3fd0b1d..HEAD` or the full milestone, `git diff 3a24472~1..HEAD`. No files were changed.
+
+1. **Former P2, New Game erasing an unrecorded Rewrite: fixed.**
+
+   Confirmed: [autoload/save_service.gd:21](/home/homebox/Documents/rookmate/undertow/autoload/save_service.gd:21) settles legacy memory before calling `store.save()` and returns failure without replacing the run when settlement fails. Rewrite detection examines both slot files through [core/save_store.gd:67](/home/homebox/Documents/rookmate/undertow/core/save_store.gd:67), using reads that neither rename files nor invoke corrupt-save recovery. [ui/title/title.gd:50](/home/homebox/Documents/rookmate/undertow/ui/title/title.gd:50) reports a failed title settlement.
+
+   The regression test at [tests/integration/test_endings.gd:306](/home/homebox/Documents/rookmate/undertow/tests/integration/test_endings.gd:306) covers the failed settlement, blocked new-run save and successful later recovery. Its stored result passes at [reports/check/tests.log:271](/home/homebox/Documents/rookmate/undertow/reports/check/tests.log:271).
+
+   Inference from the control flow: the round-2 loss sequence can no longer rotate away the completed Rewrite before its permanent record is written. A Rewrite found only in the backup also receives this protection.
+
+2. **Former P2, malformed legacy dictionary hiding a valid backup: fixed.**
+
+   Confirmed: [autoload/save_service.gd:50](/home/homebox/Documents/rookmate/undertow/autoload/save_service.gd:50) requires a boolean `rewrite` field. [core/save_store.gd:57](/home/homebox/Documents/rookmate/undertow/core/save_store.gd:57) validates each candidate before accepting it. The record writer applies the same validator before rotating an existing main file into the backup, through [core/save_store.gd:51](/home/homebox/Documents/rookmate/undertow/core/save_store.gd:51) and [core/save_store.gd:105](/home/homebox/Documents/rookmate/undertow/core/save_store.gd:105).
+
+   The malformed-dictionary regression test at [tests/integration/test_endings.gd:324](/home/homebox/Documents/rookmate/undertow/tests/integration/test_endings.gd:324) passes at [reports/check/tests.log:272](/home/homebox/Documents/rookmate/undertow/reports/check/tests.log:272).
+
+   Inference from the validation branches: missing or mistyped `rewrite` fields cannot suppress a valid backup or be rotated over it.
+
+The earlier confession, patrol, ending-save and Harbor-content fixes remain intact. I found no further confirmed correctness or structural blocker, disabled test, weakened gate check, gold/font ownership violation or Steam-wrapper violation. The new persistence behavior stays in the existing save layers and retains the shared verified-write path.
+
+Stored validation evidence supports the reported gate pass: [458 tests](/home/homebox/Documents/rookmate/undertow/reports/check/tests.log:477), the [30-second smoke run](/home/homebox/Documents/rookmate/undertow/reports/check/smoke.log:20), the [completed campaign](/home/homebox/Documents/rookmate/undertow/reports/check/full_campaign.log:284), all three ending runs and all eight district tours. Scanning those logs found no gate-matching error or warning lines. `bash -n tools/check.sh` passed.
+
+I did **not** rerun the write-producing gate under read-only access. Backup-only Rewrite recovery and mistyped legacy fields are verified by inspection rather than directly exercised by the two new tests. Real controller behavior, audible Unplug silence and small-display confession readability remain open validation checks.
+
+## Round 3
+
+No blocker remains. The two cases Sol verified only by inspection now have tests of their own:
+`test_endings::test_a_mistyped_record_doesnt_hide_its_backup` and
+`test_endings::test_a_rewrite_in_the_backup_still_counts`.
+
+**Review closed after 3 rounds.** Still to confirm on hardware or by eye (PROGRESS.md, "What only
+hardware can confirm"): a real controller through Act 3's screens, Unplug's silence on real audio, and
+the confession text's readability on a small display.
+

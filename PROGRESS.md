@@ -146,7 +146,7 @@ analysis review at the end.
 
 **Milestone status: Act 2 is done and reviewed.**
 
-## Milestone 4: Act 3 and the ending (in progress)
+## Milestone 4: Act 3 and the ending (done)
 
 Harbor Ward, the Spire, the Council Chamber and the final choice; the companions can leave. Plan and
 placeholder design: `design/act-3.md`. Same gates per step, a video per visible step, Sol analysis
@@ -164,7 +164,9 @@ review at the end.
 | 30 | The Spire (no combat; the Steward stops lying); Teo's turn | done |
 | 31 | The Council Chamber: the final choice, the three epilogues, the title after Rewrite | done |
 | 32 | The campaign to an ending | done |
-| — | Sol analysis review (reviews/act-3.md), fixes, re-check | |
+| — | Sol analysis review (reviews/act-3.md), fixes, re-check | done (3 rounds; closed) |
+
+**Milestone status: Act 3 and the ending are done and reviewed. The game can be played start to end.**
 
 ## Later milestones (planned)
 
@@ -221,6 +223,11 @@ godot --path . -- --autopilot --perf-hide=StaticProp,WardSeal  # hide and stop n
 - Steam Deck: 60 fps in the Vellum street (the `[perf]` line), readable text at 1280×800, the
   controller layout, focus in every screen, the voice toggle on Y.
 - A second controller and unplugging/replugging one mid-run.
+- Act 3's screens on a controller: Noor's choice at the border, Teo's turn at the dock, the Council
+  Chamber's doors and its "once more", the epilogue (A moves a card on).
+- Unplug's epilogue is silent on real audio (no voice, no rain, no UI clicks) and the sound comes back
+  on the title after it.
+- The Spire's confessions, written in the glass, readable at 1280×800 (voice on and muted).
 - Windows and macOS: launch, New Game, save, quit, Continue. macOS will say the app is from an
   unidentified developer (ad-hoc signed): right-click → Open.
 
