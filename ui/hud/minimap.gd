@@ -3,6 +3,8 @@ extends Control
 ## Top-right of the HUD. Voice on: the Steward's map, drawn in its gold, "100% charted", and silent about
 ## everywhere it never indexed (the stacks aren't on it). Off the Lattice it can't place you. Muted: a
 ## hand scan, only what you have seen, with an honest percentage, and anything you found marked in cyan.
+## With Noor's Mast on the Ark, either map rings every unindexed place still to find, in the Ward's cyan:
+## her map, not the Steward's.
 ##
 ## Drawing a thousand cell polygons in GDScript costs milliseconds, so the map is split into chunks that
 ## each keep their draw list and redraw only when something in them changes (a cell seen for the first
@@ -23,6 +25,8 @@ var _marks: _MarkLayer
 var _mode_signature: String = ""
 var _label_text: String = ""
 var _check_in: float = 0.0
+## Noor's marks, refreshed with the label (the Mast: unindexed places still to find).
+var _mast_marks: Array[Vector2] = []
 var _tile: float = 1.0
 var _origin: Vector2 = Vector2.ZERO
 ## Per cell, computed once: its polygon on the map and its colour on each kind of map.
@@ -85,6 +89,7 @@ func _process(delta: float) -> void:
 	if _check_in > 0.0:
 		return
 	_check_in = CHECK_SECONDS
+	_mast_marks = level.unindexed_to_find()
 	var a := Steward.assists()
 	var mode_signature := "%d|%d" % [mode(), int(a.signal_lost)]
 	if mode_signature != _mode_signature:
@@ -193,9 +198,16 @@ func draw_marks(ci: CanvasItem) -> void:
 		# What you found yourself, in its own colour, wherever it was.
 		for c: Vector2i in level.found_cache_cells():
 			ci.draw_circle(to_map(Vector2(c) + Vector2(0.5, 0.5)), 4.0, Palette.TRUTH_CYAN, true, -1.0, true)
+	for g: Vector2 in _mast_marks:
+		ci.draw_arc(to_map(g), 5.0, 0.0, TAU, 14, Palette.WARD_CYAN, 1.5, true)
 	# Off the Lattice the Steward's map can't place you (your own scan always can).
 	if mode() == Assists.MapMode.HAND_SCAN or not Steward.assists().signal_lost:
 		ci.draw_circle(to_map(Iso.world_to_grid(level.player.global_position)), 4.0, Palette.IVORY, true, -1.0, true)
+
+
+## Where Noor's marks are on the map now (grid coordinates).
+func mast_marks() -> Array[Vector2]:
+	return _mast_marks
 
 
 func _seen(c: Vector2i) -> bool:

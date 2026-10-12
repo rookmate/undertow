@@ -9,6 +9,7 @@
 ;   h  the Clinic (from Mercy General)   k  its door
 ;   o  the Pumphouse (from Greywater)    j  its door
 ;   c  the Commons (from Harbor Ward), on new ground at the back rim   q  its door
+;   v  where the Wardfolk stand, once the Commons does
 ;   N  Noor      Y  Teo      s  where woken survivors stand      p  start (off the skiff)
 ;   ~  water
 ;
@@ -19,13 +20,14 @@
 %  j pumphouse_door
 %  c commons
 %  q commons_door
+%  v wardfolk
 ~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~cc~~~~~~~~~
 ~~~~~~~~~~~~~cc~~~~~~~~~
-~~~~~~~~~~~hhqn~~~~~~~~~
+~~~~~~~~~~~hhqv~~~~~~~~~
 ~~~~~~~~~MMhhnG~~~~~~~~~
 ~~~~~~AAAMMeknnGn~~~~~~~
-~~~~~~AAAnnnnffnnn~~~~~~
+~~~~~~AAAnnnnffnvn~~~~~~
 ~~~~~~AAAannnffnnG~~~~~~
 ~~~~InnnnnnnnnnnnnG~~~~~
 ~~~~IznnnnnNnnnffnn~~~~~

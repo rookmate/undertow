@@ -15,6 +15,8 @@ const GILT_LAYER := 1
 
 var cell: Vector2i
 var facade: Facade = Facade.PLAIN
+## Noor's Mast on this roof (the Commons', once she's home).
+var roof_mast: bool = false
 var show_left: bool = true
 var show_right: bool = true
 var gilt_lit: bool = true:
@@ -95,6 +97,22 @@ func _build() -> void:
 		_base.line(foot, foot + Vector2(0, -90), Palette.IRON_DARK, 4.0)
 		for k: int in 3:
 			_glow.circle(foot + Vector2(0, -40 - k * 22), 5.0, Palette.HUMAN_CREAM)
+	if facade == Facade.COMMONS and roof_mast and show_left and show_right:
+		# Noor's Mast: scrap lattice wired on the Commons roof, the Ward's cyan lamp at the top, a cable
+		# strung down to the bunting.
+		var foot := up + Vector2(0, -4)
+		var tip := foot + Vector2(0, -170)
+		_base.line(foot + Vector2(-14, 0), tip, Palette.IRON_DARK, 3.0)
+		_base.line(foot + Vector2(14, 0), tip, Palette.IRON_DARK, 3.0)
+		for k: int in 5:
+			var t := (k + 1) / 6.0
+			var y := foot.y + (tip.y - foot.y) * t
+			var half := 14.0 * (1.0 - t)
+			_base.line(Vector2(-half, y), Vector2(half, y), Palette.IRON_DARK, 2.0)
+		_base.line(tip, tip + Vector2(-22, -14), Palette.GREY_COLD, 2.0)
+		_base.line(tip, tip + Vector2(20, -10), Palette.GREY_COLD, 2.0)
+		_base.line(tip + Vector2(0, 20), right + up + Vector2(-6, -STORY * 0.4), Color(Palette.IRON_DARK, 0.8), 1.5)
+		_glow.circle(tip + Vector2(0, -4), 6.0, Palette.WARD_CYAN)
 
 
 ## Point on a face: `a`→`b` is the face's bottom edge, u runs along it (0..1), v is height in px.

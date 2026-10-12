@@ -18,7 +18,8 @@ const THROUGH: Array[String] = [
 	"the_lattice_again", "warden_prime_engaged", "warden_prime_called_the_charge", "warden_prime_dazed",
 	"warden_prime_beaten", "barriers_opened", "noor_found_down", "carried_noor", "curfew_patrol_came",
 	"noor_in_the_boat", "route_completed", "arrived_by_reliquary", "core_choice_shown", "harbor_cores_carried",
-	"ark_reached", "noor_home", "commons_restored", "commons_standing",
+	"ark_reached", "noor_home", "commons_restored", "commons_standing", "mast_built", "commons_people",
+	"wardfolk_talk",
 ]
 
 ## Set by a campaign: Noor goes ahead at the dock before this district (a prepared run has her gone).
@@ -41,6 +42,9 @@ func prepare() -> void:
 	GameState.give_weapon(WeaponDefs.DEFIB)
 	GameState.meet_companions()
 	GameState.noor_leaves_for_ward()
+	# Two people woken in Act 2, to live in the Commons.
+	GameState.add_survivor("mercy_waiting_night_nurse")
+	GameState.add_survivor("vellum_waiting_doorway")
 
 
 ## At the dock: Noor's turn begins. She tells you about the bridge and goes ahead.
@@ -242,13 +246,26 @@ func choose(screen: Node, gen: int) -> void:
 	on_to_the_ark(screen)
 
 
-## Home with her: Noor's back on the Ark, and the Commons stands.
+## Home with her: Noor's back on the Ark, and the Commons stands, her Mast on its roof; its people carry
+## their own lights, and the Wardfolk who came over talk about her.
 func at_ark(ark: ArkLevel, gen: int) -> bool:
 	pass_check("ark_reached")
 	check(not GameState.run.noor_away and GameState.run.noor_present and ark.noor != null, "noor_home")
 	check(GameState.run.buildings_restored.has("commons"), "commons_restored")
 	check(facade_cells(ark, BuildingCell.Facade.COMMONS) > 0, "commons_standing")
+	var masts := ark.world.get_children().filter(func(n: Node) -> bool: return n is BuildingCell and (n as BuildingCell).roof_mast)
+	check(GameState.run.buildings_restored.has(GameState.MAST) and masts.size() == 1, "mast_built")
+	var people := ark.world.get_children().filter(func(n: Node) -> bool: return n is ArkFigure and (n as ArkFigure).who == ArkFigure.Who.SURVIVOR)
+	check(ark.wardfolk.size() == 2 and people.all(func(f: ArkFigure) -> bool: return f.lit), "commons_people")
 	if not await Autopilot.wait(1.5, gen):
 		return false
 	await Autopilot.snap("ark_after_harbor")
+	if ark.wardfolk.is_empty():
+		return true
+	# Over to the Commons: one of the Wardfolk has something to say about Noor.
+	var w := ark.wardfolk[ark.wardfolk.size() - 1]
+	if not await Autopilot.use_at(ark, ark.player, Vector2i(Iso.world_to_grid(w.position).floor()) + Vector2i(0, 1), gen):
+		return false
+	check(w.spoken_line() != "" and w.spoken_line() == CommonsPeople.wardfolk_line(w.wardfolk_index, GameState.run), "wardfolk_talk")
+	await Autopilot.snap("ark_commons_people")
 	return true
