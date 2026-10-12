@@ -187,7 +187,7 @@ func test_rewrite_speaks_to_them_and_is_remembered() -> void:
 	choice.confirm()
 	await wait_frames(2)
 	check_eq(GameState.run.ending, Endings.REWRITE)
-	check_eq(SaveService.store.load_record(SaveService.LEGACY).get("rewrite"), true, "saved, then remembered past the run")
+	check_eq(SaveService.store.load_record(SaveService.LEGACY, SaveService.legacy_valid).get("rewrite"), true, "saved, then remembered past the run")
 	var said := await _play(Endings.REWRITE)
 	var words := ""
 	for id: String in said:
@@ -266,8 +266,8 @@ func test_a_rewrite_is_remembered_safely_and_recoverably() -> void:
 	GameState.choose_ending(Endings.REWRITE)
 	check(SaveService.save_run(GameState.run) == OK)
 	check(SaveService.rewritten(), "the saved run says so")
-	check(SaveService.store.load_record(SaveService.LEGACY).is_empty(), "though the record wasn't written")
-	check(SaveService.settle_legacy() == OK and SaveService.store.load_record(SaveService.LEGACY).get("rewrite") == true, "settled: written down")
+	check(SaveService.store.load_record(SaveService.LEGACY, SaveService.legacy_valid).is_empty(), "though the record wasn't written")
+	check(SaveService.settle_legacy() == OK and SaveService.store.load_record(SaveService.LEGACY, SaveService.legacy_valid).get("rewrite") == true, "settled: written down")
 	# Written the careful way: a failed or short write never costs the record it had.
 	SaveService.delete_save()
 	var real := SaveService.store
@@ -289,3 +289,45 @@ func test_a_rewrite_is_remembered_safely_and_recoverably() -> void:
 	b.store_string("[]")
 	b.close()
 	check_false(SaveService.rewritten(), "nothing readable, no save: no Rewrite")
+
+
+## Only the record's own file fails to write (the save itself still can).
+class RecordFailingStore:
+	extends SaveStore
+	func _write_text(file_path: String, text: String) -> Error:
+		if file_path.get_file().begins_with(SaveService.LEGACY):
+			return ERR_FILE_CANT_WRITE
+		return super(file_path, text)
+
+
+## The Rewrite saved but its record never written, and the title's try fails too: a New Game can't save
+## over the finished run (the player is told) until the record is written; then it can, and the Rewrite
+## is still remembered.
+func test_a_new_run_cant_save_over_an_unrecorded_rewrite() -> void:
+	_earn_rewrite()
+	GameState.choose_ending(Endings.REWRITE)
+	var real := SaveService.store
+	SaveService.store = RecordFailingStore.new(SCRATCH)
+	check(SaveService.store.save(GameState.run) == OK, "the Rewrite is saved")
+	check(SaveService.settle_legacy() != OK, "its record can't be written")
+	check(SaveService.rewritten(), "the saved run still says so")
+	GameState.new_run()
+	check(GameState.save() != OK, "a new run can't save over it while that's so")
+	check(SaveService.rewritten(), "and the Rewrite isn't forgotten")
+	SaveService.store = real
+	check(GameState.save() == OK, "once the record can be written, the new run saves")
+	check_eq(SaveService.store.load_record(SaveService.LEGACY, SaveService.legacy_valid).get("rewrite"), true, "written down first")
+	check(SaveService.rewritten(), "remembered, the finished run gone")
+
+
+## A record that reads but isn't a record (no "rewrite") doesn't hide a good backup.
+func test_a_malformed_record_doesnt_hide_its_backup() -> void:
+	check(SaveService.remember_rewrite() == OK)
+	check(SaveService.remember_rewrite() == OK, "written twice: the first is the backup")
+	var f := FileAccess.open(SCRATCH.path_join("legacy.json"), FileAccess.WRITE)
+	f.store_string("{\"version\": 1}")
+	f.close()
+	check(SaveService.rewritten(), "the backup answers for it")
+	check(SaveService.remember_rewrite() == OK)
+	check_eq(SaveService.store.load_record(SaveService.LEGACY, SaveService.legacy_valid).get("rewrite"), true)
+

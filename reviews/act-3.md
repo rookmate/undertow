@@ -90,3 +90,54 @@ I inspected the stored Spire and Council screenshots. The confession text is vis
 Not changed: the readability concern about the dim confession text when muted (noted, not a defect);
 real controller hardware and audible silence on real audio stay on the hardware checklist in
 PROGRESS.md.
+
+## Round 2 findings (verbatim from sol_analyst)
+
+Milestone 4 is still not ready to call done. Four round-1 findings are fixed; Rewrite persistence is only partially fixed. Two P2 issues remain. No P0 or P1 defect was confirmed.
+
+Reviewed HEAD `3fd0b1d`, the fixes in `git diff ab8fb77..HEAD`, and the milestone in `git diff 3a24472~1..HEAD`. No files were edited. The consequences below follow from the code; I did not reproduce them through write-producing runtime tests.
+
+1. **P2 — A second failed Rewrite-record write leaves New Game able to erase the recovery source.**
+
+   Confirmed: [ui/title/title.gd:49](/home/homebox/Documents/rookmate/undertow/ui/title/title.gd:49) ignores `settle_legacy()`’s result. New Game remains available and replaces the in-memory run at [ui/title/title.gd:104](/home/homebox/Documents/rookmate/undertow/ui/title/title.gd:104). Entering the first district saves that new run at [game/level/level.gd:132](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:132). [autoload/save_service.gd:19](/home/homebox/Documents/rookmate/undertow/autoload/save_service.gd:19) saves without settling outstanding Rewrite memory first. Its fallback at [autoload/save_service.gd:44](/home/homebox/Documents/rookmate/undertow/autoload/save_service.gd:44) examines the loaded current save, not an older completed Rewrite behind a readable current save.
+
+   Inferred consequence: successfully save a Rewrite, fail its legacy write, and fail the title’s repair attempt. Start New Game. Once the new run saves successfully, `rewritten()` becomes false despite the previous Rewrite initially remaining in the slot backup. Subsequent saves rotate that backup away. The permanent cyan ring can be forgotten permanently.
+
+   Preserve or settle the completed Rewrite before another run overwrites its recovery source, and handle settlement failure explicitly. The added recovery test at [tests/integration/test_endings.gd:262](/home/homebox/Documents/rookmate/undertow/tests/integration/test_endings.gd:262) covers successful settlement and failed writes with an existing good record, but not this sequence.
+
+2. **P2 — A malformed legacy dictionary suppresses a valid backup.**
+
+   Confirmed: [core/save_store.gd:55](/home/homebox/Documents/rookmate/undertow/core/save_store.gd:55) accepts any nonempty parsed dictionary as the main record. [core/save_store.gd:67](/home/homebox/Documents/rookmate/undertow/core/save_store.gd:67) checks JSON syntax and dictionary shape, without validating the legacy fields. The caller defaults a missing `rewrite` field to false at [autoload/save_service.gd:45](/home/homebox/Documents/rookmate/undertow/autoload/save_service.gd:45).
+
+   Inferred consequence: with `legacy.json` containing `{"version":1}`, a valid `legacy.json.bak` containing `{"version":1,"rewrite":true}`, and a current non-Rewrite run, the title forgets the Rewrite. The good backup is never consulted, and `settle_legacy()` cannot recover it.
+
+   Validate the legacy record before accepting the main file, falling back to a valid backup for missing or mistyped fields. The malformed-data cases at [tests/integration/test_endings.gd:281](/home/homebox/Documents/rookmate/undertow/tests/integration/test_endings.gd:281) cover broken JSON and an array, but miss malformed dictionaries.
+
+The five round-1 findings stand as follows:
+
+- **1, confession interruption — fixed.** [autoload/narrator.gd:134](/home/homebox/Documents/rookmate/undertow/autoload/narrator.gd:134) queues protected lines; `speak_text()` and `voice_over()` guard them at lines 117 and 172. District exit drops pending lines at [game/level/level.gd:177](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:177). The added Spire test verifies overlap, competing fixed lines, voice-overs, queue advancement and exit. No further defect was confirmed.
+- **2, accumulating curfew patrols — fixed.** [game/level/level.gd:665](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:665) spawns once and reuses living patrol members. The retry test verifies enemy counts and renewed hunting.
+- **3, silently proceeding after ending-save failure — fixed.** [ui/ark/final_choice.gd:130](/home/homebox/Documents/rookmate/undertow/ui/ark/final_choice.gd:130) awaits retry/leave/stay; staying rolls back the ending and restores door focus. Proceeding without saving now requires the player’s explicit choice.
+- **4, unsafe and unrecoverable Rewrite memory — partially fixed.** The shared verified temporary-write implementation protects existing records against failed and short writes. The two recovery gaps above remain.
+- **5, missing Harbor content — fixed.** The map places the dark mast and two Wardfolk. [game/level/level.gd:311](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:311) configures the mast; [game/level/level.gd:542](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:542) spawns talkable Wardfolk using the Ward-specific dialogue. Their Commons presence remains intact.
+
+I found no other confirmed blocker in the milestone, no disabled tests or weakened gate checks, and no new gold, serif or Steam-boundary violation.
+
+Stored gate evidence supports the reported pass: [456 tests](/home/homebox/Documents/rookmate/undertow/reports/check/tests.log:472), the 30-second smoke run, the completed campaign, all three ending runs and all eight district tours, with no matching error/warning lines. `bash -n tools/check.sh` passed. I did not rerun the write-producing gate. Real controller hardware, audible Unplug silence and small-display confession readability remain unverified.
+
+## Round 2 fixes
+
+1. **No save replaces an unrecorded Rewrite.** `SaveService.save_run` writes the Rewrite's record down
+   first whenever a run on file (the save or its backup, read without side effects:
+   `SaveStore.saved_runs`) ended in a Rewrite the record doesn't know about; if that write fails, the
+   save fails too, so the player is told (a checkpoint notice, or the question before leaving) and the
+   finished run stays on file. The title shows a notice if its own attempt fails. Test:
+   `test_endings::test_a_new_run_cant_save_over_an_unrecorded_rewrite` (only the record's file fails:
+   the Rewrite saves, the record can't be written, a new run can't save over it; once it can, the record
+   is written first).
+2. **A record is validated, not just parsed.** `save_record` / `load_record` take a validator
+   (`SaveService.legacy_valid`: a true-or-false "rewrite"); an invalid main file is passed over for a
+   valid backup, and is never rotated over it. Test:
+   `test_endings::test_a_malformed_record_doesnt_hide_its_backup` (`{"version": 1}` over a good
+   backup).
+

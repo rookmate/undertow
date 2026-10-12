@@ -726,3 +726,7 @@ Asked of the user on 2026-10-09 and answered the same day.
 172. **Act 3 review, round 1.** Harbor Ward has **the Ward's own mast**, dark, on the boat-house roof by
      the gate (its radio log below it), and **two Wardfolk on Net Lane** who talk (the curfew, Noor
      going by); once the Commons is built, two of them stand by it on the Ark (design/act-3.md).
+173. **Act 3 review, round 2.** A run on file that ended in a Rewrite is never replaced before the
+     Rewrite's record is written: every save writes the record down first if it's missing, and if it
+     can't, the save fails (the player is told) and the finished run stays. A record is judged by its
+     fields, not just by whether it parses; a broken main file gives way to a good backup.
