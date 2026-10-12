@@ -46,16 +46,31 @@ func save(run: RunState) -> Error:
 
 ## Small records kept beside the save (what outlives a run), written the same careful way: a dictionary
 ## to `<name>.json`, its last good version kept as `<name>.json.bak`.
-func save_record(record_name: String, data: Dictionary) -> Error:
+## `valid` judges a record's fields (a dictionary that reads but isn't what it should be counts as broken):
+## only a valid main file becomes the backup.
+func save_record(record_name: String, data: Dictionary, valid: Callable) -> Error:
 	var main := dir_path.path_join(record_name + ".json")
-	return _write_safely(main, main + ".bak", JSON.stringify(data, "\t"), func(p: String) -> bool: return not _parse_record(p).is_empty())
+	return _write_safely(main, main + ".bak", JSON.stringify(data, "\t"), func(p: String) -> bool: return bool(valid.call(_parse_record(p))))
 
 
-## A record written by save_record, or its backup if the main file is unreadable; {} if neither reads.
-func load_record(record_name: String) -> Dictionary:
+## A record written by save_record if it's valid, or its backup if that is; {} if neither is.
+func load_record(record_name: String, valid: Callable) -> Dictionary:
 	var main := dir_path.path_join(record_name + ".json")
-	var d := _parse_record(main)
-	return d if not d.is_empty() else _parse_record(main + ".bak")
+	for p: String in [main, main + ".bak"]:
+		var d := _parse_record(p)
+		if bool(valid.call(d)):
+			return d
+	return {}
+
+
+## The runs on file, main and backup, as far as they read (nothing renamed, nothing printed).
+func saved_runs() -> Array[RunState]:
+	var out: Array[RunState] = []
+	for p: String in [path(), backup_path()]:
+		var r := _read(p)
+		if r.status == Status.OK:
+			out.append(r.run)
+	return out
 
 
 func delete_record(record_name: String) -> void:
