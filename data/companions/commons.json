@@ -1,6 +1,6 @@
 {
 	"version": 1,
-	"notes": "The Commons' people (Harbor Ward's building on the Ark, design/act-3.md). With the Commons standing, the survivors you woke live there, each with a light of their own, and say something of their own: one of their district's lines, the same one each time (by who they are). And the Wardfolk who came over from the Ward when it was built, who never wore a Lanyard: what they say depends on whether Noor came home. People talking: plain type. Placeholder writing.",
+	"notes": "The Commons' people (Harbor Ward's building on the Ark, design/act-3.md). With the Commons standing, the survivors you woke live there, each with a light of their own, and say something of their own: one of their district's lines, the same one each time (by who they are). And the Wardfolk: out in the Ward they talk about the curfew and Noor going by; once the Commons is built, two of them come over, who never wore a Lanyard: what they say depends on whether Noor came home. People talking: plain type. Placeholder writing.",
 	"survivors": {
 		"kestrel": [
 			"Nobody tells the beans when to come up. I'd forgotten that.",
@@ -37,6 +37,10 @@
 		"noor_stayed": [
 			"Noor stayed back in the Ward. Somebody has to keep the lanterns lit.",
 			"We never had the Lanyard. We had each other's doors. It's the same here, near enough."
+		],
+		"in_the_ward": [
+			"Curfew's at ten. It's been ten o'clock for two years. On our side of the fence we walk where we like.",
+			"Noor came through with a bag of jammer parts and didn't stop. She never stops. Go on, she'll want you."
 		]
 	}
 }

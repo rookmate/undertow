@@ -14,7 +14,7 @@ const OPENING: Array[String] = [
 ]
 const THROUGH: Array[String] = [
 	"the_voice_cuts_out", "no_lattice", "muting_changes_nothing", "dashcam_found", "jammer_found", "warden_hunted",
-	"enemy_killed", "ward_radio_found",
+	"enemy_killed", "wardfolk_in_the_ward", "ward_mast_dark", "ward_radio_found",
 	"the_lattice_again", "warden_prime_engaged", "warden_prime_called_the_charge", "warden_prime_dazed",
 	"warden_prime_beaten", "barriers_opened", "noor_found_down", "carried_noor", "curfew_patrol_came",
 	"noor_in_the_boat", "route_completed", "arrived_by_reliquary", "core_choice_shown", "harbor_cores_carried",
@@ -95,7 +95,18 @@ func drive(level: Level, gen: int) -> void:
 	if not await Autopilot.use_at(level, player, Vector2i(5, 21), gen):
 		return
 	check(GameState.run.weapons_owned.has(WeaponDefs.SIGNAL_JAMMER), "jammer_found")
-	# East along the lane: the Wardfolk's radio log by the gate.
+	# East along the lane: a word with the Wardfolk by their doors, and their radio log by the gate under
+	# the Ward's own mast, dark.
+	if not await Autopilot.use_at(level, player, Vector2i(10, 19), gen):
+		return
+	var folk: ArkFigure = null
+	for n: Node in level.world.get_children():
+		if n is ArkFigure and (n as ArkFigure).who == ArkFigure.Who.WARDFOLK and (folk == null or (n as ArkFigure).spoken_line() != ""):
+			folk = n
+	check(folk != null and folk.spoken_line() != "" and folk.spoken_line() == CommonsPeople.wardfolk_line(folk.wardfolk_index, GameState.run, true), "wardfolk_in_the_ward")
+	await Autopilot.snap("harbor_wardfolk")
+	var masts := level.world.get_children().filter(func(n: Node) -> bool: return n is BuildingCell and (n as BuildingCell).roof_mast and (n as BuildingCell).mast_dark)
+	check(masts.size() == 1, "ward_mast_dark")
 	for cell: Vector2i in [Vector2i(12, 19), Vector2i(24, 19)]:
 		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
 			return

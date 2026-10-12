@@ -712,3 +712,17 @@ Asked of the user on 2026-10-09 and answered the same day.
      (`ending_reboot`, `ending_unplug`, `ending_rewrite`): into the chamber, the doors on offer (two
      without Rewrite's conditions, three with), asked once more, the epilogue's voice or its silence,
      the credits, the title's ring after (gap filled only after a Rewrite).
+169. **Act 3 review, round 1.** A confession is **heard out**: one asked for while another is being said
+     waits its turn (`Narrator.say_in_full` queues it; dropped if the Steward can't say it when its turn
+     comes), and nothing else cuts in, its other lines nor a screen's voice-over (opening the Reliquary
+     during the last one doesn't replace it). Leaving the district drops what's still waiting.
+170. **Act 3 review, round 1.** The **curfew patrol comes once**: carrying Noor again after being downed,
+     the Wardens still standing come after you again; none are added.
+171. **Act 3 review, round 1.** The **ending is saved before it plays**: if the save fails the player is
+     asked (try again, go on without it, or stay); staying takes the choice back, nothing decided. The
+     Rewrite's record (`legacy.json`) is written like the save itself (read back before it replaces the
+     last good one, which is kept as a backup), only once the ending is saved; a finished Rewrite on
+     file counts on its own, and the title writes the record down if it's missing.
+172. **Act 3 review, round 1.** Harbor Ward has **the Ward's own mast**, dark, on the boat-house roof by
+     the gate (its radio log below it), and **two Wardfolk on Net Lane** who talk (the curfew, Noor
+     going by); once the Commons is built, two of them stand by it on the Ark (design/act-3.md).

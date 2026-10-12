@@ -45,6 +45,8 @@ func _ready() -> void:
 		add_child(screen))
 	_quit = _menu_button("QUIT", column)
 	_continue.disabled = not SaveService.has_save() or saved_run_finished()
+	# A Rewrite the title wasn't told about (its record failed to write) is written down now.
+	SaveService.settle_legacy()
 	_new_game.pressed.connect(_start_new_game)
 	_continue.pressed.connect(_continue_game)
 	_quit.pressed.connect(func() -> void: Sound.quit())

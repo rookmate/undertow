@@ -10,6 +10,7 @@ signal closed
 var offered: Array[String] = []
 ## The door picked and waiting to be confirmed ("" while choosing).
 var asking: String = ""
+var _confirming: bool = false
 ## What happens once it's chosen: the epilogue. (Tests, which can't follow a scene change, replace it.)
 var on_chosen: Callable = func() -> void: SceneRouter.goto(&"epilogue")
 var _doors: Dictionary[String, Button] = {}
@@ -123,13 +124,26 @@ func back() -> void:
 	_doors[was].grab_focus()
 
 
-## Done: the run's ending is chosen and saved, and the epilogue plays.
+## Done: the run's ending is chosen and saved (if the save fails, the player is asked: try again, go on
+## without it, or stay and nothing is decided), then a Rewrite is remembered past the run, and the
+## epilogue plays.
 func confirm() -> void:
-	if asking == "":
+	if asking == "" or _confirming:
 		return
+	_confirming = true
 	var id := asking
 	GameState.choose_ending(id)
-	SaveFlow.checkpoint(get_tree())
+	if not await SaveFlow.before_leaving(get_tree()):
+		GameState.take_back_ending()
+		_confirming = false
+		# Once the question is gone (and this screen can take focus again), back to the doors.
+		await get_tree().process_frame
+		back()
+		return
+	if id == Endings.REWRITE:
+		var err := SaveService.remember_rewrite()
+		if err != OK:
+			SaveFailure.notice(get_tree(), err, "The title couldn't be told about your Rewrite. It will try again.")
 	Modals.pop(self)
 	closed.emit()
 	on_chosen.call()

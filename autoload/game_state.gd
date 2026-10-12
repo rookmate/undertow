@@ -186,15 +186,23 @@ func noor_stays_in_ward() -> void:
 		state_changed.emit(&"noor_present")
 
 
-## The final choice, made in the Council Chamber: the run is finished. A Rewrite is remembered past it
-## (the title's ring keeps its gap filled).
+## The final choice, made in the Council Chamber: the run is finished (FinalChoice saves it before the
+## epilogue, and only then remembers a Rewrite past it).
 func choose_ending(ending_id: String) -> void:
 	if not Endings.ALL.has(ending_id) or run.ending != "":
 		return
 	run.ending = ending_id
 	set_location("ending")
-	if ending_id == Endings.REWRITE:
-		SaveService.remember_rewrite()
+	state_changed.emit(&"ending")
+
+
+## Nothing's final until it's saved: the save failed and the player chose to stay, so the run is back in
+## the Council Chamber, undecided.
+func take_back_ending() -> void:
+	if run.ending == "":
+		return
+	run.ending = ""
+	set_location("ark")
 	state_changed.emit(&"ending")
 
 

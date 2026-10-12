@@ -15,8 +15,9 @@ var selector: LineSelector
 ## How many lines of each tone have been spoken this session (debug overlay, tests).
 var tone_counts: Dictionary[StringName, int] = {&"bold": 0, &"cautious": 0, &"neutral": 0}
 var last_line_id: String = ""
-## The line being heard out in full (say_in_full), if any.
+## The line being heard out in full (say_in_full), if any, and those waiting to be.
 var _in_full: String = ""
+var _in_full_queue: Array[String] = []
 
 var _rng := RandomNumberGenerator.new()
 var _clock: float = 0.0
@@ -36,6 +37,13 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_clock += delta / maxf(Engine.time_scale, 0.01)
+	# The next line waiting to be heard out, once the one before it is over (dropped if it can't be said
+	# now: muted, or out of its reach).
+	while not _in_full_queue.is_empty() and not in_full_in_progress():
+		var next: String = _in_full_queue.pop_front()
+		if say_fixed(next):
+			_in_full = next
+			break
 
 
 ## Tests make selection repeatable.
@@ -106,7 +114,7 @@ func speak_text(line_id: String, text: String, purpose: StringName, urgent: bool
 	var known := VoiceLines.purpose_of(line_id)
 	if not allows(known if known != &"" else purpose):
 		return false
-	if warning_in_progress() and not urgent:
+	if (warning_in_progress() or in_full_in_progress()) and not urgent:
 		return false
 	_last_spoken_at = _clock
 	last_line_id = line_id
@@ -120,13 +128,27 @@ func say_fixed(line_id: String, urgent: bool = false) -> bool:
 	return text != "" and speak_text(line_id, text, VoiceLines.purpose(line_id), urgent)
 
 
-## A line from steward_fixed.json that's heard out in full: the Steward's own chatter (its pool lines:
-## the Reliquary, standing idle, a checkpoint) waits until it's over. The Spire's confessions.
+## A line from steward_fixed.json that's heard out in full (the Spire's confessions): nothing else it
+## says cuts it off (its pool lines, its other lines, a screen's voice-over all wait or give way), and
+## one asked for while another is being heard out waits its turn. Returns whether it was said or queued.
 func say_in_full(line_id: String) -> bool:
+	if in_full_in_progress():
+		if line_id != _in_full and not _in_full_queue.has(line_id):
+			_in_full_queue.append(line_id)
+		return true
 	var said := say_fixed(line_id)
 	if said:
 		_in_full = line_id
 	return said
+
+
+## Leaving the place they were for: the lines still waiting are dropped (the one being said goes on).
+func drop_queued() -> void:
+	_in_full_queue.clear()
+
+
+func queued() -> Array[String]:
+	return _in_full_queue.duplicate()
 
 
 func in_full_in_progress() -> bool:
@@ -147,7 +169,7 @@ func voice_over(line_id: String) -> bool:
 	if purpose == &"":
 		Diagnostics.error("Narrator: %s isn't one of the Steward's lines" % line_id)
 		return false
-	if not Steward.voice_on or not purpose_allowed(purpose) or warning_in_progress():
+	if not Steward.voice_on or not purpose_allowed(purpose) or warning_in_progress() or in_full_in_progress():
 		return false
 	last_line_id = line_id
 	Sound.say(line_id)

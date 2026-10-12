@@ -90,7 +90,7 @@ func current_line() -> String:
 				return "I built the routing model. I don't need to read it again."
 			return "The Archive's working. It remembers everything, you know."
 		Who.WARDFOLK:
-			return CommonsPeople.wardfolk_line(wardfolk_index, GameState.run)
+			return CommonsPeople.wardfolk_line(wardfolk_index, GameState.run, level != null and not level.is_hub())
 	if lit:
 		var own := CommonsPeople.survivor_line(survivor_id)
 		if own != "":

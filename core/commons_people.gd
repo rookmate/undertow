@@ -34,9 +34,11 @@ static func survivor_line(survivor_id: String) -> String:
 	return lines[absi(hash(survivor_id)) % lines.size()] if not lines.is_empty() else ""
 
 
-## What the k-th of the Wardfolk says: about Noor, home with you or staying in the Ward.
-static func wardfolk_line(k: int, run: RunState) -> String:
-	var lines := _strings(_dict(_load().get("wardfolk")).get("noor_home" if run.noor_present else "noor_stayed"))
+## What the k-th of the Wardfolk says: out in the Ward (`in_the_ward`), about the curfew and Noor going
+## by; on the Ark, about Noor, home with you or staying in the Ward.
+static func wardfolk_line(k: int, run: RunState, in_the_ward: bool = false) -> String:
+	var key := "in_the_ward" if in_the_ward else ("noor_home" if run.noor_present else "noor_stayed")
+	var lines := _strings(_dict(_load().get("wardfolk")).get(key))
 	return lines[k % lines.size()] if not lines.is_empty() else ""
 
 
@@ -53,7 +55,7 @@ static func problems() -> PackedStringArray:
 		if n < MIN_LINES:
 			out.append("%s: people to wake there, %d lines for them in the Commons (at least %d)" % [district, n, MIN_LINES])
 	var wardfolk := _dict(_load().get("wardfolk"))
-	for key: String in ["noor_home", "noor_stayed"]:
+	for key: String in ["in_the_ward", "noor_home", "noor_stayed"]:
 		if _strings(wardfolk.get(key)).size() < MIN_LINES:
 			out.append("the Wardfolk need at least %d lines for %s" % [MIN_LINES, key])
 	return out

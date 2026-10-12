@@ -13,6 +13,7 @@ This map's own characters (declared in its '%' legend lines):
     s  the Ward's stone lanes    p  pier planks    h  a boat-house    o  a boat-house's door
     f  a piling                  n  a Wardfolk lantern                b  the bridge stub
     w  a Warden, posted (the curfew patrol)    x  where the patrol comes in once you've picked Noor up
+    q  the boat-house with the Ward's own mast on its roof (dark)    v  Wardfolk, out on Net Lane
     m  Noor, down at the border                k  the Wardfolk's boat on the depot slipway
 """
 W, H = 46, 39
@@ -81,6 +82,11 @@ put(4, 18, 'T')
 # Noor's jammer, on a crate on her porch.
 put(4, 21, 'V')
 put(31, 18, 'U')
+# The Ward's own mast, dark, on the boat-house roof by the gate (its radio log below it).
+put(32, 17, 'q')
+# Wardfolk out on Net Lane, by their doors.
+put(10, 18, 'v')
+put(22, 18, 'v')
 
 for row in g:
     print(''.join(row).rstrip())

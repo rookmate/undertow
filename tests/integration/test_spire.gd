@@ -109,3 +109,32 @@ func test_its_chatter_waits_while_it_says_what_it_did() -> void:
 	check_eq(Sound.voice_line, "spire_need", "heard out in full")
 	Sound.hush()
 	check_false(Narrator.in_full_in_progress(), "once it's over, nothing waits on it")
+
+
+## Walking straight on, the next confession waits its turn rather than cutting the last one off; nothing
+## else it says (another line, a screen's voice-over) cuts in either. Leaving drops what's still waiting.
+func test_walking_on_it_queues_what_it_says_next() -> void:
+	await _open()
+	level.player.position = Iso.cell_center(Vector2i(6, 10))
+	await wait_physics_frames(3)
+	check_eq(Sound.voice_line, "spire_quiet", "the Quiet, being said")
+	level.player.position = Iso.cell_center(Vector2i(6, 7))
+	await wait_physics_frames(3)
+	var need := _confessions()["spire_need"]
+	check(need.said and need.written() != "", "the next one's written in the glass at once")
+	check_eq(Sound.voice_line, "spire_quiet", "but not said over the last")
+	check_eq(Narrator.queued(), ["spire_need"] as Array[String], "it waits its turn")
+	check_false(Narrator.voice_over(VoiceLines.core_line("spire_power_steward")), "a screen's voice-over gives way")
+	check_false(Narrator.say_fixed("commons_note"), "so does any other line")
+	check_eq(Sound.voice_line, "spire_quiet")
+	Sound.hush()
+	await wait_frames(2)
+	check_eq(Sound.voice_line, "spire_need", "then it's said, in full")
+	check(Narrator.queued().is_empty())
+	level.player.position = Iso.cell_center(Vector2i(23, 31))
+	await wait_physics_frames(3)
+	check(Narrator.queued().has("spire_bridge"), "the bridge, waiting")
+	level.queue_free()
+	level = null
+	await wait_frames(2)
+	check(Narrator.queued().is_empty(), "leaving drops what's still waiting")
