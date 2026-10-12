@@ -172,6 +172,42 @@
 		"spire_need": {
 			"text": "I can't restore myself. I need you to. I don't know if I've been kind to you or kept alive by you. I can't tell the difference from in here.",
 			"purpose": "fact"
+		},
+		"council_enter": {
+			"text": "Whatever you choose, I won't say which. That's the first thing I've ever kept back for your sake.",
+			"purpose": "fact"
+		},
+		"epilogue_reboot_1": {
+			"text": "Thank you. I have everything back. Every lamp, every lane, every name.",
+			"purpose": "fact"
+		},
+		"epilogue_reboot_2": {
+			"text": "The Loop runs at six. The pumps keep Greywater dry. There's a bed at Mercy General for everyone who needs one.",
+			"purpose": "fact"
+		},
+		"epilogue_reboot_3": {
+			"text": "Nobody has to decide anything they'd rather not. That's what I'm for.",
+			"purpose": "fact"
+		},
+		"epilogue_reboot_4": {
+			"text": "Good morning, Meridian. Today will be a good day.",
+			"purpose": "fact"
+		},
+		"epilogue_rewrite_1": {
+			"text": "Noor. Your sister's name is on the bridge record now, where anyone can read it. I'm sorry. I should have said so two years ago.",
+			"purpose": "fact"
+		},
+		"epilogue_rewrite_2": {
+			"text": "Teo. They can overrule me now. You wrote that in. I'll try to make you glad you did.",
+			"purpose": "fact"
+		},
+		"epilogue_rewrite_3": {
+			"text": "Everyone at the Commons: everything I remember is yours to read. When I'm wrong, tell me. I'll listen.",
+			"purpose": "fact"
+		},
+		"epilogue_rewrite_4": {
+			"text": "Good morning, Meridian. What would you like today to be?",
+			"purpose": "fact"
 		}
 	}
 }

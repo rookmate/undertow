@@ -47,6 +47,9 @@ const STEWARD_ALLOWED: Dictionary[String, String] = {
 	"res://game/bosses/warden_prime.gd": "the Warden-Prime's searchlight is the Steward's light (the Warden network is its)",
 	"res://game/bosses/relay_mast.gd": "the border's Lattice relay is Steward hardware",
 	"res://game/props/confession.gd": "what the Steward says in the Spire, written into its glass in its own serif (its narration)",
+	"res://game/ark/council_chamber.gd": "the Reboot door is the Steward's own",
+	"res://ui/epilogue/epilogue.gd": "the Steward's words in the Reboot epilogue (its narration)",
+	"res://ui/ark/final_choice.gd": "the Steward's word at the Council Chamber's doors (its narration)",
 }
 
 const SCAN_ROOTS: Array[String] = ["res://autoload", "res://core", "res://game", "res://ui", "res://data"]

@@ -100,6 +100,8 @@ var _voice_length: float = 0.0
 var _voice_at: float = 0.0
 ## Quitting: nothing new may start (a sound begun after the silence would leak at exit).
 var closing: bool = false
+## Unplug's epilogue: no voice and no sound at all until it's over.
+var silent: bool = false
 ## Wanted level (0..1) of each ambience layer, and where it is now.
 var _layer_target: Dictionary[StringName, float] = {}
 var _layer_level: Dictionary[StringName, float] = {}
@@ -184,7 +186,7 @@ func _silence() -> void:
 ## Plays a cue: at a ground position in the world if `at` is a Vector2, otherwise flat (UI, the Steward).
 ## Returns the player used, or null if the cue doesn't exist.
 func play(cue: StringName, at: Variant = null) -> Node:
-	if closing:
+	if closing or silent:
 		return null
 	if not CUES.has(cue):
 		Diagnostics.error("Sound: unknown cue %s" % cue)
@@ -227,7 +229,7 @@ func play(cue: StringName, at: Variant = null) -> Node:
 ## Speaks a Steward line in its voice, cutting off whatever it was saying. Returns the line's length in
 ## seconds, or 0.0 if it has no voice yet. Callers decide whether the Steward may speak (narration rules).
 func say(line_id: String) -> float:
-	if closing:
+	if closing or silent:
 		return 0.0
 	var path := VoiceLines.clip_path(line_id)
 	if not ResourceLoader.exists(path):
@@ -247,6 +249,18 @@ func say(line_id: String) -> float:
 	if audible:
 		_voice.play()
 	return stream.get_length()
+
+
+## Silence (Unplug's epilogue): nothing plays, the ambience stops, the voice stops, and the master bus is
+## muted besides; off again, everything is as it was.
+func set_silent(on: bool) -> void:
+	silent = on
+	if on:
+		hush()
+		set_ambience({})
+	var master := AudioServer.get_bus_index(&"Master")
+	if master >= 0:
+		AudioServer.set_bus_mute(master, on)
 
 
 ## The Steward stops speaking (muted, or out of its reach), mid-word.

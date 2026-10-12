@@ -19,6 +19,7 @@ const SCENES: Dictionary[StringName, String] = {
 	&"loadout": "res://ui/loadout/loadout.tscn",
 	&"core_choice": "res://ui/core_choice/core_choice.tscn",
 	&"ark": "res://game/ark/ark.tscn",
+	&"epilogue": "res://ui/epilogue/epilogue.tscn",
 }
 
 var current_key: StringName = &""

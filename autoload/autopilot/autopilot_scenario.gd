@@ -45,3 +45,7 @@ func on_core_choice(_screen: Node, _gen: int) -> void:
 
 func on_ark(_ark: ArkLevel, _gen: int) -> void:
 	pass
+
+
+func on_epilogue(_screen: Epilogue, _gen: int) -> void:
+	pass

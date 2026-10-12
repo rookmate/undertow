@@ -21,13 +21,14 @@ extends Node
 
 const LONG_RUN_SECONDS := 55.0
 const AUTOPILOT_SAVES := "user://autopilot"
-const SCENARIOS: Array[String] = ["slice", "campaign", "loop", "tideworks", "mercy", "greywater", "vellum", "harbor", "spire", "ring_gallery", "options", "tour"]
+const SCENARIOS: Array[String] = ["slice", "campaign", "loop", "tideworks", "mercy", "greywater", "vellum", "harbor", "spire", "ending_reboot", "ending_unplug", "ending_rewrite", "ring_gallery", "options", "tour"]
 
 const DistrictRun := preload("res://autoload/autopilot/scenarios/district_run.gd")
 const Campaign := preload("res://autoload/autopilot/scenarios/campaign.gd")
 const RingGallery := preload("res://autoload/autopilot/scenarios/ring_gallery.gd")
 const OptionsTour := preload("res://autoload/autopilot/scenarios/options_tour.gd")
 const Tour := preload("res://autoload/autopilot/scenarios/tour.gd")
+const EndingRun := preload("res://autoload/autopilot/scenarios/ending_run.gd")
 
 var active: bool = false
 var seconds: float = 30.0
@@ -104,6 +105,7 @@ func _ready() -> void:
 	# Never touch the player's save: every automated run gets its own, emptied before it starts.
 	SaveService.use_directory(save_dir)
 	SaveService.delete_save()
+	SaveService.forget_legacy()
 	# Default settings (bindings, volumes) whatever the player chose: runs must be repeatable.
 	Options.use_path(save_dir.path_join("settings.cfg"))
 	for c: String in plan.expected():
@@ -127,6 +129,8 @@ func make_scenario(scenario_name: String, level_id: String = "") -> AutopilotSce
 			return DistrictRun.new(scenario_name, false)
 		"campaign":
 			return Campaign.new()
+		"ending_reboot", "ending_unplug", "ending_rewrite":
+			return EndingRun.new(scenario_name.trim_prefix("ending_"))
 		"ring_gallery":
 			return RingGallery.new()
 		"options":
@@ -402,6 +406,10 @@ func _on_scene_changed(key: StringName) -> void:
 			var ark := scene as ArkLevel
 			if ark != null:
 				plan.on_ark(ark, gen)
+		&"epilogue":
+			var epilogue := scene as Epilogue
+			if epilogue != null:
+				plan.on_epilogue(epilogue, gen)
 
 
 ## Every scenario starts here: the title and its ring, photographed, then the scenario's choice.

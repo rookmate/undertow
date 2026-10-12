@@ -40,6 +40,9 @@ var conversations_had: Array[String] = []
 var noor_away: bool = false
 ## Teo has had his say at the dock, setting off for the Spire (his turn, design/act-3.md).
 var teo_turn_had: bool = false
+## The final choice, once made (Endings: "reboot", "unplug", "rewrite"); "" until then. A run with an
+## ending is finished: kept, but not continued.
+var ending: String = ""
 
 # --- Steward --------------------------------------------------------------------------------------------
 var active_overrides: Array[String] = []
@@ -140,6 +143,7 @@ func to_dict() -> Dictionary:
 		"conversations_had": conversations_had.duplicate(),
 		"noor_away": noor_away,
 		"teo_turn_had": teo_turn_had,
+		"ending": ending,
 		"active_overrides": active_overrides.duplicate(),
 		"playstyle_profile": playstyle_profile.to_dict(),
 		"weapons_owned": weapons_owned.duplicate(),
@@ -181,6 +185,8 @@ static func from_dict(d: Dictionary) -> RunState:
 	s.conversations_had = _strings(d.get("conversations_had", []))
 	s.noor_away = _bool(d.get("noor_away", false))
 	s.teo_turn_had = _bool(d.get("teo_turn_had", false))
+	var chosen := str(d.get("ending", ""))
+	s.ending = chosen if Endings.ALL.has(chosen) else ""
 	s.active_overrides = _strings(d.get("active_overrides", []))
 	var profile: Variant = d.get("playstyle_profile", {})
 	s.playstyle_profile = PlaystyleProfile.from_dict(profile if profile is Dictionary else {})

@@ -162,8 +162,8 @@ review at the end.
 | 28 | Warden-Prime, Noor's turn (carry her or leave her), the border Reliquary, the Commons | done |
 | 29 | The Mast; the Commons' people | done |
 | 30 | The Spire (no combat; the Steward stops lying); Teo's turn | done |
-| 31 | The Council Chamber: the final choice, the three epilogues, the title after Rewrite | next |
-| 32 | The campaign to an ending | |
+| 31 | The Council Chamber: the final choice, the three epilogues, the title after Rewrite | done |
+| 32 | The campaign to an ending | next |
 | — | Sol analysis review (reviews/act-3.md), fixes, re-check | |
 
 ## Later milestones (planned)

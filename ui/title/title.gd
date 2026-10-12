@@ -44,7 +44,7 @@ func _ready() -> void:
 		screen.closed.connect(func() -> void: options.grab_focus())
 		add_child(screen))
 	_quit = _menu_button("QUIT", column)
-	_continue.disabled = not SaveService.has_save()
+	_continue.disabled = not SaveService.has_save() or saved_run_finished()
 	_new_game.pressed.connect(_start_new_game)
 	_continue.pressed.connect(_continue_game)
 	_quit.pressed.connect(func() -> void: Sound.quit())
@@ -88,6 +88,14 @@ func _ready() -> void:
 
 	_focus_first()
 	_play_quiet_line()
+
+
+## The saved run has ended (its final choice made): it's kept, but there's nothing to continue.
+static func saved_run_finished() -> bool:
+	if not SaveService.has_save():
+		return false
+	var result := SaveService.load_run()
+	return result.status == SaveStore.Status.OK and result.run.ending != ""
 
 
 ## The new run only replaces the current one if the transition is accepted (one operation).
@@ -147,7 +155,8 @@ func _play_quiet_line() -> void:
 	await tween.finished
 	ring.state = StewardRing.State.GLITCH
 	await Wait.seconds(self, 0.5)
-	ring.state = StewardRing.State.IDLE
+	# After a Rewrite (any run's), the gap stays filled.
+	ring.state = StewardRing.State.REWRITE if SaveService.rewritten() else StewardRing.State.IDLE
 	var fade := create_tween()
 	fade.tween_property(_quiet, "modulate:a", 0.4, 1.6)
 
