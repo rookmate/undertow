@@ -38,7 +38,7 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	Tiles.NEWSROOM_FLOOR: Floor.PARQUET, Tiles.NEWSROOM_DESK: Floor.PARQUET,
 	Tiles.PIER: Floor.PIER, Tiles.WARD_STONE: Floor.WARD_STONE, Tiles.BOATHOUSE: Floor.BUILDING,
 	Tiles.BOATHOUSE_DOOR: Floor.BUILDING, Tiles.LANTERN: Floor.WARD_STONE, Tiles.PILING: Floor.WATER,
-	Tiles.BRIDGE_STUB: Floor.BUILDING,
+	Tiles.BRIDGE_STUB: Floor.BUILDING, Tiles.WARDEN: Floor.WARD_STONE,
 }
 ## Characters whose cell blocks movement.
 ## Lawns (and the hedges, planters and sprinklers on them) are the Steward's gardens: looked at, not
@@ -64,7 +64,7 @@ const NEEDS_ID := "WwTUV"
 ## Custodian scrubbing a low street leaves a low street that floods, and the Waiting in the Marrow stand
 ## in the Marrow. The character's own floor (FLOOR_OF) is only the fallback for a marker with no ground
 ## beside it.
-const MARKERS := "TUWwPCckXVO]BZy" + Tiles.LANTERN
+const MARKERS := "TUWwPCckXVO]BZy" + Tiles.LANTERN + Tiles.WARDEN
 ## Ground a marker can stand on: plain floors.
 const TERRAIN := ".,:_iqnxh" + Tiles.HOSPITAL_TILE + Tiles.ASPHALT + Tiles.STAFF_FLOOR + Tiles.SEAWALL \
 	+ Tiles.LOW_STREET + Tiles.KELP + Tiles.MARROW + Tiles.GRATING + Tiles.NEWSROOM_FLOOR + Tiles.PIER \

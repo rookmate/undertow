@@ -368,6 +368,11 @@ def build():
     # The pulper taking the page: a wet churn.
     churn = mul(bandpass(brown(1.6, rng), 420, 0.9), [0.6 + 0.4 * math.sin(2 * math.pi * 3.0 * i / RATE) for i in range(n_of(1.6))])
     write("pulp_churn", env(churn, 0.1, None, 0.4), -9)
+    # A Warden's eye finding you: the curfew siren's two-tone chirp.
+    chirp = mix((env(tone(0.16, 880.0, "square"), 0.005, 0.15), 0.5), (env(tone(0.16, 1175.0, "square"), 0.005, 0.15), 0.5, 0.18))
+    write("warden_alert", lowpass(chirp, 3500), -12)
+    # Its shock baton: an electric snap.
+    write("warden_strike", env(highpass(white(0.18, rng), 1800), 0.002, 0.12), -8)
 
 
 if __name__ == "__main__":

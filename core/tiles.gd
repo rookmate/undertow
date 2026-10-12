@@ -63,6 +63,8 @@ const LANTERN := "Σ"
 const PILING := "Φ"
 ## The Harbor Bridge's severed end.
 const BRIDGE_STUB := "Ψ"
+## Where a Warden is posted (it walks its beat from there).
+const WARDEN := "Ω"
 
 # --- The Ark -----------------------------------------------------------------------------------------
 ## The Clinic (from Mercy General) and its door.
@@ -89,7 +91,7 @@ const BY_NAME: Dictionary[String, String] = {
 	"pump_wall": PUMP_WALL, "pump_door": PUMP_DOOR, "turbine": TURBINE, "tide_gauge": TIDE_GAUGE,
 	"newsroom_floor": NEWSROOM_FLOOR, "newsroom_desk": NEWSROOM_DESK,
 	"pier": PIER, "ward_stone": WARD_STONE, "boathouse": BOATHOUSE, "boathouse_door": BOATHOUSE_DOOR,
-	"lantern": LANTERN, "piling": PILING, "bridge_stub": BRIDGE_STUB,
+	"lantern": LANTERN, "piling": PILING, "bridge_stub": BRIDGE_STUB, "warden": WARDEN,
 }
 
 

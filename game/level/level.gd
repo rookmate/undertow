@@ -582,6 +582,8 @@ func _spawn_enemies() -> void:
 		_add_enemy(Salvager.new(), o, Salvager.MAX_INTEGRITY)
 	for s: Vector2i in grid.cells_with(Tiles.STERILIZER):
 		_add_enemy(Sterilizer.new(), s, Sterilizer.MAX_INTEGRITY)
+	for w: Vector2i in grid.cells_with(Tiles.WARDEN):
+		_add_enemy(Warden.new(), w, Warden.MAX_INTEGRITY)
 
 
 ## Whether the Lattice reaches into this district at all. Where it doesn't (Harbor Ward) the Steward has

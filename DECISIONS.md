@@ -593,4 +593,12 @@ Asked of the user on 2026-10-09 and answered the same day.
      away (`noor_away`): not on the Ark, no conversations, no reactions, until her turn is decided at
      the border. The path's goal no longer needs to be reachable along the Lattice from the start: if
      it isn't, the path takes up wherever the Lattice does lead to it (the border plaza).
+149. **Wardens** (Harbor Ward's curfew patrol): riot drones posted on a beat (the longest straight walk,
+     up to five cells, from where they're posted), seeing a 110° cone ahead of their red eye out to seven
+     tiles with line of sight, and hearing you within 1.8. The only thing that hunts: once one has you it
+     follows you anywhere (no leash), until it hasn't seen you for four seconds; then it searches where it
+     last saw you for 2.5 s and goes back to its beat. A faint red cone on the ground shows where it's
+     looking while it walks its beat. Shock baton up close (0.55 s windup, 14). 70 integrity, slower
+     than you walk. Three on the map: on Net Lane, by the gate, on the middle pier. Jammed (the Signal
+     Jammer, next), it loses you.
 

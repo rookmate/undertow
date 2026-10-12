@@ -22,6 +22,8 @@ const NEON_MAGENTA := Color("#E24C8F")
 const NEON_LIME := Color("#9BE36A")
 const HUMAN_CREAM := Color("#F3E3C6")
 const DANGER := Color("#E5654B")
+## HDR danger, for a glow: a Warden's eye once it has you.
+const DANGER_HOT := Color(1.8, 0.62, 0.45)
 
 # --- Muted state / UI neutrals ------------------------------------------------------------------
 const IVORY := Color("#ECE8DF")

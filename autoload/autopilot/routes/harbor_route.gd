@@ -2,7 +2,7 @@ extends AutopilotRoute
 ## Harbor Ward: on the city's ferry slip the Steward says it can't follow you in; off the slip its voice
 ## cuts out and there's nothing of it: no path, no map but your own scan, and muting changes nothing (the
 ## light, the map, what you can find); Noor's dashcam at her boat-house door, the Wardfolk's radio log by
-## the gate; through the border fence the Lattice starts again (the Steward back, its path); the depot's
+## the gate, the curfew patrol hunting you along Net Lane (fought off); through the border fence the Lattice starts again (the Steward back, its path); the depot's
 ## Reliquary. Both truths carried; on the Ark, Noor's still away. In a campaign, setting off for the Ward
 ## plays Noor going ahead at the dock first.
 
@@ -10,7 +10,8 @@ const OPENING: Array[String] = [
 	"loadout_shown", "loadout_applied", "level_reached", "player_spawned", "steward_at_the_slip",
 ]
 const THROUGH: Array[String] = [
-	"the_voice_cuts_out", "no_lattice", "muting_changes_nothing", "dashcam_found", "ward_radio_found",
+	"the_voice_cuts_out", "no_lattice", "muting_changes_nothing", "dashcam_found", "warden_hunted",
+	"enemy_killed", "ward_radio_found",
 	"the_lattice_again", "route_completed", "arrived_by_reliquary", "core_choice_shown", "harbor_cores_carried",
 	"ark_reached", "noor_still_away",
 ]
@@ -62,6 +63,7 @@ func drive(level: Level, gen: int) -> void:
 	await Autopilot.snap("harbor_slip")
 	if not long_run:
 		return
+	_watch_wardens(level, gen)
 	# Off the slip: its voice cuts out, mid-word if it was still talking.
 	if not await Autopilot.advance_to(level, player, Vector2i(6, 32), 20.0, gen):
 		return
@@ -102,6 +104,22 @@ func drive(level: Level, gen: int) -> void:
 	check(player.cell().distance_to(Vector2(level.grid.first("R"))) <= 1.5, "arrived_by_reliquary")
 	await Autopilot.snap("harbor_reliquary")
 	Autopilot.tap(&"interact")
+
+
+## The curfew patrol: a Warden that has you, hunting; one fought off.
+func _watch_wardens(level: Level, gen: int) -> void:
+	var start := level.living_enemies().size()
+	var photographed := false
+	while not Autopilot.stale(gen):
+		for e: Enemy in level.living_enemies():
+			if e is Warden and (e as Warden).hunting:
+				pass_check("warden_hunted")
+				if not photographed:
+					photographed = true
+					await Autopilot.snap("harbor_warden_hunting")
+		if level.living_enemies().size() < start:
+			pass_check("enemy_killed")
+		await Autopilot.physics_step()
 
 
 ## In the Ward the Steward has no say: mute it and the light, the map and what's there to find stay as
