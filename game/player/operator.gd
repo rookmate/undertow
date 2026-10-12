@@ -29,6 +29,7 @@ const WEAPON_SCRIPTS: Dictionary[String, GDScript] = {
 	WeaponDefs.BATON: preload("res://game/weapons/traffic_baton.gd"),
 	WeaponDefs.RIOT_DRONE: preload("res://game/weapons/riot_drone.gd"),
 	WeaponDefs.DEFIB: preload("res://game/weapons/defib_gauntlet.gd"),
+	WeaponDefs.SIGNAL_JAMMER: preload("res://game/weapons/signal_jammer.gd"),
 }
 
 var level: Level

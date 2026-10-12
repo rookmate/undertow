@@ -1,7 +1,8 @@
 extends AutopilotRoute
 ## Harbor Ward: on the city's ferry slip the Steward says it can't follow you in; off the slip its voice
 ## cuts out and there's nothing of it: no path, no map but your own scan, and muting changes nothing (the
-## light, the map, what you can find); Noor's dashcam at her boat-house door, the Wardfolk's radio log by
+## light, the map, what you can find); Noor's dashcam at her boat-house door and her Signal Jammer on
+## the porch, the Wardfolk's radio log by
 ## the gate, the curfew patrol hunting you along Net Lane (fought off); through the border fence the Lattice starts again (the Steward back, its path); the depot's
 ## Reliquary. Both truths carried; on the Ark, Noor's still away. In a campaign, setting off for the Ward
 ## plays Noor going ahead at the dock first.
@@ -10,7 +11,7 @@ const OPENING: Array[String] = [
 	"loadout_shown", "loadout_applied", "level_reached", "player_spawned", "steward_at_the_slip",
 ]
 const THROUGH: Array[String] = [
-	"the_voice_cuts_out", "no_lattice", "muting_changes_nothing", "dashcam_found", "warden_hunted",
+	"the_voice_cuts_out", "no_lattice", "muting_changes_nothing", "dashcam_found", "jammer_found", "warden_hunted",
 	"enemy_killed", "ward_radio_found",
 	"the_lattice_again", "route_completed", "arrived_by_reliquary", "core_choice_shown", "harbor_cores_carried",
 	"ark_reached", "noor_still_away",
@@ -83,6 +84,9 @@ func drive(level: Level, gen: int) -> void:
 		return
 	check(GameState.run.found_core_ids.has("harbor_truth_dashcam"), "dashcam_found")
 	await Autopilot.snap("harbor_noors_door")
+	if not await Autopilot.use_at(level, player, Vector2i(5, 21), gen):
+		return
+	check(GameState.run.weapons_owned.has(WeaponDefs.SIGNAL_JAMMER), "jammer_found")
 	# East along the lane: the Wardfolk's radio log by the gate.
 	for cell: Vector2i in [Vector2i(12, 19), Vector2i(24, 19)]:
 		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):

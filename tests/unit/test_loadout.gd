@@ -19,8 +19,8 @@ func test_only_found_weapons_can_be_carried() -> void:
 	check(Loadout.validate([WeaponDefs.BATON, WeaponDefs.RIOT_DRONE], baton_only) != "", "the drone hasn't been found")
 	check(Loadout.validate([WeaponDefs.RIOT_DRONE], baton_only) != "")
 	check_eq(Loadout.default_for(baton_only), baton_only)
-	var with_jammer: Array[String] = [WeaponDefs.BATON, WeaponDefs.SIGNAL_JAMMER]
-	check_eq(Loadout.slots_for(with_jammer), 1, "a weapon with no code yet doesn't count")
+	var with_unknown: Array[String] = [WeaponDefs.BATON, "harpoon"]
+	check_eq(Loadout.slots_for(with_unknown), 1, "a tool that isn't in the game doesn't count")
 
 
 func test_muting_the_steward_forces_manual() -> void:
@@ -59,4 +59,6 @@ func test_every_weapon_is_easier_tuned_and_deeper_manual() -> void:
 		check(float(tuned["ease"]) > float(manual["ease"]), "%s tuned is easier" % id)
 		check(float(manual["ceiling"]) > float(tuned["ceiling"]), "%s manual has the higher ceiling" % id)
 		check(str(tuned["blurb"]) != "" and str(manual["blurb"]) != "", "%s describes both modes" % id)
-		check(WeaponDefs.asset_tag(id).begins_with("PROPERTY OF THE CITY OF MERIDIAN"), "%s keeps its asset tag" % id)
+		# Every reclaimed city tool keeps its asset tag; the Ward's hand-built jammer never had one (brief).
+		var tag := "NO ASSET TAG" if id == WeaponDefs.SIGNAL_JAMMER else "PROPERTY OF THE CITY OF MERIDIAN"
+		check(WeaponDefs.asset_tag(id).begins_with(tag), "%s: %s" % [id, WeaponDefs.asset_tag(id)])

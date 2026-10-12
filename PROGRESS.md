@@ -157,8 +157,8 @@ review at the end.
 | 25 | Act 3's design; Reduce flashing (Options, Accessibility) | done |
 | 26a | Harbor Ward: no Lattice (muting changes nothing), Net Lane and the piers, the border plaza, the dashcam; Noor goes ahead at the dock | done |
 | 26b | The Wardens that hunt | done |
-| 27 | The Signal Jammer | next |
-| 28 | Warden-Prime, Noor's turn (carry her or leave her), the border Reliquary, the Commons | |
+| 27 | The Signal Jammer | done |
+| 28 | Warden-Prime, Noor's turn (carry her or leave her), the border Reliquary, the Commons | next |
 | 29 | The Mast; the Commons' people | |
 | 30 | The Spire (no combat; the Steward stops lying); Teo's turn | |
 | 31 | The Council Chamber: the final choice, the three epilogues, the title after Rewrite | |

@@ -373,6 +373,11 @@ def build():
     write("warden_alert", lowpass(chirp, 3500), -12)
     # Its shock baton: an electric snap.
     write("warden_strike", env(highpass(white(0.18, rng), 1800), 0.002, 0.12), -8)
+    # The Signal Jammer: a pulse of radio noise, chopped; the full wave, longer and lower.
+    chop = [1.0 if (i // 400) % 2 == 0 else 0.25 for i in range(n_of(0.3))]
+    write("jammer_pulse", env(mul(bandpass(white(0.3, rng), 2600, 1.2), chop), 0.003, 0.25), -9)
+    chop = [1.0 if (i // 700) % 2 == 0 else 0.2 for i in range(n_of(0.7))]
+    write("jammer_wave", env(mul(bandpass(white(0.7, rng), 1500, 0.9), chop), 0.01, None, 0.4), -7)
 
 
 if __name__ == "__main__":

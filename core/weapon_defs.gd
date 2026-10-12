@@ -10,10 +10,10 @@ const DEFIB := "defib_gauntlet"
 const SIGNAL_JAMMER := "signal_jammer"
 
 ## The loadout grid, in order. Weapons are found in the city (design/act-1.md); the grid shows the ones
-## not found yet as locked. The Signal Jammer is hand-built in Harbor Ward (Act 3) and has no code yet.
+## not found yet as locked. The Signal Jammer is hand-built in Harbor Ward (Act 3), on Noor's porch.
 const GRID: Array[String] = [BATON, RIOT_DRONE, DEFIB, SIGNAL_JAMMER]
 ## Weapons that exist in code (can be carried).
-const PLAYABLE: Array[String] = [BATON, RIOT_DRONE, DEFIB]
+const PLAYABLE: Array[String] = [BATON, RIOT_DRONE, DEFIB, SIGNAL_JAMMER]
 ## What a new run owns: a maintenance worker's traffic baton. The rest are found in the city.
 const STARTING: Array[String] = [BATON]
 ## What a version-1 save (the vertical slice) owned.
@@ -39,10 +39,10 @@ const ALL: Dictionary[String, Dictionary] = {
 		"manual": {"ease": 0.3, "ceiling": 0.9, "blurb": "Hold to charge, release in the window for a wide shock. Hold too long and it bites you."},
 	},
 	SIGNAL_JAMMER: {
-		"name": "???",
-		"tag": "NO ASSET TAG",
-		"tuned": {"ease": 0.0, "ceiling": 0.0, "blurb": "Not recovered."},
-		"manual": {"ease": 0.0, "ceiling": 0.0, "blurb": "Not recovered."},
+		"name": "Signal Jammer",
+		"tag": "NO ASSET TAG · HAND-BUILT, HARBOR WARD",
+		"tuned": {"ease": 0.75, "ceiling": 0.4, "blurb": "Pulses at the nearest machine and stops it dead for a moment. A Warden loses you."},
+		"manual": {"ease": 0.35, "ceiling": 0.85, "blurb": "Hold to charge, release a jamming wave all round you: the longer, the wider and the longer it holds."},
 	},
 }
 
