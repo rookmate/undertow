@@ -161,8 +161,8 @@ review at the end.
 | 27b | The Steward's path as a quiet trail (studs and a dashed thread) instead of three gilded tiles | done |
 | 28 | Warden-Prime, Noor's turn (carry her or leave her), the border Reliquary, the Commons | done |
 | 29 | The Mast; the Commons' people | done |
-| 30 | The Spire (no combat; the Steward stops lying); Teo's turn | next |
-| 31 | The Council Chamber: the final choice, the three epilogues, the title after Rewrite | |
+| 30 | The Spire (no combat; the Steward stops lying); Teo's turn | done |
+| 31 | The Council Chamber: the final choice, the three epilogues, the title after Rewrite | next |
 | 32 | The campaign to an ending | |
 | — | Sol analysis review (reviews/act-3.md), fixes, re-check | |
 

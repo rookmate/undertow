@@ -17,6 +17,7 @@ const ROUTES: Dictionary[String, String] = {
 	"greywater": "res://autoload/autopilot/routes/greywater_route.gd",
 	"vellum": "res://autoload/autopilot/routes/vellum_route.gd",
 	"harbor": "res://autoload/autopilot/routes/harbor_route.gd",
+	"spire": "res://autoload/autopilot/routes/spire_route.gd",
 }
 
 ## The district this route plays.

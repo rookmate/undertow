@@ -682,6 +682,20 @@
 			"tone": "neutral",
 			"text": "The Warden-Prime. Still keeping the curfew. Nobody told it to stop.",
 			"level": "harbor"
+		},
+		{
+			"id": "SPIRE_ENTER_N1",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "This is where I live. Nothing in here will hurt you. Please don't fight here.",
+			"level": "spire"
+		},
+		{
+			"id": "SPIRE_RELIQ_N1",
+			"event": "reliquary_near",
+			"tone": "neutral",
+			"text": "That's the last of me. Whatever you carry out, carry it carefully.",
+			"level": "spire"
 		}
 	]
 }

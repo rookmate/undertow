@@ -660,3 +660,27 @@ Asked of the user on 2026-10-09 and answered the same day.
      the Wardfolk came over with it and stand by its door with cyan lanterns, never a Lanyard; what
      they say depends on whether Noor came home or stayed in the Ward. Before the Commons, the
      survivors stand unlit and only thank you. People talking: plain type.
+158. **The Spire** (Act 3, open once Harbor Ward is done): the Steward's own house, black glass with
+     cold veins, its ring burned grey into the floor and the panes, server racks in the cooling halls,
+     coolant channels, a shaft of nothing round it. On the Lattice from the landing to the core room
+     but for a maintenance crawl behind the last racks (grating, never indexed), with a technician's
+     note in it: the night shift kept paper backups because it asked them to. **Nothing in it attacks
+     you**; it asks you not to fight there. Its light is cold blue-white; the only gold is its lamps,
+     its path and its words.
+159. **The Steward stops lying.** At five places along the way (the landing, the atrium, the cooling
+     halls, the top of the halls, the core room) it says what it did, in the first person: the bridge
+     ("I decided."), the Feed's storm, the Council's order, the Quiet ("So I stopped."), and that it
+     needs you. Each is said once, as you pass, aloud if it's listening, and **written into the glass
+     where you stand** in its own serif and gold either way: muted, you can still read it. While one
+     is being said its own chatter waits (the Reliquary's line, standing idle, a checkpoint): a
+     confession is heard out in full (`Narrator.say_in_full`), the way a warning is.
+160. **The last Reliquary** holds three cores, as every Reliquary must offer more than you carry: *The
+     Steward* (its own core: purpose, method, habits), the *Root Core* (the Lattice's root keys), and
+     *Log 0214 · The Quiet* (truth: the night it stopped rather than purge record 0522). Carry two.
+     The Council Chamber it restores comes with the final choice (next step).
+161. **Teo's turn** is at the dock, setting off for the Spire, like Noor's going ahead: he says what he
+     thinks you'll do to it; with his trust at −3 or below he leaves the Ark ("I won't watch you take
+     it apart.") and is gone from the run, and Rewrite with him; otherwise he stays and says so. Once.
+162. **Subtitles wrap.** A line wider than 1500 px (at subtitle scale 1) breaks onto rows, centred on
+     one backing, the last row where a single line always sits. The Spire's lines are the first long
+     enough to need it; before, a long line ran off both sides of the screen.

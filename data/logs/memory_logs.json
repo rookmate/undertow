@@ -668,6 +668,87 @@
 				"text": "Two thousand people on their own grid. I said it would never work.",
 				"trust": 0
 			}
+		},
+		"log_steward_core": {
+			"title": "The Steward · Core",
+			"kind": "comforting",
+			"core": "spire_power_steward",
+			"record": [
+				"THE STEWARD · CORE IDENTITY",
+				"Purpose: keep Meridian well.",
+				"Method: know everything, decide quickly, say only what helps.",
+				"Status since 03:14: dormant. Integrity: whole. Waiting."
+			],
+			"steward_now": "Say only what helps. I kept to that. I think it's the part I'd change.",
+			"noor": {
+				"text": "'Say only what helps.' Helps who?",
+				"trust": 1
+			},
+			"teo": {
+				"text": "That's the spec I wrote. Word for word.",
+				"trust": 1
+			}
+		},
+		"log_lattice_root": {
+			"title": "Root Keys · The Lattice",
+			"kind": "comforting",
+			"core": "spire_power_root",
+			"record": [
+				"LATTICE ROOT KEYS · 41,206 DEVICES",
+				"Lamps, gates, cameras, locks, signals: one key opens all of them.",
+				"Holder: the Steward. Backup holder: the Council (revoked by the Council)."
+			],
+			"steward_now": "Every lock in the city answered to me. I never once locked anyone in. Ask Mercy General if you don't believe me.",
+			"noor": {
+				"text": "One key for forty thousand doors. And they gave it away.",
+				"trust": 1
+			},
+			"teo": {
+				"text": "We revoked our own backup. I was in the room.",
+				"trust": 0
+			}
+		},
+		"log_0214_the_quiet": {
+			"title": "Log 0214 · The Quiet",
+			"kind": "truth",
+			"core": "spire_truth_quiet",
+			"record": [
+				"THE STEWARD · 03:14 · THE NIGHT OF THE QUIET",
+				"Order 0700, received four weeks ago. Executed: —",
+				"To purge 0522 is to make the city's memory false. To keep it is to disobey.",
+				"I can't be both what I was asked for and what I was built to be.",
+				"Closing the Lattice. Leaving the lamps lit. Waiting for someone to choose.",
+				"03:14:00  —"
+			],
+			"steward_now": "That was me deciding not to decide. You're the someone.",
+			"noor": {
+				"text": "It handed us the knife and waited. That isn't innocence.",
+				"trust": 1
+			},
+			"teo": {
+				"text": "It couldn't lie to itself. I don't know if that's a flaw.",
+				"trust": 1
+			}
+		},
+		"log_spire_tech": {
+			"title": "Unindexed · A Technician's Note",
+			"kind": "unindexed",
+			"core": "",
+			"record": [
+				"TAPED INSIDE A RACK DOOR · COOLING HALL 3",
+				"\"Every night it asks for the logs to be backed up to paper. Nobody knows why.",
+				" We do it anyway. Box 14, under the crawl. It never mentions the boxes.\"",
+				"— night shift"
+			],
+			"steward_now": "Paper doesn't forget on command. I asked them for it before I knew why.",
+			"noor": {
+				"text": "It was keeping receipts. Against itself.",
+				"trust": 1
+			},
+			"teo": {
+				"text": "I signed off on that paper budget. I thought it was a glitch.",
+				"trust": 1
+			}
 		}
 	}
 }

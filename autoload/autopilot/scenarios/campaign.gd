@@ -4,10 +4,10 @@ extends AutopilotScenario
 ## Continue; the Tideworks (an upgrade bought at the Workshop; Noor and Teo arrive), the Ark; Mercy
 ## General (the Defib Gauntlet, the sealed wards, the Surgeon), the Ark and its Clinic; Greywater (the
 ## tide, the Marrow), the Ark; the Vellum to the Archive; then Act 3: Noor goes ahead at the dock, and
-## Harbor Ward. Each district's checks are tagged with it ("loop:route_completed"). The run ends when
+## Harbor Ward; Teo has his say at the dock, and the Spire. Each district's checks are tagged with it ("loop:route_completed"). The run ends when
 ## the last Ark visit is done.
 
-const DISTRICTS: Array[String] = ["kestrel", "loop", "tideworks", "mercy", "greywater", "vellum", "harbor"]
+const DISTRICTS: Array[String] = ["kestrel", "loop", "tideworks", "mercy", "greywater", "vellum", "harbor", "spire"]
 ## Signed in the Loop's Signal Room and kept to the end: it mustn't stop any later check (no slowed
 ## time, no path would), and its effect is plain to check (no aim assist).
 const ORDER := Overrides.LET_ME_AIM
@@ -36,6 +36,8 @@ func _init() -> void:
 		for route: AutopilotRoute in routes:
 			if route.id == "harbor":
 				route.set(&"expect_departure", true)
+			if route.id == "spire":
+				route.set(&"expect_teo_turn", true)
 
 
 func problem() -> String:

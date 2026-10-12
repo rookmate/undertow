@@ -10,6 +10,8 @@ signal speaking_changed(speaking: bool)
 const MIN_SECONDS := 2.6
 const SECONDS_PER_CHAR := 0.045
 const FADE := 0.4
+## A line wider than this (at scale 1) wraps.
+const MAX_WIDTH := 1500.0
 
 var text: String = ""
 ## Seconds the line has left on screen.
@@ -92,7 +94,31 @@ func _draw() -> void:
 	var alpha := clampf(_left / FADE, 0.0, 1.0)
 	var font := UiFonts.narration()
 	var font_size := roundi(34 * Options.subtitle_scale())
-	var w := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
-	var at := Vector2((size.x - w) * 0.5, size.y - 190.0)
-	draw_rect(Rect2(at + Vector2(-24, -font_size * 1.24), Vector2(w + 48, font_size * 1.76)), Color(Palette.NEAR_BLACK, 0.55 * alpha))
-	draw_string(font, at, text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color(Palette.STEWARD_GOLD, alpha))
+	var rows := wrapped(text, font, font_size, minf(MAX_WIDTH * Options.subtitle_scale(), size.x - 96.0))
+	var line_h := font_size * 1.3
+	var widest := 0.0
+	for row: String in rows:
+		widest = maxf(widest, font.get_string_size(row, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x)
+	# The last row sits where a single line always has; the rest stack above it.
+	var base_y := size.y - 190.0 - line_h * (rows.size() - 1)
+	var box := Rect2(Vector2((size.x - widest) * 0.5 - 24.0, base_y - font_size * 1.24), Vector2(widest + 48.0, font_size * 1.76 + line_h * (rows.size() - 1)))
+	draw_rect(box, Color(Palette.NEAR_BLACK, 0.55 * alpha))
+	for i: int in rows.size():
+		var w := font.get_string_size(rows[i], HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+		draw_string(font, Vector2((size.x - w) * 0.5, base_y + line_h * i), rows[i], HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color(Palette.STEWARD_GOLD, alpha))
+
+
+## `line` broken into rows no wider than `max_width` (word by word; a single word wider stays whole).
+static func wrapped(line: String, font: Font, font_size: int, max_width: float) -> PackedStringArray:
+	var rows := PackedStringArray()
+	var row := ""
+	for word: String in line.split(" ", false):
+		var next := word if row == "" else row + " " + word
+		if row != "" and font.get_string_size(next, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x > max_width:
+			rows.append(row)
+			row = word
+		else:
+			row = next
+	if row != "":
+		rows.append(row)
+	return rows

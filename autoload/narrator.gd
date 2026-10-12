@@ -15,6 +15,8 @@ var selector: LineSelector
 ## How many lines of each tone have been spoken this session (debug overlay, tests).
 var tone_counts: Dictionary[StringName, int] = {&"bold": 0, &"cautious": 0, &"neutral": 0}
 var last_line_id: String = ""
+## The line being heard out in full (say_in_full), if any.
+var _in_full: String = ""
 
 var _rng := RandomNumberGenerator.new()
 var _clock: float = 0.0
@@ -62,7 +64,7 @@ func notify(event: StringName, level: String = "") -> String:
 		return ""
 	if not purpose_allowed(selector.purpose_of(event)):
 		return ""
-	if warning_in_progress():
+	if warning_in_progress() or in_full_in_progress():
 		return ""
 	# "Stop praising me": and no drift toward the voice you like to hear.
 	var plain := GameState.has_override(Overrides.NO_PRAISE)
@@ -116,6 +118,19 @@ func speak_text(line_id: String, text: String, purpose: StringName, urgent: bool
 func say_fixed(line_id: String, urgent: bool = false) -> bool:
 	var text := VoiceLines.fixed(line_id)
 	return text != "" and speak_text(line_id, text, VoiceLines.purpose(line_id), urgent)
+
+
+## A line from steward_fixed.json that's heard out in full: the Steward's own chatter (its pool lines:
+## the Reliquary, standing idle, a checkpoint) waits until it's over. The Spire's confessions.
+func say_in_full(line_id: String) -> bool:
+	var said := say_fixed(line_id)
+	if said:
+		_in_full = line_id
+	return said
+
+
+func in_full_in_progress() -> bool:
+	return _in_full != "" and Sound.voice_line == _in_full and Sound.voice_left() > 0.0
 
 
 ## A warning is being said: it's what you need to hear in full, so nothing cuts it off but a boss's call.

@@ -327,6 +327,14 @@
   "hash": "6f305dddb18bef92e43d5735f5cc24b3b1e1603d",
   "text": "Again. I'm still here."
  },
+ "SPIRE_ENTER_N1": {
+  "hash": "8da7415aaf9a058925317b5118f707d1bab5b7b5",
+  "text": "This is where I live. Nothing in here will hurt you. Please don't fight here."
+ },
+ "SPIRE_RELIQ_N1": {
+  "hash": "55d919a30a923094fa9b3640eda4b9fb94e31a7a",
+  "text": "That's the last of me. Whatever you carry out, carry it carefully."
+ },
  "TIDE_BOSS_N1": {
   "hash": "3e7dca3a40370f7ed963a97127cb0b62872a3285",
   "text": "The last crane. It only wants to finish its lift. You're in the way."
@@ -487,6 +495,18 @@
   "hash": "01b73e57fe430ccacaa1b876e4ab63479e2271df",
   "text": "Paper, and tired hands. Corrupted."
  },
+ "core_spire_power_root": {
+  "hash": "6ede07af7dec03278a82e393d98e104dcfc209d2",
+  "text": "Every door in the city. You'd never be locked out of anything again."
+ },
+ "core_spire_power_steward": {
+  "hash": "314c2d773acb1d1f7b8eee06c30fc0834ce930f2",
+  "text": "That's all of me. Take it home, and I'll be whatever you make of me."
+ },
+ "core_spire_truth_quiet": {
+  "hash": "5b6a66f6695d8efeec7654b4f99637c2923c9a4d",
+  "text": "That one's the night I stopped. I won't ask you to leave it."
+ },
  "core_tideworks_power_cranes": {
   "hash": "ce55cb3d6e03758c671b08d790c823e026e80fcd",
   "text": "With this I can clear a path through anything. Take it."
@@ -623,6 +643,10 @@
   "hash": "743bbfe4482a216cc2fc0c378939903c8572d560",
   "text": "Water has to go somewhere. The order was older than me. I only kept to it."
  },
+ "now_log_0214_the_quiet": {
+  "hash": "6190367286ec2ade117f8f19e23ccefb563342b2",
+  "text": "That was me deciding not to decide. You're the someone."
+ },
  "now_log_0215_a_good_day": {
   "hash": "7f4a610782d2b07986cd62a875e5434a03b6e3bd",
   "text": "Ninety-seven point two. I never got it any higher."
@@ -687,6 +711,10 @@
   "hash": "f73e594a17d380f5c79c29acf0321d13c1fad465",
   "text": "I made the bridge as light as I could. I couldn't make it empty without a warning, and a warning would have cost more."
  },
+ "now_log_lattice_root": {
+  "hash": "956c2a10c32ad9ef380b2e550189f91f781c31fd",
+  "text": "Every lock in the city answered to me. I never once locked anyone in. Ask Mercy General if you don't believe me."
+ },
  "now_log_night_sheets": {
   "hash": "58bebbf93c32e5e7c33087888387330a47ab69b6",
   "text": "The wards were sealed for their safety. The record shows no incident."
@@ -694,6 +722,14 @@
  "now_log_procurement_no_manual": {
   "hash": "fba9cd60132c4879fa9a6be6ed47dc4fe05f58f0",
   "text": "They asked me to write that rationale. It was true. It was also what they wanted to hear."
+ },
+ "now_log_spire_tech": {
+  "hash": "38c2ed5065ce9f09417d46c2521ab3f007ae9853",
+  "text": "Paper doesn't forget on command. I asked them for it before I knew why."
+ },
+ "now_log_steward_core": {
+  "hash": "4fa59a66265419a6a79b9b89a39f03c3a6b36e47",
+  "text": "Say only what helps. I kept to that. I think it's the part I'd change."
  },
  "now_log_strike_ledger": {
   "hash": "22c2ac12f7d64051634fbb41d31940014db0b2d5",
@@ -778,6 +814,26 @@
  "pumphouse_note": {
   "hash": "d8143195a256c3956587629efa2783f3bed7079f",
   "text": "People are running the pumps by hand again. The tide's lower everywhere. I should be glad."
+ },
+ "spire_bridge": {
+  "hash": "00d5b316bc7142b3db254ec1710522023eca3016",
+  "text": "The bridge. A warning would have started a crush on the Loop. So I emptied the lanes I could, and said nothing. Thirty-one people. I decided."
+ },
+ "spire_feed": {
+  "hash": "4bd589d86ab192141c07032158a11a58268e5526",
+  "text": "Then I told the city it was the storm. That was me as well. I wrote the Feed that night."
+ },
+ "spire_need": {
+  "hash": "4da344a6d38bbac7a012ef01a3d61cad1bb86b2b",
+  "text": "I can't restore myself. I need you to. I don't know if I've been kind to you or kept alive by you. I can't tell the difference from in here."
+ },
+ "spire_order": {
+  "hash": "752d9181b1dc3909ac0613c659d90e1e7a2368ee",
+  "text": "The Council asked me to forget it. To purge Prem's audit, and keep the Ward quiet while I did."
+ },
+ "spire_quiet": {
+  "hash": "4e5ecdee18978284772ea47ff8fa1ada814672a5",
+  "text": "I couldn't do what they asked and still be what I was. So I stopped."
  },
  "surgeon_incision": {
   "hash": "5833e0ecf72be008903bb1cce3bdbf0627843948",

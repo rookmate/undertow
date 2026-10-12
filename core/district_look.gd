@@ -33,6 +33,8 @@ var glass: Color = Palette.WARD_GLASS
 var void_fog: Color = Color(Palette.FOG, 0.0)
 ## Rain on all of it (art direction, "the Quiet"); off indoors.
 var rain: bool = true
+## Walls of black glass (the Spire): dark mirror panes and cold veins, no windows.
+var black_glass: bool = false
 ## CanvasModulate for the world, voice on and muted.
 var ambient_on: Color = Palette.AMBIENT_VOICE_ON
 var ambient_muted: Color = Palette.AMBIENT_MUTED
@@ -133,6 +135,24 @@ static func for_district(id: String) -> DistrictLook:
 			look.ambient_on = Palette.AMBIENT_HARBOR_ON
 			look.ambient_muted = Palette.AMBIENT_HARBOR_MUTED
 			look.void_fog = Color(Palette.FOG, 0.06)
+		"spire":
+			# The Steward's own house: black glass and cold light, no rain, no sky to speak of.
+			look.ground_a = Palette.SPIRE_GLASS
+			look.ground_b = Palette.SPIRE_GLASS_B
+			look.ground_wet = Palette.SPIRE_GLASS_B.lightened(0.08)
+			look.pavement = Palette.SPIRE_GLASS
+			look.stone = Palette.SPIRE_GLASS_B
+			look.wall = Palette.SPIRE_WALL
+			look.wall_shade = Palette.SPIRE_WALL_SHADE
+			look.wall_top = Palette.SPIRE_WALL_TOP
+			look.water = Palette.COOLANT
+			look.sky_top = Palette.SKY_SPIRE_TOP
+			look.sky_bottom = Palette.SKY_SPIRE_LOW
+			look.skyline = Color(Palette.BLACK_MIRROR, 0.0)
+			look.rain = false
+			look.black_glass = true
+			look.ambient_on = Palette.AMBIENT_SPIRE_ON
+			look.ambient_muted = Palette.AMBIENT_SPIRE_MUTED
 		"vellum", "ark":
 			pass
 	return look

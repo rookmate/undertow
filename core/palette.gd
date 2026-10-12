@@ -159,6 +159,23 @@ const SKY_HARBOR_LOW := Color("#1D3038")
 const AMBIENT_HARBOR_ON := Color(0.36, 0.42, 0.46)
 const AMBIENT_HARBOR_MUTED := Color(0.36, 0.42, 0.46)
 
+# --- The Spire: black glass, cold blue-white light, the ring burned into every surface -------------
+const SPIRE_GLASS := Color("#12161D")
+const SPIRE_GLASS_B := Color("#181D26")
+## The cold light in the glass's veins and the racks' status lamps: blue-white, never gold.
+const SPIRE_COLD := Color("#A9C3E0")
+const SPIRE_COLD_HOT := Color(1.1, 1.35, 1.7)
+const SPIRE_RACK := Color("#0D1015")
+const SPIRE_RACK_FACE := Color("#161B23")
+const SPIRE_WALL := Color("#0F1218")
+const SPIRE_WALL_SHADE := Color("#0A0C10")
+const SPIRE_WALL_TOP := Color("#1A202A")
+const COOLANT := Color("#0F2236")
+const SKY_SPIRE_TOP := Color("#05070B")
+const SKY_SPIRE_LOW := Color("#0B1220")
+const AMBIENT_SPIRE_ON := Color(0.5, 0.56, 0.66)
+const AMBIENT_SPIRE_MUTED := Color(0.4, 0.44, 0.52)
+
 # --- Characters ---------------------------------------------------------------------------------
 const COVERALL := Color("#39424A")
 const COVERALL_LIGHT := Color("#4B565E")

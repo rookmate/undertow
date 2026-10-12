@@ -186,6 +186,14 @@ func noor_stays_in_ward() -> void:
 		state_changed.emit(&"noor_present")
 
 
+## Teo's turn, had at the dock setting off for the Spire: he stays, or (`leaves`) he's gone from the run.
+func teo_turn(leaves: bool) -> void:
+	run.teo_turn_had = true
+	if leaves and run.teo_present:
+		run.teo_present = false
+		state_changed.emit(&"teo_present")
+
+
 ## Noor goes ahead to Harbor Ward (her turn): off the Ark until she comes home, if she does.
 func noor_leaves_for_ward() -> void:
 	if not run.noor_away:

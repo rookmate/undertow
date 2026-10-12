@@ -151,3 +151,15 @@ func test_the_steward_comments_on_the_card_you_look_at_only_while_listening() ->
 	await wait_frames(2)
 	check_eq(Sound.heard(&"voice"), voices, "muted, it doesn't sell you anything")
 	muted.queue_free()
+
+
+## A long line (the Spire's) wraps onto rows that fit the screen, and nothing of it is lost.
+func test_a_long_line_wraps_on_screen() -> void:
+	var line := VoiceLines.fixed("spire_need")
+	var font := UiFonts.narration()
+	var rows := Subtitles.wrapped(line, font, 34, Subtitles.MAX_WIDTH)
+	check(rows.size() >= 2, "it doesn't fit on one row")
+	for row: String in rows:
+		check(font.get_string_size(row, HORIZONTAL_ALIGNMENT_LEFT, -1, 34).x <= Subtitles.MAX_WIDTH, "%s fits" % row)
+	check_eq(" ".join(rows), line, "every word, in order")
+	check_eq(Subtitles.wrapped("They're resting. Leave them.", font, 34, Subtitles.MAX_WIDTH).size(), 1, "a short one stays on one row")
