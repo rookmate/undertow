@@ -6,13 +6,14 @@
 #   3. The game runs for 30 s from the main scene under the autopilot with no ERROR/WARNING lines and
 #      every autopilot check passing. Windowed when a display exists, headless otherwise.
 #   4. The long autopilot run that expects every feature built so far to work, as a player meets them,
-#      in one run ("campaign"): New Game, Kestrel Heights, the Loop and its Conductor, a save and
-#      Continue, the Tideworks and its Crane, the Vellum's whole route to the Archive. It ends when it's
-#      done (at most CAMPAIGN_SECONDS). Prepared single-district runs ("loop", "tideworks", "vellum") and
-#      the long "slice" can be added with FULL_SCENARIOS; they run FULL_SECONDS each.
+#      in one run ("campaign"): New Game, every district in order, the Ark between them, a save and
+#      Continue, and the end: the Council Chamber, an epilogue, the title after. It ends when it's done
+#      (at most CAMPAIGN_SECONDS). Then the three endings, each from a prepared run ("ending_reboot",
+#      "ending_unplug", "ending_rewrite"), FULL_SECONDS each. Prepared single-district runs and the long
+#      "slice" can be added with FULL_SCENARIOS.
 #   5. A tour of every district in LevelCatalog (autopilot scenario "tour": start, checkpoints, finds,
 #      Reliquary, muted), each with no ERROR/WARNING lines. The district listing is checked first.
-# Env: SMOKE_SECONDS (30), FULL_SCENARIOS (campaign), CAMPAIGN_SECONDS (1200), FULL_SECONDS (150),
+# Env: SMOKE_SECONDS (30), FULL_SCENARIOS (campaign and the endings), CAMPAIGN_SECONDS (1500), FULL_SECONDS (150),
 #      SMOKE_SCENARIO (slice), HEADLESS=1 to force headless, LOG_DIR.
 set -uo pipefail
 
@@ -22,8 +23,8 @@ LOG_DIR="${LOG_DIR:-$ROOT/reports/check}"
 SMOKE_SECONDS="${SMOKE_SECONDS:-30}"
 SMOKE_SCENARIO="${SMOKE_SCENARIO:-slice}"
 # The long runs: the whole game so far in one run, and any single-district runs asked for.
-FULL_SCENARIOS="${FULL_SCENARIOS:-campaign}"
-seconds_for() { if [ "$1" = campaign ]; then echo "${CAMPAIGN_SECONDS:-1200}"; else echo "${FULL_SECONDS:-150}"; fi; }
+FULL_SCENARIOS="${FULL_SCENARIOS:-campaign ending_reboot ending_unplug ending_rewrite}"
+seconds_for() { if [ "$1" = campaign ]; then echo "${CAMPAIGN_SECONDS:-1500}"; else echo "${FULL_SECONDS:-150}"; fi; }
 mkdir -p "$LOG_DIR"
 # Screenshots land inside the project folder: keep Godot from importing them.
 touch "$ROOT/reports/.gdignore"

@@ -704,3 +704,11 @@ Asked of the user on 2026-10-09 and answered the same day.
      New Game starts again. **A Rewrite is remembered past the run** in a small file beside the save
      (`legacy.json`, untouched by New Game): from then on the title's ring settles with its gap filled
      in cyan. Automated runs start without it.
+167. **The campaign plays to an ending.** After the Spire it goes down into the Council Chamber and
+     takes Rewrite if the run has earned it, otherwise Reboot, watches the epilogue to the credits, and
+     ends on the title after it (the finished run kept, Continue greyed out). It is the whole game in
+     one run now; its limit is 1500 s (it takes about 1100).
+168. **The gate plays all three endings** besides, each from a prepared run home from the Spire
+     (`ending_reboot`, `ending_unplug`, `ending_rewrite`): into the chamber, the doors on offer (two
+     without Rewrite's conditions, three with), asked once more, the epilogue's voice or its silence,
+     the credits, the title's ring after (gap filled only after a Rewrite).

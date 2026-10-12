@@ -163,7 +163,7 @@ review at the end.
 | 29 | The Mast; the Commons' people | done |
 | 30 | The Spire (no combat; the Steward stops lying); Teo's turn | done |
 | 31 | The Council Chamber: the final choice, the three epilogues, the title after Rewrite | done |
-| 32 | The campaign to an ending | next |
+| 32 | The campaign to an ending | done |
 | — | Sol analysis review (reviews/act-3.md), fixes, re-check | |
 
 ## Later milestones (planned)
@@ -227,19 +227,23 @@ godot --path . -- --autopilot --perf-hide=StaticProp,WardSeal  # hide and stop n
 ## How to test
 
 ```bash
-tools/check.sh                       # the full gate: import, tests, 30 s run, the campaign, district tours
+tools/check.sh                       # the full gate: import, tests, 30 s run, the campaign, the endings, district tours
 godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn            # tests only
 godot --headless --fixed-fps 60 --path . res://tests/test_runner.tscn -- --filter=save   # some tests
 tools/record.sh <name> [seconds] [scenario]   # progress video -> ../undertow-recordings/<name>.mp4
 ```
 
 Autopilot scenarios (`-- --autopilot --autopilot-scenario=NAME`): `slice` (default: New Game →
-Kestrel Heights → the Reliquary → the bare Ark → the Loop map), `campaign` (one run as a player plays
-it: New Game, Kestrel Heights, the Loop and an order signed in the Signal Room, save and return to the
-title, Continue, the Tideworks and a Workshop upgrade, then Act 2: Mercy General, Greywater and the
-Vellum, each talked over with Noor and Teo on the Ark, to the Archive; ends when done; give it
-`--autopilot-seconds=900`), `loop`, `tideworks`, `mercy`, `greywater`, `vellum` (a prepared run
-straight to that district and the Ark after it, carrying only what the districts before gave), `ring_gallery`, `options` (the
+Kestrel Heights → the Reliquary → the bare Ark → the Loop map), `campaign` (the whole game in one run as
+a player plays it: New Game, Kestrel Heights, the Loop and an order signed in the Signal Room, save and
+return to the title, Continue, the Tideworks and a Workshop upgrade; Act 2: Mercy General, Greywater and
+the Vellum, each talked over with Noor and Teo on the Ark; Act 3: Noor goes ahead, Harbor Ward and
+Noor carried home, Teo's turn, the Spire; then the Council Chamber, an ending, its epilogue and the
+title after; ends when done; give it `--autopilot-seconds=1500`), `loop`, `tideworks`, `mercy`,
+`greywater`, `vellum`, `harbor`, `spire` (a prepared run straight to that district and the Ark after
+it, carrying only what the districts before gave), `ending_reboot`, `ending_unplug`, `ending_rewrite`
+(a prepared run home from the Spire: the Council Chamber, that door, its epilogue, the credits, the
+title after), `ring_gallery`, `options` (the
 options screen: a volume, a rebinding), `tour` with `--autopilot-level=ID` (straight into a district:
 photographs its start, checkpoints, finds, Reliquary, muted). Runs of 55 s or more also expect the
 route to finish. Screenshots (`--autopilot-shots=DIR`) need a window: a headless run never draws.
