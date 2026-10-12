@@ -18,7 +18,7 @@ static func text_for(run: RunState, voice_on: bool) -> String:
 	lines.append("cores_power        %d   %s" % [run.cores_power(), _list(run.power_core_ids)])
 	lines.append("cores_truth        %d   %s" % [run.cores_truth(), _list(run.truth_core_ids)])
 	lines.append("survivors_found    %d   %s" % [run.survivors_found(), _list(run.survivor_ids)])
-	lines.append("noor_trust         %+d   noor_present %s" % [run.noor_trust, _yes(run.noor_present)])
+	lines.append("noor_trust         %+d   noor_present %s%s" % [run.noor_trust, _yes(run.noor_present), "   (away in the Ward)" if run.noor_away else ""])
 	lines.append("teo_trust          %+d   teo_present  %s" % [run.teo_trust, _yes(run.teo_present)])
 	lines.append("active_overrides   %s" % _list(run.active_overrides))
 	var p := run.playstyle_profile

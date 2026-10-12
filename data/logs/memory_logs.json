@@ -566,6 +566,108 @@
 				"text": "My father was on the third shift. He never talked about it.",
 				"trust": 1
 			}
+		},
+		"log_2200_curfew": {
+			"title": "Log 2200 · Curfew",
+			"kind": "comforting",
+			"core": "harbor_power_curfew",
+			"record": [
+				"CURFEW ORDER 14 · HARBOR WARD BORDER",
+				"No entry after 22:00. Residents' safety assured by Warden patrol.",
+				"Incidents at the border this year: 0.",
+				"Note: the Ward did not ask for this. The Council did."
+			],
+			"steward_now": "Not one incident in two years. That's what a border is for.",
+			"noor": {
+				"text": "No incidents. Because they stopped trying to come across.",
+				"trust": 1
+			},
+			"teo": {
+				"text": "The Council wanted the Ward watched. It just did what it was asked.",
+				"trust": 1
+			}
+		},
+		"log_warden_network": {
+			"title": "Log 0099 · The Warden Network",
+			"kind": "comforting",
+			"core": "harbor_power_wardens",
+			"record": [
+				"WARDEN NETWORK · BORDER BEAT ROSTER",
+				"Twelve units, staggered patrols, one relay at the depot.",
+				"Every unit sees every other unit's eyes.",
+				"Status since the Quiet: still patrolling. Still enforcing Order 14."
+			],
+			"steward_now": "They're still out there keeping the peace for people who left. I find that almost touching.",
+			"noor": {
+				"text": "Twelve drones to watch two thousand fishermen. Say that out loud.",
+				"trust": 1
+			},
+			"teo": {
+				"text": "I wrote the roster scheduler. It was meant to be temporary.",
+				"trust": 0
+			}
+		},
+		"log_0700_council_order": {
+			"title": "Log 0700 · The Council Order",
+			"kind": "truth",
+			"core": "harbor_truth_council_order",
+			"record": [
+				"COUNCIL ORDER · CLOSED SESSION · FOUR WEEKS BEFORE THE QUIET",
+				"To the Steward: purge routing record 0522 and every copy of the Vashti audit.",
+				"Issue no correction. Extend Curfew Order 14 to cover any unrest in the Ward.",
+				"Acknowledged: received.",
+				"Executed: —"
+			],
+			"steward_now": "They asked me to forget. I couldn't do it and still be what I was. You know what happened next.",
+			"noor": {
+				"text": "'Executed: blank.' It never did it. It just stopped instead.",
+				"trust": 1
+			},
+			"teo": {
+				"text": "Twelve signatures. I know every one of those people.",
+				"trust": 1
+			}
+		},
+		"log_dashcam_bridge": {
+			"title": "Dashcam · Harbor Bridge, 23:38",
+			"kind": "truth",
+			"core": "harbor_truth_dashcam",
+			"record": [
+				"DASHCAM · NORTHBOUND LANE · HARBOR BRIDGE",
+				"23:31  Traffic heavy, slow. The Feed: 'Smooth journeys tonight.'",
+				"23:36  The lanes ahead empty one by one. Rerouted, says the sat-nav.",
+				"23:38  Our lane isn't. A child in the back asks why the lights are dimming.",
+				"23:40  —"
+			],
+			"steward_now": "I made the bridge as light as I could. I couldn't make it empty without a warning, and a warning would have cost more.",
+			"noor": {
+				"text": "That's my sister's car. That's Rafi asking about the lights.",
+				"trust": 2
+			},
+			"teo": {
+				"text": "It weighed the bridge against the Loop. It always weighed. God help me, I taught it to.",
+				"trust": -1
+			}
+		},
+		"log_ward_radio": {
+			"title": "Unindexed · Ward Radio Log",
+			"kind": "unindexed",
+			"core": "",
+			"record": [
+				"HARBOR WARD MAST · HAND-KEPT LOG",
+				"Day 1: city's gone quiet. Our lights are on. Theirs aren't.",
+				"Day 3: Wardens still at the border. Curfew still on. For who?",
+				"Day 6: Noor's back. She's building something out of the old jammer parts."
+			],
+			"steward_now": "Their mast never talked to me. I never asked it to.",
+			"noor": {
+				"text": "They kept the mast going the whole time. Nine days on a hand crank.",
+				"trust": 1
+			},
+			"teo": {
+				"text": "Two thousand people on their own grid. I said it would never work.",
+				"trust": 0
+			}
 		}
 	}
 }

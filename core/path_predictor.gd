@@ -28,19 +28,24 @@ func _init(level_grid: LevelGrid) -> void:
 		nav.astar.set_point_solid(c, not (grid.is_indexed(c) and grid.is_walkable(c) and not grid.is_occupied(c)))
 
 
-## Sets the destination to the open Lattice cell beside `target` that is quickest to reach from `from`.
+## Sets the destination to the open Lattice cell beside `target` that is quickest to reach from `from`;
+## if none can be reached from there along the Lattice (Harbor Ward: the ferry slip's Lattice doesn't run
+## to the border's), the first open one, so the path takes up wherever the Lattice does lead to it.
 func aim_at(target: Vector2i, from: Vector2i) -> void:
 	var best := Vector2i(-1, -1)
 	var best_len := 1 << 30
+	var first_open := Vector2i(-1, -1)
 	for d: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]:
 		var c := target + d
 		if not nav.is_open(c):
 			continue
+		if first_open.x < 0:
+			first_open = c
 		var p := nav.path(from, c)
 		if not p.is_empty() and p.size() < best_len:
 			best = c
 			best_len = p.size()
-	goal = best
+	goal = best if best.x >= 0 else first_open
 	route = []
 
 

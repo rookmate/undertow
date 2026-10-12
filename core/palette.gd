@@ -5,6 +5,7 @@ extends RefCounted
 ##               its narration. Usage is restricted by tests/unit/test_color_rules.gd.
 ##   TRUTH_CYAN  what the player found alone: off-path survivors, truth cores, unindexed logs, Rewrite.
 ##   NEON_*      the old city, people selling things to people. Keeps burning after the Quiet.
+##   WARD_CYAN   Harbor Ward's own light, hand-wired: its lanterns. The only cyan the city made itself.
 ##   HUMAN_CREAM human warmth: candles, kitchens, lit windows. Human light is never gold.
 ##   DANGER      danger and nothing else.
 ## Hex literals are only allowed in this file (also enforced by the colour-rules test).
@@ -14,6 +15,8 @@ const STEWARD_GOLD := Color("#F0B35B")
 const STEWARD_GOLD_DIM := Color("#F0B35B", 0.35)
 const STEWARD_GOLD_HOT := Color(1.88, 1.4, 0.72) # HDR value of the gold, for bloom on emissive gilt.
 const TRUTH_CYAN := Color("#7CC7E0")
+const WARD_CYAN := Color("#5FD3C6")
+const WARD_CYAN_HOT := Color(0.74, 1.62, 1.5)
 const TRUTH_CYAN_HOT := Color(0.97, 1.56, 1.76)
 const NEON_MAGENTA := Color("#E24C8F")
 const NEON_LIME := Color("#9BE36A")
@@ -140,6 +143,19 @@ const NEWS_DESK := Color("#3B3833")
 const SCREEN_BURN := Color(0.62, 0.6, 0.55, 0.16)
 ## The Feed at full white, turned on you (FeedBlind): a cold screen white, not the human cream.
 const FEED_WHITE := Color("#E6EDF2")
+
+# --- Harbor Ward: boats as houses, tarred timber, kelp on the pilings, its own cyan lanterns -------
+const PIER_PLANK := Color("#4C3F33")
+const PIER_PLANK_B := Color("#56483A")
+const WARD_STONE := Color("#3F4446")
+const WARD_STONE_B := Color("#474D4F")
+const BOATHOUSE := Color("#3A3532")
+const BOATHOUSE_SHADE := Color("#2A2624")
+const BOATHOUSE_ROOF := Color("#2F3A3B")
+const SKY_HARBOR_TOP := Color("#0F1A22")
+const SKY_HARBOR_LOW := Color("#1D3038")
+const AMBIENT_HARBOR_ON := Color(0.36, 0.42, 0.46)
+const AMBIENT_HARBOR_MUTED := Color(0.36, 0.42, 0.46)
 
 # --- Characters ---------------------------------------------------------------------------------
 const COVERALL := Color("#39424A")

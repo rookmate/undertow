@@ -6,13 +6,30 @@ func test_districts_open_in_order() -> void:
 	var run := RunState.new()
 	for id: String in LevelCatalog.LEVELS:
 		var after: Array = LevelCatalog.LEVELS[id].get("after", [])
-		check_eq(LevelCatalog.is_open(run, id), after.is_empty(), "%s is open at the start only if nothing comes before it" % id)
-		for before: Variant in after:
+		var some: Array = LevelCatalog.LEVELS[id].get("after_any", [])
+		var count := int(LevelCatalog.LEVELS[id].get("after_count", 0))
+		check_eq(LevelCatalog.is_open(run, id), after.is_empty() and count == 0, "%s is open at the start only if nothing comes before it" % id)
+		check(count <= some.size(), "%s needs %d of %d" % [id, count, some.size()])
+		for before: Variant in after + some:
 			check(LevelCatalog.has_level(str(before)), "%s comes after %s, which exists" % [id, before])
 	check_false(LevelCatalog.is_open(run, "nowhere"))
 	check(LevelCatalog.open_districts(run).has(LevelCatalog.FIRST_LEVEL), "the first district is open on a new run")
 	run.levels_completed.append(LevelCatalog.FIRST_LEVEL)
 	check_false(LevelCatalog.open_districts(run).has(LevelCatalog.FIRST_LEVEL), "done districts aren't offered again")
+
+
+## Harbor Ward opens once two of Act 2's three are done, whichever two (design/act-3.md).
+func test_harbor_ward_opens_after_any_two_of_act_2() -> void:
+	for pair: Array in [["mercy", "vellum"], ["vellum", "greywater"], ["mercy", "greywater"]]:
+		var run := RunState.new()
+		run.levels_completed.append_array(["kestrel", "loop", "tideworks"] as Array[String])
+		run.levels_completed.append(str(pair[0]))
+		check_false(LevelCatalog.is_open(run, "harbor"), "not after %s alone" % pair[0])
+		run.levels_completed.append(str(pair[1]))
+		check(LevelCatalog.is_open(run, "harbor"), "open after %s and %s" % pair)
+		check(LevelCatalog.open_districts(run).has("harbor"), "and offered")
+	check_false(LevelCatalog.has_lattice("harbor"), "no Lattice in the Ward")
+	check(LevelCatalog.has_lattice("vellum"))
 
 
 func test_every_built_district_is_on_the_loop_map() -> void:

@@ -12,7 +12,7 @@
 #      the long "slice" can be added with FULL_SCENARIOS; they run FULL_SECONDS each.
 #   5. A tour of every district in LevelCatalog (autopilot scenario "tour": start, checkpoints, finds,
 #      Reliquary, muted), each with no ERROR/WARNING lines. The district listing is checked first.
-# Env: SMOKE_SECONDS (30), FULL_SCENARIOS (campaign), CAMPAIGN_SECONDS (900), FULL_SECONDS (150),
+# Env: SMOKE_SECONDS (30), FULL_SCENARIOS (campaign), CAMPAIGN_SECONDS (1200), FULL_SECONDS (150),
 #      SMOKE_SCENARIO (slice), HEADLESS=1 to force headless, LOG_DIR.
 set -uo pipefail
 
@@ -23,7 +23,7 @@ SMOKE_SECONDS="${SMOKE_SECONDS:-30}"
 SMOKE_SCENARIO="${SMOKE_SCENARIO:-slice}"
 # The long runs: the whole game so far in one run, and any single-district runs asked for.
 FULL_SCENARIOS="${FULL_SCENARIOS:-campaign}"
-seconds_for() { if [ "$1" = campaign ]; then echo "${CAMPAIGN_SECONDS:-900}"; else echo "${FULL_SECONDS:-150}"; fi; }
+seconds_for() { if [ "$1" = campaign ]; then echo "${CAMPAIGN_SECONDS:-1200}"; else echo "${FULL_SECONDS:-150}"; fi; }
 mkdir -p "$LOG_DIR"
 # Screenshots land inside the project folder: keep Godot from importing them.
 touch "$ROOT/reports/.gdignore"

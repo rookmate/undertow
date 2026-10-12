@@ -59,7 +59,7 @@ func _ready() -> void:
 		map_path = LevelCatalog.map_of(level_id)
 	grid = LevelGrid.load_file(map_path)
 	look = DistrictLook.for_district(level_id)
-	var problems := grid.validate(is_hub())
+	var problems := grid.validate(is_hub(), has_lattice())
 	problems.append_array(_map_problems())
 	if not is_hub():
 		problems.append_array(LevelCatalog.boss_problems(boss_id(), grid))
@@ -292,6 +292,12 @@ func _build_cells() -> void:
 					facade = BuildingCell.Facade.PUMPING_STATION
 				Tiles.PUMP_DOOR:
 					facade = BuildingCell.Facade.PUMPING_STATION_DOOR
+				Tiles.BOATHOUSE:
+					facade = BuildingCell.Facade.BOATHOUSE
+				Tiles.BOATHOUSE_DOOR:
+					facade = BuildingCell.Facade.BOATHOUSE_DOOR
+				Tiles.BRIDGE_STUB:
+					facade = BuildingCell.Facade.BRIDGE_STUB
 				"A":
 					facade = BuildingCell.Facade.ARCHIVE
 				"d":
@@ -399,6 +405,18 @@ func _build_cells() -> void:
 				desk.add_child(lamp)
 			Tiles.NEWSROOM_DESK:
 				_prop(cell, StaticProp.Kind.NEWS_DESK)
+			Tiles.PILING:
+				_prop(cell, StaticProp.Kind.PILING)
+			Tiles.LANTERN:
+				var lantern := _prop(cell, StaticProp.Kind.LANTERN)
+				var glow := PointLight2D.new()
+				glow.texture = LightTextures.radial()
+				glow.color = Palette.WARD_CYAN
+				glow.energy = 1.4
+				glow.texture_scale = 3.2
+				glow.scale = Vector2(1.0, Iso.SQUASH)
+				glow.position = Vector2(15, -40)
+				lantern.add_child(glow)
 			Tiles.WARD_SEAL:
 				var seal := WardSeal.new()
 				seal.setup(self, cell)
@@ -564,6 +582,13 @@ func _spawn_enemies() -> void:
 		_add_enemy(Salvager.new(), o, Salvager.MAX_INTEGRITY)
 	for s: Vector2i in grid.cells_with(Tiles.STERILIZER):
 		_add_enemy(Sterilizer.new(), s, Sterilizer.MAX_INTEGRITY)
+
+
+## Whether the Lattice reaches into this district at all. Where it doesn't (Harbor Ward) the Steward has
+## no say: finds aren't hidden from you while it listens, its map is your own hand scan, the light is
+## yours, voice on or off, and muting changes nothing until the Lattice starts again.
+func has_lattice() -> bool:
+	return is_hub() or LevelCatalog.has_lattice(level_id)
 
 
 ## The boss this level ends with ("" for none): a test arena's own, or the district's.

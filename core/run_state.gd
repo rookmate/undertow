@@ -36,6 +36,8 @@ var teo_present: bool = true
 var companions_met: bool = false
 ## Act 2 districts talked over with them (Conversations), in the order you had them.
 var conversations_had: Array[String] = []
+## Noor has gone ahead to Harbor Ward (her turn, design/act-3.md): not on the Ark until she comes home.
+var noor_away: bool = false
 
 # --- Steward --------------------------------------------------------------------------------------------
 var active_overrides: Array[String] = []
@@ -98,9 +100,9 @@ func companions_joined() -> bool:
 	return levels_completed.has(LevelCatalog.COMPANIONS_JOIN_AFTER)
 
 
-## On the Ark, reacting to the logs, with trust to win or lose: joined and still with you.
+## On the Ark, reacting to the logs, with trust to win or lose: joined, still with you, and not away.
 func companion_here(who: StringName) -> bool:
-	return companions_joined() and is_present(who)
+	return companions_joined() and is_present(who) and not (who == WHO_NOOR and noor_away)
 
 
 ## The conversation waiting for the next time you talk to Noor or Teo: the first district you've done
@@ -134,6 +136,7 @@ func to_dict() -> Dictionary:
 		"teo_present": teo_present,
 		"companions_met": companions_met,
 		"conversations_had": conversations_had.duplicate(),
+		"noor_away": noor_away,
 		"active_overrides": active_overrides.duplicate(),
 		"playstyle_profile": playstyle_profile.to_dict(),
 		"weapons_owned": weapons_owned.duplicate(),
@@ -173,6 +176,7 @@ static func from_dict(d: Dictionary) -> RunState:
 	s.teo_present = _bool(d.get("teo_present", true))
 	s.companions_met = _bool(d.get("companions_met", false))
 	s.conversations_had = _strings(d.get("conversations_had", []))
+	s.noor_away = _bool(d.get("noor_away", false))
 	s.active_overrides = _strings(d.get("active_overrides", []))
 	var profile: Variant = d.get("playstyle_profile", {})
 	s.playstyle_profile = PlaystyleProfile.from_dict(profile if profile is Dictionary else {})

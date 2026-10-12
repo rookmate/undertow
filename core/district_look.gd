@@ -117,6 +117,22 @@ static func for_district(id: String) -> DistrictLook:
 			look.ambient_on = Palette.AMBIENT_MARROW_ON
 			look.ambient_muted = Palette.AMBIENT_MARROW_MUTED
 			look.void_fog = Color(Palette.FOG, 0.12)
+		"harbor":
+			# Boats as houses, tarred timber, kelp on the pilings, the only cyan in the city: its own.
+			look.ground_a = Palette.WARD_STONE
+			look.ground_b = Palette.WARD_STONE_B
+			look.ground_wet = Palette.WARD_STONE_B.lightened(0.1)
+			look.pavement = Palette.WARD_STONE
+			look.stone = Palette.WARD_STONE.darkened(0.1)
+			look.wall = Palette.BOATHOUSE
+			look.wall_shade = Palette.BOATHOUSE_SHADE
+			look.wall_top = Palette.BOATHOUSE_ROOF
+			look.timber = Palette.PIER_PLANK
+			look.sky_top = Palette.SKY_HARBOR_TOP
+			look.sky_bottom = Palette.SKY_HARBOR_LOW
+			look.ambient_on = Palette.AMBIENT_HARBOR_ON
+			look.ambient_muted = Palette.AMBIENT_HARBOR_MUTED
+			look.void_fog = Color(Palette.FOG, 0.06)
 		"vellum", "ark":
 			pass
 	return look

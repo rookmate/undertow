@@ -4,9 +4,9 @@ extends Node2D
 ## shelves, a Feed kiosk, a stalled tram segment and bollards; in Kestrel Heights, trimmed hedges, stone
 ## planters of white blossom, and lawn sprinklers that still come on; in Mercy General, glass ward
 ## partitions cut away to waist height, and ambulances parked nose to tail; in the Vellum's newsroom,
-## desks with their dead screens.
+## desks with their dead screens; in Harbor Ward, the Wardfolk's lanterns and the pilings.
 
-enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD, HEDGE, PLANTER, SPRINKLER, BED, CARRIAGE_SIDE, DESK, CONTAINER, PARTITION, AMBULANCE, NURSE_DESK, HOSPITAL_BED, TURBINE, NEWS_DESK }
+enum Kind { RAILING, LOW_WALL, SHELF, KIOSK, TRAM, BOLLARD, HEDGE, PLANTER, SPRINKLER, BED, CARRIAGE_SIDE, DESK, CONTAINER, PARTITION, AMBULANCE, NURSE_DESK, HOSPITAL_BED, TURBINE, NEWS_DESK, LANTERN, PILING }
 ## Props that move (and so redraw every frame); every other kind is drawn once.
 const MOVING: Array[Kind] = [Kind.SPRINKLER, Kind.TURBINE]
 
@@ -90,6 +90,27 @@ func _draw() -> void:
 			_turbine()
 		Kind.NEWS_DESK:
 			_news_desk()
+		Kind.LANTERN:
+			_lantern()
+		Kind.PILING:
+			_piling()
+
+
+## A Wardfolk lantern: a pole with a hand-wired cyan lamp, a cable sagging off to the next one.
+func _lantern() -> void:
+	draw_line(Vector2(0, 0), Vector2(0, -96), Palette.IRON_DARK, 4.0)
+	draw_line(Vector2(0, -96), Vector2(14, -92), Palette.IRON_DARK, 3.0)
+	draw_rect(Rect2(8, -92, 14, 20), Palette.IRON_DARK)
+	draw_rect(Rect2(10, -90, 10, 15), Palette.WARD_CYAN_HOT)
+	draw_line(Vector2(0, -90), Vector2(-40, -70), Color(Palette.NEAR_BLACK, 0.7), 1.5, true)
+
+
+## A piling in the water: a tarred post, kelp hanging off it at the tide line.
+func _piling() -> void:
+	draw_rect(Rect2(-7, -46, 14, 52), Palette.BOATHOUSE_SHADE)
+	draw_rect(Rect2(-7, -46, 14, 4), Palette.BOATHOUSE)
+	for k: int in 3:
+		draw_line(Vector2(-6 + k * 6, -14), Vector2(-8 + k * 6, 4), Palette.KELP, 3.0, true)
 
 
 ## A newsroom desk: a black screen with the Feed's ring burned into it, and a tube carrier left on top.

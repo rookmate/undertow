@@ -16,6 +16,7 @@ const ROUTES: Dictionary[String, String] = {
 	"mercy": "res://autoload/autopilot/routes/mercy_route.gd",
 	"greywater": "res://autoload/autopilot/routes/greywater_route.gd",
 	"vellum": "res://autoload/autopilot/routes/vellum_route.gd",
+	"harbor": "res://autoload/autopilot/routes/harbor_route.gd",
 }
 
 ## The district this route plays.
@@ -73,7 +74,11 @@ func prepare() -> void:
 
 static func _districts_before(district: String) -> Array[String]:
 	var out: Array[String] = []
-	for before: Variant in LevelCatalog.LEVELS.get(district, {}).get("after", []):
+	var def: Dictionary = LevelCatalog.LEVELS.get(district, {})
+	# Of the districts it needs some of, the first ones listed.
+	var needed: Array = (def.get("after", []) as Array).duplicate()
+	needed.append_array((def.get("after_any", []) as Array).slice(0, int(def.get("after_count", 0))))
+	for before: Variant in needed:
 		for earlier: String in _districts_before(str(before)):
 			if not out.has(earlier):
 				out.append(earlier)
@@ -106,6 +111,12 @@ func loadout(screen: Node, gen: int) -> void:
 	expect("loadout_applied")
 	depart.grab_focus()
 	Autopilot.tap(&"ui_accept")
+
+
+## At the dock, after choosing this district on the map: anything that happens before setting off (Noor
+## going ahead to the Ward). A campaign calls it; most districts have nothing.
+func on_departure(_ark: ArkLevel, gen: int) -> void:
+	await Autopilot.wait(0.0, gen)
 
 
 ## Plays the district from its start to opening its Reliquary.

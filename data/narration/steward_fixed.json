@@ -120,6 +120,10 @@
 		"editor_ink": {
 			"text": "It's re-inking. Now.",
 			"purpose": "fact"
+		},
+		"noor_departs": {
+			"text": "She'll walk into the curfew at that border. You know that.",
+			"purpose": "fact"
 		}
 	}
 }
