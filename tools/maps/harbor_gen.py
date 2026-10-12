@@ -12,7 +12,8 @@ Bridge's severed end beyond.
 This map's own characters (declared in its '%' legend lines):
     s  the Ward's stone lanes    p  pier planks    h  a boat-house    o  a boat-house's door
     f  a piling                  n  a Wardfolk lantern                b  the bridge stub
-    w  a Warden, posted (the curfew patrol)
+    w  a Warden, posted (the curfew patrol)    x  where the patrol comes in once you've picked Noor up
+    m  Noor, down at the border                k  the Wardfolk's boat on the depot slipway
 """
 W, H = 46, 39
 g = [['~'] * W for _ in range(H)]
@@ -60,7 +61,15 @@ for (x, y) in [(35, 11), (45, 11), (35, 25), (45, 25), (38, 18), (43, 18)]:
 rect(35, 6, 45, 9, '#')
 put(40, 9, 'd')
 rect(37, 1, 43, 5, 'b')
-# The depot's Reliquary; checkpoints on the lane and in the plaza.
+# The Warden-Prime in the plaza, the relay mast that links it, the barrier before the depot yard and its
+# Reliquary; Noor down by the fence; the Wardfolk's boat on the depot slipway; where the patrol comes in.
+put(40, 20, 'B')
+put(44, 17, 'Z')
+rect(35, 14, 45, 14, 'y')
+put(44, 24, 'm')
+put(44, 11, 'k')
+put(35, 18, 'x')
+put(35, 21, 'x')
 put(40, 12, 'R')
 put(16, 19, 'C')
 put(37, 22, 'C')

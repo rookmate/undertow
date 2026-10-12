@@ -14,6 +14,8 @@ var downed: bool = false:
 		downed = value
 		queue_redraw()
 
+## Carrying Noor over the shoulder.
+var carrying: bool = false
 var _facing_screen: Vector2 = Vector2(0.5, -0.5)
 var _flash: float = 0.0
 var _walk_phase: float = 0.0
@@ -90,6 +92,18 @@ func _draw() -> void:
 		draw_circle(ear, 4.5, Palette.STEWARD_GOLD_HOT, true, -1.0, true)
 	else:
 		draw_circle(ear, 4.5, Palette.IRON_DARK, true, -1.0, true)
+	if carrying:
+		# Noor over the shoulder: her long coat, her lantern swinging.
+		var coat := PackedVector2Array([Vector2(-30, -150), Vector2(40, -128), Vector2(46, -104), Vector2(-24, -126)])
+		draw_colored_polygon(coat, Palette.COVERALL.darkened(0.2))
+		coat.append(coat[0])
+		draw_polyline(coat, Palette.COVERALL_LIGHT, 2.0, true)
+		draw_circle(Vector2(48, -108), 10.0, Palette.SKIN_SHADOW.darkened(0.2), true, -1.0, true)
+		# Her lantern, still lit: the one bright thing on you while you carry her.
+		draw_circle(Vector2(-36, -98), 24.0, Color(Palette.TRUTH_CYAN, 0.2), true, -1.0, true)
+		draw_line(Vector2(-26, -126), Vector2(-36, -110), Palette.IRON_DARK, 2.0)
+		draw_rect(Rect2(-44, -110, 16, 22), Palette.IRON_DARK)
+		draw_rect(Rect2(-41, -107, 10, 16), Palette.TRUTH_CYAN_HOT)
 	if _flash > 0.0:
 		draw_rect(Rect2(-36, -152, 72, 152), Color(Palette.IVORY, _flash * 2.0))
 	draw_set_transform(Vector2.ZERO)

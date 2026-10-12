@@ -8,6 +8,7 @@
 ;   I  the Workshop (from the Tideworks) z  its door
 ;   h  the Clinic (from Mercy General)   k  its door
 ;   o  the Pumphouse (from Greywater)    j  its door
+;   c  the Commons (from Harbor Ward), on new ground at the back rim   q  its door
 ;   N  Noor      Y  Teo      s  where woken survivors stand      p  start (off the skiff)
 ;   ~  water
 ;
@@ -16,10 +17,12 @@
 %  k clinic_door
 %  o pumphouse
 %  j pumphouse_door
+%  c commons
+%  q commons_door
 ~~~~~~~~~~~~~~~~~~~~~~~~
-~~~~~~~~~~~~~~~~~~~~~~~~
-~~~~~~~~~~~~~~~~~~~~~~~~
-~~~~~~~~~~~hh~~~~~~~~~~~
+~~~~~~~~~~~~~cc~~~~~~~~~
+~~~~~~~~~~~~~cc~~~~~~~~~
+~~~~~~~~~~~hhqn~~~~~~~~~
 ~~~~~~~~~MMhhnG~~~~~~~~~
 ~~~~~~AAAMMeknnGn~~~~~~~
 ~~~~~~AAAnnnnffnnn~~~~~~

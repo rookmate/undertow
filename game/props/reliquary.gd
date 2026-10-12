@@ -18,7 +18,16 @@ func prompt_verb() -> String:
 
 
 func can_interact() -> bool:
-	return not opened
+	return not opened and not _carrying()
+
+
+## Carrying Noor, set her down first: opening it ends the district, and leaving without her is leaving her.
+func blocked_reason() -> String:
+	return "Set her down in the boat first." if _carrying() and not opened else ""
+
+
+func _carrying() -> bool:
+	return level != null and level.player != null and level.player.carrying
 
 
 func interact(_player: Operator) -> void:

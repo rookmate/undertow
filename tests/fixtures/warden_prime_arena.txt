@@ -1,0 +1,18 @@
+; A test arena for the Warden-Prime: its plaza, the relay mast, a wall to charge into, Noor by the
+; fence, the Wardfolk's boat, where the patrol comes in, the barrier before the Reliquary.
+%  m noor_down
+%  k ward_boat
+%  x patrol
+################
+#.......R....k.#
+#..............#
+#yyyyyyyyyyyyyy#
+#..............#
+#.............Z#
+#x.............#
+#.......B......#
+#..............#
+#..............#
+#m.............#
+#x....P........#
+################

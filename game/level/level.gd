@@ -43,6 +43,9 @@ var feed_blind: FeedBlind
 ## True when the map was broken and the level never started (see _ready).
 var failed: bool = false
 ## Greywater's tide, if this level floods (null otherwise).
+## Noor down at the border (Harbor Ward, while her turn is undecided), and the choice over her.
+var noor_down: NoorDown
+var noor_choice: NoorChoice
 var tide: Tide
 var _ambient: CanvasModulate
 var _enemies: Array[Enemy] = []
@@ -288,6 +291,8 @@ func _build_cells() -> void:
 					facade = BuildingCell.Facade.CLINIC
 				Tiles.PUMPHOUSE:
 					facade = BuildingCell.Facade.PUMPHOUSE
+				Tiles.COMMONS:
+					facade = BuildingCell.Facade.COMMONS
 				Tiles.PUMP_WALL:
 					facade = BuildingCell.Facade.PUMPING_STATION
 				Tiles.PUMP_DOOR:
@@ -518,6 +523,16 @@ func _spawn_people_and_finds() -> void:
 		var slip := UnindexedLog.new()
 		slip.setup(self, c, grid.entity_id(c))
 		world.add_child(slip)
+	# Noor, down at the border, while her turn is still to be decided.
+	if GameState.run.noor_away:
+		for c: Vector2i in grid.cells_with(Tiles.NOOR_DOWN):
+			noor_down = NoorDown.new()
+			noor_down.setup(self, c)
+			world.add_child(noor_down)
+	for c: Vector2i in grid.cells_with(Tiles.WARD_BOAT):
+		var boat := WardBoat.new()
+		boat.setup(self, c)
+		world.add_child(boat)
 
 
 func _add_steward_path() -> void:
@@ -593,6 +608,32 @@ func has_lattice() -> bool:
 	return is_hub() or LevelCatalog.has_lattice(level_id)
 
 
+## Noor's turn decided: carry her or leave her (NoorChoice), over the level.
+func open_noor_choice(noor: NoorDown) -> NoorChoice:
+	if noor_choice != null:
+		return noor_choice
+	noor_choice = NoorChoice.new()
+	noor_choice.noor = noor
+	noor_choice.closed.connect(func() -> void: noor_choice = null)
+	add_child(noor_choice)
+	return noor_choice
+
+
+## You picked Noor up: the curfew patrol comes in through the gate after you both, already hunting.
+func call_the_curfew_patrol() -> void:
+	for c: Vector2i in grid.cells_with(Tiles.PATROL):
+		var w := add_enemy(Warden.new(), c, Warden.MAX_INTEGRITY) as Warden
+		w.hunting = true
+		w.last_seen = player.global_position
+	Sound.play(&"warden_alert", player.global_position)
+
+
+## Downed carrying her: she's back where she was, to be picked up again.
+func noor_dropped() -> void:
+	if noor_down != null and is_instance_valid(noor_down):
+		noor_down.carried = false
+
+
 ## The boss this level ends with ("" for none): a test arena's own, or the district's.
 func boss_id() -> String:
 	return boss_override if boss_override != "" else LevelCatalog.boss_of(level_id)
@@ -646,6 +687,11 @@ func _spawn_boss() -> void:
 			add_enemy(lung, b, Lung.MAX_INTEGRITY)
 			boss = lung
 			_add_weak_point(lung, HandValve.new())
+		"warden_prime":
+			var prime := WardenPrime.new()
+			add_enemy(prime, b, WardenPrime.MAX_INTEGRITY)
+			boss = prime
+			_add_weak_point(prime, RelayMast.new())
 		"editor":
 			var editor := Editor.new()
 			add_enemy(editor, b, Editor.MAX_INTEGRITY)

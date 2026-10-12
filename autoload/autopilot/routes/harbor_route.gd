@@ -4,7 +4,9 @@ extends AutopilotRoute
 ## light, the map, what you can find); Noor's dashcam at her boat-house door and her Signal Jammer on
 ## the porch, the Wardfolk's radio log by
 ## the gate, the curfew patrol hunting you along Net Lane (fought off); through the border fence the Lattice starts again (the Steward back, its path); the depot's
-## Reliquary. Both truths carried; on the Ark, Noor's still away. In a campaign, setting off for the Ward
+## Reliquary. Before it, the Warden-Prime (the Steward's way: the barrier at your back, roll aside from its
+## charge, at it while it's dazed), and Noor down in the plaza: carried, the curfew patrol after you, to the
+## Wardfolk's boat. Both truths carried; on the Ark, Noor's home and the Commons stands. In a campaign, setting off for the Ward
 ## plays Noor going ahead at the dock first.
 
 const OPENING: Array[String] = [
@@ -13,8 +15,10 @@ const OPENING: Array[String] = [
 const THROUGH: Array[String] = [
 	"the_voice_cuts_out", "no_lattice", "muting_changes_nothing", "dashcam_found", "jammer_found", "warden_hunted",
 	"enemy_killed", "ward_radio_found",
-	"the_lattice_again", "route_completed", "arrived_by_reliquary", "core_choice_shown", "harbor_cores_carried",
-	"ark_reached", "noor_still_away",
+	"the_lattice_again", "warden_prime_engaged", "warden_prime_called_the_charge", "warden_prime_dazed",
+	"warden_prime_beaten", "barriers_opened", "noor_found_down", "carried_noor", "curfew_patrol_came",
+	"noor_in_the_boat", "route_completed", "arrived_by_reliquary", "core_choice_shown", "harbor_cores_carried",
+	"ark_reached", "noor_home", "commons_restored", "commons_standing",
 ]
 
 ## Set by a campaign: Noor goes ahead at the dock before this district (a prepared run has her gone).
@@ -101,7 +105,40 @@ func drive(level: Level, gen: int) -> void:
 	var back := await Autopilot.until(func() -> bool: return Steward.covered and not level.predicted_path.shown.is_empty(), 2.0, gen)
 	check(back and Steward.assists().steward_present, "the_lattice_again")
 	await Autopilot.snap("harbor_border")
-	for cell: Vector2i in [Vector2i(39, 16), Vector2i(40, 13)]:
+	var prime := level.boss as WardenPrime
+	if prime == null:
+		return
+	check(await Autopilot.until(func() -> bool: return prime.is_engaged, 3.0, gen), "warden_prime_engaged")
+	await Autopilot.snap("harbor_warden_prime")
+	if not await _fight_prime(player, prime, gen):
+		return
+	check(not prime.is_alive(), "warden_prime_beaten")
+	await Autopilot.snap("harbor_warden_prime_down")
+	check(await Autopilot.until(Autopilot.barriers_open, 2.0, gen), "barriers_opened")
+	# Noor, down in the plaza's far corner: carry her to the Wardfolk's boat.
+	if not await Autopilot.use_at(level, player, Vector2i(43, 24), gen):
+		return
+	var choice := level.noor_choice
+	check(choice != null, "noor_found_down")
+	if choice == null:
+		return
+	await Autopilot.snap("harbor_noor_down")
+	(choice.get("_carry") as Button).grab_focus()
+	Autopilot.tap(&"ui_accept")
+	if not await Autopilot.wait(0.6, gen):
+		return
+	check(player.carrying, "carried_noor")
+	var patrol := level.living_enemies().filter(func(e: Enemy) -> bool: return e is Warden and (e as Warden).hunting).size()
+	check(patrol >= 2, "curfew_patrol_came")
+	await Autopilot.snap("harbor_carrying_noor")
+	for cell: Vector2i in [Vector2i(43, 19), Vector2i(43, 15), Vector2i(43, 12)]:
+		if not await Autopilot.advance_to(level, player, cell, 30.0, gen):
+			return
+	if not await Autopilot.use_at(level, player, Vector2i(43, 11), gen):
+		return
+	check(not player.carrying and GameState.run.noor_present and not GameState.run.noor_away, "noor_in_the_boat")
+	await Autopilot.snap("harbor_noor_in_the_boat")
+	for cell: Vector2i in [Vector2i(40, 13)]:
 		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
 			return
 	pass_check("route_completed")
@@ -124,6 +161,51 @@ func _watch_wardens(level: Level, gen: int) -> void:
 		if level.living_enemies().size() < start:
 			pass_check("enemy_killed")
 		await Autopilot.physics_step()
+
+
+## The Steward's way with the Warden-Prime: wait for it with the barrier at your back; out of its light;
+## as its charge comes, roll aside, and it runs on into the barrier, dazed; at it while it's dazed.
+## Gives up after 120 s.
+func _fight_prime(player: Operator, prime: WardenPrime, gen: int) -> bool:
+	var anchor := Iso.cell_center(Vector2i(40, 16))
+	var spent := 0.0
+	var frame := 0
+	while prime.is_alive() and spent < 120.0:
+		if Autopilot.stale(gen):
+			Autopilot.release_all()
+			return false
+		frame += 1
+		if Sound.voice_line == "warden_prime_charge":
+			pass_check("warden_prime_called_the_charge")
+		if prime.phase == WardenPrime.Phase.DAZED:
+			pass_check("warden_prime_dazed")
+		var at := player.global_position
+		if prime.is_vulnerable():
+			Autopilot.fight(player, prime, frame)
+			spent += await Autopilot.physics_step()
+			continue
+		Autopilot.release_attacks()
+		var target := anchor
+		match prime.phase:
+			WardenPrime.Phase.SWEEP, WardenPrime.Phase.VOLLEY:
+				if prime.in_light(at) or prime.phase == WardenPrime.Phase.VOLLEY:
+					var side := Vector2(-prime.beam_dir.y, prime.beam_dir.x)
+					target = at + Iso.ground_velocity(side, 1.5)
+			WardenPrime.Phase.CHARGE_WARN, WardenPrime.Phase.CHARGE:
+				var near := Iso.ground_distance(at, prime.global_position) < 3.0
+				var late := prime.phase == WardenPrime.Phase.CHARGE or float(prime.get("_phase_time")) > WardenPrime.CHARGE_WARN_SECONDS * 0.85
+				if late and (near or prime.phase == WardenPrime.Phase.CHARGE_WARN) and player.dodge.can_start():
+					Autopilot.press_move(Autopilot.input_for_ground(Vector2(-prime.charge_dir.y, prime.charge_dir.x)))
+					Autopilot.tap(&"dodge")
+					spent += await Autopilot.physics_step()
+					continue
+		if Iso.ground_distance(at, target) > 0.3:
+			Autopilot.press_move(Autopilot.input_for_ground(Iso.ground_dir_between(at, target)))
+		else:
+			Autopilot.press_move(Vector2.ZERO)
+		spent += await Autopilot.physics_step()
+	Autopilot.release_all()
+	return true
 
 
 ## In the Ward the Steward has no say: mute it and the light, the map and what's there to find stay as
@@ -160,10 +242,12 @@ func choose(screen: Node, gen: int) -> void:
 	on_to_the_ark(screen)
 
 
-## Home without her: Noor's still in the Ward.
+## Home with her: Noor's back on the Ark, and the Commons stands.
 func at_ark(ark: ArkLevel, gen: int) -> bool:
 	pass_check("ark_reached")
-	check(GameState.run.noor_away and ark.noor == null, "noor_still_away")
+	check(not GameState.run.noor_away and GameState.run.noor_present and ark.noor != null, "noor_home")
+	check(GameState.run.buildings_restored.has("commons"), "commons_restored")
+	check(facade_cells(ark, BuildingCell.Facade.COMMONS) > 0, "commons_standing")
 	if not await Autopilot.wait(1.5, gen):
 		return false
 	await Autopilot.snap("ark_after_harbor")

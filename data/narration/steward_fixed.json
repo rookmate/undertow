@@ -128,6 +128,30 @@
 		"find_signal_jammer": {
 			"text": "That isn't one of mine. Whatever it's for, I'd leave it.",
 			"purpose": "fact"
+		},
+		"warden_prime_light": {
+			"text": "Stay dark.",
+			"purpose": "warning"
+		},
+		"warden_prime_charge": {
+			"text": "Aside.",
+			"purpose": "warning"
+		},
+		"warden_prime_dazed": {
+			"text": "It's dazed. Now.",
+			"purpose": "fact"
+		},
+		"noor_home": {
+			"text": "You carried her. I couldn't have told you to.",
+			"purpose": "fact"
+		},
+		"noor_left": {
+			"text": "She chose the Ward. She always had.",
+			"purpose": "fact"
+		},
+		"commons_note": {
+			"text": "They eat together. They argue. Nobody schedules any of it.",
+			"purpose": "fact"
 		}
 	}
 }

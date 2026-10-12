@@ -4,5 +4,5 @@
 
 [node name="WardenArena" type="Node2D"]
 script = ExtResource("1")
-level_id = "harbor"
+level_id = "warden_arena"
 map_path = "res://tests/fixtures/warden_arena.txt"

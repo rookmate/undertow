@@ -44,6 +44,8 @@ const STEWARD_ALLOWED: Dictionary[String, String] = {
 	"res://game/bosses/editor.gd": "the Editor prints the Steward's Feed: its editorial core is the Steward's",
 	"res://game/bosses/press_rollers.gd": "the gap the Steward lights for you in the Editor's rollers is its light",
 	"res://ui/ark/noor_departure.gd": "the Steward's word on Noor going (its narration)",
+	"res://game/bosses/warden_prime.gd": "the Warden-Prime's searchlight is the Steward's light (the Warden network is its)",
+	"res://game/bosses/relay_mast.gd": "the border's Lattice relay is Steward hardware",
 }
 
 const SCAN_ROOTS: Array[String] = ["res://autoload", "res://core", "res://game", "res://ui", "res://data"]

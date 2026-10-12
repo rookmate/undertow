@@ -313,6 +313,11 @@ func snap(shot_name: String) -> void:
 	img.save_png(shots_dir.path_join(shot_name + ".png"))
 	# Converting and saving takes far longer than a frame; keep that out of the performance report.
 	_last_frame_us = 0
+	# And out of the route's clock: the next frame's delta is the save. A wait started on that frame
+	# would count it as time gone by (a 0.6 s wait right after a shot could end a frame later, before
+	# an action tapped just before it is even released). Let it go by first.
+	await get_tree().process_frame
+	await get_tree().process_frame
 
 
 ## Every boss barrier in the scene is open.
@@ -442,9 +447,15 @@ func advance_to(level: Level, player: Operator, cell: Vector2i, timeout: float, 
 			release_all()
 			return false
 		frame += 1
-		var threat := nearest_threat(level, player, 3.4)
+		# Carrying someone you can't fight: roll out of a windup's reach instead, and keep walking.
+		var threat := nearest_threat(level, player, 3.4) if player.can_act() or player.dodge.is_rolling() else null
 		var feed := feed_coming(level, player) if turn_from_feed else null
-		if feed != null and player.is_alive():
+		var swing := nearest_threat(level, player, 1.8) if player.carrying else null
+		if swing != null and swing.state == Enemy.State.WINDUP and player.dodge.can_start():
+			var away := Iso.ground_dir_between(swing.global_position, player.global_position)
+			press_move(input_for_ground(Vector2(-away.y, away.x) + away))
+			tap(&"dodge")
+		elif feed != null and player.is_alive():
 			# Turn your back on the screen until it's flashed.
 			release_attacks()
 			press_move(input_for_ground(Iso.ground_dir_between(feed.global_position, player.global_position)))

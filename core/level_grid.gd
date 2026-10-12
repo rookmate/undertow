@@ -38,7 +38,9 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	Tiles.NEWSROOM_FLOOR: Floor.PARQUET, Tiles.NEWSROOM_DESK: Floor.PARQUET,
 	Tiles.PIER: Floor.PIER, Tiles.WARD_STONE: Floor.WARD_STONE, Tiles.BOATHOUSE: Floor.BUILDING,
 	Tiles.BOATHOUSE_DOOR: Floor.BUILDING, Tiles.LANTERN: Floor.WARD_STONE, Tiles.PILING: Floor.WATER,
-	Tiles.BRIDGE_STUB: Floor.BUILDING, Tiles.WARDEN: Floor.WARD_STONE,
+	Tiles.BRIDGE_STUB: Floor.BUILDING, Tiles.WARDEN: Floor.WARD_STONE, Tiles.PATROL: Floor.COBBLE,
+	Tiles.NOOR_DOWN: Floor.COBBLE, Tiles.WARD_BOAT: Floor.COBBLE, Tiles.COMMONS: Floor.BUILDING,
+	Tiles.COMMONS_DOOR: Floor.CONCRETE,
 }
 ## Characters whose cell blocks movement.
 ## Lawns (and the hedges, planters and sprinklers on them) are the Steward's gardens: looked at, not
@@ -46,7 +48,8 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 const SOLID := " #dmgAlMI~=-L|KtoRTvHjFbrJ*[^" + Tiles.PARTITION + Tiles.AMBULANCE + Tiles.NURSE_DESK \
 	+ Tiles.HOSPITAL_WALL + Tiles.HOSPITAL_DOOR + Tiles.HOSPITAL_BED + Tiles.CLINIC + Tiles.PUMP_WALL \
 	+ Tiles.PUMP_DOOR + Tiles.TURBINE + Tiles.TIDE_GAUGE + Tiles.PUMPHOUSE + Tiles.NEWSROOM_DESK \
-	+ Tiles.BOATHOUSE + Tiles.BOATHOUSE_DOOR + Tiles.LANTERN + Tiles.PILING + Tiles.BRIDGE_STUB
+	+ Tiles.BOATHOUSE + Tiles.BOATHOUSE_DOOR + Tiles.LANTERN + Tiles.PILING + Tiles.BRIDGE_STUB + Tiles.WARD_BOAT \
+	+ Tiles.COMMONS
 ## Solid things taller than a chest-height shot, which stop sight, swings and shots (blocks_line): the
 ## Feed kiosk, the stalled tram, the stacks' shelves, the Reliquary, the Tideworks' crane legs, and the
 ## named tall ones (Tiles.TALL). Buildings stop them anyway.
@@ -56,7 +59,7 @@ const TALL := "Kt|R^" + Tiles.TALL
 ## route lights, the Tideworks' containers (stacked one high), and the named low ones (Tiles.LOW).
 const LOW := " ~=-LoTvHjFbrJ*[" + Tiles.LOW
 ## People stand on these cells: walkable floor, but nothing should route through them.
-const OCCUPIED := "WwNY"
+const OCCUPIED := "WwNY" + Tiles.NOOR_DOWN
 ## Placed things that need a stable id from an '@' line (people, caches, logs).
 const NEEDS_ID := "WwTUV"
 ## Placed things (people, finds, spawns, a boss, its weak point and barrier, a lantern on its post) stand
@@ -64,7 +67,7 @@ const NEEDS_ID := "WwTUV"
 ## Custodian scrubbing a low street leaves a low street that floods, and the Waiting in the Marrow stand
 ## in the Marrow. The character's own floor (FLOOR_OF) is only the fallback for a marker with no ground
 ## beside it.
-const MARKERS := "TUWwPCckXVO]BZy" + Tiles.LANTERN + Tiles.WARDEN
+const MARKERS := "TUWwPCckXVO]BZy" + Tiles.LANTERN + Tiles.WARDEN + Tiles.PATROL + Tiles.NOOR_DOWN + Tiles.WARD_BOAT
 ## Ground a marker can stand on: plain floors.
 const TERRAIN := ".,:_iqnxh" + Tiles.HOSPITAL_TILE + Tiles.ASPHALT + Tiles.STAFF_FLOOR + Tiles.SEAWALL \
 	+ Tiles.LOW_STREET + Tiles.KELP + Tiles.MARROW + Tiles.GRATING + Tiles.NEWSROOM_FLOOR + Tiles.PIER \

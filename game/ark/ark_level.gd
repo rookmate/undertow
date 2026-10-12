@@ -10,13 +10,14 @@ extends Level
 const SURVIVOR_SPOTS := "s"
 ## Which map letters are which Ark building's plot. A plot is built only once that building has been
 ## restored by bringing a district's core home; until then it is an unbuilt slab.
-const PLOTS: Dictionary[String, String] = {"A": "archive", "M": "signal_room", "I": "workshop", Tiles.CLINIC: "clinic", Tiles.PUMPHOUSE: "pumphouse"}
+const PLOTS: Dictionary[String, String] = {"A": "archive", "M": "signal_room", "I": "workshop", Tiles.CLINIC: "clinic", Tiles.PUMPHOUSE: "pumphouse", Tiles.COMMONS: "commons"}
 ## The door belongs to the building it opens.
-const DOORS: Dictionary[String, String] = {"a": "archive", "e": "signal_room", "z": "workshop", Tiles.CLINIC_DOOR: "clinic", Tiles.PUMPHOUSE_DOOR: "pumphouse"}
+const DOORS: Dictionary[String, String] = {"a": "archive", "e": "signal_room", "z": "workshop", Tiles.CLINIC_DOOR: "clinic", Tiles.PUMPHOUSE_DOOR: "pumphouse", Tiles.COMMONS_DOOR: "commons"}
 ## What each building's door is.
 const DOOR_KINDS: Dictionary[String, ArkFixture.Kind] = {
 	"archive": ArkFixture.Kind.ARCHIVE_DOOR, "signal_room": ArkFixture.Kind.SIGNAL_DOOR, "workshop": ArkFixture.Kind.WORKSHOP_DOOR,
 	"clinic": ArkFixture.Kind.CLINIC_DOOR, "pumphouse": ArkFixture.Kind.PUMPHOUSE_DOOR,
+	"commons": ArkFixture.Kind.COMMONS_DOOR,
 }
 
 ## The arrival lines, in order: who says it ("noor", "teo", or "steward" for its voiced line) and what.
@@ -221,6 +222,9 @@ func _on_fixture_used(kind: ArkFixture.Kind) -> void:
 		ArkFixture.Kind.PUMPHOUSE_DOOR:
 			# Run by people again; the Steward has its say about that.
 			Narrator.say_fixed("pumphouse_note")
+		ArkFixture.Kind.COMMONS_DOOR:
+			# The Wardfolk's way of living, brought to the Ark; the Steward has its say about that too.
+			Narrator.say_fixed("commons_note")
 		_:
 			open_city_map()
 
