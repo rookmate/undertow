@@ -12,6 +12,7 @@ Bridge's severed end beyond.
 This map's own characters (declared in its '%' legend lines):
     s  the Ward's stone lanes    p  pier planks    h  a boat-house    o  a boat-house's door
     f  a piling                  n  a Wardfolk lantern                b  the bridge stub
+    w  a Warden, posted (the curfew patrol)
 """
 W, H = 46, 39
 g = [['~'] * W for _ in range(H)]
@@ -63,6 +64,9 @@ rect(37, 1, 43, 5, 'b')
 put(40, 12, 'R')
 put(16, 19, 'C')
 put(37, 22, 'C')
+# The curfew patrol: Wardens on the lane, by the gate, and on the middle pier.
+for (x, y) in [(24, 20), (32, 19), (18, 26)]:
+    put(x, y, 'w')
 # Off the path, all of it: the dashcam at Noor's door, the Wardfolk's radio log by the gate.
 put(4, 18, 'T')
 put(31, 18, 'U')
