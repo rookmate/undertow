@@ -116,3 +116,29 @@ func _count(ark: ArkLevel, facade: BuildingCell.Facade) -> int:
 		if c is BuildingCell and (c as BuildingCell).facade == facade:
 			n += 1
 	return n
+
+
+## With every tool found (four of them, two rows each) the list scrolls: the last row is reachable by
+## focus and nothing covers the way back.
+func test_with_every_tool_found_the_list_scrolls_and_the_way_back_stays_clear() -> void:
+	GameState.restore_building("workshop")
+	for id: String in WeaponDefs.PLAYABLE:
+		GameState.give_weapon(id)
+	var ark := (load("res://game/ark/ark.tscn") as PackedScene).instantiate() as ArkLevel
+	add_child(ark)
+	await wait_frames(2)
+	var screen := ark.open_workshop()
+	await wait_frames(2)
+	var rows: Dictionary = screen.get("_rows")
+	check_eq(rows.size(), WeaponDefs.PLAYABLE.size() * 2, "every tool, both modes")
+	var scroll := screen.get_node("List") as ScrollContainer
+	var back := screen.get("_back") as Button
+	check(scroll.get_global_rect().end.y <= back.get_global_rect().position.y, "the list stops above the way back")
+	var last: Button = rows.values()[rows.size() - 1]
+	last.grab_focus()
+	await wait_frames(3)
+	check(scroll.scroll_vertical > 0, "focus scrolled the list to the last row")
+	check(scroll.get_global_rect().encloses(last.get_global_rect()), "which is in view")
+	screen.close()
+	ark.queue_free()
+	await wait_frames(2)

@@ -124,6 +124,10 @@
 		"noor_departs": {
 			"text": "She'll walk into the curfew at that border. You know that.",
 			"purpose": "fact"
+		},
+		"find_signal_jammer": {
+			"text": "That isn't one of mine. Whatever it's for, I'd leave it.",
+			"purpose": "fact"
 		}
 	}
 }

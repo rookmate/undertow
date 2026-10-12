@@ -93,7 +93,7 @@ func test_from_dict_rejects_saves_from_newer_versions() -> void:
 ## A save that owns nothing playable (only the Signal Jammer, which isn't in the game yet) still carries
 ## the starting tools, so the loadout always has something to pick.
 func test_a_save_owning_nothing_playable_keeps_the_starting_weapons() -> void:
-	var s := RunState.from_dict({"version": RunState.SAVE_VERSION, "weapons_owned": [WeaponDefs.SIGNAL_JAMMER]})
-	check(s.weapons_owned.has(WeaponDefs.BATON))
-	check(s.weapons_owned.has(WeaponDefs.SIGNAL_JAMMER), "what it did own stays")
+	var s := RunState.from_dict({"version": RunState.SAVE_VERSION, "weapons_owned": ["harpoon"]})
+	check(s.weapons_owned.has(WeaponDefs.BATON), "never a run with nothing to carry")
+	check_false(s.weapons_owned.has("harpoon"), "what isn't in the game is dropped")
 	check_eq(Loadout.from_run(s), [WeaponDefs.BATON])

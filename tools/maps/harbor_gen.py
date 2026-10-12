@@ -69,6 +69,8 @@ for (x, y) in [(24, 20), (32, 19), (18, 26)]:
     put(x, y, 'w')
 # Off the path, all of it: the dashcam at Noor's door, the Wardfolk's radio log by the gate.
 put(4, 18, 'T')
+# Noor's jammer, on a crate on her porch.
+put(4, 21, 'V')
 put(31, 18, 'U')
 
 for row in g:

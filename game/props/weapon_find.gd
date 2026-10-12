@@ -43,6 +43,9 @@ func _draw() -> void:
 	if weapon_id == WeaponDefs.DEFIB:
 		_crash_cart()
 		return
+	if weapon_id == WeaponDefs.SIGNAL_JAMMER:
+		_jammer_on_a_crate()
+		return
 	# A Warden's drone on a rack, chipped municipal paint, its asset tag half peeled.
 	draw_rect(Rect2(-18, -34, 36, 6), Palette.IRON_DARK)
 	draw_circle(Vector2(0, -44), 13.0, Palette.GREY_COLD.darkened(0.3), true, -1.0, true)
@@ -50,6 +53,15 @@ func _draw() -> void:
 		draw_line(Vector2(0, -44), Vector2(x, -50), Palette.IRON_DARK, 3.0, true)
 		draw_circle(Vector2(x, -50), 6.0, Palette.IRON_DARK, false, 2.0, true)
 	draw_rect(Rect2(4, -40, 10, 5), Palette.PAPER)
+
+
+## Noor's jammer on an upturned crate on her porch: a hand-built box, cyan tape, an antenna.
+func _jammer_on_a_crate() -> void:
+	draw_rect(Rect2(-16, -26, 32, 26), Palette.PIER_PLANK_B)
+	draw_line(Vector2(-16, -13), Vector2(16, -13), Palette.BOATHOUSE_SHADE, 2.0)
+	draw_rect(Rect2(-12, -42, 24, 16), Palette.IRON_DARK)
+	draw_line(Vector2(-12, -36), Vector2(12, -36), Palette.WARD_CYAN, 3.0)
+	draw_line(Vector2(6, -42), Vector2(12, -62), Palette.GREY_COLD, 2.0, true)
 
 
 ## A crash cart with the Gauntlet on top: paddles' cables coiled, its asset tag half peeled.

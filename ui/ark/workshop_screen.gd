@@ -28,10 +28,17 @@ func _ready() -> void:
 	_scrap = _label("", UiFonts.mono_medium(), 22, Palette.IVORY)
 	_scrap.position = Vector2(1300, 70)
 	add_child(_scrap)
+	# Every tool found is two rows; four tools run past the screen, so the list scrolls (with focus).
+	var scroll := ScrollContainer.new()
+	scroll.name = "List"
+	scroll.position = Vector2(100, 200)
+	scroll.size = Vector2(1150, 750)
+	scroll.follow_focus = true
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	add_child(scroll)
 	var list := VBoxContainer.new()
-	list.position = Vector2(100, 200)
 	list.add_theme_constant_override(&"separation", 10)
-	add_child(list)
+	scroll.add_child(list)
 	for id: String in WeaponDefs.GRID:
 		if GameState.run.weapons_owned.has(id) and WeaponDefs.is_playable(id):
 			for mode: String in ["tuned", "manual"]:

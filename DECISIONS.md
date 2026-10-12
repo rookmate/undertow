@@ -601,4 +601,12 @@ Asked of the user on 2026-10-09 and answered the same day.
      looking while it walks its beat. Shock baton up close (0.55 s windup, 14). 70 integrity, slower
      than you walk. Three on the map: on Net Lane, by the gate, on the middle pier. Jammed (the Signal
      Jammer, next), it loses you.
+150. **The Signal Jammer** (the fourth tool, on a crate on Noor's porch in Harbor Ward): hand-built from old
+     jammer parts, taped in the Ward's cyan, no asset tag (the brief's one exception). It jams machines:
+     one it catches is struck and stopped dead, and a Warden loses you. **Tuned:** the Steward points it
+     at the nearest machine it will aim at, a narrow pulse (4.5 tiles, 10, a 1.4 s stun; 1.6 s
+     between). **Manual:** hold to charge (to 1.2 s), release a wave all round you, from 1.4 to 4 tiles,
+     6 to 16, a 0.8 to 3 s stun (2.2 s between). Whatever machine it catches is struck, so it trips a
+     boss's weak point from range. It's a support tool: it won't kill quickly on its own. With every
+     tool found, the Workshop's list scrolls.
 
