@@ -24,6 +24,8 @@ const HURT_GRACE := 0.35
 ## Aim assist while the Steward is listening (strength from Steward.assists()).
 const ASSIST_CONE_DEG := 24.0
 const ASSIST_REACH := 8.0
+## Carrying someone (Noor, in Harbor Ward): this share of walking speed, and no weapons.
+const CARRY_SPEED := 0.7
 
 const WEAPON_SCRIPTS: Dictionary[String, GDScript] = {
 	WeaponDefs.BATON: preload("res://game/weapons/traffic_baton.gd"),
@@ -39,6 +41,8 @@ var weapons: Array[Weapon] = []
 ## Grid-space direction the Operator faces. Starts looking up the street.
 var facing_ground: Vector2 = Vector2(0, -1)
 var input_enabled: bool = true
+## Carrying Noor on your shoulder: slower, and you can't fight (you can still roll).
+var carrying: bool = false
 
 var _body: OperatorBody
 var _carried_light: PointLight2D
@@ -158,7 +162,7 @@ func _physics_process(delta: float) -> void:
 	if dodge.is_rolling():
 		velocity = dodge.velocity()
 	else:
-		velocity = Iso.ground_velocity(ground, WALK_TILES_PER_SECOND * (level.footing(cell()) if level != null else 1.0))
+		velocity = Iso.ground_velocity(ground, WALK_TILES_PER_SECOND * (level.footing(cell()) if level != null else 1.0) * (CARRY_SPEED if carrying else 1.0))
 		if ground.length_squared() > 0.01 and not _attacking():
 			facing_ground = ground.normalized()
 	velocity += _knock
@@ -224,9 +228,15 @@ func is_invulnerable() -> bool:
 	return dodge.is_invulnerable()
 
 
-## Weapons work while walking, not mid-roll or downed.
+## Weapons work while walking, not mid-roll, downed, or carrying someone.
 func can_act() -> bool:
-	return input_enabled and not _downed and not dodge.is_rolling()
+	return input_enabled and not _downed and not dodge.is_rolling() and not carrying
+
+
+## Picks someone up onto your shoulder, or sets them down.
+func set_carrying(on: bool) -> void:
+	carrying = on
+	_body.carrying = on
 
 
 func face(ground_dir: Vector2) -> void:
@@ -320,6 +330,11 @@ func self_damage(amount: float) -> void:
 
 
 func _go_down() -> void:
+	# Down with her on your shoulder: she's back where she was, to be picked up again.
+	if carrying:
+		set_carrying(false)
+		if level != null:
+			level.noor_dropped()
 	_downed = true
 	_body.downed = true
 	downed.emit()

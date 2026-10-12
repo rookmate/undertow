@@ -79,7 +79,8 @@ const LEVELS: Dictionary[String, Dictionary] = {
 		"after_count": 2,
 		"scene": "res://game/level/harbor_ward.tscn",
 		"map": "res://data/levels/harbor_ward.txt",
-		"restores": "",
+		"restores": "commons",
+		"boss": "warden_prime",
 		# The Wardfolk wired their own: no Lattice anywhere in it but the ferry slip and the border.
 		"lattice": false,
 	},
@@ -108,6 +109,7 @@ const BOSSES: Dictionary[String, Dictionary] = {
 	"surgeon": {"lanes": 0},
 	"lung": {"lanes": 0},
 	"editor": {"lanes": 0},
+	"warden_prime": {"lanes": 0},
 }
 
 

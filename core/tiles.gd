@@ -63,8 +63,13 @@ const LANTERN := "Σ"
 const PILING := "Φ"
 ## The Harbor Bridge's severed end.
 const BRIDGE_STUB := "Ψ"
-## Where a Warden is posted (it walks its beat from there).
+## Where a Warden is posted (it walks its beat from there), and where the curfew patrol comes in when
+## you pick Noor up.
 const WARDEN := "Ω"
+const PATROL := "Ю"
+## Noor, down at the border (her turn); the Wardfolk's boat on the depot slipway.
+const NOOR_DOWN := "Ж"
+const WARD_BOAT := "Б"
 
 # --- The Ark -----------------------------------------------------------------------------------------
 ## The Clinic (from Mercy General) and its door.
@@ -73,6 +78,9 @@ const CLINIC_DOOR := "ν"
 ## The Pumphouse (from Greywater) and its door.
 const PUMPHOUSE := "ψ"
 const PUMPHOUSE_DOOR := "ω"
+## The Commons (from Harbor Ward), on new ground at the Ark's back rim, and its door.
+const COMMONS := "Ц"
+const COMMONS_DOOR := "Ч"
 
 # --- How tall the solid ones stand -------------------------------------------------------------------
 ## Solid named things taller than a chest-height shot: they stop sight, swings and shots
@@ -80,7 +88,7 @@ const PUMPHOUSE_DOOR := "ω"
 const TALL := AMBULANCE + TURBINE
 ## Solid named things at waist height or below, or thin: you see, swing and shoot over or past them.
 ## A test keeps every solid tile in one of the two.
-const LOW := PARTITION + NURSE_DESK + HOSPITAL_BED + TIDE_GAUGE + NEWSROOM_DESK + LANTERN + PILING
+const LOW := PARTITION + NURSE_DESK + HOSPITAL_BED + TIDE_GAUGE + NEWSROOM_DESK + LANTERN + PILING + WARD_BOAT
 
 const BY_NAME: Dictionary[String, String] = {
 	"hospital_tile": HOSPITAL_TILE, "asphalt": ASPHALT, "staff_floor": STAFF_FLOOR, "partition": PARTITION,
@@ -92,6 +100,7 @@ const BY_NAME: Dictionary[String, String] = {
 	"newsroom_floor": NEWSROOM_FLOOR, "newsroom_desk": NEWSROOM_DESK,
 	"pier": PIER, "ward_stone": WARD_STONE, "boathouse": BOATHOUSE, "boathouse_door": BOATHOUSE_DOOR,
 	"lantern": LANTERN, "piling": PILING, "bridge_stub": BRIDGE_STUB, "warden": WARDEN,
+	"patrol": PATROL, "noor_down": NOOR_DOWN, "ward_boat": WARD_BOAT, "commons": COMMONS, "commons_door": COMMONS_DOOR,
 }
 
 

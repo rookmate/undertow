@@ -675,6 +675,13 @@
 			"tone": "neutral",
 			"text": "The depot's Reliquary. The curfew's records. I'm glad to have you back.",
 			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_BOSS_N1",
+			"event": "boss_engaged",
+			"tone": "neutral",
+			"text": "The Warden-Prime. Still keeping the curfew. Nobody told it to stop.",
+			"level": "harbor"
 		}
 	]
 }

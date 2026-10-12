@@ -5,7 +5,7 @@ extends Node2D
 ## windows (human warmth), old-city neon, and the Steward's gilt threaded along the balcony ironwork,
 ## which dies when the voice is muted.
 
-enum Facade { PLAIN, DOOR, NEON_MAGENTA, NEON_LIME, ARCHIVE, LAUNDRY, SIGNAL_ROOM, WORKSHOP, HOSPITAL, HOSPITAL_DOOR, CLINIC, PUMPING_STATION, PUMPING_STATION_DOOR, PUMPHOUSE, BOATHOUSE, BOATHOUSE_DOOR, BRIDGE_STUB }
+enum Facade { PLAIN, DOOR, NEON_MAGENTA, NEON_LIME, ARCHIVE, LAUNDRY, SIGNAL_ROOM, WORKSHOP, HOSPITAL, HOSPITAL_DOOR, CLINIC, PUMPING_STATION, PUMPING_STATION_DOOR, PUMPHOUSE, BOATHOUSE, BOATHOUSE_DOOR, BRIDGE_STUB, COMMONS }
 
 const STORY := 74.0
 const STORIES := 3
@@ -148,6 +148,14 @@ func _face(a: Vector2, b: Vector2, h: float, street_side: bool) -> void:
 			_window(a, b, base, true, rng)
 			if story == 0 and street_side:
 				_base.line(_on_face(a, b, 0.85, 0.0), _on_face(a, b, 0.85, STORY * STORIES), Palette.IRON_DARK.lightened(0.15), 8.0)
+			continue
+		if facade == Facade.COMMONS:
+			# The Wardfolk's way of living, brought to the Ark: every window warm, cyan bunting strung across.
+			_window(a, b, base, true, rng)
+			if story == 2 and street_side:
+				for k: int in 5:
+					var u := 0.1 + k * 0.2
+					_glow.circle(_on_face(a, b, u, base + STORY * 0.8 - absf(sin(u * PI)) * 10.0), 4.0, Palette.WARD_CYAN)
 			continue
 		if facade == Facade.CLINIC:
 			# Staffed by people: every window warm, and a cross lit in cream over the door (not red:

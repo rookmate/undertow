@@ -170,6 +170,22 @@ func have_conversation(district: String, side: String) -> bool:
 	return true
 
 
+## Noor, carried to the Wardfolk's boat at the border: she comes home, and she won't forget it.
+func noor_comes_home() -> void:
+	if run.noor_away:
+		run.noor_away = false
+		change_trust(RunState.WHO_NOOR, 2)
+		state_changed.emit(&"noor_away")
+
+
+## Noor left at the border (or refusing your hand): she stays in the Ward, gone from the run.
+func noor_stays_in_ward() -> void:
+	if run.noor_away or run.noor_present:
+		run.noor_away = false
+		run.noor_present = false
+		state_changed.emit(&"noor_present")
+
+
 ## Noor goes ahead to Harbor Ward (her turn): off the Ark until she comes home, if she does.
 func noor_leaves_for_ward() -> void:
 	if not run.noor_away:
@@ -265,6 +281,9 @@ func complete_level(level_id: String) -> void:
 		return
 	run.levels_completed.append(level_id)
 	state_changed.emit(&"levels_completed")
+	# Leaving the Ward without carrying her home is leaving her (design/act-3.md).
+	if level_id == "harbor" and run.noor_away:
+		noor_stays_in_ward()
 
 
 func set_location(where: String) -> void:

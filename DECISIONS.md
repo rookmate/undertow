@@ -614,4 +614,36 @@ Asked of the user on 2026-10-09 and answered the same day.
      three cells ahead are marked by a small gold stud each, joined by a thin dashed thread of gold,
      nearest brightest, with a much dimmer glow under the nearest. Everything about which cells, and
      when (three ahead, never underfoot, only on the Lattice, gone the moment it's muted), is unchanged.
-
+152. **The Warden-Prime** (Harbor Ward's boss, in the border plaza): 440 integrity. Its searchlight
+     sweeps 130° across the plaza over 3.2 s (a 40° beam, eight tiles, blocked by walls), starting from
+     where you stood; 0.7 s in the beam, all told, and you're marked: a 0.5 s warning, then a volley of
+     three bolts (11 each, 0.3 s apart). Then it lines up a charge on you (1.1 s, 0.3 s sooner muted) and
+     rams nine tiles at 9 tiles/s (20): roll through it or step aside. If it hits a wall it's **dazed**
+     for 3.5 s, open to anything; if it doesn't, it recovers and sweeps again. **Manual:** strike the
+     relay mast (the border's Lattice relay, Steward hardware with a gold lamp) while it sweeps and it
+     loses its link and **stalls** for 6 s, open; once per sweep. The Signal Jammer trips the mast from
+     range. **Tuned:** back on the Lattice, the Steward calls the light ("Stay dark.") and the charge
+     ("Aside."), each in time to act on (test_boss_calls). The plaza's barrier row in front of the
+     Reliquary is what it's meant to hit.
+153. **Noor's turn, decided at the border.** She's down by the fence in the plaza's far corner; you can't
+     go to her while the Warden-Prime is on its feet. Then a screen (people talking: plain type) gives
+     her line and two choices. **Carry her to the boat:** she's on your shoulder, you walk at 70%, you
+     can roll but not fight, and the curfew patrol (two Wardens) comes in through the gate after you,
+     already hunting. Set her down in the Wardfolk's boat on the depot slipway (not the skiff at the
+     slip: that's back across the whole Ward, past the Wardens, and the brief wants a carry, not a
+     march) and she comes home to the Ark (+2 trust). Downed while you carry her, you drop her back by
+     the fence, still undecided. The Reliquary won't open while you're carrying her (opening it ends
+     the district, and leaving without her is leaving her). **Leave her:** she stays in the Ward, gone
+     from the run. With her trust at −3 or below there's only leaving ("Not from you. Not with that
+     thing in your ear."). Back out of the screen and she's still there to decide later. Leaving the
+     Ward with her still undecided counts as leaving her.
+154. **The Commons** (Harbor Ward's building, restored by its Reliquary) stands on new ground at the
+     Ark's back rim, a two-by-two plot with its door facing the disc, not on one of the inner
+     foundations: a building only stands where nothing you can walk on is behind it on screen, and
+     every inner plot has walkable cells behind it. Its door has the Steward's word on it ("They eat
+     together. They argue. Nobody schedules any of it."). Its people come with step 29.
+155. **A screenshot doesn't count as time on the autopilot's clock.** Saving a shot takes longer than a
+     frame, and the next frame's delta is the save: a wait started right after a shot could end a frame
+     later (the harbor route checked Noor was carried before its tap on "carry her" had been released).
+     `Autopilot.snap` now lets that frame go by before the route goes on. The gate takes shots; runs
+     without them never showed it.

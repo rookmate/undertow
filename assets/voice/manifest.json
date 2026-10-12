@@ -99,6 +99,10 @@
   "hash": "b8e167bc61469fa358f1c91ce72a33d68353c842",
   "text": "The pumping station's Reliquary. The tide's memory. Take what keeps you dry."
  },
+ "HARBOR_BOSS_N1": {
+  "hash": "a4728d8ea76144f69f45ba4497f9364e1e94a281",
+  "text": "The Warden-Prime. Still keeping the curfew. Nobody told it to stop."
+ },
  "HARBOR_ENTER_N1": {
   "hash": "79be94437395b15c9991fd1498befca559cb7277",
   "text": "Harbor Ward. There's nothing of mine past the slip. I can't follow you in."
@@ -379,6 +383,10 @@
   "hash": "6c6843d48396bfc531ad1fea705828e17a153376",
   "text": "There you are. I kept your place."
  },
+ "commons_note": {
+  "hash": "1691a86db16ee9b64b4f8227633db291b270d72f",
+  "text": "They eat together. They argue. Nobody schedules any of it."
+ },
  "companions_arrive": {
   "hash": "386eb387c2e9e334711bf0a8653c17bc79500cfe",
   "text": "You have company. Noor doesn't trust me. Teo built part of me. Both of them will want something from you."
@@ -582,6 +590,14 @@
  "noor_departs": {
   "hash": "16d223a2fdc14ae8f732a9056f39c37cecbd6786",
   "text": "She'll walk into the curfew at that border. You know that."
+ },
+ "noor_home": {
+  "hash": "3f8d6fb88c0a447a5d97a2c31ec4ba4e4187c8f1",
+  "text": "You carried her. I couldn't have told you to."
+ },
+ "noor_left": {
+  "hash": "62e7e16c8d1dfd6853bf286ee1f9b0f7d3ac2c4f",
+  "text": "She chose the Ward. She always had."
  },
  "now_log_0001_transition": {
   "hash": "504732839ded3943daee206733ac33736e9ae507",
@@ -790,6 +806,18 @@
  "ward_sealed": {
   "hash": "cf77fc2b1618f417afbfc6da59889ff6d9501010",
   "text": "Sealed for their safety. Leave them."
+ },
+ "warden_prime_charge": {
+  "hash": "2bda24acf4f56c58ae169804ee5cf432c9bb2208",
+  "text": "Aside."
+ },
+ "warden_prime_dazed": {
+  "hash": "60dbc02a6aa75a940b308fe1d98754da93e85957",
+  "text": "It's dazed. Now."
+ },
+ "warden_prime_light": {
+  "hash": "489d2e5370cc716f03683423fb5bdfce651e99ec",
+  "text": "Stay dark."
  },
  "workshop_manual": {
   "hash": "e0fcb7688db68522a3c5600dbf0e159b4696a2d2",

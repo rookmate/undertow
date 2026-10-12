@@ -9,6 +9,7 @@ const BOSSES: Dictionary[String, Dictionary] = {
 	"surgeon_": Surgeon.CALL_GAPS,
 	"lung_": Lung.CALL_GAPS,
 	"editor_": Editor.CALL_GAPS,
+	"warden_prime_": WardenPrime.CALL_GAPS,
 }
 ## Each boss's warnings and how soon their hazards land.
 const LEADS: Dictionary[String, Dictionary] = {
@@ -17,6 +18,7 @@ const LEADS: Dictionary[String, Dictionary] = {
 	"surgeon_": Surgeon.WARN_LEADS,
 	"lung_": Lung.WARN_LEADS,
 	"editor_": Editor.WARN_LEADS,
+	"warden_prime_": WardenPrime.WARN_LEADS,
 }
 ## A beat between one call ending and the next starting.
 const MARGIN := 0.1
