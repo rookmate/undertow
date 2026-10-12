@@ -609,4 +609,9 @@ Asked of the user on 2026-10-09 and answered the same day.
      6 to 16, a 0.8 to 3 s stun (2.2 s between). Whatever machine it catches is struck, so it trips a
      boss's weak point from range. It's a support tool: it won't kill quickly on its own. With every
      tool found, the Workshop's list scrolls.
+151. **The Steward's path is a quiet trail** (the user's call: "remove the 3 squares", then "replace
+     with a subtler path"). The three gilded tiles with image 10's four-petal inlay are gone; the same
+     three cells ahead are marked by a small gold stud each, joined by a thin dashed thread of gold,
+     nearest brightest, with a much dimmer glow under the nearest. Everything about which cells, and
+     when (three ahead, never underfoot, only on the Lattice, gone the moment it's muted), is unchanged.
 

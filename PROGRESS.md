@@ -158,6 +158,7 @@ review at the end.
 | 26a | Harbor Ward: no Lattice (muting changes nothing), Net Lane and the piers, the border plaza, the dashcam; Noor goes ahead at the dock | done |
 | 26b | The Wardens that hunt | done |
 | 27 | The Signal Jammer | done |
+| 27b | The Steward's path as a quiet trail (studs and a dashed thread) instead of three gilded tiles | done |
 | 28 | Warden-Prime, Noor's turn (carry her or leave her), the border Reliquary, the Commons | next |
 | 29 | The Mast; the Commons' people | |
 | 30 | The Spire (no combat; the Steward stops lying); Teo's turn | |
