@@ -52,11 +52,16 @@ static func apply(level_id: String, offered: Array[String], picks: Array[String]
 	var problem := validate(level_id, offered, picks)
 	if problem != "":
 		return problem
+	var left: Array[String] = []
+	for id: String in offered:
+		if not picks.has(id):
+			left.append(id)
 	for id: String in picks:
 		GameState.take_core(id, ContentDb.is_truth(id))
 		var log_id := str(ContentDb.core(id).get("log", ""))
 		if log_id != "":
 			GameState.unlock_log(log_id)
+	GameState.leave_cores(left)
 	GameState.clear_found_cores()
 	GameState.complete_level(level_id)
 	var building := LevelCatalog.restores(level_id)

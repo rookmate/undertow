@@ -830,3 +830,15 @@ Asked of the user on 2026-10-09 and answered the same day.
      **the drowned ferry**: one Warden on the car deck, and the night ferry's passenger roll (the Ward's
      mast heard the bridge was failing and they ran the ferry: forty-one aboard, forty-one ashore). The
      Steward says nothing about the Ward's: it can't hear it.
+187. **Revisits** (175 and 176, built). On the Loop map a district you've done can be gone back to (not
+     the Spire: the run ends there), and it says how hard it is now; setting off again plays no turn at
+     the dock. Back in it, its boss stays beaten and its barriers open, its hold stays done, and
+     what you found, carried or woke isn't there again; nor are the cores you left at its Reliquary
+     (the run remembers them now: they're gone). Its machines harden by how many of its truths you've
+     carried out (its Reliquary's and its map's; nobody else's): **one**, a second Custodian beside
+     each one placed; **two**, windups a fifth shorter (a Custodian's 0.55 s becomes 0.44 s); **three**,
+     elites, half again as hard to take apart and 15% faster, a pale double ring at their feet. What
+     they hit you for never rises. Every machine gives up twice the parts. A truth found there goes
+     straight to the Archive (carried, its log filed; "FILED TO THE ARCHIVE" over the cache), and the
+     Reliquary, opened once, is the way home ("BACK TO THE ARK"). The gate plays a revisit: Mercy
+     General, done once without going down to the morgue.

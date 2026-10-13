@@ -92,6 +92,8 @@ const LEVELS: Dictionary[String, Dictionary] = {
 		"scene": "res://game/level/the_spire.tscn",
 		"map": "res://data/levels/the_spire.txt",
 		"restores": "council_chamber",
+		# Where the run ends: never gone back to.
+		"final": true,
 	},
 }
 
@@ -254,6 +256,33 @@ static func is_open(run: RunState, level_id: String) -> bool:
 	var any: Array = LEVELS[level_id].get("after_any", [])
 	var done := any.filter(func(d: Variant) -> bool: return run.levels_completed.has(str(d))).size()
 	return done >= int(LEVELS[level_id].get("after_count", 0))
+
+
+## Whether you can go back to a district (DECISIONS 187): one you've done, unless it's where the run
+## ends (the Spire).
+static func can_revisit(run: RunState, level_id: String) -> bool:
+	return has_level(level_id) and run.levels_completed.has(level_id) and not bool(LEVELS[level_id].get("final", false))
+
+
+static var _truths: Dictionary[String, Array] = {}
+
+
+## Every truth core a district holds: its Reliquary's own and the ones placed on its map.
+static func truths_of(level_id: String) -> Array[String]:
+	if not _truths.has(level_id):
+		var found: Array[String] = []
+		for id: String in ContentDb.reliquary(level_id):
+			if ContentDb.is_truth(id):
+				found.append(id)
+		if has_level(level_id):
+			var g := LevelGrid.load_file(map_of(level_id))
+			for c: Vector2i in g.cells_with("T"):
+				if not found.has(g.entity_id(c)):
+					found.append(g.entity_id(c))
+		_truths[level_id] = found
+	var out: Array[String] = []
+	out.assign(_truths[level_id])
+	return out
 
 
 ## Whether the Lattice reaches into a district at all (Harbor Ward's people wired their own).

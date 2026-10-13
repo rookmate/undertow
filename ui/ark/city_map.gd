@@ -139,7 +139,11 @@ func choose(id: String) -> void:
 	var lines := PackedStringArray([str(city.get("name", id)).to_upper(), "ACT %d" % int(city.get("act", 0))])
 	match state:
 		"done":
-			lines.append("Done. Its Reliquary has given up its cores.")
+			if LevelCatalog.can_revisit(GameState.run, id):
+				lines.append("Done. The skiff can take you back.")
+				lines.append(Hardening.describe(Hardening.step(GameState.run, id)))
+			else:
+				lines.append("Done. Its Reliquary has given up its cores.")
 		"open":
 			lines.append("Open. The skiff can take you.")
 		"locked":
@@ -147,7 +151,7 @@ func choose(id: String) -> void:
 		"unbuilt":
 			lines.append("Not built yet.")
 	_detail.text = "\n\n".join(lines)
-	chosen = id if state == "open" else ""
+	chosen = id if state == "open" or (state == "done" and LevelCatalog.can_revisit(GameState.run, id)) else ""
 	_go.disabled = chosen == ""
 
 
@@ -167,6 +171,9 @@ func _go_to_chosen() -> void:
 ## setting off for the Ward with Noor still on the Ark, she goes ahead; for the Spire with Teo on the
 ## Ark, he has his say, once.
 func turn_before(target: String) -> CanvasLayer:
+	# Going back to a district you've done is only going back.
+	if GameState.run.levels_completed.has(target):
+		return null
 	if target == "harbor" and GameState.run.companion_here(RunState.WHO_NOOR):
 		return NoorDeparture.new()
 	if target == "spire" and GameState.run.companion_here(RunState.WHO_TEO) and not GameState.run.teo_turn_had:

@@ -41,7 +41,7 @@ func _ready() -> void:
 
 
 func windup_seconds() -> float:
-	return WINDUP
+	return WINDUP * windup_scale
 
 
 ## Its beat: from where it was posted to the end of the longest straight walk (up to BEAT_CELLS) it can
