@@ -17,6 +17,8 @@
 %  s hold_spawn
 %  l ladder
 %  v culvert
+; Tool doors (DECISIONS 188): f the signal box lift (the Defib Gauntlet), i its floor
+%  f tool_door
 ;
 ; Ids ("@ x,y id"): saved, never rename.
 @ 12,18 loop_waiting_carriage_1
@@ -29,6 +31,8 @@
 @ 10,26 loop_tunnels_up
 @ 17,34 loop_waiting_in_the_tunnels
 @ 35,30 loop_truth_service_log
+@ 3,13 loop_signal_box
+@ 2,11 loop_truth_signal_box
 ! 23,9 THE POINTS LEVER. THROW THE POINTS BY HAND AND THE SERVICE HATCH OPENS.
 ! 22,17 [voice_on] THE CAB IS OFF THE LATTICE. {voice_toggle} MUTES THE STEWARD.
 
@@ -41,10 +45,10 @@
               ,L,,,,,,L,,,,Lsrrrrrrrrrrhh
               ,,,,c,,,,n,,,,,hhhhhhhhhChh
               ,,C,,,,,,,,cl,,hhhhhchhhhhh
-              s,,*,,,,,,*,,*,hhhWhhhWhhhh
-                    uu       rrrrrrrrrrrr
-                    uu
-                    uu
+ iiiiii       s,,*,,,,,,*,,*,hhhWhhhWhhhh
+ iTiiii             uu       rrrrrrrrrrrr
+ iiiiii             uu
+   f                uu
  ,*,,,*,            uu
  ,,,,,,,rrrrrrrrrrrrhhrrrrr
  L,,,,,,hhhhhhhchhhhhhhhxJr

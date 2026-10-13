@@ -48,6 +48,11 @@ put(34, 5, 'Z')
 # Platform B's points lever (the hold) and the service hatch beside it, interlocked with the points; the
 # Steward's Custodians come off the platform's ends to stop you.
 put(23, 8, 'n')
+# Signal box 4 over platform A, its lift dead since the Quiet (the Defib Gauntlet jolts it): the
+# signalman's register inside.
+put(3, 13, 'f')
+rect(1, 10, 6, 12, 'i')
+put(2, 11, 'T')
 put(14, 10, 's'); put(28, 7, 's')
 put(26, 9, 'l')
 # The service tunnels inside the viaduct (a descent, off the Lattice): the landing under the hatch, a

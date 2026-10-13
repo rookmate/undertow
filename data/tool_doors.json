@@ -1,0 +1,30 @@
+{
+	"version": 1,
+	"notes": "Doors the Ark's tools open (DECISIONS 188): the weapon you must bring, the words, the truth behind it, the Steward's line as it opens.",
+	"doors": {
+		"kestrel_gatehouse": {
+			"tool": "signal_jammer",
+			"verb": "JAM THE LOCK",
+			"locked": "The funicular's gatehouse. A Steward lock: something that jams its signal would open it.",
+			"bring": "The Signal Jammer would open it. It's on the Ark.",
+			"truth": "kestrel_truth_gate_list",
+			"steward": "kestrel_gate_jammed"
+		},
+		"loop_signal_box": {
+			"tool": "defib_gauntlet",
+			"verb": "JOLT THE LIFT",
+			"locked": "The signal box lift. Its motor's dead: a jolt might start it.",
+			"bring": "The Defib Gauntlet could jolt it. It's on the Ark.",
+			"truth": "loop_truth_signal_box",
+			"steward": "loop_lift_jolted"
+		},
+		"tideworks_customs": {
+			"tool": "signal_jammer",
+			"verb": "JAM THE LOCK",
+			"locked": "The customs shed. A Steward lock: something that jams its signal would open it.",
+			"bring": "The Signal Jammer would open it. It's on the Ark.",
+			"truth": "tideworks_truth_impounded",
+			"steward": "tideworks_customs_jammed"
+		}
+	}
+}

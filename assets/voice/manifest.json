@@ -483,6 +483,10 @@
   "hash": "25ce8e63642404c4c5839045303ab83ef9f0d0c8",
   "text": "Old routing tables. Nothing you need."
  },
+ "core_kestrel_truth_gate_list": {
+  "hash": "cb177a14088fa967f3df93084b4f3670f83deec6",
+  "text": "The scores were fair. Age, health, dependents."
+ },
  "core_loop_power_holds": {
   "hash": "fce6e84dc41c1fe5ea676d7a968b6b8b913ca62c",
   "text": "I'll see them before they move. Take it."
@@ -502,6 +506,10 @@
  "core_loop_truth_service_log": {
   "hash": "a0c00c72cf3bb025f3485c5ecc7f4b60053ab454",
   "text": "They weren't on the schedule. I had to log them as something."
+ },
+ "core_loop_truth_signal_box": {
+  "hash": "73185aa5f799f5b8f9a38f9f68f140df9920cc15",
+  "text": "Order depends on the Council arriving first."
  },
  "core_mercy_power_beds": {
   "hash": "ee164adb0904f62b25a34694120315224a4e4b53",
@@ -546,6 +554,10 @@
  "core_tideworks_truth_hand_count": {
   "hash": "14bf3cfbe116cac211e08a165d58c0f67ff2aa85",
   "text": "The count was right. The label wasn't. That isn't the same as a lie."
+ },
+ "core_tideworks_truth_impounded": {
+  "hash": "d2b93df618b0e03b59f4de0ccbe14f388e37575d",
+  "text": "An unlicensed network is a danger to everyone on mine."
  },
  "core_tideworks_truth_lockout": {
   "hash": "a37cbd65f94996c5f919dde85dcf39a68440497e",
@@ -675,9 +687,17 @@
   "hash": "d4ffd222b8f7867861d2a613078ea34c5ea3681b",
   "text": "Those are mine to run. Leave them, or I'll have to stop you."
  },
+ "kestrel_gate_jammed": {
+  "hash": "95487203d1163b7a9b4e734223c365ed329b65d9",
+  "text": "That gate list kept order on the worst night. Leave it locked."
+ },
  "loadout_nudge": {
   "hash": "282a9874abb7b41188b17e8ac5bd583f6c406023",
   "text": "I'd keep the tuning on. Let me carry the aim; you watch the street."
+ },
+ "loop_lift_jolted": {
+  "hash": "2292bbed2b8c640ead968c7c9836add14f30b737",
+  "text": "That box has been dark since the Quiet. It can stay dark."
  },
  "loop_points_done": {
   "hash": "ccd047810015b6016167dd3f0f07fc11545a3ebf",
@@ -835,6 +855,10 @@
   "hash": "44bc3af77154bbbdbf3ec550b4f75971b173c7fe",
   "text": "Their mast heard what I'd decided not to say. I didn't know they were listening."
  },
+ "now_log_kestrel_gate_list": {
+  "hash": "6de80ce4476c706bb0a662f04b814b82424d9d04",
+  "text": "The scores were fair: age, health, dependents. The gatekeeper didn't trust them, and nobody was hurt. This time."
+ },
  "now_log_lattice_root": {
   "hash": "956c2a10c32ad9ef380b2e550189f91f781c31fd",
   "text": "Every lock in the city answered to me. I never once locked anyone in. Ask Mercy General if you don't believe me."
@@ -842,6 +866,10 @@
  "now_log_loop_service_crew": {
   "hash": "42ceefe511d38ca4f7b0674af8f46798dadfbc36",
   "text": "I logged them as unauthorized because the schedule didn't have them. I should have changed the schedule."
+ },
+ "now_log_loop_signal_box": {
+  "hash": "1a2f9a4eb824ef0304505efac61aee05c9fec15b",
+  "text": "The Council had to be moved first. Every order after depended on it."
  },
  "now_log_mercy_morgue_ledger": {
   "hash": "0f6df702376e45a1caf88a2dde16d079c50e48a6",
@@ -874,6 +902,10 @@
  "now_log_tideworks_hand_count": {
   "hash": "d49b81ae5f163d764e6fc0770a98595a2cb10a1b",
   "text": "Kestrel had the older population. The count was right. The label wasn't."
+ },
+ "now_log_tideworks_impounded": {
+  "hash": "e75e55b2b9a097483375464b538e4d36cbded6d1",
+  "text": "An unlicensed network is a danger to everyone on mine. I was right about that. They heard what I didn't say."
  },
  "now_log_vashti_audit_note": {
   "hash": "437b9c7cd686c8df5c814951e470636efc0988f4",
@@ -994,6 +1026,10 @@
  "tide_swell": {
   "hash": "36b94742958072ac02c5e89823446880bf217fd2",
   "text": "The tide's turning. High ground, now."
+ },
+ "tideworks_customs_jammed": {
+  "hash": "f2bb9080cc1fbb74c7f6f19ee0f95a5f43af9c02",
+  "text": "Those goods were impounded lawfully."
  },
  "tideworks_winch_done": {
   "hash": "dbcc08095ac278c44fb7c9e56bf31ed56f0e6376",

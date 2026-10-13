@@ -102,6 +102,14 @@ func file_truth(core_id: String) -> void:
 		unlock_log(log_id)
 
 
+## A door one of the Ark's tools opened (ToolDoors): it stays open.
+func open_door(door_id: String) -> void:
+	if run.doors_opened.has(door_id):
+		return
+	run.doors_opened.append(door_id)
+	state_changed.emit(&"doors_opened")
+
+
 ## What a Reliquary offered and you didn't carry: gone for the rest of the run.
 func leave_cores(core_ids: Array[String]) -> void:
 	var changed := false

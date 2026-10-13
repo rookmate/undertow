@@ -12,6 +12,8 @@
 ;   E   stone steps between terraces (indexed)      X   Lamplighter [walk]
 ;   i   a room's floorboards (unindexed)            q   garden gravel (unindexed)
 ;   b   a child's bed [floorboards]
+;   n   a door one of the Ark's tools opens (the gatehouse: the Signal Jammer)
+%  n tool_door
 ;
 ; Place hints ("! x,y text", {action} becomes its key): shown while the Operator is near the cell;
 ; [voice_on] or [muted] first shows it only in that state.
@@ -19,6 +21,8 @@
 ; Ids ("@ x,y id"): saved, never rename.
 @ 18,4 kestrel_waiting_gardener
 @ 3,11 kestrel_truth_childs_map
+@ 6,26 kestrel_gatehouse
+@ 9,31 kestrel_truth_gate_list
 ! 9,15 [voice_on] {voice_toggle}  MUTE THE STEWARD. IT CAN'T SEE PAST THE HEDGE.
 ! 28,19 [muted] MUTED, THE GATES WON'T OPEN.  {voice_toggle}  BRINGS IT BACK.
 ################################
@@ -47,7 +51,10 @@
 ##vvv,P,,........c........c....=
 ##vvv,,,,......................=
 #lvvv,,,,LvvvvLvvvvLvvvvLvvvvLv=
-##vvvvvvvvvvjvvvvvvvjvvvvvvjvvv=
-##vvvvvvvvvvvvvvvvvvvvvvvvvvvvv=
-  ==============================
-
+##vvvvnvvvvvjvvvvvvvjvvvvvvjvvv=
+##vvvvqvvvvvvvvvvvvvvvvvvvvvvvv=
+##====q=========================
+## iiiiiiii
+## iiiiiiii
+## iiiiiiTi
+## iiiiiiii

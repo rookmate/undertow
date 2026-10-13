@@ -676,6 +676,11 @@ func _spawn_people_and_finds() -> void:
 		var way := Passage.new()
 		way.setup(self, c, grid.entity_id(c))
 		world.add_child(way)
+	# Doors the Ark's tools open (DECISIONS 188).
+	for c: Vector2i in grid.cells_with(Tiles.TOOL_DOOR):
+		var door := ToolDoor.new()
+		door.setup(self, c, grid.entity_id(c))
+		world.add_child(door)
 	if not grid.cells_with(Tiles.CULVERT).is_empty() or grid.all_cells().any(func(c: Vector2i) -> bool: return grid.floor_at(c) == LevelGrid.Floor.CULVERT):
 		descent_dark = DescentDark.new()
 		descent_dark.level = self

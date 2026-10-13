@@ -18,6 +18,8 @@
 %  s hold_spawn
 %  l ladder
 %  v culvert
+; Tool doors (DECISIONS 188): f the customs shed's door (the Signal Jammer)
+%  f tool_door
 ;
 ; Ids ("@ x,y id"): saved, never rename.
 @ 3,3 tideworks_truth_strike_records
@@ -28,17 +30,19 @@
 @ 5,26 tideworks_hold_up
 @ 11,33 tideworks_waiting_in_the_hold
 @ 31,30 tideworks_truth_hand_count
+@ 22,8 tideworks_customs
+@ 25,4 tideworks_truth_impounded
 ! 10,12 THE QUAY'S HAND WINCH. WIND THE CONTAINER CLEAR AND THE FREIGHTER'S HATCH OPENS.
 ! 9,7 THE WARDENS' DEPOT. WHAT THEY LEFT IS STILL ON THE RACK.
 ###################################
 ######d#######d#######d#######d####  L,,,,,
 ##iiiii-,:::::-,                     ,,,R,,
-##iTiii-,::V::-,                     ,C,,,,
-##iiiii:W:::::-,                     ,,,,,L
-##iiiii-,:::::-,                      yyyy
-##iiiii-,--:---,                ~~~,,,,,,,,,=
-##---:--,,,,,,,,                ~~~,^,,,,,^,=
-##,,,,,,,,,,,[,[ [^[ [ [ [^[ [  ~~~,,Z,,,,,,=
+##iTiii-,::V::-, iiiiiiiiiii         ,C,,,,
+##iiiii:W:::::-, iiiiiiiiTii         ,,,,,L
+##iiiii-,:::::-, iiiiiiiiiii          yyyy
+##iiiii-,--:---, iiiiiiiiiii    ~~~,,,,,,,,,=
+##---:--,,,,,,,, iiiiiiiiiii    ~~~,^,,,,,^,=
+##,,,,,,,,,,,[,[ [^[ [f[ [^[ [  ~~~,,Z,,,,,,=
 ##...Ls....L..........s.L......====,,,,,,,,,=
 ##............c.......[........,,,,,,,,,,,,,=
 ##......C...].......].[....]...,,,,,,,,B,,,,=

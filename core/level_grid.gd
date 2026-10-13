@@ -44,6 +44,7 @@ const FLOOR_OF: Dictionary[String, Floor] = {
 	Tiles.SPIRE_GLASS: Floor.GLASS, Tiles.RACK: Floor.GLASS, Tiles.PANE: Floor.GLASS, Tiles.CONFESSION: Floor.GLASS,
 	Tiles.COUNCIL: Floor.FOUNDATION, Tiles.COUNCIL_DOOR: Floor.CONCRETE,
 	Tiles.CRANK: Floor.COBBLE, Tiles.LADDER: Floor.COBBLE, Tiles.CULVERT: Floor.CULVERT, Tiles.HOLD_SPAWN: Floor.COBBLE,
+	Tiles.TOOL_DOOR: Floor.TIMBER,
 }
 ## Characters whose cell blocks movement.
 ## Lawns (and the hedges, planters and sprinklers on them) are the Steward's gardens: looked at, not
@@ -64,14 +65,14 @@ const LOW := " ~=-LoTvHjFbrJ*[" + Tiles.LOW
 ## People stand on these cells: walkable floor, but nothing should route through them.
 const OCCUPIED := "WwNY" + Tiles.NOOR_DOWN + Tiles.WARDFOLK
 ## Placed things that need a stable id from an '@' line (people, caches, logs).
-const NEEDS_ID := "WwTUV" + Tiles.CONFESSION + Tiles.CRANK + Tiles.LADDER
+const NEEDS_ID := "WwTUV" + Tiles.CONFESSION + Tiles.CRANK + Tiles.LADDER + Tiles.TOOL_DOOR
 ## Placed things (people, finds, spawns, a boss, its weak point and barrier, a lantern on its post) stand
 ## on the ground around them: a marker's cell takes its terrain from its neighbours (terrain_at), so a
 ## Custodian scrubbing a low street leaves a low street that floods, and the Waiting in the Marrow stand
 ## in the Marrow. The character's own floor (FLOOR_OF) is only the fallback for a marker with no ground
 ## beside it.
 const MARKERS := "TUWwPCckXVO]BZy" + Tiles.LANTERN + Tiles.WARDEN + Tiles.PATROL + Tiles.NOOR_DOWN + Tiles.WARD_BOAT \
-	+ Tiles.CONFESSION + Tiles.WARDFOLK + Tiles.CRANK + Tiles.LADDER + Tiles.HOLD_SPAWN
+	+ Tiles.CONFESSION + Tiles.WARDFOLK + Tiles.CRANK + Tiles.LADDER + Tiles.HOLD_SPAWN + Tiles.TOOL_DOOR
 ## Ground a marker can stand on: plain floors.
 const TERRAIN := ".,:_iqnxh" + Tiles.HOSPITAL_TILE + Tiles.ASPHALT + Tiles.STAFF_FLOOR + Tiles.SEAWALL \
 	+ Tiles.LOW_STREET + Tiles.KELP + Tiles.MARROW + Tiles.GRATING + Tiles.NEWSROOM_FLOOR + Tiles.PIER \

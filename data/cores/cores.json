@@ -339,6 +339,30 @@
 			"blurb": "The night ferry's passenger roll, sealed in oilcloth by the Wardfolk and wired into a core.",
 			"steward": "That ferry wasn't on my timetable.",
 			"log": "log_harbor_ferry_roll"
+		},
+		"kestrel_truth_gate_list": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "The funicular's gatehouse, Kestrel Heights",
+			"blurb": "The gatekeeper's list from the night of the Quiet, pinned inside the gatehouse door and wired into a core.",
+			"steward": "The scores were fair. Age, health, dependents.",
+			"log": "log_kestrel_gate_list"
+		},
+		"loop_truth_signal_box": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "Signal box 4, over the junction",
+			"blurb": "The signalman's register, still open on the desk in the dead box, wired into a core.",
+			"steward": "Order depends on the Council arriving first.",
+			"log": "log_loop_signal_box"
+		},
+		"tideworks_truth_impounded": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "The customs shed on the quay",
+			"blurb": "A customs ledger and the crates it names, still on the shed floor, the ledger wired into a core.",
+			"steward": "An unlicensed network is a danger to everyone on mine.",
+			"log": "log_tideworks_impounded"
 		}
 	}
 }

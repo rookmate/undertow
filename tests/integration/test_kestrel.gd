@@ -204,3 +204,33 @@ func test_machines_give_up_scrap() -> void:
 	var e := level.add_enemy(Custodian.new(), level.grid.start_cell() + Vector2i(2, 0), Custodian.MAX_INTEGRITY)
 	e.take_hit(1000.0, Vector2(1, 0), 0.0, 0.0)
 	check_eq(GameState.run.scrap, before + 1, "a Custodian is worth a part")
+
+
+## A place hint sits between the Steward's subtitles and the weapon cards, over neither: with two
+## weapons carried and the longest hint in the game.
+func test_a_place_hint_clears_the_weapon_cards_and_the_subtitles() -> void:
+	var hints: LevelHints = null
+	for c: Node in level.get_children():
+		if c is LevelHints:
+			hints = c
+	var label: Label = hints.get("_hint")
+	var longest := ""
+	for id: String in LevelCatalog.LEVELS:
+		var g := LevelGrid.load_file(LevelCatalog.map_of(id))
+		for c: Vector2i in g.hints:
+			if g.hints[c].length() > longest.length():
+				longest = g.hints[c]
+	label.text = longest
+	await wait_frames(2)
+	var view := level.get_viewport().get_visible_rect().size
+	var hint := label.get_global_rect()
+	var font := label.get_theme_font(&"font")
+	var font_size := label.get_theme_font_size(&"font_size")
+	var text_w := font.get_string_size(longest, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	# The line it draws, at the top of its box.
+	var text := Rect2(Vector2(hint.get_center().x - text_w * 0.5, hint.position.y), Vector2(text_w, font.get_height(font_size)))
+	var cards := Rect2(Vector2(HudView.MARGIN, view.y - HudView.MARGIN - HudView.CHIP_H), Vector2(2.0 * HudView.CHIP_W + 14.0, HudView.CHIP_H))
+	check_false(text.intersects(cards), "the hint %s clears the cards %s" % [text, cards])
+	check(text.position.y >= view.y - 190.0 + 20.0, "and sits below the subtitles' last line (%s)" % text)
+	check(text.end.y <= cards.position.y, "above the cards")
+
