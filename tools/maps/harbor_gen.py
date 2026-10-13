@@ -87,6 +87,22 @@ put(32, 17, 'q')
 # Wardfolk out on Net Lane, by their doors.
 put(10, 18, 'v')
 put(22, 18, 'v')
+# The mast's hand generator on Net Lane (the hold): wind it, and the ferry hatch on its circuit opens,
+# while the curfew patrol comes in from both ends of the lane to stop you.
+put(29, 21, 'r')
+put(8, 20, 'j'); put(33, 21, 'j')
+put(23, 21, 'l')
+# The drowned ferry under the slip (a descent): the hatch's foot, the passage aft, the companionway
+# down to the car deck, and the purser's cabin where the Wardfolk sealed the passenger roll.
+g += [[' '] * W for _ in range(14)]
+H = len(g)
+rect(10, 41, 15, 44, 'u'); put(11, 42, 'l')
+rect(16, 42, 30, 43, 'u')
+rect(28, 44, 29, 47, 'u')
+rect(14, 48, 30, 51, 'u')
+rect(31, 44, 36, 51, 'u')
+put(20, 49, 'w')
+put(35, 45, 'T')
 
 for row in g:
     print(''.join(row).rstrip())

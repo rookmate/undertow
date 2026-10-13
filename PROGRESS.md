@@ -182,8 +182,8 @@ Plan: `design/deeper-districts.md`.
 | 36 | Holds and descents; Greywater in three movements (the bot takes it in about 4 minutes, from 2) | done |
 | 37 | Every boss in stages: the Conductor and the Surgeon in two, the Crane, the Editor and the Warden-Prime in three | done |
 | 38 | Holds and descents in the Loop and the Tideworks | done |
-| 39 | Holds and descents in Mercy General, the Vellum and Harbor Ward | next |
-| 40 | Revisits: back to a district you've done, hardening by that district's truths, truths to the Archive | |
+| 39 | Holds and descents in Mercy General, the Vellum and Harbor Ward | done |
+| 40 | Revisits: back to a district you've done, hardening by that district's truths, truths to the Archive | next |
 | 41 | Tool doors: what the Ark's tools open on a revisit, and the truths behind them | |
 | 42 | Rewrite's truth threshold re-tuned against the new count | |
 | — | Sol analysis review (reviews/deeper-districts.md), fixes, re-check | |

@@ -3,7 +3,9 @@ extends AutopilotRoute
 ## cuts out and there's nothing of it: no path, no map but your own scan, and muting changes nothing (the
 ## light, the map, what you can find); Noor's dashcam at her boat-house door and her Signal Jammer on
 ## the porch, the Wardfolk's radio log by
-## the gate, the curfew patrol hunting you along Net Lane (fought off); through the border fence the Lattice starts again (the Steward back, its path); the depot's
+## the gate, the curfew patrol hunting you along Net Lane (fought off); the mast's generator wound by
+## hand while the patrol comes for you (the hold), and down the ferry hatch to the drowned ferry (the
+## descent: the Wardfolk's passenger roll); through the border fence the Lattice starts again (the Steward back, its path); the depot's
 ## Reliquary. Before it, the Warden-Prime (the Steward's way: the barrier at your back, roll aside from its
 ## charge, at it while it's dazed), and Noor down in the plaza: carried, the curfew patrol after you, to the
 ## Wardfolk's boat. Both truths carried; on the Ark, Noor's home and the Commons stands. In a campaign, setting off for the Ward
@@ -14,7 +16,8 @@ const OPENING: Array[String] = [
 ]
 const THROUGH: Array[String] = [
 	"the_voice_cuts_out", "no_lattice", "muting_changes_nothing", "dashcam_found", "jammer_found", "warden_hunted",
-	"enemy_killed", "wardfolk_in_the_ward", "ward_mast_dark", "ward_radio_found",
+	"enemy_killed", "wardfolk_in_the_ward", "ward_mast_dark", "ward_radio_found", "hold_started",
+	"hold_brought_them_out", "mast_wound", "went_down", "dark_below", "ferry_roll_found", "climbed_back_up",
 	"the_lattice_again", "warden_prime_engaged", "warden_prime_called_the_charge", "warden_prime_dazed",
 	"warden_prime_beaten", "barriers_opened", "noor_found_down", "carried_noor", "curfew_patrol_came",
 	"noor_in_the_boat", "route_completed", "arrived_by_reliquary", "core_choice_shown", "harbor_cores_carried",
@@ -113,6 +116,18 @@ func drive(level: Level, gen: int) -> void:
 	if not await Autopilot.use_at(level, player, Vector2i(30, 18), gen):
 		return
 	check(GameState.run.logs_unlocked.has("log_ward_radio"), "ward_radio_found")
+	# The mast's generator wound by hand (the hold) opens the ferry hatch on its circuit.
+	if not await run_hold(level, player, Vector2i(29, 20), gen):
+		return
+	check(level.passage("harbor_ferry_down") != null and level.passage("harbor_ferry_down").can_interact(), "mast_wound")
+	var ferry := func() -> bool:
+		if not await Autopilot.use_at(level, player, Vector2i(34, 45), gen):
+			return false
+		check(GameState.run.found_core_ids.has("harbor_truth_ferry_roll"), "ferry_roll_found")
+		return true
+	if not await descend(level, player, Vector2i(23, 20), [Vector2i(14, 43), Vector2i(22, 42), Vector2i(28, 43), Vector2i(28, 47), Vector2i(22, 49), Vector2i(30, 49)],
+			ferry, [Vector2i(30, 49), Vector2i(28, 47), Vector2i(28, 43), Vector2i(22, 42), Vector2i(13, 42)], Vector2i(12, 42), gen):
+		return
 	# Through the gate: the Lattice again.
 	for cell: Vector2i in [Vector2i(33, 19), Vector2i(36, 19)]:
 		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
@@ -185,7 +200,7 @@ func _fight_prime(player: Operator, prime: WardenPrime, gen: int) -> bool:
 	var anchor := Iso.cell_center(Vector2i(40, 16))
 	var spent := 0.0
 	var frame := 0
-	while spent < 120.0:
+	while spent < 180.0:
 		# A fight restarted after the Operator went down: the fresh boss.
 		prime = boss_now(prime, player) as WardenPrime
 		if prime == null or not prime.is_alive():
@@ -201,6 +216,13 @@ func _fight_prime(player: Operator, prime: WardenPrime, gen: int) -> bool:
 		var at := player.global_position
 		if prime.is_vulnerable():
 			Autopilot.fight(player, prime, frame)
+			spent += await Autopilot.physics_step()
+			continue
+		# The Wardens it calls in (its second stage): see off one that's on you while it isn't charging.
+		var charging := prime.phase == WardenPrime.Phase.CHARGE_WARN or prime.phase == WardenPrime.Phase.CHARGE
+		var warden := Autopilot.nearest_threat(prime.level, player, 2.2)
+		if warden != null and warden != prime and warden is Warden and not charging:
+			Autopilot.fight(player, warden, frame)
 			spent += await Autopilot.physics_step()
 			continue
 		Autopilot.release_attacks()
@@ -257,7 +279,8 @@ func choose(screen: Node, gen: int) -> void:
 	var truth := r.cores_truth()
 	if not await pick_cores(screen, ["harbor_truth_dashcam", "harbor_truth_council_order"], gen):
 		return
-	check(offered.size() == 4 and r.levels_completed.has("harbor") and r.cores_truth() == truth + 2, "harbor_cores_carried")
+	# Its Reliquary's three, Noor's dashcam and the ferry's roll.
+	check(offered.size() == 5 and offered.has("harbor_truth_ferry_roll") and r.levels_completed.has("harbor") and r.cores_truth() == truth + 2, "harbor_cores_carried")
 	on_to_the_ark(screen)
 
 

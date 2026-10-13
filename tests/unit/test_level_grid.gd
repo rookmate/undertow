@@ -18,12 +18,14 @@ func test_parses_with_comments_stripped() -> void:
 func test_has_every_marker_the_district_needs() -> void:
 	for ch: String in ["P", "R", "W"]:
 		check_eq(grid.cells_with(ch).size(), 1, "exactly one %s" % ch)
-	# The overflow stacks off the street, and Prem Vashti's office in the deep stacks.
-	for ch: String in ["w", "T", "U"]:
-		check_eq(grid.cells_with(ch).size(), 2, "two of %s" % ch)
+	# The overflow stacks off the street, Prem Vashti's office in the deep stacks, and below the newsroom
+	# the sorting floor (a descent: one of the Waiting and the spiked proofs, no slip).
+	for ch: String in ["w", "T"]:
+		check_eq(grid.cells_with(ch).size(), 3, "three of %s" % ch)
+	check_eq(grid.cells_with("U").size(), 2, "two of U")
 	check_eq(grid.cells_with("k").size(), 3, "a Clerk in the plaza, two in the newsroom")
 	check_eq(grid.cells_with("C").size(), 4, "checkpoints on the street, by the stair, at the Editor's door, by the Reliquary")
-	check_eq(grid.cells_with("c").size(), 3, "three Custodians")
+	check_eq(grid.cells_with("c").size(), 5, "three Custodians on the street, two on the sorting floor")
 	check(grid.cells_with("L").size() >= 12, "the street is lamplit")
 
 
@@ -57,15 +59,41 @@ func test_off_path_area_is_unindexed_and_only_reachable_off_the_lattice() -> voi
 	var start := grid.first("P")
 	var on_foot := grid.reachable_from(start, false)
 	var lit := grid.reachable_from(start, true)
+	var below := _below_the_street(on_foot)
+	check_false(below.is_empty(), "the sorting floor, down the paper lift's shaft")
 	for ch: String in ["T", "U", "w"]:
 		for c: Vector2i in grid.cells_with(ch):
 			check_false(grid.is_indexed(c), "%s at %s is off the Lattice" % [ch, c])
+			# Below the street (a descent) it's on foot from the way back up, whose way down is on foot
+			# from the start.
+			var walk := below if grid.floor_at(c) == LevelGrid.Floor.CULVERT else on_foot
 			var reachable := false
 			for d: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP, Vector2i.ZERO]:
-				if on_foot.has(c + d):
+				if walk.has(c + d):
 					reachable = true
 			check(reachable, "%s at %s reachable on foot" % [ch, c])
 			check_false(lit.has(c), "%s at %s not reachable through lit cells" % [ch, c])
+
+
+## Where you can walk below the street: from beside each way back up ('<name>_up') whose way down
+## ('<name>_down') you can walk to from `on_foot`.
+func _below_the_street(on_foot: Dictionary[Vector2i, bool]) -> Dictionary[Vector2i, bool]:
+	var below: Dictionary[Vector2i, bool] = {}
+	var ladders: Dictionary[String, Vector2i] = {}
+	for l: Vector2i in grid.cells_with(Tiles.LADDER):
+		ladders[grid.entity_id(l)] = l
+	for id: String in ladders:
+		if not id.ends_with("_up") or not ladders.has(id.trim_suffix("_up") + "_down"):
+			continue
+		var down := ladders[id.trim_suffix("_up") + "_down"]
+		var up := ladders[id]
+		for d: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]:
+			if on_foot.has(down + d):
+				for e: Vector2i in [Vector2i.RIGHT, Vector2i.LEFT, Vector2i.DOWN, Vector2i.UP]:
+					if grid.is_walkable(up + e):
+						below.merge(grid.reachable_from(up + e, false))
+				break
+	return below
 
 
 func test_stairs_are_the_only_way_to_the_stacks() -> void:
@@ -118,11 +146,12 @@ func test_the_ark_has_no_lattice() -> void:
 
 func test_every_placed_thing_has_a_unique_id_from_the_map() -> void:
 	check(grid.validate(false).is_empty(), "the Vellum validates: %s" % [grid.validate(false)])
-	# The slice's own where they always were (saved runs know them), and Prem Vashti's office's.
+	# The slice's own where they always were (saved runs know them), Prem Vashti's office's, and the
+	# sorting floor's.
 	var placed: Dictionary[String, String] = {
 		"W": ContentIds.SURVIVOR_DOORWAY,
-		"w": ContentIds.SURVIVOR_STACKS + " vellum_waiting_audit_office",
-		"T": ContentIds.CORE_TRUTH_STACKS + " vellum_truth_vashti_office",
+		"w": ContentIds.SURVIVOR_STACKS + " vellum_waiting_audit_office vellum_waiting_sorting_floor",
+		"T": ContentIds.CORE_TRUTH_STACKS + " vellum_truth_vashti_office vellum_truth_spiked",
 		"U": ContentIds.LOG_UNINDEXED_SLIP + " log_vellum_tube_carrier",
 	}
 	for ch: String in placed:

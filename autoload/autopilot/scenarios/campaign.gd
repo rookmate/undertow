@@ -92,11 +92,12 @@ func on_level(level: Level, gen: int) -> void:
 	route.drive(level, gen)
 
 
-## With the Clinic's dressings in the pack, put one on when hurt (the way a player would).
+## With the Clinic's dressings in the pack, put one on when badly hurt, below half (the way a player
+## would: not for a scratch).
 func _dress_wounds(level: Level, gen: int) -> void:
 	var p := level.player
 	while not Autopilot.stale(gen) and is_instance_valid(p):
-		if p.is_alive() and p.integrity.value < p.integrity.max_value and GameState.run.dressings > 0:
+		if p.is_alive() and p.integrity.value < p.integrity.max_value * 0.5 and GameState.run.dressings > 0:
 			var before := GameState.run.dressings
 			var hurt := p.integrity.value
 			Autopilot.tap(&"use_item")

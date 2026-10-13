@@ -1,5 +1,7 @@
 extends AutopilotRoute
-## Mercy General: up the corridor from the ambulance yard; the Defib Gauntlet off its crash cart in the
+## Mercy General: up the corridor from the ambulance yard and back; in the yard the emergency generator
+## cranked by hand while the Steward's Custodians come (the hold), and down the morgue lift (the descent:
+## one of the Waiting in the drawers, the attendant's ledger); the Defib Gauntlet off its crash cart in the
 ## resus bay; ward A's seal holds while the Steward listens and says why; muted, crank it open and wake
 ## someone in their bed; through ward B to the night nurses' station off the Lattice (the triage sheets,
 ## the night nurse at her desk); the Steward back, along the upper corridor to the theatre and the
@@ -11,7 +13,8 @@ const OPENING: Array[String] = [
 	"narration_heard", "enemy_killed",
 ]
 const THROUGH: Array[String] = [
-	"gauntlet_found", "seal_held", "seal_cranked", "woke_in_ward", "night_sheets_found",
+	"hold_started", "hold_brought_them_out", "generator_cranked", "went_down", "dark_below",
+	"woke_in_the_morgue", "morgue_ledger_found", "climbed_back_up", "gauntlet_found", "seal_held", "seal_cranked", "woke_in_ward", "night_sheets_found",
 	"night_nurse_woken", "sterilizer_misted", "surgeon_engaged", "surgeon_called_an_incision",
 	"surgeon_sutured", "surgeon_beaten", "barriers_opened", "route_completed", "core_choice_shown",
 	"mercy_cores_carried", "ark_reached", "clinic_restored", "clinic_standing", "dressings_stocked",
@@ -58,6 +61,30 @@ func drive(level: Level, gen: int) -> void:
 			pass_check("enemy_killed")
 	if not long_run:
 		return
+	# Back to the yard: the emergency generator cranked by hand (the hold) runs the morgue lift.
+	for cell: Vector2i in [Vector2i(7, 19), Vector2i(11, 19)]:
+		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+			return
+	if not await run_hold(level, player, Vector2i(12, 19), gen):
+		return
+	check(level.passage("mercy_morgue_down") != null and level.passage("mercy_morgue_down").can_interact(), "generator_cranked")
+	var morgue := func() -> bool:
+		if not await Autopilot.use_at(level, player, Vector2i(7, 38), gen):
+			return false
+		check(GameState.run.survivor_ids.has("mercy_waiting_in_the_morgue"), "woke_in_the_morgue")
+		for cell: Vector2i in [Vector2i(16, 38), Vector2i(26, 37)]:
+			if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+				return false
+		if not await Autopilot.use_at(level, player, Vector2i(29, 34), gen):
+			return false
+		check(GameState.run.found_core_ids.has("mercy_truth_morgue_ledger"), "morgue_ledger_found")
+		return true
+	if not await descend(level, player, Vector2i(9, 24), [Vector2i(7, 31), Vector2i(14, 31), Vector2i(18, 33), Vector2i(18, 36), Vector2i(12, 38)],
+			morgue, [Vector2i(24, 37), Vector2i(18, 35), Vector2i(18, 31), Vector2i(8, 30)], Vector2i(5, 30), gen):
+		return
+	for cell: Vector2i in [Vector2i(8, 23), Vector2i(7, 20), Vector2i(7, 15)]:
+		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+			return
 	if not await Autopilot.use_at(level, player, Vector2i(4, 12), gen):
 		return
 	check(GameState.run.weapons_owned.has(WeaponDefs.DEFIB), "gauntlet_found")
@@ -162,9 +189,13 @@ func _fight_surgeon(player: Operator, surgeon: Surgeon, gen: int) -> bool:
 			var rel := Iso.world_to_grid(at) - Iso.world_to_grid(surgeon.global_position)
 			var d := surgeon.cut_dir
 			var side := Vector2(-d.y, d.x) * (1.0 if rel.cross(d) <= 0.0 else -1.0)
+			if surgeon.crossed():
+				# Triage cuts a cross: between its two lines, not across onto the second.
+				side = (side + d * (1.0 if rel.dot(d) >= 0.0 else -1.0)).normalized()
 			target = surgeon.global_position + Iso.ground_velocity(side, 2.6)
 		elif surgeon.phase == Surgeon.Phase.MIST_WARN or surgeon.phase == Surgeon.Phase.MIST:
-			target = surgeon.global_position + Iso.ground_velocity(away, 1.45)
+			# Inside the ring the mist doesn't reach (closer in triage).
+			target = surgeon.global_position + Iso.ground_velocity(away, maxf(0.9, surgeon.mist_safe() - 0.55))
 		else:
 			target = surgeon.global_position + Iso.ground_velocity(away, 2.4)
 		if Iso.ground_distance(at, target) > 0.25:
@@ -202,7 +233,8 @@ func choose(screen: Node, gen: int) -> void:
 	var truth := r.cores_truth()
 	if not await pick_cores(screen, ["mercy_truth_night_sheets", "mercy_power_beds"], gen):
 		return
-	check(offered.size() == 4 and r.levels_completed.has("mercy") and r.cores_truth() == truth + 1 and r.cores_power() == power + 1, "mercy_cores_carried")
+	# Its Reliquary's three, the night sheets and the morgue's ledger.
+	check(offered.size() == 5 and offered.has("mercy_truth_morgue_ledger") and r.levels_completed.has("mercy") and r.cores_truth() == truth + 1 and r.cores_power() == power + 1, "mercy_cores_carried")
 	on_to_the_ark(screen)
 
 

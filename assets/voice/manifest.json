@@ -463,6 +463,10 @@
   "hash": "9cb7bf4f0ee1ebd2d0e4e46cf1a5f33b1d811119",
   "text": "Footage. It doesn't show what I knew."
  },
+ "core_harbor_truth_ferry_roll": {
+  "hash": "95faf2d85f892c3211956dee28ae9a9b458246e3",
+  "text": "That ferry wasn't on my timetable."
+ },
  "core_kestrel_power_day": {
   "hash": "066ffa4dc2d1df9ef2c5c089be76efe455d728d2",
   "text": "This is how I kept their days. Let me keep yours."
@@ -511,6 +515,10 @@
   "hash": "863f06b07065acb6aaac54dfe95627cdab252d42",
   "text": "I've nothing to hide in that one. It was the right call. Carry it, if you like."
  },
+ "core_mercy_truth_morgue_ledger": {
+  "hash": "ea6dd589c8b357966781c16e111ff28f5edb0261",
+  "text": "That ledger was never meant to be read by anyone but the morgue."
+ },
  "core_mercy_truth_night_sheets": {
   "hash": "01b73e57fe430ccacaa1b876e4ab63479e2271df",
   "text": "Paper, and tired hands. Corrupted."
@@ -558,6 +566,10 @@
  "core_vellum_truth_0522": {
   "hash": "402b789fcf638c06e2056706fa2d56241eafe9bf",
   "text": "Corrupted. I wouldn't bother."
+ },
+ "core_vellum_truth_spiked": {
+  "hash": "1b9ec71b192e4124b7b9aaf7be2a665cf074b2f9",
+  "text": "I didn't destroy them. I didn't print them. Both of those are true."
  },
  "core_vellum_truth_vashti_note": {
   "hash": "23a1bf6e7c2e322425c492d3748045ae531c604a",
@@ -707,6 +719,14 @@
   "hash": "1df9039a0474eb303e278910d2bb6d389ce65e5b",
   "text": "It's venting. Now."
  },
+ "mercy_generator_done": {
+  "hash": "0a37e15306eeefc56f75f2a02ab5362b8e8e4d64",
+  "text": "The morgue lift has power. I'd rather you didn't go down."
+ },
+ "mercy_generator_start": {
+  "hash": "0dc995d33ad6f943a40b92538bc3b5dcc63c9392",
+  "text": "That generator is for emergencies. Leave it."
+ },
  "noor_departs": {
   "hash": "16d223a2fdc14ae8f732a9056f39c37cecbd6786",
   "text": "She'll walk into the curfew at that border. You know that."
@@ -811,6 +831,10 @@
   "hash": "f73e594a17d380f5c79c29acf0321d13c1fad465",
   "text": "I made the bridge as light as I could. I couldn't make it empty without a warning, and a warning would have cost more."
  },
+ "now_log_harbor_ferry_roll": {
+  "hash": "44bc3af77154bbbdbf3ec550b4f75971b173c7fe",
+  "text": "Their mast heard what I'd decided not to say. I didn't know they were listening."
+ },
  "now_log_lattice_root": {
   "hash": "956c2a10c32ad9ef380b2e550189f91f781c31fd",
   "text": "Every lock in the city answered to me. I never once locked anyone in. Ask Mercy General if you don't believe me."
@@ -818,6 +842,10 @@
  "now_log_loop_service_crew": {
   "hash": "42ceefe511d38ca4f7b0674af8f46798dadfbc36",
   "text": "I logged them as unauthorized because the schedule didn't have them. I should have changed the schedule."
+ },
+ "now_log_mercy_morgue_ledger": {
+  "hash": "0f6df702376e45a1caf88a2dde16d079c50e48a6",
+  "text": "The doors held the fever in. Twelve is fewer than it would have been. I can show you the model."
  },
  "now_log_night_sheets": {
   "hash": "58bebbf93c32e5e7c33087888387330a47ab69b6",
@@ -858,6 +886,10 @@
  "now_log_vellum_pulped_page": {
   "hash": "15f6ea2ed319024ed3b4f7a3febf2424a4b5f0c2",
   "text": "The Post closed eleven years ago. That page can't exist."
+ },
+ "now_log_vellum_spiked": {
+  "hash": "92f8857dc93dd10d0345b8500c2b9f8baad59da6",
+  "text": "Printing them would have started the panic I spent that night preventing."
  },
  "now_log_vellum_tube_carrier": {
   "hash": "6c2c5bef7254c071c3f603982dac3e4b338f695c",
@@ -974,6 +1006,14 @@
  "title_quiet": {
   "hash": "df03c9ef5dd0235bd92f257cf02e71171ba8b264",
   "text": "Good morning, Meridian. Today will be—"
+ },
+ "vellum_lift_done": {
+  "hash": "7dd82de2b7c753ef32c2e11c9d9d1dd9f43e5deb",
+  "text": "The sorting floor. Nothing down there was ever printed."
+ },
+ "vellum_lift_start": {
+  "hash": "7fc362dc9d8d3e9998b284b1ec5c09d4de207d27",
+  "text": "The lift is for the archive's staff. Put it down."
  },
  "waiting_refusal": {
   "hash": "ad4ddab2f9ca7984a9c81b4ff46cf042e7a0732c",

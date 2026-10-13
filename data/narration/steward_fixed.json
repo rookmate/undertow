@@ -284,6 +284,22 @@
 		"tideworks_winch_done": {
 			"text": "The hatch is clear. I'd have finished that lift eventually.",
 			"purpose": "fact"
+		},
+		"mercy_generator_start": {
+			"text": "That generator is for emergencies. Leave it.",
+			"purpose": "fact"
+		},
+		"mercy_generator_done": {
+			"text": "The morgue lift has power. I'd rather you didn't go down.",
+			"purpose": "fact"
+		},
+		"vellum_lift_start": {
+			"text": "The lift is for the archive's staff. Put it down.",
+			"purpose": "fact"
+		},
+		"vellum_lift_done": {
+			"text": "The sorting floor. Nothing down there was ever printed.",
+			"purpose": "fact"
 		}
 	}
 }

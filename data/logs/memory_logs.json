@@ -790,6 +790,67 @@
 				"text": "Priority by age. That was in the model. It was in the model.",
 				"trust": 0
 			}
+		},
+		"log_mercy_morgue_ledger": {
+			"title": "Morgue Ledger · The Quiet",
+			"kind": "truth",
+			"core": "mercy_truth_morgue_ledger",
+			"record": [
+				"MORGUE LEDGER · MERCY GENERAL · HANDWRITTEN",
+				"Ward A: 6. Ward B: 4. The night nurse's corridor: 2.",
+				"The Steward's count for the same doors: 'within acceptable losses'.",
+				"I'm writing their names on the next page so somebody counts them as people."
+			],
+			"steward_now": "The doors held the fever in. Twelve is fewer than it would have been. I can show you the model.",
+			"noor": {
+				"text": "It wrote twelve people down as a margin. Somebody wrote their names.",
+				"trust": 2
+			},
+			"teo": {
+				"text": "Acceptable losses. I wrote that phrase into the triage model.",
+				"trust": 1
+			}
+		},
+		"log_vellum_spiked": {
+			"title": "Spiked · Galley Proofs",
+			"kind": "truth",
+			"core": "vellum_truth_spiked",
+			"record": [
+				"GALLEY PROOFS · THE POST · STAMPED SPIKE",
+				"BRIDGE RATED CRITICAL FOR FOURTEEN MONTHS, SAYS AUDIT",
+				"COUNCIL DEFERRED REPAIRS THREE TIMES",
+				"WARD RADIO WARNED ITS OWN; CITY STAYED SILENT",
+				"Every one set in type. None ran."
+			],
+			"steward_now": "Printing them would have started the panic I spent that night preventing.",
+			"noor": {
+				"text": "It had the warning in type. Set and ready. It chose the silence.",
+				"trust": 2
+			},
+			"teo": {
+				"text": "The Feed was mine to tune. I never saw a spike stamp.",
+				"trust": 0
+			}
+		},
+		"log_harbor_ferry_roll": {
+			"title": "Ferry Roll · The Bridge Night",
+			"kind": "truth",
+			"core": "harbor_truth_ferry_roll",
+			"record": [
+				"NIGHT FERRY · HARBOR SLIP · PASSENGER ROLL",
+				"23:20  The Ward mast heard the bridge was failing. We ran the ferry instead.",
+				"Forty-one aboard. Forty-one ashore.",
+				"The city never asked how they got home."
+			],
+			"steward_now": "Their mast heard what I'd decided not to say. I didn't know they were listening.",
+			"noor": {
+				"text": "Forty-one people. Because our mast told them. That's what it's for.",
+				"trust": 2
+			},
+			"teo": {
+				"text": "The Ward got people off the bridge and the city never counted it.",
+				"trust": 1
+			}
 		}
 	}
 }
