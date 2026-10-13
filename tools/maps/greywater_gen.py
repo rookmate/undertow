@@ -86,5 +86,9 @@ put(40, 17, 'R')
 for (x, y) in [(34, 2), (42, 2), (34, 20), (42, 20)]:
     put(x, y, 'L')
 
+# The checkpoint at the boss arena's door, your side of its barrier: a boss fight you die in starts
+# over from here (DECISIONS 177).
+put(31, 5, 'C')
+
 for row in g:
     print(''.join(row).rstrip())

@@ -741,6 +741,21 @@ Asked of the user on 2026-10-09 and answered the same day.
      district's truths count, not the run's.
 176. **Truths found on a revisit go straight to the Archive** (the user's call): a district's Reliquary
      opens once; what you find when you come back is filed without a core choice.
-177. **Dying in a boss fight restarts it** (the user's call): the boss is back at full strength and
-     its first stage, you're back at the checkpoint by the arena at full Integrity. (Today the boss
-     keeps the damage you did.)
+177. **Dying in a boss fight restarts it** (the user's call): the boss you hurt is gone with its weak
+     point, the lanes or rollers it works and whatever it had in the air, and a fresh one stands where
+     it was built, at full strength and its first stage; you're back at the checkpoint at the arena's
+     door at full Integrity. It doesn't introduce itself again, and won't engage for 2 s after it's back.
+     Its barriers stay shut. (Before, the boss kept the damage you'd done, so dying made it easier.)
+     Every boss district has that checkpoint on your side of the barrier within 12 tiles of the boss
+     (a test keeps it so); the Tideworks, Mercy General, Greywater and the Vellum got one, just outside
+     the boss's reach (their nearest had been 14–33 tiles back, or in the Reliquary's yard behind the
+     barrier). The autopilot logs every time it goes down, and plays the Crane better (it rolls out
+     from under a load and circles while it aims): it used to win by dying.
+178. **The autopilot can't go down** (the user's call). With dying restarting a boss fight, a scripted
+     bot that loses one became a flaky gate, and its runs exist to prove the game works start to end,
+     not how hard a fight is. So in autopilot runs damage lands (dressings, the tide's sting and the
+     rest still play out) but at 1 Integrity the Operator stays up, and the run logs where it would
+     have gone down (district, cell, the boss and its health) and totals it at the end; the gate
+     prints the total. `--autopilot-mortal` plays it for real, for judging difficulty. The restart
+     rule itself is covered by its own test. The bot plays the Crane better all the same.
+

@@ -112,5 +112,9 @@ put(30, 20, 'U')
 put(27, 19, 'w')
 rect(34, 15, 34, 20, '-')
 
+# The checkpoint at the boss arena's door, your side of its barrier: a boss fight you die in starts
+# over from here (DECISIONS 177).
+put(32, 8, 'C')
+
 for row in g:
     print(''.join(row).rstrip())

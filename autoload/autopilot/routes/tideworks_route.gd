@@ -54,7 +54,7 @@ func drive(level: Level, gen: int) -> void:
 	await Autopilot.snap("tideworks_crane")
 	if not await _fight_crane(player, crane, gen):
 		return
-	check(not crane.is_alive(), "crane_beaten")
+	check(boss_down(player), "crane_beaten")
 	await Autopilot.snap("tideworks_crane_down")
 	check(await Autopilot.until(Autopilot.barriers_open, 2.0, gen), "barriers_opened")
 	for cell: Vector2i in [Vector2i(39, 7), Vector2i(39, 5), Vector2i(40, 3)]:
@@ -69,7 +69,11 @@ func drive(level: Level, gen: int) -> void:
 func _fight_crane(player: Operator, crane: Crane, gen: int) -> bool:
 	var spent := 0.0
 	var frame := 0
-	while crane.is_alive() and spent < 100.0:
+	while spent < 100.0:
+		# A fight restarted after the Operator went down: the fresh boss.
+		crane = boss_now(crane, player) as Crane
+		if crane == null or not crane.is_alive():
+			break
 		if Autopilot.stale(gen):
 			Autopilot.release_all()
 			return false
@@ -89,9 +93,21 @@ func _fight_crane(player: Operator, crane: Crane, gen: int) -> bool:
 		elif crane.phase == Crane.Phase.AIM or crane.phase == Crane.Phase.DROP:
 			Autopilot.release_attacks()
 			var mark: Vector2 = crane.get("_mark")
-			if Iso.ground_distance(at, mark) < Crane.DROP_RADIUS + 0.8:
+			# It aims at you until most of the way through; after that the mark's fixed.
+			var fixed: bool = crane.phase == Crane.Phase.DROP or float(crane.get("_phase_time")) >= float(crane.get("_aim_for")) * 0.7
+			var under := Iso.ground_distance(at, mark) < Crane.DROP_RADIUS + 0.6
+			if under and fixed and player.dodge.can_start():
+				# Roll out from under the load.
 				var away := Iso.ground_dir_between(mark, at)
-				Autopilot.press_move(Autopilot.input_for_ground(Vector2(-away.y, away.x) if d > 3.5 else away))
+				Autopilot.press_move(Autopilot.input_for_ground(away if away != Vector2.ZERO else Vector2(1, 0)))
+				Autopilot.tap(&"dodge")
+			elif not fixed:
+				# Keep moving round the tower while it aims, so the mark trails behind you.
+				var round_it := Vector2(-to_tower.y, to_tower.x)
+				var want := round_it if d > 2.4 and d < 3.8 else (to_tower if d >= 3.8 else -to_tower)
+				Autopilot.press_move(Autopilot.input_for_ground(want))
+			elif under:
+				Autopilot.press_move(Autopilot.input_for_ground(Iso.ground_dir_between(mark, at)))
 			else:
 				Autopilot.press_move(Vector2.ZERO)
 		else:

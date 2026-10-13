@@ -11,6 +11,8 @@ signal evaded
 ## A field dressing went on.
 signal dressed
 signal downed
+## Would have gone down, but can't (cannot_go_down: the autopilot's runs).
+signal would_have_gone_down
 signal respawned
 ## Any carried weapon attacked. Stable across finds, snatches and returns (the weapon nodes come and
 ## go; this doesn't), so listeners connect here, not to a weapon.
@@ -55,6 +57,8 @@ var _pull_to: Vector2 = Vector2.ZERO
 var _pull_speed: float = 0.0
 var _pull_left: float = 0.0
 var _grace: float = 0.0
+## The autopilot's runs (DECISIONS 178): damage lands, but at 1 Integrity you stay up.
+var cannot_go_down: bool = false
 
 
 func _ready() -> void:
@@ -317,6 +321,15 @@ func take_hit(amount: float, from_position: Vector2) -> bool:
 	return true
 
 
+## Down, or (the autopilot's runs) held up at 1 Integrity and noted.
+func _go_down() -> void:
+	if cannot_go_down:
+		integrity.keep_at_least(1.0)
+		would_have_gone_down.emit()
+		return
+	_really_go_down()
+
+
 ## Damage the Operator does to themself (an overloaded gauntlet). Not scaled, not dodgeable.
 func self_damage(amount: float) -> void:
 	if _downed:
@@ -329,7 +342,7 @@ func self_damage(amount: float) -> void:
 		_go_down()
 
 
-func _go_down() -> void:
+func _really_go_down() -> void:
 	# Down with her on your shoulder: she's back where she was, to be picked up again.
 	if carrying:
 		set_carrying(false)
@@ -340,7 +353,7 @@ func _go_down() -> void:
 	downed.emit()
 	await Wait.seconds(self, DOWNED_SECONDS)
 	if level != null:
-		level.respawn_player()
+		level.restart_after_death()
 
 
 func revive_at(world_position: Vector2) -> void:

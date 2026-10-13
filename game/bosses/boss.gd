@@ -15,6 +15,9 @@ const ENGAGE_TILES := 7.0
 ## this: its first call would otherwise cut the introduction off mid-word. Muted, or cut short, it starts
 ## at once.
 const OPENING_MAX := 6.0
+## Restarted after you died (Level.restart_boss_fight): it won't engage for this long after it's back, so
+## you get your feet under you at the checkpoint.
+const RETRY_GRACE := 2.0
 
 ## Shown on the HUD bar.
 var boss_name: String = "BOSS"
@@ -22,6 +25,9 @@ var boss_name: String = "BOSS"
 var is_engaged: bool = false
 ## True once the introduction is over and the fight has begun.
 var is_fighting: bool = false
+## A restarted fight: no introduction this time.
+var retrying: bool = false
+var _since_built: float = 0.0
 ## The introduction being said ("" if none), and how long it's been going.
 var _intro: String = ""
 var _opening: float = 0.0
@@ -74,10 +80,13 @@ func _on_hurt(_amount: float, _from_dir: Vector2) -> void:
 
 func _think(_delta: float) -> Vector2:
 	var p := player()
-	if not is_engaged and p != null and p.is_alive() and distance_to_player() <= ENGAGE_TILES:
+	_since_built += _delta
+	var ready_again := not retrying or _since_built >= RETRY_GRACE
+	if not is_engaged and ready_again and p != null and p.is_alive() and distance_to_player() <= ENGAGE_TILES:
 		is_engaged = true
 		engaged.emit()
-		_intro = Narrator.notify(&"boss_engaged", level.level_id if level != null else "")
+		if not retrying:
+			_intro = Narrator.notify(&"boss_engaged", level.level_id if level != null else "")
 	if is_engaged and not is_fighting:
 		_opening += _delta
 		if introducing() and _opening < OPENING_MAX:

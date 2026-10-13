@@ -177,7 +177,8 @@ Plan: `design/deeper-districts.md`.
 | Step | What | Status |
 |---|---|---|
 | 33 | Noor's Mast counts what's left in a district, never where; the plan | done |
-| 34 | Dying in a boss fight restarts it | next |
+| 34 | Dying in a boss fight restarts it; a checkpoint at every boss arena's door; the autopilot can't go down (it logs where it would have) | done |
+| 35 | Boss stages, built on the Lung | next |
 
 ## Later milestones (planned)
 
