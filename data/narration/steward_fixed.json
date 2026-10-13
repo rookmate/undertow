@@ -216,6 +216,14 @@
 		"lung_marrow": {
 			"text": "The Marrow. I've lost you.",
 			"purpose": "warning"
+		},
+		"greywater_pumps_start": {
+			"text": "Those are mine to run. Leave them, or I'll have to stop you.",
+			"purpose": "fact"
+		},
+		"greywater_pumps_done": {
+			"text": "You drained the sump by hand. I could have done it in a minute. I didn't.",
+			"purpose": "fact"
 		}
 	}
 }

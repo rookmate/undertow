@@ -46,6 +46,11 @@ var failed: bool = false
 ## Noor down at the border (Harbor Ward, while her turn is undecided), and the choice over her.
 var noor_down: NoorDown
 var noor_choice: NoorChoice
+## A descent's dark (only where the map has one).
+var descent_dark: DescentDark
+## The street's sky and its rain: not down in a descent.
+var _backdrop: CanvasLayer
+var _rain_layer: CanvasLayer
 ## The curfew patrol (Harbor Ward), once it's been called.
 var _patrol: Array[Warden] = []
 var _patrol_called: bool = false
@@ -266,10 +271,111 @@ func _update_checkpoint() -> void:
 			Sound.play(&"checkpoint")
 
 
-## Back on your feet at the last checkpoint, at full Integrity; a boss fight you died in starts over.
+## Back on your feet at the last checkpoint, at full Integrity; a boss fight you died in starts over, and
+## so does a hold you were running.
 func restart_after_death() -> void:
 	restart_boss_fight()
+	for n: Node in world.get_children():
+		if n is Hold:
+			(n as Hold).reset()
 	respawn_player()
+
+
+## The hold running now (the HUD shows it), or null.
+func running_hold() -> Hold:
+	for n: Node in world.get_children():
+		if n is Hold and (n as Hold).running:
+			return n
+	return null
+
+
+## The passage end with this id ("<name>_down" / "<name>_up"), or null.
+func passage(passage_id: String) -> Passage:
+	for n: Node in world.get_children():
+		if n is Passage and (n as Passage).passage_id == passage_id:
+			return n
+	return null
+
+
+## Down or back up: a short fade, and you're at the other end, beside its ladder.
+func take_passage(from: Passage) -> void:
+	var to := passage(from.partner_id())
+	if to == null or player == null:
+		return
+	var fade := CanvasLayer.new()
+	fade.layer = 40
+	var black := ColorRect.new()
+	black.color = Color(Palette.NEAR_BLACK, 0.0)
+	black.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	black.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	fade.add_child(black)
+	add_child(fade)
+	Sound.play(&"dressing", player.global_position)
+	var t := create_tween()
+	t.tween_property(black, "color:a", 1.0, 0.18)
+	t.tween_callback(func() -> void:
+		var landing := to.cell
+		for d: Vector2i in [Vector2i(1, 0), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(0, -1)]:
+			if grid.is_walkable(to.cell + d) and not grid.is_occupied(to.cell + d):
+				landing = to.cell + d
+				break
+		player.position = Iso.cell_center(landing)
+		camera.reset_smoothing())
+	t.tween_property(black, "color:a", 0.0, 0.25)
+	t.tween_callback(fade.queue_free)
+
+
+## Below the street there's no sky and no rain; back up, they're there again.
+func show_the_street(on: bool) -> void:
+	for layer: CanvasLayer in [_backdrop, _rain_layer]:
+		if layer != null:
+			layer.visible = on
+
+
+## Standing on a descent's floor (below the street).
+func in_descent() -> bool:
+	return player != null and grid.floor_at(player.cell()) == LevelGrid.Floor.CULVERT
+
+
+## Unindexed things still to find down in the descents (what glows up through a shut way down).
+func descent_finds_left() -> int:
+	var n := 0
+	for node: Node in get_tree().get_nodes_in_group(&"interactables"):
+		var it := node as Interactable
+		if it != null and it.off_path and it.still_to_find() and is_ancestor_of(it) \
+				and grid.floor_at(Iso.world_to_cell(it.global_position)) == LevelGrid.Floor.CULVERT:
+			n += 1
+	return n
+
+
+## The enemies a hold can bring out, by name.
+const ENEMY_KINDS: Array[String] = ["custodian", "salvager", "clerk", "lamplighter", "warden"]
+
+
+## Brings one of the city's machines out at `cell` (a hold's wave). Null for a kind there isn't.
+func spawn_kind(kind: String, cell: Vector2i) -> Enemy:
+	match kind:
+		"custodian":
+			return add_enemy(Custodian.new(), cell, Custodian.MAX_INTEGRITY)
+		"salvager":
+			return add_enemy(Salvager.new(), cell, Salvager.MAX_INTEGRITY)
+		"clerk":
+			return add_enemy(Clerk.new(), cell, Clerk.MAX_INTEGRITY)
+		"lamplighter":
+			return add_enemy(Lamplighter.new(), cell, Lamplighter.MAX_INTEGRITY)
+		"warden":
+			var w := add_enemy(Warden.new(), cell, Warden.MAX_INTEGRITY) as Warden
+			w.hunting = true
+			w.last_seen = player.global_position if player != null else w.global_position
+			return w
+	return null
+
+
+## Takes an enemy out of the level without a fight (a hold starting over).
+func forget_enemy(e: Enemy) -> void:
+	_enemies.erase(e)
+	e.remove_from_group(&"enemies")
+	e.queue_free()
 
 
 ## Back on your feet at the last checkpoint, at full Integrity.
@@ -551,6 +657,19 @@ func _spawn_people_and_finds() -> void:
 			folk.setup(self, c, ArkFigure.Who.WARDFOLK)
 			folk.wardfolk_index = grid.cells_with(Tiles.WARDFOLK).find(c)
 			world.add_child(folk)
+	# Holds and the ways down they open (design/deeper-districts.md).
+	for c: Vector2i in grid.cells_with(Tiles.CRANK):
+		var hold := Hold.new()
+		hold.setup(self, c, grid.entity_id(c))
+		world.add_child(hold)
+	for c: Vector2i in grid.cells_with(Tiles.LADDER):
+		var way := Passage.new()
+		way.setup(self, c, grid.entity_id(c))
+		world.add_child(way)
+	if not grid.cells_with(Tiles.CULVERT).is_empty() or grid.all_cells().any(func(c: Vector2i) -> bool: return grid.floor_at(c) == LevelGrid.Floor.CULVERT):
+		descent_dark = DescentDark.new()
+		descent_dark.level = self
+		add_child(descent_dark)
 	# The Spire: where the Steward says what it did.
 	for c: Vector2i in grid.cells_with(Tiles.CONFESSION):
 		var confession := Confession.new()
@@ -849,6 +968,7 @@ func remove_all_enemies() -> void:
 
 func _add_backdrop() -> void:
 	var layer := CanvasLayer.new()
+	_backdrop = layer
 	layer.layer = -10
 	var sky := SkyBackdrop.new()
 	sky.look = look
@@ -863,6 +983,7 @@ func _add_atmosphere() -> void:
 	add_child(_ambient)
 	if look.rain:
 		var rain_layer := CanvasLayer.new()
+		_rain_layer = rain_layer
 		rain_layer.layer = 2
 		var rain := Rain.new()
 		rain_layer.add_child(rain)

@@ -1,0 +1,22 @@
+; A test arena for holds and descents: open ground, a crank, spawn points, a ladder down (kept shut by
+; the hold) to a culvert below with its ladder back up and something to find down there.
+%  r crank
+%  l ladder
+%  u culvert
+%  s hold_spawn
+@ 6,3 fixture_hold
+@ 3,6 fixture_shaft_down
+@ 2,10 fixture_shaft_up
+@ 10,10 fixture_down_there
+...............
+.P...........R.
+...............
+s.....r.......s
+...............
+...............
+...l...........
+...............
+               
+ uuuuuuuuuu    
+ uluuuuuuuw    
+ uuuuuuuuuu    

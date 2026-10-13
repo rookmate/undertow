@@ -10,8 +10,16 @@ Greywater's own characters (declared in the map's '%' legend lines):
     :  iron grating (the old manual pump room: off the Lattice)
     #  a pumping station's wall     d  its door      ~  the sea, the channel
     t  a tidal turbine              g  a tide gauge (read the tide by hand)
+    r  Pumping Station 2's hand crank (the hold)     s  where the Steward's machines come out to stop you
+    l  a ladder: the old pump room's stair down, and back up out of the sump
+    u  the sump galleries under the seawall (a descent: off the Lattice, dark but for your lamp)
+
+Three movements (design/deeper-districts.md): the seawall and the low streets on the Lattice; on the
+station apron, the pumps run by hand while the Steward's machines come to stop you (the hold), which
+drains the sump; down the old pump room's stair into the sump galleries (the descent), where the last
+shift hid the brass plaque; then the Marrow, the bridge and the Lung.
 """
-W, H = 44, 26
+W, H = 44, 43
 g = [[' '] * W for _ in range(H)]
 
 
@@ -67,8 +75,14 @@ put(18, 3, 'W'); put(26, 4, 'W')
 rect(8, 2, 13, 3, ':')
 rect(8, 4, 13, 4, '-')
 put(11, 4, ':')
-put(12, 2, 'T')
 put(9, 2, 'w')
+# Its stair down to the sump: under water to the top until the pumps run.
+put(10, 3, 'l')
+# Movement 2: Pumping Station 2's hand crank on the apron, beside the one still waiting to be told to run
+# the pumps; the Steward's machines come out of the other stations' doors to stop you.
+put(20, 3, 'r')
+put(7, 2, 's')
+put(27, 2, 's')
 
 # The channel, its tidal turbines; the bridge to the east island; the Reliquary at its far end.
 rect(31, 2, 33, 22, '~')
@@ -89,6 +103,23 @@ for (x, y) in [(34, 2), (42, 2), (34, 20), (42, 20)]:
 # The checkpoint at the boss arena's door, your side of its barrier: a boss fight you die in starts
 # over from here (DECISIONS 177).
 put(31, 5, 'C')
+
+# Movement 3: the sump galleries under the seawall, reached only by the pump room's stair. A landing, a
+# tunnel east, a drop south into the gallery (machines in it), a side room where someone's still waiting,
+# and the outfall chamber, where the last shift hid the brass plaque.
+rect(3, 28, 9, 31, 'u')
+put(4, 29, 'l')
+rect(10, 29, 22, 30, 'u')
+rect(21, 31, 22, 36, 'u')
+rect(14, 36, 30, 40, 'u')
+rect(8, 37, 13, 39, 'u')
+rect(31, 38, 34, 39, 'u')
+rect(35, 30, 40, 40, 'u')
+put(19, 38, 'O')
+put(26, 37, 'c')
+put(37, 34, 'O')
+put(9, 38, 'w')
+put(39, 31, 'T')
 
 for row in g:
     print(''.join(row).rstrip())

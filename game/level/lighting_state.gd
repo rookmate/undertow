@@ -69,7 +69,7 @@ func _apply_instantly(on: bool) -> void:
 		if "gilt_lit" in b:
 			b.set(&"gilt_lit", on)
 	if level.player != null:
-		level.player.set_carried_light(not on)
+		level.player.set_carried_light(not on or level.in_descent())
 
 
 func _on_voice_changed(_voice: bool) -> void:
@@ -85,7 +85,7 @@ func _on_voice_changed(_voice: bool) -> void:
 		if "gilt_lit" in b:
 			b.set(&"gilt_lit", on)
 	if level.player != null:
-		level.player.set_carried_light(not on)
+		level.player.set_carried_light(not on or level.in_descent())
 	# Lamps nearest the Operator change first; the rest follow down the street.
 	var lamps := _lamps()
 	if level.player != null:

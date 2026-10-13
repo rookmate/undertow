@@ -1,7 +1,10 @@
 extends AutopilotRoute
 ## Greywater: off the seawall through the kelp; up onto the causeway to wait out the first tide (the
-## Steward calls the swell, and at high water its path keeps to high ground); north to the station apron;
-## muted, the old pump room's brass plaque and the last shift's hand still at the valve; into the thick
+## Steward calls the swell, and at high water its path keeps to high ground); north to the station apron
+## and Pumping Station 2's hand crank: the pumps run by hand while the Steward's machines come out to stop
+## it (the hold), and the sump drains; muted, the last shift's hand still at the valve, then down the old
+## pump room's stair into the dark sump galleries (the descent): the one waiting down there, the brass
+## plaque in the outfall chamber, and back up; into the thick
 ## Marrow, where even listening the Steward draws no path, and the one waiting in it; over the bridge to
 ## the Lung (the Steward's way: out of the quarter that's filling, roll through the surge, hit it while
 ## it vents), then past the barrier to the Reliquary.
@@ -11,7 +14,9 @@ const OPENING: Array[String] = [
 	"narration_heard", "kelp_slowed",
 ]
 const THROUGH: Array[String] = [
-	"steward_called_the_tide", "path_kept_to_high_ground", "plaque_found", "woke_the_last_shift",
+	"steward_called_the_tide", "path_kept_to_high_ground", "sump_shut", "hold_started", "hold_brought_them_out",
+	"pumps_run_by_hand", "woke_the_last_shift", "went_down", "dark_below", "woke_in_the_sump", "plaque_found",
+	"climbed_back_up",
 	"no_path_in_the_marrow", "woke_in_the_marrow", "enemy_killed", "lung_engaged", "lung_called_a_flood",
 	"lung_vented", "lung_staged", "lung_beaten", "barriers_opened", "route_completed", "core_choice_shown",
 	"greywater_cores_carried", "ark_reached", "pumphouse_restored", "pumphouse_standing",
@@ -74,8 +79,18 @@ func drive(level: Level, gen: int) -> void:
 	var shown := level.predicted_path.shown
 	check(not shown.is_empty() and shown.all(func(c: Vector2i) -> bool: return not level.grid.floods(c)), "path_kept_to_high_ground")
 	await Autopilot.snap("greywater_high_water")
-	# North along the causeway to the apron, then the pump room (off the Lattice: muted).
+	# North along the causeway to the apron: the sump stair's under water, and the station's hand crank.
 	for cell: Vector2i in [Vector2i(16, 8), Vector2i(15, 5), Vector2i(11, 5)]:
+		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+			return
+	var stair := level.passage("greywater_sump_down")
+	check(stair != null and not stair.can_interact() and stair.blocked_reason() != "", "sump_shut")
+	if not await _run_the_pumps(level, player, gen):
+		return
+	check(stair != null and stair.can_interact(), "pumps_run_by_hand")
+	await Autopilot.snap("greywater_pumps_run")
+	# The pump room (off the Lattice: muted): the last shift's hand, then the stair down.
+	for cell: Vector2i in [Vector2i(15, 5), Vector2i(11, 5)]:
 		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
 			return
 	Autopilot.tap(&"voice_toggle")
@@ -83,13 +98,39 @@ func drive(level: Level, gen: int) -> void:
 		return
 	if not await Autopilot.advance_to(level, player, Vector2i(11, 4), 15.0, gen):
 		return
-	if not await Autopilot.use_at(level, player, Vector2i(12, 3), gen):
-		return
-	check(GameState.run.found_core_ids.has("greywater_truth_plaque"), "plaque_found")
-	await Autopilot.snap("greywater_pump_room")
-	if not await Autopilot.use_at(level, player, Vector2i(9, 3), gen):
+	# From her side of the room (the stair's as close as she is from the middle).
+	if not await Autopilot.use_at(level, player, Vector2i(8, 2), gen):
 		return
 	check(GameState.run.survivor_ids.has("greywater_waiting_last_shift"), "woke_the_last_shift")
+	if not await Autopilot.use_at(level, player, Vector2i(11, 3), gen):
+		return
+	check(level.in_descent(), "went_down")
+	if not await Autopilot.wait(1.0, gen):
+		return
+	check(level.descent_dark != null and level.descent_dark.amount > 0.9 and player.carried_light_on(), "dark_below")
+	await Autopilot.snap("greywater_sump")
+	# Through the galleries: the side room, then the outfall chamber and the plaque.
+	for cell: Vector2i in [Vector2i(12, 29), Vector2i(21, 30), Vector2i(21, 36), Vector2i(15, 38)]:
+		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+			return
+	if not await Autopilot.use_at(level, player, Vector2i(10, 38), gen):
+		return
+	check(GameState.run.survivor_ids.has("greywater_waiting_in_the_sump"), "woke_in_the_sump")
+	for cell: Vector2i in [Vector2i(20, 38), Vector2i(30, 38), Vector2i(34, 38), Vector2i(38, 35)]:
+		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+			return
+	if not await Autopilot.use_at(level, player, Vector2i(39, 32), gen):
+		return
+	check(GameState.run.found_core_ids.has("greywater_truth_plaque"), "plaque_found")
+	await Autopilot.snap("greywater_outfall")
+	for cell: Vector2i in [Vector2i(36, 38), Vector2i(30, 38), Vector2i(21, 36), Vector2i(21, 30), Vector2i(10, 29)]:
+		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+			return
+	if not await Autopilot.use_at(level, player, Vector2i(5, 29), gen):
+		return
+	if not await Autopilot.wait(0.6, gen):
+		return
+	check(not level.in_descent() and player.cell().y < 10, "climbed_back_up")
 	# Into the thick Marrow: listening, the Steward is with you and still draws nothing.
 	for cell: Vector2i in [Vector2i(11, 4), Vector2i(11, 5), Vector2i(24, 6), Vector2i(26, 8)]:
 		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
@@ -137,6 +178,47 @@ func drive(level: Level, gen: int) -> void:
 	pass_check("route_completed")
 	await Autopilot.snap("greywater_reliquary")
 	Autopilot.tap(&"interact")
+
+
+## The hold: start the crank, stay by it, and fight off what the Steward sends out until the pumps have run.
+func _run_the_pumps(level: Level, player: Operator, gen: int) -> bool:
+	if not await Autopilot.use_at(level, player, Vector2i(20, 4), gen):
+		return false
+	var hold: Hold = null
+	for n: Node in level.world.get_children():
+		if n is Hold:
+			hold = n
+	check(hold != null and hold.running, "hold_started")
+	if hold == null:
+		return false
+	var crank := Iso.cell_center(Vector2i(20, 4))
+	var spent := 0.0
+	var frame := 0
+	var photographed := false
+	while not hold.done and spent < 150.0:
+		if Autopilot.stale(gen):
+			Autopilot.release_all()
+			return false
+		frame += 1
+		if not hold.brought_out().is_empty():
+			pass_check("hold_brought_them_out")
+			if not photographed:
+				photographed = true
+				await Autopilot.snap("greywater_hold")
+		# Fight what's come within reach, but never far from the crank; it only runs while you're by it.
+		var threat := Autopilot.nearest_threat(level, player, 3.0)
+		if threat != null and Iso.ground_distance(threat.global_position, crank) < Hold.RADIUS + 1.0:
+			Autopilot.fight(player, threat, frame)
+		else:
+			Autopilot.release_attacks()
+			var at := player.global_position
+			if Iso.ground_distance(at, crank) > 1.2:
+				Autopilot.press_move(Autopilot.input_for_ground(Iso.ground_dir_between(at, crank)))
+			else:
+				Autopilot.press_move(Vector2.ZERO)
+		spent += await Autopilot.physics_step()
+	Autopilot.release_all()
+	return hold.done
 
 
 ## The Steward's way with the Lung: out of the quarter it's filling, into the one across; roll through

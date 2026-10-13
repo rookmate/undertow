@@ -206,6 +206,14 @@ func take_back_ending() -> void:
 	state_changed.emit(&"ending")
 
 
+## A hold done: what it opened stays open for the rest of the run.
+func complete_hold(hold_id: String) -> void:
+	if run.holds_done.has(hold_id):
+		return
+	run.holds_done.append(hold_id)
+	state_changed.emit(&"holds_done")
+
+
 ## Teo's turn, had at the dock setting off for the Spire: he stays, or (`leaves`) he's gone from the run.
 func teo_turn(leaves: bool) -> void:
 	run.teo_turn_had = true

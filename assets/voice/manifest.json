@@ -615,6 +615,14 @@
   "hash": "7f56fdb78acbda1bbf6bbc4d502f325359e67b2d",
   "text": "That isn't one of mine. Whatever it's for, I'd leave it."
  },
+ "greywater_pumps_done": {
+  "hash": "3fe14f219c365162c10ea5569464a99578cc2f1a",
+  "text": "You drained the sump by hand. I could have done it in a minute. I didn't."
+ },
+ "greywater_pumps_start": {
+  "hash": "d4ffd222b8f7867861d2a613078ea34c5ea3681b",
+  "text": "Those are mine to run. Leave them, or I'll have to stop you."
+ },
  "loadout_nudge": {
   "hash": "282a9874abb7b41188b17e8ac5bd583f6c406023",
   "text": "I'd keep the tuning on. Let me carry the aim; you watch the street."

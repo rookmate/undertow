@@ -1,0 +1,45 @@
+{
+	"version": 1,
+	"notes": "Holds (design/deeper-districts.md): something people did by hand, done again while the Steward's machines come to stop you. 'seconds': how long it runs while you stay by it; 'waves': the machines that come, wave by wave (Level.ENEMY_KINDS); 'opens': the passage it opens (its '<name>_down' and '<name>_up' ladders on the map); 'verb' the prompt at the crank, 'doing' the HUD while it runs, 'locked' what the shut passage says; 'steward_start' and 'steward_done' the Steward's lines (steward_fixed.json), optional. 'fixture_hold' is the test arena's. Placeholder writing.",
+	"holds": {
+		"fixture_hold": {
+			"seconds": 6.0,
+			"waves": [
+				[
+					"custodian"
+				],
+				[
+					"salvager"
+				]
+			],
+			"opens": "fixture_shaft",
+			"verb": "TURN THE WHEEL",
+			"doing": "TURNING THE WHEEL",
+			"locked": "Shut fast."
+		},
+		"greywater_pumps": {
+			"seconds": 50.0,
+			"waves": [
+				[
+					"custodian",
+					"custodian"
+				],
+				[
+					"custodian",
+					"custodian"
+				],
+				[
+					"custodian",
+					"custodian",
+					"custodian"
+				]
+			],
+			"opens": "greywater_sump",
+			"verb": "RUN THE PUMPS BY HAND",
+			"doing": "RUNNING THE PUMPS BY HAND",
+			"locked": "The stair's under water to the top. Somebody would have to run the pumps.",
+			"steward_start": "greywater_pumps_start",
+			"steward_done": "greywater_pumps_done"
+		}
+	}
+}

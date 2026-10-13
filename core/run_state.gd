@@ -40,6 +40,8 @@ var conversations_had: Array[String] = []
 var noor_away: bool = false
 ## Teo has had his say at the dock, setting off for the Spire (his turn, design/act-3.md).
 var teo_turn_had: bool = false
+## Holds done (design/deeper-districts.md): what they opened stays open for the rest of the run.
+var holds_done: Array[String] = []
 ## The final choice, once made (Endings: "reboot", "unplug", "rewrite"); "" until then. A run with an
 ## ending is finished: kept, but not continued.
 var ending: String = ""
@@ -143,6 +145,7 @@ func to_dict() -> Dictionary:
 		"conversations_had": conversations_had.duplicate(),
 		"noor_away": noor_away,
 		"teo_turn_had": teo_turn_had,
+		"holds_done": holds_done.duplicate(),
 		"ending": ending,
 		"active_overrides": active_overrides.duplicate(),
 		"playstyle_profile": playstyle_profile.to_dict(),
@@ -185,6 +188,7 @@ static func from_dict(d: Dictionary) -> RunState:
 	s.conversations_had = _strings(d.get("conversations_had", []))
 	s.noor_away = _bool(d.get("noor_away", false))
 	s.teo_turn_had = _bool(d.get("teo_turn_had", false))
+	s.holds_done = _strings(d.get("holds_done", []))
 	var chosen := str(d.get("ending", ""))
 	s.ending = chosen if Endings.ALL.has(chosen) else ""
 	s.active_overrides = _strings(d.get("active_overrides", []))

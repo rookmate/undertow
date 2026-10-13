@@ -97,6 +97,15 @@ const RACK := "Э"
 const PANE := "Ъ"
 const CONFESSION := "Я"
 
+# --- Holds and descents (design/deeper-districts.md) --------------------------------------------------
+## A hold's crank (its id on an '@' line: the hold); a ladder down or back up (its id: the passage,
+## "<name>_down" or "<name>_up"); a descent's floor (below the street, off the Lattice, dark); where a
+## hold's waves come out.
+const CRANK := "Ь"
+const LADDER := "У"
+const CULVERT := "Ё"
+const HOLD_SPAWN := "Ғ"
+
 # --- How tall the solid ones stand -------------------------------------------------------------------
 ## Solid named things taller than a chest-height shot: they stop sight, swings and shots
 ## (LevelGrid.blocks_line). Buildings stop them anyway.
@@ -104,7 +113,7 @@ const TALL := AMBULANCE + TURBINE + RACK
 ## Solid named things at waist height or below, or thin: you see, swing and shoot over or past them.
 ## A test keeps every solid tile in one of the two.
 const LOW := PARTITION + NURSE_DESK + HOSPITAL_BED + TIDE_GAUGE + NEWSROOM_DESK + LANTERN + PILING + WARD_BOAT \
-	+ PANE + COUNCIL
+	+ PANE + COUNCIL + CRANK
 
 const BY_NAME: Dictionary[String, String] = {
 	"hospital_tile": HOSPITAL_TILE, "asphalt": ASPHALT, "staff_floor": STAFF_FLOOR, "partition": PARTITION,
@@ -119,6 +128,7 @@ const BY_NAME: Dictionary[String, String] = {
 	"patrol": PATROL, "noor_down": NOOR_DOWN, "ward_boat": WARD_BOAT, "commons": COMMONS, "commons_door": COMMONS_DOOR,
 	"wardfolk": WARDFOLK, "ward_mast": WARD_MAST, "spire_glass": SPIRE_GLASS, "rack": RACK, "pane": PANE, "confession": CONFESSION,
 	"council": COUNCIL, "council_door": COUNCIL_DOOR,
+	"crank": CRANK, "ladder": LADDER, "culvert": CULVERT, "hold_spawn": HOLD_SPAWN,
 }
 
 
