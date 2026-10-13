@@ -40,6 +40,54 @@
 			"locked": "The stair's under water to the top. Somebody would have to run the pumps.",
 			"steward_start": "greywater_pumps_start",
 			"steward_done": "greywater_pumps_done"
+		},
+		"loop_points": {
+			"seconds": 45.0,
+			"waves": [
+				[
+					"custodian",
+					"custodian"
+				],
+				[
+					"custodian",
+					"custodian"
+				],
+				[
+					"custodian",
+					"custodian",
+					"custodian"
+				]
+			],
+			"opens": "loop_tunnels",
+			"verb": "THROW THE POINTS BY HAND",
+			"doing": "THROWING THE POINTS BY HAND",
+			"locked": "The service hatch is interlocked with the points. Somebody would have to throw them by hand.",
+			"steward_start": "loop_points_start",
+			"steward_done": "loop_points_done"
+		},
+		"tideworks_winch": {
+			"seconds": 45.0,
+			"waves": [
+				[
+					"custodian",
+					"custodian"
+				],
+				[
+					"custodian",
+					"custodian"
+				],
+				[
+					"custodian",
+					"custodian",
+					"custodian"
+				]
+			],
+			"opens": "tideworks_hold",
+			"verb": "WIND THE WINCH BY HAND",
+			"doing": "WINDING THE WINCH BY HAND",
+			"locked": "A container's hanging over the hatch. Somebody would have to wind it clear by hand.",
+			"steward_start": "tideworks_winch_start",
+			"steward_done": "tideworks_winch_done"
 		}
 	}
 }

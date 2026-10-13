@@ -268,6 +268,22 @@
 		"warden_prime_blind": {
 			"text": "The mast's gone. It's blind.",
 			"purpose": "warning"
+		},
+		"loop_points_start": {
+			"text": "That's my junction. Let go of it.",
+			"purpose": "fact"
+		},
+		"loop_points_done": {
+			"text": "The points are thrown. You know I'd have done it, if you'd asked.",
+			"purpose": "fact"
+		},
+		"tideworks_winch_start": {
+			"text": "That load is mid-lift. Leave it where it is.",
+			"purpose": "fact"
+		},
+		"tideworks_winch_done": {
+			"text": "The hatch is clear. I'd have finished that lift eventually.",
+			"purpose": "fact"
 		}
 	}
 }

@@ -147,6 +147,80 @@ static func boss_now(old: Variant, player: Operator) -> Boss:
 	return player.level.boss
 
 
+## A hold: start its crank from `stand`, stay by it and fight off what the Steward sends out until it's
+## done (checks "hold_started", "hold_brought_them_out"). Returns whether it's done.
+func run_hold(level: Level, player: Operator, stand: Vector2i, gen: int) -> bool:
+	if not await Autopilot.use_at(level, player, stand, gen):
+		return false
+	var hold: Hold = null
+	for n: Node in level.world.get_children():
+		if n is Hold and Iso.ground_distance((n as Hold).global_position, player.global_position) < 2.0:
+			hold = n
+	check(hold != null and hold.running, "hold_started")
+	if hold == null:
+		return false
+	var crank := hold.global_position + Iso.ground_velocity(Iso.ground_dir_between(hold.global_position, player.global_position), 1.0)
+	var spent := 0.0
+	var frame := 0
+	var photographed := false
+	while not hold.done and spent < 150.0:
+		if Autopilot.stale(gen):
+			Autopilot.release_all()
+			return false
+		frame += 1
+		if not hold.brought_out().is_empty():
+			pass_check("hold_brought_them_out")
+			if not photographed:
+				photographed = true
+				await Autopilot.snap(id + "_hold")
+		# Fight what's come within reach, but never far from the crank: it only runs while you're by it.
+		var threat := Autopilot.nearest_threat(level, player, 3.0)
+		if threat != null and Iso.ground_distance(threat.global_position, crank) < Hold.RADIUS + 1.0:
+			Autopilot.fight(player, threat, frame)
+		else:
+			Autopilot.release_attacks()
+			var at := player.global_position
+			if Iso.ground_distance(at, crank) > 0.6:
+				Autopilot.press_move(Autopilot.input_for_ground(Iso.ground_dir_between(at, crank)))
+			else:
+				Autopilot.press_move(Vector2.ZERO)
+		spent += await Autopilot.physics_step()
+	Autopilot.release_all()
+	return hold.done
+
+
+## Down a passage (`ladder_stand` beside its top), through the waypoints, back up by the ladder beside
+## `up_stand`: muted, as everything down there is unindexed. `visit` runs at the far end of the outward
+## leg. Checks "went_down", "dark_below", "climbed_back_up".
+func descend(level: Level, player: Operator, ladder_stand: Vector2i, out: Array[Vector2i], visit: Callable, back: Array[Vector2i], up_stand: Vector2i, gen: int) -> bool:
+	if Steward.voice_on:
+		Autopilot.tap(&"voice_toggle")
+		if not await Autopilot.wait(0.8, gen):
+			return false
+	if not await Autopilot.use_at(level, player, ladder_stand, gen):
+		return false
+	check(level.in_descent(), "went_down")
+	if not await Autopilot.wait(1.0, gen):
+		return false
+	check(level.descent_dark != null and level.descent_dark.amount > 0.9 and player.carried_light_on(), "dark_below")
+	await Autopilot.snap(id + "_descent")
+	for cell: Vector2i in out:
+		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+			return false
+	if not await visit.call():
+		return false
+	for cell: Vector2i in back:
+		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+			return false
+	if not await Autopilot.use_at(level, player, up_stand, gen):
+		return false
+	if not await Autopilot.wait(0.6, gen):
+		return false
+	check(not level.in_descent(), "climbed_back_up")
+	Autopilot.tap(&"voice_toggle")
+	return await Autopilot.wait(0.8, gen)
+
+
 ## The district's boss is down (or already gone).
 static func boss_down(player: Operator) -> bool:
 	if player == null or player.level == null:

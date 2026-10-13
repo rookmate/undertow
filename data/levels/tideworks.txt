@@ -12,11 +12,23 @@
 ;   [   a stack of containers (low, solid)          ]   a container hanging mid-lift over the quay
 ;   ^   a crane leg (solid; the gilt climbs it)     V   a weapon lying where it was left (its id: the weapon)
 ;   O   a Salvager
+; Holds and descents (design/deeper-districts.md): n the quay's hand winch (the hold)  s where the
+;   Steward's machines come out  l a ladder (the freighter's hatch, and back up)  v its hold (a descent)
+%  n crank
+%  s hold_spawn
+%  l ladder
+%  v culvert
 ;
 ; Ids ("@ x,y id"): saved, never rename.
 @ 3,3 tideworks_truth_strike_records
 @ 11,3 riot_drone
 @ 8,4 tideworks_waiting_foreman
+@ 10,13 tideworks_winch
+@ 13,14 tideworks_hold_down
+@ 5,26 tideworks_hold_up
+@ 11,33 tideworks_waiting_in_the_hold
+@ 31,30 tideworks_truth_hand_count
+! 10,12 THE QUAY'S HAND WINCH. WIND THE CONTAINER CLEAR AND THE FREIGHTER'S HATCH OPENS.
 ! 9,7 THE WARDENS' DEPOT. WHAT THEY LEFT IS STILL ON THE RACK.
 ###################################
 ######d#######d#######d#######d####  L,,,,,
@@ -27,12 +39,12 @@
 ##iiiii-,--:---,                ~~~,,,,,,,,,=
 ##---:--,,,,,,,,                ~~~,^,,,,,^,=
 ##,,,,,,,,,,,[,[ [^[ [ [ [^[ [  ~~~,,Z,,,,,,=
-##...L.....L............L......====,,,,,,,,,=
+##...Ls....L..........s.L......====,,,,,,,,,=
 ##............c.......[........,,,,,,,,,,,,,=
 ##......C...].......].[....]...,,,,,,,,B,,,,=
 ##.P...........[[.........O....,C,,,,,,,,,,,=
-##.................O....C......,,,,,,,,,,,,,=
-##.......L...........L.......L.====,,,,,,,,,=
+##........n........O....C......,,,,,,,,,,,,,=
+##.......L...l.......L.......L.====,,,,,,,,,=
 ##[[[[.[[[[[[[[[[.^[[[[[[.^[[[[ ~~~,^,,,,,^,=
 ## ============================ ~~~,,,,,,,,,=
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~==========
@@ -40,3 +52,17 @@
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+    vvvvvv
+    vlvvvvvvvvvvvvvvvvvvvvv
+    vvvvvvvvvvvvvvvvvvvvvvv
+    vvvvvv    vv
+              vv          vvvvvvv
+              vv          vvvvvTv
+              vv          vvvvvvv
+          vvvvvvvvvvvvvvvvvvvvvvv
+          vwvvvvvvvvvvcvvvvvvvvvv
+          vvvcvvvvvvvvvvvvvvvvvvv
+          vvvvvvvvvvvvvvvvvvvvvvv

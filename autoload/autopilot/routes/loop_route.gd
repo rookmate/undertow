@@ -1,12 +1,15 @@
 extends AutopilotRoute
 ## The Loop, train to train over the drop: the first carriage's Custodians, the driver's cab (muted), the
-## gantries, the platforms, the second train, then the Conductor (the Steward's way: off the called
+## gantries; on platform B the points thrown by hand while the Steward's Custodians come (the hold), and
+## down the service hatch into the tunnels (the descent: the one waiting there, the crew's log); the
+## second train, then the Conductor (the Steward's way: off the called
 ## lane, hit it while it vents) and the Reliquary past the buffer stops. Then the Ark's Signal Room:
 ## sign an order and hear the Steward's answer.
 
 const ROUTE: Array[String] = [
 	"loadout_shown", "loadout_one_weapon", "level_reached", "player_spawned", "path_three_tiles_ahead",
-	"enemy_killed", "cab_truth_found", "conductor_engaged", "conductor_called_a_lane", "conductor_vented",
+	"enemy_killed", "cab_truth_found", "hold_started", "hold_brought_them_out", "points_thrown", "went_down",
+	"dark_below", "woke_in_the_tunnels", "crew_log_found", "climbed_back_up", "conductor_engaged", "conductor_called_a_lane", "conductor_vented",
 	"conductor_beaten", "barriers_opened", "route_completed", "core_choice_shown", "loop_cores_carried",
 	"ark_reached", "signal_room_restored", "signal_room_standing", "override_signed",
 	"steward_answered_the_order",
@@ -44,7 +47,28 @@ func drive(level: Level, gen: int) -> void:
 	check(GameState.run.found_core_ids.has("loop_truth_no_manual"), "cab_truth_found")
 	await Autopilot.snap("loop_cab")
 	Autopilot.tap(&"voice_toggle")
-	for cell: Vector2i in [Vector2i(20, 16), Vector2i(20, 15), Vector2i(20, 12), Vector2i(20, 9), Vector2i(26, 8), Vector2i(30, 8), Vector2i(37, 8), Vector2i(39, 7), Vector2i(39, 5), Vector2i(39, 4)]:
+	for cell: Vector2i in [Vector2i(20, 16), Vector2i(20, 15), Vector2i(20, 12), Vector2i(20, 9)]:
+		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+			return
+	# Platform B: the points thrown by hand (the hold) opens the service hatch.
+	if not await run_hold(level, player, Vector2i(23, 9), gen):
+		return
+	check(level.passage("loop_tunnels_down") != null and level.passage("loop_tunnels_down").can_interact(), "points_thrown")
+	var tunnels := func() -> bool:
+		if not await Autopilot.use_at(level, player, Vector2i(18, 34), gen):
+			return false
+		check(GameState.run.survivor_ids.has("loop_waiting_in_the_tunnels"), "woke_in_the_tunnels")
+		for cell: Vector2i in [Vector2i(25, 33), Vector2i(31, 32)]:
+			if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+				return false
+		if not await Autopilot.use_at(level, player, Vector2i(34, 30), gen):
+			return false
+		check(GameState.run.found_core_ids.has("loop_truth_service_log"), "crew_log_found")
+		return true
+	if not await descend(level, player, Vector2i(26, 10), [Vector2i(12, 27), Vector2i(20, 26), Vector2i(22, 30), Vector2i(20, 33)],
+			tunnels, [Vector2i(31, 32), Vector2i(25, 33), Vector2i(22, 30), Vector2i(20, 26), Vector2i(12, 26)], Vector2i(11, 26), gen):
+		return
+	for cell: Vector2i in [Vector2i(26, 8), Vector2i(30, 8), Vector2i(37, 8), Vector2i(39, 7), Vector2i(39, 5), Vector2i(39, 4)]:
 		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
 			return
 	if level.living_enemies().size() < start_count:

@@ -1,11 +1,14 @@
 extends AutopilotRoute
 ## The Tideworks: the side yard first (the Riot Drone off the depot's rack; muted, the union hall's
-## strike ledger), then the quay's Salvagers, the pier, the last Crane (the Steward's way), and the
+## strike ledger), then on the quay the container wound clear by hand while the Steward's Custodians come
+## (the hold) and down the freighter's hatch into its hold (the descent: the one waiting there, the night
+## shift's hand count), then the quay's Salvagers, the pier, the last Crane (the Steward's way), and the
 ## Reliquary on the pier head. Then the Ark's Workshop: buy an upgrade with the scrap.
 
 const ROUTE: Array[String] = [
 	"loadout_shown", "loadout_one_weapon", "level_reached", "player_spawned", "riot_drone_found",
-	"strike_records_found", "enemy_killed", "crane_engaged", "crane_called_a_drop", "crane_rested",
+	"strike_records_found", "hold_started", "hold_brought_them_out", "container_wound_clear", "went_down",
+	"dark_below", "woke_in_the_hold", "hand_count_found", "climbed_back_up", "enemy_killed", "crane_engaged", "crane_called_a_drop", "crane_rested",
 	"crane_beaten", "barriers_opened", "route_completed", "core_choice_shown", "tideworks_cores_carried",
 	"ark_reached", "noor_and_teo_arrive", "workshop_restored", "workshop_standing", "upgrade_bought",
 	"noor_and_teo_stay",
@@ -42,7 +45,28 @@ func drive(level: Level, gen: int) -> void:
 	check(GameState.run.found_core_ids.has("tideworks_truth_strike_records"), "strike_records_found")
 	await Autopilot.snap("tideworks_union_hall")
 	Autopilot.tap(&"voice_toggle")
-	for cell: Vector2i in [Vector2i(7, 4), Vector2i(8, 6), Vector2i(10, 8), Vector2i(12, 10), Vector2i(19, 11), Vector2i(26, 11), Vector2i(30, 11), Vector2i(33, 11), Vector2i(36, 11)]:
+	for cell: Vector2i in [Vector2i(7, 4), Vector2i(8, 6), Vector2i(10, 8), Vector2i(10, 11)]:
+		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+			return
+	# The quay's hand winch (the hold) winds the container clear of the freighter's hatch.
+	if not await run_hold(level, player, Vector2i(10, 12), gen):
+		return
+	check(level.passage("tideworks_hold_down") != null and level.passage("tideworks_hold_down").can_interact(), "container_wound_clear")
+	var hold := func() -> bool:
+		if not await Autopilot.use_at(level, player, Vector2i(12, 33), gen):
+			return false
+		check(GameState.run.survivor_ids.has("tideworks_waiting_in_the_hold"), "woke_in_the_hold")
+		for cell: Vector2i in [Vector2i(20, 33), Vector2i(27, 32)]:
+			if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+				return false
+		if not await Autopilot.use_at(level, player, Vector2i(30, 30), gen):
+			return false
+		check(GameState.run.found_core_ids.has("tideworks_truth_hand_count"), "hand_count_found")
+		return true
+	if not await descend(level, player, Vector2i(13, 13), [Vector2i(7, 27), Vector2i(14, 26), Vector2i(14, 30), Vector2i(14, 33)],
+			hold, [Vector2i(27, 32), Vector2i(20, 33), Vector2i(14, 30), Vector2i(14, 26), Vector2i(7, 26)], Vector2i(6, 26), gen):
+		return
+	for cell: Vector2i in [Vector2i(12, 10), Vector2i(19, 11), Vector2i(26, 11), Vector2i(30, 11), Vector2i(33, 11), Vector2i(36, 11)]:
 		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
 			return
 	if level.living_enemies().filter(func(e: Enemy) -> bool: return e.is_threat).size() < start_count:

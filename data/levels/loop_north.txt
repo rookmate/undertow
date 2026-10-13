@@ -11,6 +11,12 @@
 ;   J   the welded control desk [cab]              *   a route light (the ring's, still blinking) [platform]
 ; The Conductor's junction (see game/bosses): B the Conductor  1 2 3 its lanes  Z the signal box
 ;   y   buffer stops before the junction station (open when the Conductor falls)
+; Holds and descents (design/deeper-districts.md): n the points lever (the hold)  s where the Steward's
+;   machines come out  l a ladder (the service hatch, and back up)  v the service tunnels (a descent)
+%  n crank
+%  s hold_spawn
+%  l ladder
+%  v culvert
 ;
 ; Ids ("@ x,y id"): saved, never rename.
 @ 12,18 loop_waiting_carriage_1
@@ -18,6 +24,12 @@
 @ 32,10 loop_waiting_carriage_3
 @ 36,10 loop_waiting_carriage_4
 @ 24,18 loop_truth_no_manual
+@ 23,8 loop_points
+@ 26,9 loop_tunnels_down
+@ 10,26 loop_tunnels_up
+@ 17,34 loop_waiting_in_the_tunnels
+@ 35,30 loop_truth_service_log
+! 23,9 THE POINTS LEVER. THROW THE POINTS BY HAND AND THE SERVICE HATCH OPENS.
 ! 22,17 [voice_on] THE CAB IS OFF THE LATTICE. {voice_toggle} MUTES THE STEWARD.
 
                        ,,L,
@@ -26,10 +38,10 @@
                        ,,,,y333333333333333r
                        ,,L,       Z    uu
                                        uu
-              ,L,,,,,,L,,,,L,rrrrrrrrrrhh
-              ,,,,c,,,,,,,,,,hhhhhhhhhChh
-              ,,C,,,,,,,,c,,,hhhhhchhhhhh
-              ,,,*,,,,,,*,,*,hhhWhhhWhhhh
+              ,L,,,,,,L,,,,Lsrrrrrrrrrrhh
+              ,,,,c,,,,n,,,,,hhhhhhhhhChh
+              ,,C,,,,,,,,cl,,hhhhhchhhhhh
+              s,,*,,,,,,*,,*,hhhWhhhWhhhh
                     uu       rrrrrrrrrrrr
                     uu
                     uu
@@ -41,3 +53,17 @@
  ,*,,,*,rrrrrrrrrrrrrrrrrrr
 
 
+
+
+
+         vvvvvv
+         vlvvvvvvvvvvvvvvvvvvv
+         vvvvvvvvvvvvvvvvvvvvv
+         vvvvvv       vv
+                      vv      vvvvvvv
+                      vv      vvvvvTv
+                      vv      vvvvvvv
+                vvvvvvvvvvvvvvvvvvvvv
+                vvvvvvvvvvvcvvvvvvvvv
+                vwvcvvvvvvvvvvvvvvvvv
+                vvvvvvvvvvvvvvvvvvvvv

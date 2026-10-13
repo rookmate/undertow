@@ -85,7 +85,7 @@ func drive(level: Level, gen: int) -> void:
 			return
 	var stair := level.passage("greywater_sump_down")
 	check(stair != null and not stair.can_interact() and stair.blocked_reason() != "", "sump_shut")
-	if not await _run_the_pumps(level, player, gen):
+	if not await run_hold(level, player, Vector2i(20, 4), gen):
 		return
 	check(stair != null and stair.can_interact(), "pumps_run_by_hand")
 	await Autopilot.snap("greywater_pumps_run")
@@ -178,47 +178,6 @@ func drive(level: Level, gen: int) -> void:
 	pass_check("route_completed")
 	await Autopilot.snap("greywater_reliquary")
 	Autopilot.tap(&"interact")
-
-
-## The hold: start the crank, stay by it, and fight off what the Steward sends out until the pumps have run.
-func _run_the_pumps(level: Level, player: Operator, gen: int) -> bool:
-	if not await Autopilot.use_at(level, player, Vector2i(20, 4), gen):
-		return false
-	var hold: Hold = null
-	for n: Node in level.world.get_children():
-		if n is Hold:
-			hold = n
-	check(hold != null and hold.running, "hold_started")
-	if hold == null:
-		return false
-	var crank := Iso.cell_center(Vector2i(20, 4))
-	var spent := 0.0
-	var frame := 0
-	var photographed := false
-	while not hold.done and spent < 150.0:
-		if Autopilot.stale(gen):
-			Autopilot.release_all()
-			return false
-		frame += 1
-		if not hold.brought_out().is_empty():
-			pass_check("hold_brought_them_out")
-			if not photographed:
-				photographed = true
-				await Autopilot.snap("greywater_hold")
-		# Fight what's come within reach, but never far from the crank; it only runs while you're by it.
-		var threat := Autopilot.nearest_threat(level, player, 3.0)
-		if threat != null and Iso.ground_distance(threat.global_position, crank) < Hold.RADIUS + 1.0:
-			Autopilot.fight(player, threat, frame)
-		else:
-			Autopilot.release_attacks()
-			var at := player.global_position
-			if Iso.ground_distance(at, crank) > 1.2:
-				Autopilot.press_move(Autopilot.input_for_ground(Iso.ground_dir_between(at, crank)))
-			else:
-				Autopilot.press_move(Vector2.ZERO)
-		spent += await Autopilot.physics_step()
-	Autopilot.release_all()
-	return hold.done
 
 
 ## The Steward's way with the Lung: out of the quarter it's filling, into the one across; roll through
