@@ -107,7 +107,7 @@ func _find(script_type: GDScript) -> Array[Interactable]:
 func test_off_path_finds_are_hidden_while_the_steward_listens() -> void:
 	var caches := _find(TruthCache)
 	var slips := _find(UnindexedLog)
-	check_eq(caches.size(), 2, "the stacks' cache and Prem Vashti's")
+	check_eq(caches.size(), 3, "the stacks' cache, Prem Vashti's and the spiked proofs on the sorting floor")
 	check_eq(slips.size(), 2)
 	var finds: Array[Interactable] = []
 	finds.append_array(caches)

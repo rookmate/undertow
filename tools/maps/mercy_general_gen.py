@@ -9,8 +9,10 @@ Mercy General's own characters (declared in the map's '%' legend lines):
     =  a glass partition (cut away to waist height so the wards can be seen into)
     s  a sealed ward door        a  an ambulance        j  the night nurses' desk
     x  a Sterilizer      #  the hospital's walls   d  a locked door   b  a ward bed
+    n  the emergency generator's crank (a hold)    h  where the Steward's machines come out
+    l  a ladder (the morgue lift's shaft, and back up)    u  the morgue (a descent, off the Lattice)
 """
-W, H = 42, 28
+W, H = 42, 41
 g = [[' '] * W for _ in range(H)]
 
 
@@ -102,6 +104,23 @@ rect(30, 20, 40, 20, '=')
 # The checkpoint at the boss arena's door, your side of its barrier: a boss fight you die in starts
 # over from here (DECISIONS 177).
 put(26, 5, 'C')
+
+# The ambulance yard's emergency generator (the hold): crank it by hand and the morgue lift runs, while
+# the Steward's Custodians come out of the yard's corners to stop you.
+put(12, 20, 'n')
+put(16, 19, 'h'); put(2, 25, 'h')
+put(9, 25, 'l')
+# The morgue under the hospital (a descent, off the Lattice): the lift's landing, the corridor, the
+# ramp down to the cold hall, the drawer room off it and the attendant's office at its end.
+rect(3, 29, 8, 32, 'u'); put(4, 30, 'l')
+rect(9, 30, 24, 31, 'u')
+rect(18, 32, 19, 35, 'u')
+rect(10, 36, 24, 40, 'u')
+rect(5, 37, 9, 39, 'u')
+rect(25, 33, 31, 40, 'u')
+put(13, 38, 'c'); put(21, 37, 'c')
+put(6, 38, 'w')
+put(30, 34, 'T')
 
 for row in g:
     print(''.join(row).rstrip())

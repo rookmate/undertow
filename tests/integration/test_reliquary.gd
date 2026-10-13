@@ -52,12 +52,13 @@ func test_card_screen_offers_three_or_four_cards() -> void:
 	screen2.queue_free()
 
 
-func test_five_cards_fit_across_the_screen() -> void:
+func test_six_cards_fit_across_the_screen() -> void:
 	GameState.find_core(ContentIds.CORE_TRUTH_STACKS)
 	GameState.find_core("vellum_truth_vashti_office")
+	GameState.find_core("vellum_truth_spiked")
 	var screen := await _open_choice()
 	var cards: Dictionary = screen.get("_cards")
-	check_eq(cards.size(), 5, "the Vellum's three and both of Prem Vashti's notes")
+	check_eq(cards.size(), 6, "the Vellum's three, both of Prem Vashti's notes and the spiked proofs")
 	for b: Button in cards.values():
 		var corner := b.get_global_transform() * b.size
 		check(corner.x <= 1920.0 - 40.0 and corner.y <= 900.0, "a card ends at %s, on screen and above the buttons" % corner)

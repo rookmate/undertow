@@ -150,6 +150,6 @@ func test_every_hold_is_placed_with_its_way_down() -> void:
 				if g.floor_at(k) == LevelGrid.Floor.CULVERT:
 					below += 1
 			check(below > 0, "%s: something to find down there" % id)
-	for hold: String in ["greywater_pumps", "loop_points", "tideworks_winch"]:
+	for hold: String in ["greywater_pumps", "loop_points", "tideworks_winch", "mercy_generator", "vellum_paper_lift", "harbor_mast"]:
 		check(placed.has(hold), "%s is in its district" % hold)
 

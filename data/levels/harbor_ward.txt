@@ -17,11 +17,17 @@
 %  k ward_boat
 %  q ward_mast
 %  v wardfolk
+%  r crank
+%  j hold_spawn
+%  l ladder
+%  u culvert
 ;   s  the Ward's stone lanes (off the Lattice)     p  pier planks over the water (off the Lattice)
 ;   h  a boat-house    o  its door    f  a piling with kelp on it    n  a Wardfolk lantern (cyan)
 ;   b  the Harbor Bridge's severed end    w  a Warden, posted (the curfew patrol: they hunt)
 ;   x  where the patrol comes in after you pick Noor up   m  Noor, down at the border   k  the Wardfolk's boat
 ;   q  the boat-house with the Ward's own mast on its roof (dark)   v  Wardfolk out on Net Lane (they talk)
+;   r  the mast's hand generator (a hold)   j  where the patrol comes in for it   l  a ladder (the ferry
+;   hatch, and back up)   u  the drowned ferry (a descent)
 ;   B  the Warden-Prime   Z  the relay mast (its weak point)   y  the barrier, open when it falls
 ; Shared: .  cobble (on the Lattice: the ferry slip and the border plaza)   L  Lattice lamp   -  the
 ;   border fence (low wall)   #  the Warden depot   d  its door   ~  water   P  start (the ferry slip)
@@ -31,8 +37,13 @@
 @ 4,18 harbor_truth_dashcam
 @ 31,18 log_ward_radio
 @ 4,21 signal_jammer
+@ 29,21 harbor_mast
+@ 23,21 harbor_ferry_down
+@ 11,42 harbor_ferry_up
+@ 35,45 harbor_truth_ferry_roll
 ! 6,33 NO LATTICE. THE STEWARD HAS NO MAP HERE, AND MUTING CHANGES NOTHING.
 ! 33,19 [voice_on] THE BORDER: THE LATTICE STARTS AGAIN HERE.
+! 29,20 THE MAST'S HAND GENERATOR. WIND IT AND THE FERRY HATCH OPENS.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bbbbbbb~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bbbbbbb~~
@@ -53,8 +64,8 @@
 hhhh~hhhhh~hhhhh~hhhhh~hhhhh~hhhq~-.........Z.
 hhhhTsssssvsssssssssssvssssssssUss-x..L....L..
 hhhossssssssssssCsssssssssssssssws............
-hhhhsssssssssssssssssssswsssssssss......B.....
-hhhhVsssnsssssnsssssnsssssnsssssns-x..........
+hhhhssssjssssssssssssssswsssssssss......B.....
+hhhhVsssnsssssnsssssnsslssnssrssnj-x..........
 hhhh~~ppp~~~~~~~~ppp~~~~~~~ppp~~~~-..C........
 ~~~~~~ppp~~~~~~~~ppp~~~~~~~ppn~~~~-...........
 ~~~~~fppp~~~~~~~~ppp~~~~~~fppp~~~~-.........m.
@@ -72,3 +83,16 @@ hhhh~~ppp~~~~~~~~ppp~~~~~~~ppp~~~~-..C........
 ~~~~..P..~~~~~~~~~~~~~~~~~~~~~~~~~-~~~~~~~~~~~
 ~~~~.....~~~~~~~~~~~~~~~~~~~~~~~~~-~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+          uuuuuu
+          uluuuuuuuuuuuuuuuuuuu
+          uuuuuuuuuuuuuuuuuuuuu
+          uuuuuu            uu uuuuuu
+                            uu uuuuTu
+                            uu uuuuuu
+                            uu uuuuuu
+              uuuuuuuuuuuuuuuuuuuuuuu
+              uuuuuuwuuuuuuuuuuuuuuuu
+              uuuuuuuuuuuuuuuuuuuuuuu
+              uuuuuuuuuuuuuuuuuuuuuuu

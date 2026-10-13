@@ -3,7 +3,9 @@ extends AutopilotRoute
 ## Reliquary with a detour into the overflow stacks (muted: the slip, the truth core, two of the
 ## Waiting); over the footbridge to the newsroom, where a Clerk turns the Feed on you (looked at, it
 ## washes the world out; turned from, it doesn't); muted, down the stair to the deep stacks and Prem
-## Vashti's office (her last note, a tube carrier nobody opened, one of the Waiting); the Editor in the
+## Vashti's office (her last note, a tube carrier nobody opened, one of the Waiting); back in the
+## newsroom the paper lift hauled up by hand while the Steward's Clerks and Custodians come (the hold), and
+## down its shaft to the sorting floor (the descent: one of the Waiting, the proofs it spiked); the Editor in the
 ## press hall (the Steward's way: into the gap it lights before each roller, your back to the Feed, at
 ## it while it re-inks), then past the barrier to the Reliquary. Both of her notes carried, then the Ark
 ## with its Archive restored: replay them, talk to Noor, and the dock's map and the run summary.
@@ -19,10 +21,11 @@ const THROUGH: Array[String] = [
 	"steward_blind_in_stacks", "found_unindexed_log", "found_truth_core",
 	"woke_survivor_in_stacks", "woke_survivor_in_doorway", "path_over_the_bridge", "newsroom_on_the_lattice",
 	"feed_blinded", "turned_from_the_feed", "woke_in_the_audit_office", "found_the_tube_carrier",
-	"found_vashti_last_note", "editor_engaged", "editor_called_the_rollers", "stood_in_the_gap",
+	"found_vashti_last_note", "hold_started", "hold_brought_them_out", "paper_lift_hauled", "went_down",
+	"dark_below", "woke_on_the_sorting_floor", "spiked_proofs_found", "climbed_back_up", "editor_engaged", "editor_called_the_rollers", "stood_in_the_gap",
 	"kept_its_back_to_the_feed", "editor_inked", "editor_beaten", "barriers_opened", "route_completed",
 	"arrived_by_reliquary",
-	"playstyle_profiled", "core_choice_shown", "five_cards_with_both_vashti_notes", "cores_carried",
+	"playstyle_profiled", "core_choice_shown", "six_cards_with_both_vashti_notes", "cores_carried",
 	"level_completed_archive_restored", "saved_after_choice", "ark_reached",
 	"archive_restored_on_the_ark", "noor_and_teo_present", "survivors_on_the_ark", "archive_replayed",
 	"trust_changed", "conversation_waiting", "conversation_offered", "conversation_answered", "loop_map_shown",
@@ -131,6 +134,24 @@ func drive(level: Level, gen: int) -> void:
 	Autopilot.tap(&"voice_toggle")
 	if not await Autopilot.wait(0.6, gen):
 		return
+	# The paper lift hauled up by hand (the hold), and down its shaft to the sorting floor.
+	if not await run_hold(level, player, Vector2i(31, 12), gen):
+		return
+	check(level.passage("vellum_sorting_down") != null and level.passage("vellum_sorting_down").can_interact(), "paper_lift_hauled")
+	var sorting := func() -> bool:
+		if not await Autopilot.use_at(level, player, Vector2i(22, 53), gen):
+			return false
+		check(GameState.run.survivor_ids.has("vellum_waiting_sorting_floor"), "woke_on_the_sorting_floor")
+		for cell: Vector2i in [Vector2i(33, 52), Vector2i(41, 52)]:
+			if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
+				return false
+		if not await Autopilot.use_at(level, player, Vector2i(42, 49), gen):
+			return false
+		check(GameState.run.found_core_ids.has("vellum_truth_spiked"), "spiked_proofs_found")
+		return true
+	if not await descend(level, player, Vector2i(34, 11), [Vector2i(28, 46), Vector2i(36, 46), Vector2i(36, 50), Vector2i(30, 52)],
+			sorting, [Vector2i(36, 52), Vector2i(36, 50), Vector2i(36, 46), Vector2i(28, 46)], Vector2i(26, 45), gen):
+		return
 	# Into the press hall and the Editor.
 	for cell: Vector2i in [Vector2i(27, 11), Vector2i(33, 11), Vector2i(34, 9), Vector2i(36, 9)]:
 		if not await Autopilot.advance_to(level, player, cell, 25.0, gen):
@@ -198,6 +219,9 @@ func _fight_editor(level: Level, player: Operator, editor: Editor, gen: int) -> 
 			Editor.Phase.FEED_WARN, Editor.Phase.FEED:
 				# Your back to its screen: walk away from it.
 				target = at + Iso.ground_velocity(away, 2.0)
+		# Off the wet ink ("Mind the floor").
+		if editor.in_ink(target):
+			target = Iso.cell_center(_dry_cell(level, editor, Iso.world_to_cell(target)))
 		if Iso.ground_distance(at, target) > 0.25:
 			Autopilot.press_move(Autopilot.input_for_ground(Iso.ground_dir_between(at, target)))
 		else:
@@ -208,7 +232,23 @@ func _fight_editor(level: Level, player: Operator, editor: Editor, gen: int) -> 
 	return true
 
 
-## The nearest open cell in the rollers' gap, clear of the press and the pulper.
+## The nearest walkable cell to `from` that isn't wet with ink.
+func _dry_cell(level: Level, editor: Editor, from: Vector2i) -> Vector2i:
+	var best := from
+	var best_d := INF
+	for dy: int in range(-3, 4):
+		for dx: int in range(-3, 4):
+			var c := from + Vector2i(dx, dy)
+			if not level.grid.is_walkable(c) or editor.in_ink(Iso.cell_center(c)):
+				continue
+			var d := Vector2(c).distance_to(Vector2(from))
+			if d < best_d:
+				best = c
+				best_d = d
+	return best
+
+
+## The nearest open cell in the rollers' gap, clear of the press and the pulper (and its ink).
 func _gap_cell(level: Level, editor: Editor, from: Vector2i) -> Vector2i:
 	var best := from
 	var best_d := INF
@@ -216,7 +256,7 @@ func _gap_cell(level: Level, editor: Editor, from: Vector2i) -> Vector2i:
 	for y: int in range(int(h.position.y), int(h.end.y)):
 		for x: int in range(int(h.position.x), int(h.end.x)):
 			var c := Vector2i(x, y)
-			if not editor.in_gap(Vector2(c) + Vector2(0.5, 0.5)) or not level.grid.is_walkable(c):
+			if not editor.in_gap(Vector2(c) + Vector2(0.5, 0.5)) or not level.grid.is_walkable(c) or editor.in_ink(Iso.cell_center(c)):
 				continue
 			if Vector2(c).distance_to(Vector2(editor.grid_cell())) < 2.0 or (editor.weak_point != null and c == editor.weak_point.grid_cell()):
 				continue
@@ -385,7 +425,8 @@ func _visit_stacks(level: Level, player: Operator, gen: int) -> bool:
 ## Carry both of Prem Vashti's notes (her thread), leaving the power cores.
 func choose(screen: Node, gen: int) -> void:
 	var offered: Array[String] = screen.get("offered")
-	check(offered.size() == 5 and offered.has(ContentIds.CORE_TRUTH_STACKS) and offered.has("vellum_truth_vashti_office"), "five_cards_with_both_vashti_notes")
+	# Its Reliquary's three, both of Prem Vashti's notes and the spiked proofs from the sorting floor.
+	check(offered.size() == 6 and offered.has(ContentIds.CORE_TRUTH_STACKS) and offered.has("vellum_truth_vashti_office") and offered.has("vellum_truth_spiked"), "six_cards_with_both_vashti_notes")
 	var r := GameState.run
 	var power := r.cores_power()
 	var truth := r.cores_truth()

@@ -315,6 +315,30 @@
 			"blurb": "A night shift's hand count of the last cargo, chalked on a hatch board and wired into a core.",
 			"steward": "The count was right. The label wasn't. That isn't the same as a lie.",
 			"log": "log_tideworks_hand_count"
+		},
+		"mercy_truth_morgue_ledger": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "The morgue, under Mercy General",
+			"blurb": "The morgue's own paper ledger, in an attendant's hand, wired into a core in the drawer.",
+			"steward": "That ledger was never meant to be read by anyone but the morgue.",
+			"log": "log_mercy_morgue_ledger"
+		},
+		"vellum_truth_spiked": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "The sorting floor under the stacks",
+			"blurb": "A bundle of galley proofs marked SPIKE in the Steward's own stamp, wired into a core.",
+			"steward": "I didn't destroy them. I didn't print them. Both of those are true.",
+			"log": "log_vellum_spiked"
+		},
+		"harbor_truth_ferry_roll": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "The drowned ferry under the slip",
+			"blurb": "The night ferry's passenger roll, sealed in oilcloth by the Wardfolk and wired into a core.",
+			"steward": "That ferry wasn't on my timetable.",
+			"log": "log_harbor_ferry_roll"
 		}
 	}
 }

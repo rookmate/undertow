@@ -88,6 +88,69 @@
 			"locked": "A container's hanging over the hatch. Somebody would have to wind it clear by hand.",
 			"steward_start": "tideworks_winch_start",
 			"steward_done": "tideworks_winch_done"
+		},
+		"mercy_generator": {
+			"seconds": 45.0,
+			"waves": [
+				[
+					"custodian",
+					"custodian"
+				],
+				[
+					"custodian",
+					"custodian"
+				],
+				[
+					"custodian",
+					"custodian",
+					"custodian"
+				]
+			],
+			"opens": "mercy_morgue",
+			"verb": "CRANK THE EMERGENCY GENERATOR",
+			"doing": "CRANKING THE GENERATOR BY HAND",
+			"locked": "The morgue lift has no power. Somebody would have to crank the emergency generator.",
+			"steward_start": "mercy_generator_start",
+			"steward_done": "mercy_generator_done"
+		},
+		"vellum_paper_lift": {
+			"seconds": 45.0,
+			"waves": [
+				[
+					"clerk",
+					"custodian"
+				],
+				[
+					"custodian",
+					"custodian"
+				],
+				[
+					"clerk",
+					"custodian",
+					"custodian"
+				]
+			],
+			"opens": "vellum_sorting",
+			"verb": "HAUL THE PAPER LIFT BY HAND",
+			"doing": "HAULING THE PAPER LIFT BY HAND",
+			"locked": "The paper lift's at the bottom. Somebody would have to haul it up by hand.",
+			"steward_start": "vellum_lift_start",
+			"steward_done": "vellum_lift_done"
+		},
+		"harbor_mast": {
+			"seconds": 40.0,
+			"waves": [
+				[
+					"warden"
+				],
+				[
+					"warden"
+				]
+			],
+			"opens": "harbor_ferry",
+			"verb": "WIND THE MAST'S GENERATOR",
+			"doing": "WINDING THE MAST'S GENERATOR",
+			"locked": "The ferry hatch is on the mast's circuit. Somebody would have to wind its generator."
 		}
 	}
 }

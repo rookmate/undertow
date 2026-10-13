@@ -817,3 +817,16 @@ Asked of the user on 2026-10-09 and answered the same day.
      someone waiting and the night shift's hand count of the last cargo, chalked on a hatch board (40
      crates of insulin off; the Steward's manifest said 12; 28 went up the hill). The full campaign
      run's time limit goes to 2100 s to fit the longer districts.
+186. **Holds and descents in Mercy, the Vellum and the Ward.** **Mercy General:** in the ambulance
+     yard, **crank the emergency generator** ("That generator is for emergencies. Leave it."), which runs
+     the morgue lift; down it, **the morgue**: one of the Waiting among the drawers, and the attendant's
+     ledger, which gives twelve dead their names where the Steward wrote "within acceptable losses".
+     **The Vellum:** in the newsroom, **haul the paper lift up by hand** while Clerks and Custodians
+     come off the press floor; down its shaft, **the sorting floor**: one of the Waiting, and the galley
+     proofs of four stories about the bridge, every one set in type and stamped SPIKE. **Harbor Ward:**
+     on Net Lane, **wind the Ward mast's hand generator** while the curfew patrol comes in from both ends
+     of the lane (one Warden, then another: a
+     Warden takes some stopping, and the Ward has no Steward to help); it opens the ferry hatch on the mast's circuit; down it,
+     **the drowned ferry**: one Warden on the car deck, and the night ferry's passenger roll (the Ward's
+     mast heard the bridge was failing and they ran the ferry: forty-one aboard, forty-one ashore). The
+     Steward says nothing about the Ward's: it can't hear it.

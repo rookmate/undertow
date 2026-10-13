@@ -8,6 +8,10 @@
 ; This map's own characters ('%' lines; see core/tiles.gd):
 %  n newsroom_floor
 %  D newsroom_desk
+%  r crank
+%  h hold_spawn
+%  l ladder
+%  u culvert
 ;
 ; Terrain                                  Props and markers (floor shown in brackets)
 ;   ' ' void (blocked, not drawn)            L  Lattice lamp [pavement, indexed]
@@ -20,6 +24,8 @@
 ;   :   old quay, unindexed                  T  truth cache [stacks]      U  unindexed log [stacks]
 ;   _   overflow stacks floor, unindexed     D  a newsroom desk, its screen dead [parquet]
 ;   n   the newsroom's parquet (indexed)
+;   r   the paper lift's winch (a hold)       h  where the Steward's machines come out
+;   l   a ladder (the lift shaft, and back up)  u  the sorting floor (a descent, unindexed)
 ;   S   stair down, unindexed
 ;   ~   canal water   =  railing   -  low wall
 ; The boss: B the Editor  Z its weak point (the bale stack over the pulper)  y the barrier, open
@@ -36,13 +42,19 @@
 @ 27,19 vellum_waiting_audit_office
 @ 33,19 vellum_truth_vashti_office
 @ 30,20 log_vellum_tube_carrier
+@ 31,13 vellum_paper_lift
+@ 34,12 vellum_sorting_down
+@ 25,45 vellum_sorting_up
+@ 21,53 vellum_waiting_sorting_floor
+@ 43,49 vellum_truth_spiked
 ! 21,6 THE CLERKS FLASH THE FEED. TURN YOUR BACK ON THE SCREEN, OR ROLL.
 ! 27,12 [voice_on] THE STAIR GOES DOWN TO THE DEEP STACKS. THE STEWARD NEVER LOOKED.
+! 31,12 THE PAPER LIFT. HAUL IT UP BY HAND AND ITS SHAFT GOES DOWN TO THE SORTING FLOOR.
 #############################################
 #############################################
 #############################################
 ####d###g###m#############d###m#########g####
-#,,,,,,,,,,,,,,,=~~~~~~~=nnnnnnnnnL-........L
+#,,,,,,,,,,,,,,,=~~~~~~~=nhnnnnnnhL-........L
 #,L...L....L...,=~~~~~~~=nDnDnDnDnn-.Z..B....
 #,.............,,,,,,,,,,nnnnnnnnkn-.........
 #,.............,,,,,,,,,,nDnDnDnDnn-.........
@@ -50,8 +62,8 @@
 #,.....k.......,=~~~~~~~=nnnnknnnnnn.........
 #,L............,=~~~~~~~=nDnDnDnDnn-.........
 #,.............,=~~~~~~~=nnnnnnnnnn-.........
-#========......L=~~~~~~~=nDnDnDnDnn-L........
- ~~~~~~~=,.....,=~~~~~~~=nnnCnnnnnn-.........
+#========......L=~~~~~~~=nDnDnDnDnl-L........
+ ~~~~~~~=,.....,=~~~~~~~=nnnCnnrnnn-.........
  ~~~~~~~=L.....,=~~~~~~~=--S--------yyyyyyyyy
  ~~~~~~~=,.....,=~~~~~~~=_________--..C......
       ###,.....L=~~~~~~~=_|__|__|_--.........
@@ -80,3 +92,18 @@
       ###,..P..,=~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       ###,.....,=~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       ###--------~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+                        uuuuuu
+                        uluuuuuuuuuuuu
+                        uuuuuuuuuuuuuu
+                        uuuuuu      uu
+                                    uu   uuuu
+                                    uu   uuTu
+                                    uu   uuuu
+                          uuuuuuuuuuuuuuuuuuu
+                    uuuuuuuuuuuuuuuuuucuuuuuu
+                    uwuuuuuuuucuuuuuuuuuuuuuu
+                    uuuuuuuuuuuuuuuuuuuuuuuuu
+                                         uuuu
+                                         uuuu

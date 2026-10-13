@@ -185,6 +185,17 @@ func run_hold(level: Level, player: Operator, stand: Vector2i, gen: int) -> bool
 			else:
 				Autopilot.press_move(Vector2.ZERO)
 		spent += await Autopilot.physics_step()
+	# Done: see off the ones it brought out before going on (they don't give up).
+	var clearing := 0.0
+	while hold.done and clearing < 40.0 and not hold.brought_out().is_empty():
+		if Autopilot.stale(gen):
+			Autopilot.release_all()
+			return false
+		frame += 1
+		var left := hold.brought_out()
+		left.sort_custom(func(a: Enemy, b: Enemy) -> bool: return Iso.ground_distance(a.global_position, player.global_position) < Iso.ground_distance(b.global_position, player.global_position))
+		Autopilot.fight(player, left[0], frame)
+		clearing += await Autopilot.physics_step()
 	Autopilot.release_all()
 	return hold.done
 
