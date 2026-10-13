@@ -179,7 +179,13 @@ Plan: `design/deeper-districts.md`.
 | 33 | Noor's Mast counts what's left in a district, never where; the plan | done |
 | 34 | Dying in a boss fight restarts it; a checkpoint at every boss arena's door; the autopilot can't go down (it logs where it would have) | done |
 | 35 | Boss stages, built on the Lung | done |
-| 36 | Holds and descents; Greywater in three movements | next |
+| 36 | Holds and descents; Greywater in three movements (the bot takes it in about 4 minutes, from 2) | done |
+| 37 | Every boss in stages, part 1: the Conductor, the Surgeon, the Crane | next |
+| 38 | Every boss in stages, part 2: the Editor, the Warden-Prime | |
+| 39 | Holds and descents in the other districts | |
+| 40 | Revisits: tool doors, hardening by that district's truths, truths to the Archive | |
+| 41 | Rewrite's truth threshold re-tuned against the new count | |
+| — | Sol analysis review (reviews/deeper-districts.md), fixes, re-check | |
 
 ## Later milestones (planned)
 

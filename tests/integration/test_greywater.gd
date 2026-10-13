@@ -127,9 +127,29 @@ func test_no_path_from_anywhere_in_the_marrow_whatever_the_tide() -> void:
 
 
 func test_the_pump_room_is_off_the_lattice() -> void:
-	var cache := level.grid.first("T")
-	check_eq(level.grid.floor_at(cache + Vector2i(0, 1)), LevelGrid.Floor.GRATING)
-	check_false(level.grid.is_indexed(cache + Vector2i(0, 1)))
+	check_eq(level.grid.floor_at(Vector2i(11, 3)), LevelGrid.Floor.GRATING)
+	check_false(level.grid.is_indexed(Vector2i(11, 3)))
+
+
+## Three movements (design/deeper-districts.md): the pumps run by hand on the apron drain the sump; the
+## pump room's stair goes down into the galleries, off the Lattice and dark, where the plaque is now.
+func test_the_pumps_open_the_way_down_to_the_plaque() -> void:
+	var hold: Hold = null
+	for n: Node in level.world.get_children():
+		if n is Hold:
+			hold = n
+	check(hold != null and hold.hold_id == "greywater_pumps", "Pumping Station 2's hand crank")
+	check(level.grid.cells_with(Tiles.HOLD_SPAWN).size() >= 2, "doors the Steward's machines come out of")
+	var stair := level.passage("greywater_sump_down")
+	check(stair != null and not stair.can_interact() and stair.blocked_reason().contains("pumps"), "the stair's under water")
+	check(level.descent_finds_left() >= 2, "what's below glows up through it: the plaque and someone waiting")
+	var plaque := level.grid.first("T")
+	check_eq(level.grid.entity_id(plaque), "greywater_truth_plaque")
+	check_eq(level.grid.floor_at(plaque + Vector2i(0, 1)), LevelGrid.Floor.CULVERT, "the plaque is down in the sump")
+	check_false(level.grid.is_indexed(plaque + Vector2i(0, 1)), "off the Lattice")
+	check_false(level.grid.reachable_from(level.grid.start_cell()).has(plaque + Vector2i(0, 1)), "no walking there: only the stair")
+	GameState.complete_hold("greywater_pumps")
+	check(stair.can_interact(), "the pumps run: the stair's open")
 
 
 ## With the Pumphouse rebuilt on the Ark, high water is shorter and doesn't sting; it still slows you.

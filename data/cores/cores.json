@@ -239,8 +239,8 @@
 		"greywater_truth_plaque": {
 			"kind": "truth",
 			"name": "Cracked Core",
-			"origin": "The old manual pump room",
-			"blurb": "Wired behind a brass plaque on the pump room wall, where someone hid it.",
+			"origin": "The sump galleries, under the old pump room",
+			"blurb": "Wired behind a brass plaque on the outfall wall, where the last shift hid it.",
 			"steward": "Old brass. Sentiment.",
 			"log": "log_the_plaque"
 		},

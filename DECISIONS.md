@@ -772,3 +772,21 @@ Asked of the user on 2026-10-09 and answered the same day.
      all: you read the grates' red light yourself), it fills faster still (0.85 s), the deep water
      comes in to 3.6 tiles, and it vents for less (2.8 s). The Steward: "The tide's in. Stay close."
      and "The Marrow. I've lost you."
+181. **Holds and descents** (design/deeper-districts.md), built to reuse. **A hold** is a crank ('@' its
+     id; data/holds.json its numbers and words): start it and it runs while you stay within 3.5 tiles,
+     pausing when you don't; its waves of the Steward's machines come out at the map's spawn points as
+     it goes (and they come for you: sent to stop you, they don't give up); done, it opens the
+     passage it kept shut, for the rest of the run (`holds_done`, saved). Downed, it starts over and
+     what it brought out goes. Its light and its bar are human cream. **A passage** is a pair of
+     ladders ('<name>_down', '<name>_up'): a short fade and you're at the other end. A shut way down
+     says why, and what's still to find below glows up through it in truth cyan. **A descent** is a
+     separate dark place below the street (culvert floor: off the Lattice): the dark closes in round
+     your hand lamp, which is on down there whatever the Steward's doing.
+182. **Greywater in three movements.** The seawall and the low streets as before; then on the station
+     apron, **Pumping Station 2's hand crank** (beside the one still waiting to be told to run the
+     pumps): run the pumps by hand for 50 s while the Steward sends three waves of Custodians out of the
+     other stations' doors ("Those are mine to run. Leave them, or I'll have to stop you."); that drains
+     the sump. Then **down the old pump room's stair into the sump galleries**: a landing, a tunnel, a
+     gallery with machines in it, a side room with someone still waiting, and the outfall chamber
+     where the last shift hid the brass plaque (moved down from the pump room wall). Then back up,
+     the Marrow, and the Lung in its three stages.

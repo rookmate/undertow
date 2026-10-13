@@ -96,6 +96,7 @@ func _draw() -> void:
 		return
 	var p := level.player
 	_draw_boss()
+	_draw_hold()
 	_draw_threats(p)
 	_draw_interaction(p)
 	_draw_woken_lines()
@@ -124,6 +125,22 @@ func _draw_boss() -> void:
 	for t: float in b.stage_thresholds():
 		draw_rect(Rect2(at + Vector2(w * t - 1.5, 2), Vector2(3, 18)), Palette.NEAR_BLACK)
 		draw_rect(Rect2(at + Vector2(w * t - 0.5, 2), Vector2(1, 18)), Palette.IVORY)
+
+
+## A hold running: what it is and how far along, top centre (under a boss's bar), in human cream: people's
+## work. Walk off and it says to come back.
+func _draw_hold() -> void:
+	var h := level.running_hold()
+	if h == null:
+		return
+	var w := 520.0
+	var at := Vector2((size.x - w) * 0.5, 40.0 + (70.0 if level.boss != null and is_instance_valid(level.boss) and level.boss.is_engaged and level.boss.is_alive() else 0.0))
+	var label := "%s  ·  %d%%" % [Holds.text(h.hold_id, "doing"), roundi(h.ratio() * 100.0)]
+	if not h.turning():
+		label = "BACK TO IT  ·  %d%%" % roundi(h.ratio() * 100.0)
+	draw_string(UiFonts.heading(), at + Vector2(0, -6), label, HORIZONTAL_ALIGNMENT_LEFT, -1, 24, Palette.HUMAN_CREAM if h.turning() else Palette.IVORY_DIM)
+	draw_rect(Rect2(at + Vector2(0, 6), Vector2(w, 8)), Color(Palette.NEAR_BLACK, 0.7))
+	draw_rect(Rect2(at + Vector2(0, 6), Vector2(w * h.ratio(), 8)), Palette.HUMAN_CREAM)
 
 
 func _draw_threats(p: Operator) -> void:

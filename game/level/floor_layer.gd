@@ -107,6 +107,8 @@ func _draw() -> void:
 				_flagstones(cell, Palette.WARD_STONE if (cell.x + cell.y) % 2 == 0 else Palette.WARD_STONE_B, 2)
 			LevelGrid.Floor.GLASS:
 				_glass(cell)
+			LevelGrid.Floor.CULVERT:
+				_culvert(cell)
 			LevelGrid.Floor.VOID:
 				_drop(cell)
 
@@ -366,6 +368,21 @@ func _glass(cell: Vector2i) -> void:
 		draw_set_transform(Iso.cell_center(cell), 0.0, Vector2(1.0, Iso.SQUASH))
 		RingPainter.paint(self, Vector2.ZERO, Iso.HALF_W * 0.45, ring)
 		draw_set_transform(Vector2.ZERO)
+
+
+## A descent's floor: old wet brick under the street, a gutter of black water down some of it, moss.
+func _culvert(cell: Vector2i) -> void:
+	draw_colored_polygon(Iso.cell_diamond(cell), Palette.NEAR_BLACK)
+	var rng := _rng(cell, 9)
+	for i: int in 3:
+		for j: int in 3:
+			var c := Palette.STONE_OLD.darkened(0.55 + rng.randf() * 0.15)
+			draw_colored_polygon(_sub_diamond(cell, i / 3.0, j / 3.0, 1.0 / 3.0, 0.02), c)
+	if (cell.x + cell.y) % 3 == 0:
+		draw_line(_at(cell, 0.0, 0.5), _at(cell, 1.0, 0.5), Color(Palette.WATER_DEEP, 0.9), 5.0, true)
+		draw_line(_at(cell, 0.0, 0.5), _at(cell, 1.0, 0.5), Color(Palette.WATER_SHEEN, 0.25), 1.5, true)
+	if rng.randf() < 0.3:
+		draw_circle(_at(cell, rng.randf_range(0.2, 0.8), rng.randf_range(0.2, 0.8)), 4.0, Color(Palette.LAWN.darkened(0.5), 0.6), true, -1.0, true)
 
 
 func _grating(cell: Vector2i) -> void:

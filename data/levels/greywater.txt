@@ -13,10 +13,16 @@
 %  d pump_door
 %  t turbine
 %  g tide_gauge
+%  r crank
+%  s hold_spawn
+%  l ladder
+%  u culvert
 ;   ,  the seawall's concrete (high ground)       .  a low street (floods at high tide)
 ;   k  kelp on a low street (slows you)           m  the thick Marrow (no path drawn in it)
 ;   :  iron grating (the old pump room: off the Lattice)
 ;   #  a pumping station's wall   d  its door   t  a tidal turbine   g  a tide gauge
+;   r  Pumping Station 2's hand crank (the hold)   s  where the Steward's machines come out to stop you
+;   l  a ladder (the pump room's stair to the sump, and back up)   u  the sump galleries (a descent)
 ; Shared: ~ water  - low wall  L Lattice lamp  P start  C checkpoint  R Reliquary  c Custodian
 ;   O Salvager  W one of the Waiting  w one of the Waiting, off the path  T truth cache
 ;   B the boss (the Lung)  Z its weak point (the old hand valve)  y the barrier, open when it falls
@@ -26,13 +32,19 @@
 @ 26,4 greywater_waiting_valve_keeper
 @ 28,10 greywater_waiting_in_the_marrow
 @ 9,2 greywater_waiting_last_shift
-@ 12,2 greywater_truth_plaque
+@ 39,31 greywater_truth_plaque
+@ 20,3 greywater_pumps
+@ 10,3 greywater_sump_down
+@ 4,29 greywater_sump_up
+@ 9,38 greywater_waiting_in_the_sump
 ! 6,19 READ THE GAUGE: WHEN THE WATER CLIMBS ITS MARKS, GET TO HIGH GROUND.
 ! 17,12 THE CAUSEWAY STAYS DRY AT HIGH WATER.
+! 20,4 THE STATION'S HAND CRANK. RUN THE PUMPS BY HAND AND THE SUMP DRAINS.
+! 11,5 THE SUMP STAIR: UNDER WATER UNTIL THE PUMPS RUN.
 ############################################
 #######d###########d#######d################
-##,,,,,,:w::T:,,,,,,,,,,,,,,,,,~~~L,,,,,,,L
-##,L,,,,::::::,L,,W,,,,,L,,,,,,~~~,,,,,,,,,
+##,,,,,s:w::::,,,,,,,,,,,,,s,,,~~~L,,,,,,,L
+##,L,,,,::l:::,L,,W,r,,,L,,,,,,~~~,,,,,,,,,
 ##,,,,,,---:--,,,,,,,,,,,,W,,,,,,,,,,,,,,,,
 ##,,,C,,,,,,,,,,,,,,,,,,,,,,,,,C,,,,,,,,,,,
 ##,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -55,3 +67,18 @@
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+   uuuuuuu
+   uluuuuuuuuuuuuuuuuuu
+   uuuuuuuuuuuuuuuuuuuu            uuuuuu
+   uuuuuuu           uu            uuuuTu
+                     uu            uuuuuu
+                     uu            uuuuuu
+                     uu            uuOuuu
+                     uu            uuuuuu
+              uuuuuuuuuuuuuuuuu    uuuuuu
+        uuuuuuuuuuuuuuuuuucuuuu    uuuuuu
+        uwuuuuuuuuuOuuuuuuuuuuuuuuuuuuuuu
+        uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+              uuuuuuuuuuuuuuuuu    uuuuuu
