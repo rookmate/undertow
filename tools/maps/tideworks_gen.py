@@ -37,6 +37,11 @@ put(24, 13, 'C')
 # The quay's hand winch (the hold): wind the hanging container clear of the beached freighter's hatch,
 # while the Steward's Custodians come out of the warehouses to stop you.
 put(10, 13, 'n')
+# The customs shed behind the quay's containers, on a Steward lock (the Signal Jammer opens it): what
+# it impounded still on the floor.
+put(22, 8, 'f')
+rect(17, 3, 27, 7, 'i')
+put(25, 4, 'T')
 put(6, 9, 's'); put(22, 9, 's')
 put(13, 14, 'l')
 # The freighter's hold under the quay (a descent, off the Lattice): the foot of the hatch ladder, the

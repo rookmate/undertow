@@ -300,6 +300,18 @@
 		"vellum_lift_done": {
 			"text": "The sorting floor. Nothing down there was ever printed.",
 			"purpose": "fact"
+		},
+		"kestrel_gate_jammed": {
+			"text": "That gate list kept order on the worst night. Leave it locked.",
+			"purpose": "fact"
+		},
+		"loop_lift_jolted": {
+			"text": "That box has been dark since the Quiet. It can stay dark.",
+			"purpose": "fact"
+		},
+		"tideworks_customs_jammed": {
+			"text": "Those goods were impounded lawfully.",
+			"purpose": "fact"
 		}
 	}
 }

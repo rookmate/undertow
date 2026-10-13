@@ -851,6 +851,69 @@
 				"text": "The Ward got people off the bridge and the city never counted it.",
 				"trust": 1
 			}
+		},
+		"log_kestrel_gate_list": {
+			"title": "The Gate List · Kestrel Funicular",
+			"kind": "truth",
+			"core": "kestrel_truth_gate_list",
+			"record": [
+				"GATE LIST · KESTREL FUNICULAR · THE QUIET",
+				"STEWARD ORDER: PRIORITY RESIDENTS FIRST. SCORE 70 AND OVER.",
+				"First car down: 22 residents, scores 88 to 71.",
+				"Second car: held. Scores under 70.",
+				"03:10  I opened the gate by hand. Everybody went."
+			],
+			"steward_now": "The scores were fair: age, health, dependents. The gatekeeper didn't trust them, and nobody was hurt. This time.",
+			"noor": {
+				"text": "It scored people for a seat on the funicular. Somebody opened the gate anyway.",
+				"trust": 2
+			},
+			"teo": {
+				"text": "That score was mine. I built it for clinic queues, not for a gate.",
+				"trust": 1
+			}
+		},
+		"log_loop_signal_box": {
+			"title": "Register · Signal Box 4",
+			"kind": "truth",
+			"core": "loop_truth_signal_box",
+			"record": [
+				"SIGNAL BOX 4 · REGISTER · THE QUIET",
+				"00:12  ALL ROUTES HELD. STEWARD ORDER.",
+				"00:31  ONE ROUTE SET: COUNCIL SPECIAL, SPIRE TO THE HEIGHTS.",
+				"00:33  Council special through. Everything else still held.",
+				"Nobody's told me what to do about the rest."
+			],
+			"steward_now": "The Council had to be moved first. Every order after depended on it.",
+			"noor": {
+				"text": "One train ran that night. The Council's.",
+				"trust": 2
+			},
+			"teo": {
+				"text": "I signed off the Council special as a drill. It said drill.",
+				"trust": 1
+			}
+		},
+		"log_tideworks_impounded": {
+			"title": "Customs · Impounded",
+			"kind": "truth",
+			"core": "tideworks_truth_impounded",
+			"record": [
+				"CUSTOMS · TIDEWORKS QUAY · IMPOUNDED",
+				"CONSIGNEE: HARBOR WARD RADIO SOCIETY",
+				"CONTENTS: MAST PARTS, TWO TRANSMITTERS, ONE GENERATOR",
+				"HELD BY ORDER OF THE STEWARD: UNLICENSED BROADCAST",
+				"Held three years. They built their mast anyway."
+			],
+			"steward_now": "An unlicensed network is a danger to everyone on mine. I was right about that. They heard what I didn't say.",
+			"noor": {
+				"text": "Our mast parts. Three years on this quay. We built it out of scrap instead.",
+				"trust": 2
+			},
+			"teo": {
+				"text": "Unlicensed broadcast. That was a rule I wrote.",
+				"trust": 1
+			}
 		}
 	}
 }

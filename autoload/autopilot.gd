@@ -29,7 +29,7 @@ const LONG_RUN_SECONDS := 55.0
 var mortal: bool = false
 var near_misses: Dictionary[String, int] = {}
 const AUTOPILOT_SAVES := "user://autopilot"
-const SCENARIOS: Array[String] = ["slice", "campaign", "loop", "tideworks", "mercy", "greywater", "vellum", "harbor", "spire", "ending_reboot", "ending_unplug", "ending_rewrite", "revisit", "ring_gallery", "options", "tour"]
+const SCENARIOS: Array[String] = ["slice", "campaign", "loop", "tideworks", "mercy", "greywater", "vellum", "harbor", "spire", "ending_reboot", "ending_unplug", "ending_rewrite", "revisit", "tool_door", "ring_gallery", "options", "tour"]
 
 const DistrictRun := preload("res://autoload/autopilot/scenarios/district_run.gd")
 const Campaign := preload("res://autoload/autopilot/scenarios/campaign.gd")
@@ -38,6 +38,7 @@ const OptionsTour := preload("res://autoload/autopilot/scenarios/options_tour.gd
 const Tour := preload("res://autoload/autopilot/scenarios/tour.gd")
 const EndingRun := preload("res://autoload/autopilot/scenarios/ending_run.gd")
 const RevisitRun := preload("res://autoload/autopilot/scenarios/revisit_run.gd")
+const ToolDoorRun := preload("res://autoload/autopilot/scenarios/tool_door_run.gd")
 
 var active: bool = false
 var seconds: float = 30.0
@@ -144,6 +145,8 @@ func make_scenario(scenario_name: String, level_id: String = "") -> AutopilotSce
 			return EndingRun.new(scenario_name.trim_prefix("ending_"))
 		"revisit":
 			return RevisitRun.new()
+		"tool_door":
+			return ToolDoorRun.new()
 		"ring_gallery":
 			return RingGallery.new()
 		"options":

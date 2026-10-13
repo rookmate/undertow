@@ -842,3 +842,15 @@ Asked of the user on 2026-10-09 and answered the same day.
      straight to the Archive (carried, its log filed; "FILED TO THE ARCHIVE" over the cache), and the
      Reliquary, opened once, is the way home ("BACK TO THE ARK"). The gate plays a revisit: Mercy
      General, done once without going down to the morgue.
+188. **Tool doors** (design/deeper-districts.md's reason to go back). A door one of the Ark's tools
+     opens, with a truth behind it you couldn't have had the first time: you need the tool with you
+     (in the loadout you set off with), and without it the door says what would open it ("The Signal
+     Jammer would open it. It's on the Ark."). Opened, it stays open; while its truth is still there,
+     it glows at the sill in truth cyan. Three, in the districts you reach before their tools: **Kestrel
+     Heights**, the funicular's gatehouse below the stop, on a Steward lock the **Signal Jammer** jams:
+     the gatekeeper's list (the Steward scored residents for the first car down; at 03:10 the
+     gatekeeper opened the gate by hand). **The Loop**, signal box 4 over platform A, its lift dead
+     until the **Defib Gauntlet** jolts it: the signalman's register (every train held at the Quiet but
+     one, the Council's). **The Tideworks**, the customs shed behind the quay's containers, on a Steward
+     lock the **Jammer** jams: what customs impounded (the Harbor Ward radio society's mast parts, held
+     three years for "unlicensed broadcast"). The gate plays one: back to Kestrel with the Jammer.

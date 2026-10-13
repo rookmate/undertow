@@ -105,6 +105,8 @@ const CRANK := "Ь"
 const LADDER := "У"
 const CULVERT := "Ё"
 const HOLD_SPAWN := "Ғ"
+## A door one of the Ark's tools opens (its id on an '@' line: data/tool_doors.json).
+const TOOL_DOOR := "Ф"
 
 # --- How tall the solid ones stand -------------------------------------------------------------------
 ## Solid named things taller than a chest-height shot: they stop sight, swings and shots
@@ -128,7 +130,7 @@ const BY_NAME: Dictionary[String, String] = {
 	"patrol": PATROL, "noor_down": NOOR_DOWN, "ward_boat": WARD_BOAT, "commons": COMMONS, "commons_door": COMMONS_DOOR,
 	"wardfolk": WARDFOLK, "ward_mast": WARD_MAST, "spire_glass": SPIRE_GLASS, "rack": RACK, "pane": PANE, "confession": CONFESSION,
 	"council": COUNCIL, "council_door": COUNCIL_DOOR,
-	"crank": CRANK, "ladder": LADDER, "culvert": CULVERT, "hold_spawn": HOLD_SPAWN,
+	"crank": CRANK, "ladder": LADDER, "culvert": CULVERT, "hold_spawn": HOLD_SPAWN, "tool_door": TOOL_DOOR,
 }
 
 

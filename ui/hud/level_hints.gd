@@ -11,6 +11,8 @@ const HINT_REACH := 2.6
 var level: Level
 ## The place hint showing now ("" if none).
 var place_hint: String = ""
+## How far above the top of the weapon cards a place hint sits (px).
+const HINT_ABOVE_CARDS := 34.0
 var _label: Label
 var _hint: Label
 
@@ -37,7 +39,8 @@ func _ready() -> void:
 	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_hint.offset_left = -600
 	_hint.offset_right = 600
-	_hint.offset_top = -120
+	# Between the Steward's subtitles and the weapon cards, over neither.
+	_hint.offset_top = -(HudView.MARGIN + HudView.CHIP_H + HINT_ABOVE_CARDS)
 	_hint.modulate.a = 0.0
 	add_child(_hint)
 	_refresh()

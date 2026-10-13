@@ -10,7 +10,8 @@
 #      Continue, and the end: the Council Chamber, an epilogue, the title after. It ends when it's done
 #      (at most CAMPAIGN_SECONDS). Then the three endings, each from a prepared run ("ending_reboot",
 #      "ending_unplug", "ending_rewrite"), FULL_SECONDS each, and a revisit ("revisit": back to Mercy
-#      General, REVISIT_SECONDS). Prepared single-district runs and the long
+#      General, REVISIT_SECONDS) and a tool door ("tool_door": back to Kestrel Heights with the Signal
+#      Jammer, FULL_SECONDS). Prepared single-district runs and the long
 #      "slice" can be added with FULL_SCENARIOS.
 #   5. A tour of every district in LevelCatalog (autopilot scenario "tour": start, checkpoints, finds,
 #      Reliquary, muted), each with no ERROR/WARNING lines. The district listing is checked first.
@@ -24,7 +25,7 @@ LOG_DIR="${LOG_DIR:-$ROOT/reports/check}"
 SMOKE_SECONDS="${SMOKE_SECONDS:-30}"
 SMOKE_SCENARIO="${SMOKE_SCENARIO:-slice}"
 # The long runs: the whole game so far in one run, and any single-district runs asked for.
-FULL_SCENARIOS="${FULL_SCENARIOS:-campaign ending_reboot ending_unplug ending_rewrite revisit}"
+FULL_SCENARIOS="${FULL_SCENARIOS:-campaign ending_reboot ending_unplug ending_rewrite revisit tool_door}"
 seconds_for() {
   case "$1" in
     campaign) echo "${CAMPAIGN_SECONDS:-2100}" ;;

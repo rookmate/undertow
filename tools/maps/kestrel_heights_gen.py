@@ -2,7 +2,7 @@
 """Draws data/levels/kestrel_heights.txt's grid (the header with the legend and ids is kept by hand).
     python3 -I tools/maps/kestrel_heights_gen.py   # prints the grid rows
 """
-W, H = 36, 30
+W, H = 36, 35
 g = [[' '] * W for _ in range(H)]
 def put(x, y, ch):
     if 0 <= x < W and 0 <= y < H: g[y][x] = ch
@@ -68,4 +68,10 @@ rect(2, 26, W - 6, 27, 'v')
 for x in (12, 20, 27): put(x, 26, 'j')
 rect(2, 28, W - 5, 28, '=')
 rect(W - 5, 2, W - 5, 28, '=')
+# At the foot of the funicular stop, a Steward lock on a gate (the Signal Jammer opens it), and past it a
+# gravel path the Lattice never lit, through the railing to the gatehouse and the gatekeeper's list.
+put(6, 26, 'n')
+rect(6, 27, 6, 28, 'q')
+rect(3, 29, 10, 32, 'i')
+put(9, 31, 'T')
 for row in g: print(''.join(row).rstrip())
