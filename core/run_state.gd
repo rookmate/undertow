@@ -5,7 +5,11 @@ extends RefCounted
 ## count and the list can never disagree.
 
 ## 2: weapons are found (weapons_owned), scrap and upgrades.
-const SAVE_VERSION := 2
+## 3: the run remembers the cores each Reliquary offered and you left (cores_left), the holds done and
+## the doors opened (milestone 5).
+const SAVE_VERSION := 3
+## Saves from before this can't tell a truth you left at a Reliquary from one you never found.
+const REMEMBERS_LEFT_FROM := 3
 
 const WHO_NOOR := &"noor"
 const WHO_TEO := &"teo"
@@ -186,7 +190,10 @@ static func from_dict(d: Dictionary) -> RunState:
 	s.logs_unlocked = _strings(d.get("logs_unlocked", []))
 	s.logs_replayed = _strings(d.get("logs_replayed", []))
 	s.found_core_ids = _strings(d.get("found_core_ids", []))
-	s.cores_left = _strings(d.get("cores_left", []))
+	# A save from before the run remembered what it left (DECISIONS 190): nothing counts as left, so a
+	# truth you found and left at a Reliquary then can be found again on a revisit. Better that than losing
+	# one you never found.
+	s.cores_left = _strings(d.get("cores_left", []) if version >= REMEMBERS_LEFT_FROM else [])
 	s.noor_trust = clampi(_int(d.get("noor_trust", 0)), Tunables.TRUST_MIN, Tunables.TRUST_MAX)
 	s.teo_trust = clampi(_int(d.get("teo_trust", 0)), Tunables.TRUST_MIN, Tunables.TRUST_MAX)
 	s.noor_present = _bool(d.get("noor_present", true))

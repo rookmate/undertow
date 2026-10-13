@@ -50,7 +50,7 @@ func prompt_verb() -> String:
 
 func interact(_player: Operator) -> void:
 	if can_interact():
-		level.take_passage(self)
+		level.descents.take_passage(self)
 
 
 func _process(delta: float) -> void:

@@ -212,3 +212,53 @@ func test_going_back_to_the_ward_plays_no_departure() -> void:
 	GameState.complete_level("harbor")
 	check(map.turn_before("harbor") == null, "going back is only going back")
 	map.queue_free()
+
+
+## Every district done: the Loop map doesn't say the skiff isn't ready; it offers the way back.
+func test_with_everything_done_the_skiff_still_goes_back() -> void:
+	for id: String in LevelCatalog.LEVELS:
+		GameState.complete_level(id)
+	var map := CityMap.new()
+	add_child(map)
+	await wait_frames(2)
+	check_eq(map.chosen, "kestrel", "the first district you can go back to")
+	check_false((map.get("_go") as Button).disabled, "the skiff can take you")
+	check_false((map.get("_detail") as Label).text.contains("ISN'T READY"))
+	Modals.pop(map)
+	map.queue_free()
+
+
+## Two of its truths carried out: a Custodian strikes when its shorter telegraph runs out, not when the
+## old one would have.
+func test_a_quicker_windup_strikes_sooner() -> void:
+	var between := (Custodian.WINDUP + Custodian.WINDUP * Hardening.WINDUP_SCALE) * 0.5
+	await _open_mercy()
+	var c := _custodians()[0]
+	c.call(&"_enter", Enemy.State.WINDUP)
+	await wait_seconds(between)
+	check_eq(c.state, Enemy.State.WINDUP, "as built, still winding up")
+	var two: Array[String] = [SHEETS, "mercy_truth_0417"]
+	_done_with(two)
+	await _open_mercy()
+	c = _custodians()[0]
+	c.call(&"_enter", Enemy.State.WINDUP)
+	await wait_seconds(between)
+	check(c.state != Enemy.State.WINDUP, "quicker: it's struck already")
+
+
+## Three of its truths carried out: an elite Warden is faster hunting you and walking its beat.
+func test_an_elite_warden_keeps_its_speed() -> void:
+	var three: Array[String] = [SHEETS, "mercy_truth_0417", LEDGER]
+	_done_with(three)
+	await _open_mercy()
+	# You're well away (it can't see you or reach you); it hunts toward where it last saw you.
+	level.player.position = Iso.cell_center(level.grid.first("R"))
+	var w := level.add_enemy(Warden.new(), level.grid.start_cell() + Vector2i(1, 0), Warden.MAX_INTEGRITY) as Warden
+	check(w.elite, "elite")
+	w.hunting = true
+	w.last_seen = Iso.cell_center(level.grid.start_cell() + Vector2i(1, -3))
+	await wait_physics_frames(5)
+	check_near(w.speed_tiles, Warden.HUNT_SPEED * Hardening.ELITE_SPEED, 0.001, "hunting")
+	w.hunting = false
+	await wait_physics_frames(5)
+	check_near(w.speed_tiles, Warden.PATROL_SPEED * Hardening.ELITE_SPEED, 0.001, "on its beat")

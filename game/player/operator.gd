@@ -351,6 +351,8 @@ func _really_go_down() -> void:
 	_downed = true
 	_body.downed = true
 	downed.emit()
+	if level != null:
+		level.player_went_down()
 	await Wait.seconds(self, DOWNED_SECONDS)
 	if level != null:
 		level.restart_after_death()

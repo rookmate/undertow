@@ -88,9 +88,10 @@ put(32, 17, 'q')
 put(10, 18, 'v')
 put(22, 18, 'v')
 # The mast's hand generator on Net Lane (the hold): wind it, and the ferry hatch on its circuit opens,
-# while the curfew patrol comes in from both ends of the lane to stop you.
+# while the curfew patrol comes for you along the lane and off the middle pier (not from the border gate:
+# fighting them there would bring the Warden-Prime into it).
 put(29, 21, 'r')
-put(8, 20, 'j'); put(33, 21, 'j')
+put(8, 20, 'j'); put(18, 24, 'j')
 put(23, 21, 'l')
 # The drowned ferry under the slip (a descent): the hatch's foot, the passage aft, the companionway
 # down to the car deck, and the purser's cabin where the Wardfolk sealed the passenger roll.

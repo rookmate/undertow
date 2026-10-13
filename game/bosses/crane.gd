@@ -154,6 +154,12 @@ func _enter_phase(next: Phase) -> void:
 	match next:
 		Phase.AIM:
 			_aim_for = (FALLEN_AIM if fallen else AIM_SECONDS) + (EARLY_MARK if not Steward.voice_on else 0.0)
+			# Marked from its first frame: where you are now (it follows you for most of the aim), and the
+			# second load's spot beside it.
+			var p := player()
+			if p != null:
+				_mark = _reach(p.global_position)
+			_mark2 = _beside(_mark)
 			call_out("crane_drop")
 		Phase.SWING_WARN:
 			call_out("crane_swing")
@@ -161,6 +167,12 @@ func _enter_phase(next: Phase) -> void:
 		Phase.REST:
 			call_out("crane_rest")
 			Sound.play(&"vent_hiss", global_position)
+
+
+## Where the second load hangs (from stage 2): beside `at`, across the jib.
+func _beside(at: Vector2) -> Vector2:
+	var out := Iso.ground_dir_between(global_position, at)
+	return at + Iso.ground_velocity(Vector2(-out.y, out.x), SECOND_LOAD)
 
 
 ## Where the jib can reach: the player's spot, kept within its arm.
@@ -183,9 +195,7 @@ func _fight(delta: float) -> void:
 			if p != null:
 				_mark = _reach(p.global_position) if _phase_time < _aim_for * 0.7 else _mark
 			if stage >= 2:
-				# The second load beside the first, across the jib.
-				var out := Iso.ground_dir_between(global_position, _mark)
-				_mark2 = _mark + Iso.ground_velocity(Vector2(-out.y, out.x), SECOND_LOAD)
+				_mark2 = _beside(_mark)
 			load_at = load_at.lerp(_mark, clampf(delta * 6.0, 0.0, 1.0))
 			if _phase_time >= _aim_for:
 				load_at = _mark
@@ -236,6 +246,18 @@ func on_weak_point_hit() -> void:
 	_enter_phase(Phase.STALLED)
 
 
+## From its second stage the second load hangs beside the first while it's aimed, falls and lands with it,
+## and goes back up with it.
+func second_load_shown() -> bool:
+	return stage >= 2 and (phase == Phase.AIM or phase == Phase.DROP or phase == Phase.LIFT)
+
+
+## Where the second load is (from stage 2): coming up beside the first while it lifts, then at its mark.
+## Worked out from the first, never left over from before.
+func second_load_at() -> Vector2:
+	return _beside(load_at) if phase == Phase.LIFT else _mark2
+
+
 func _die() -> void:
 	super()
 	Narrator.notify(&"boss_down", level.level_id if level != null else "")
@@ -266,13 +288,18 @@ func _draw() -> void:
 	var load_pos := to + Vector2(0, -load_height)
 	draw_line(jib_tip, load_pos + Vector2(0, -40), Palette.IRON_DARK, 1.5, true)
 	draw_rect(Rect2(load_pos + Vector2(-34, -40), Vector2(68, 40)), Palette.CONTAINER_TEAL)
+	# The second load (from stage 2), beside the first across the jib on its own cable: it hangs, falls and
+	# lands with the first, so you see what's about to hit you.
+	if second_load_shown():
+		var second := second_load_at() - global_position + Vector2(0, -load_height)
+		draw_line(jib_tip, second + Vector2(0, -40), Palette.IRON_DARK, 1.5, true)
+		draw_rect(Rect2(second + Vector2(-34, -40), Vector2(68, 40)), Palette.CONTAINER_TEAL.darkened(0.2))
 	# Danger marks: the drop's spot (two from stage 2), the swing's ring, the line it falls along
 	# (red-orange: danger and nothing else).
 	if phase == Phase.AIM:
 		_ring(_mark - global_position, DROP_RADIUS * clampf(_phase_time / _aim_for, 0.2, 1.0), Color(Palette.DANGER, 0.85))
 		if stage >= 2:
 			_ring(_mark2 - global_position, DROP_RADIUS * clampf(_phase_time / _aim_for, 0.2, 1.0), Color(Palette.DANGER, 0.85))
-			draw_rect(Rect2(_mark2 - global_position + Vector2(-34, -40 - load_height), Vector2(68, 40)), Palette.CONTAINER_TEAL.darkened(0.2))
 	if in_transition() and stage == 3:
 		var k := 1.0 - _transition_left / Boss.STAGE_TRANSITION
 		var side := Vector2(-fall_dir.y, fall_dir.x) * FALL_WIDTH * 0.5

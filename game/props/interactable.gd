@@ -35,6 +35,12 @@ func prompt_verb() -> String:
 	return "USE"
 
 
+## Whose words blocked_reason() is: the Steward's own (drawn in its serif and its gold) or the place's
+## (plain type). Only the Steward's refusals are its.
+func blocked_by_steward() -> bool:
+	return false
+
+
 ## Why the prompt is shown but can't be used (shown instead of the verb), or "".
 func blocked_reason() -> String:
 	return ""

@@ -59,7 +59,7 @@ func _think(delta: float) -> Vector2:
 			return Vector2.ZERO
 		State.WINDUP:
 			face_player()
-			if _state_time >= WINDUP:
+			if _state_time >= windup_seconds():
 				if flash_next:
 					_flash_feed()
 				else:

@@ -124,9 +124,10 @@ func _make_card(id: String) -> Button:
 	tag.add_theme_font_override(&"font", UiFonts.mono())
 	tag.add_theme_font_size_override(&"font_size", 13)
 	tag.add_theme_color_override(&"font_color", Palette.IVORY_DIM)
+	# Wrapping first, then the size: set the other way round, the label grows to its one long line.
+	tag.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	tag.position = Vector2(26, 236)
 	tag.size = Vector2(370, 40)
-	tag.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	tag.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	card.add_child(tag)
 	var badge := Label.new()

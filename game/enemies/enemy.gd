@@ -25,8 +25,10 @@ var scrap_value: int = 1
 var steward_aims_at: bool = true
 ## False for things that never attack (a boss's weak point): something to hit, nothing to fear.
 var is_threat: bool = true
-## A revisit (Hardening): the share of its windup it still takes, and whether it's one of the elites.
+## A revisit (Hardening): the share of its windup it still takes (its attack comes when the telegraph
+## runs out: windup_seconds()), how much faster it moves, and whether it's one of the elites.
 var windup_scale: float = 1.0
+var speed_scale: float = 1.0
 var elite: bool = false
 
 var _state_time: float = 0.0
@@ -64,6 +66,7 @@ func make_elite(integrity_mult: float, speed_mult: float) -> void:
 	elite = true
 	integrity.max_value *= integrity_mult
 	integrity.value = integrity.max_value
+	speed_scale = speed_mult
 	speed_tiles *= speed_mult
 	var mark := EliteMark.new()
 	mark.name = "EliteMark"

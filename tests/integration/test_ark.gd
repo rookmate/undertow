@@ -105,7 +105,8 @@ func test_the_dock_opens_the_loop_map() -> void:
 	check_eq(CityMap.state_of(GameState.run, "vellum"), "done", "the Vellum is behind you")
 	check_eq(CityMap.state_of(GameState.run, "spire"), "locked", "the Spire waits for Harbor Ward")
 	var open := LevelCatalog.open_districts(GameState.run)
-	check_eq((map.get("_go") as Button).disabled, open.is_empty(), "the skiff goes only where it's open")
+	var back := LevelCatalog.CITY.any(func(d: Dictionary) -> bool: return LevelCatalog.can_revisit(GameState.run, str(d["id"])))
+	check_eq((map.get("_go") as Button).disabled, open.is_empty() and not back, "the skiff goes where it's open, or back")
 	if not open.is_empty():
 		check_eq(map.chosen, open[0], "the first open district is chosen")
 	map.choose("vellum")

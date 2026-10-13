@@ -38,6 +38,10 @@ func prompt_verb() -> String:
 	return "CRANK THE SEAL"
 
 
+func blocked_by_steward() -> bool:
+	return true
+
+
 ## While it listens: its own words, in its serif and its gold (the prompt shows them).
 func blocked_reason() -> String:
 	return VoiceLines.fixed("ward_sealed") if sealed and Steward.voice_on else ""

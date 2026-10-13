@@ -47,7 +47,7 @@ func _think(delta: float) -> Vector2:
 			return steer_to(p.global_position, delta)
 		State.WINDUP:
 			face_player()
-			if _state_time >= WINDUP:
+			if _state_time >= windup_seconds():
 				_release()
 				_enter(State.RECOVER)
 			return Vector2.ZERO

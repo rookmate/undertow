@@ -168,7 +168,7 @@ review at the end.
 
 **Milestone status: Act 3 and the ending are done and reviewed. The game can be played start to end.**
 
-## Milestone 5: deeper districts, harder bosses (planned)
+## Milestone 5: deeper districts, harder bosses (done)
 
 Districts of 20–30 minutes through play (truths found by exploring, locked behind holds and descents,
 revisits that harden), bosses in two or three stages, a boss fight restarted in full when you die.
@@ -186,7 +186,7 @@ Plan: `design/deeper-districts.md`.
 | 40 | Revisits: back to a district you've done, hardening by that district's truths, truths to the Archive | done |
 | 41 | Tool doors: what the Ark's tools open on a revisit, and the truths behind them | done |
 | 42 | Rewrite's truth threshold re-tuned against the new count | done |
-| — | Sol analysis review (reviews/deeper-districts.md), fixes, re-check | |
+| — | Sol analysis review (reviews/deeper-districts.md), fixes, re-check: closed after 7 rounds | done |
 
 ## Later milestones (planned)
 

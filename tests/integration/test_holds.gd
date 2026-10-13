@@ -155,3 +155,47 @@ func test_every_hold_is_placed_with_its_way_down() -> void:
 	for hold: String in ["greywater_pumps", "loop_points", "tideworks_winch", "mercy_generator", "vellum_paper_lift", "harbor_mast"]:
 		check(placed.has(hold), "%s is in its district" % hold)
 
+
+## Down below, gone down: back on your feet at the checkpoint, up on the street, in the light.
+func test_going_down_below_brings_you_back_up() -> void:
+	GameState.complete_hold("fixture_hold")
+	await _put(Vector2i(3, 5))
+	level.passage("fixture_shaft_down").interact(level.player)
+	await wait_seconds(0.8)
+	check(level.in_descent(), "down")
+	level.player.self_damage(10000.0)
+	await wait_seconds(Operator.DOWNED_SECONDS + 0.3)
+	check(level.player.is_alive() and not level.in_descent(), "back up at the checkpoint")
+	await wait_seconds(DescentDark.FADE_SECONDS + 0.2)
+	check(level.descent_dark.amount < 0.01, "and the dark lifts")
+	for layer: Node in level.get_children():
+		if layer is CanvasLayer and (layer as CanvasLayer).layer < 0:
+			check((layer as CanvasLayer).visible, "the sky again")
+
+
+## Its bar on the HUD moves as it runs (the HUD redraws for it), and goes when it's done.
+func test_the_hud_follows_it() -> void:
+	var view := level.hud.view
+	await _put(Vector2i(6, 4))
+	var before := view.call(&"_state_signature") as String
+	_hold().interact(level.player)
+	await wait_seconds(0.5)
+	var running := view.call(&"_state_signature") as String
+	check(running != before and running.contains(_hold().hold_id), "the HUD redraws for it")
+	await wait_seconds(0.5)
+	check(view.call(&"_state_signature") != running, "and again as it runs")
+	_hold().progress = Holds.seconds(_hold().hold_id)
+	await wait_seconds(0.3)
+	check_false((view.call(&"_state_signature") as String).contains(_hold().hold_id), "done, it goes")
+
+
+## Where a hold's machines come out, you can fight them without coming within reach of the district's
+## boss (it would join in from its arena).
+func test_a_holds_machines_come_out_clear_of_the_boss() -> void:
+	for id: String in LevelCatalog.LEVELS:
+		var g := LevelGrid.load_file(LevelCatalog.map_of(id))
+		var b := g.first("B")
+		if b.x < 0:
+			continue
+		for s: Vector2i in g.cells_with(Tiles.HOLD_SPAWN) + g.cells_with(Tiles.CRANK):
+			check(Vector2(s).distance_to(Vector2(b)) > Boss.ENGAGE_TILES + 3.0, "%s: %s well clear of its boss at %s" % [id, s, b])

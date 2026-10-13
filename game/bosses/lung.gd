@@ -28,6 +28,8 @@ const FLOOD_DAMAGE := 14.0
 const FLOOD_TILES := 4.5
 ## How far the surge rings out.
 const BASIN_TILES := 6.0
+## How far out the deep water reaches (and is drawn): the basin's edge and a little of the quay.
+const DEEP_OUTER := BASIN_TILES + 2.0
 const SURGE_WARN_SECONDS := 1.0
 const SURGE_SECONDS := 1.4
 const SURGE_DAMAGE := 16.0
@@ -150,7 +152,12 @@ func in_the_marrow() -> bool:
 
 ## Whether a point (world) is out in the deep water.
 func in_deep(at: Vector2) -> bool:
-	return deep_tiles() > 0.0 and Iso.ground_distance(global_position, at) > deep_tiles()
+	if deep_tiles() <= 0.0:
+		return false
+	var d := Iso.ground_distance(global_position, at)
+	# The basin's water, as drawn: not the quay beyond it, and nowhere below the street.
+	var below := level != null and level.grid.floor_at(Iso.world_to_cell(at)) == LevelGrid.Floor.CULVERT
+	return d > deep_tiles() and d <= DEEP_OUTER and not below
 
 
 ## Filling a quarter: the window for the hand valve.
@@ -327,7 +334,7 @@ func _draw() -> void:
 	# The tide up: the deep water past the shallows, its edge in red-orange.
 	if deep_tiles() > 0.0:
 		# Deep water like the tide's: dark, with a sheen on it.
-		_band(deep_tiles(), BASIN_TILES + 2.0, Color(Palette.WATER_DEEP, 0.7))
+		_band(deep_tiles(), DEEP_OUTER, Color(Palette.WATER_DEEP, 0.7))
 		for k: int in 4:
 			_ring(deep_tiles() + 0.45 + k * 0.6, Color(Palette.WATER_SHEEN, 0.75 - k * 0.12))
 		_ring(deep_tiles(), Color(Palette.DANGER, 0.6))

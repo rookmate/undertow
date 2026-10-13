@@ -97,3 +97,15 @@ func test_a_save_owning_nothing_playable_keeps_the_starting_weapons() -> void:
 	check(s.weapons_owned.has(WeaponDefs.BATON), "never a run with nothing to carry")
 	check_false(s.weapons_owned.has("harpoon"), "what isn't in the game is dropped")
 	check_eq(Loadout.from_run(s), [WeaponDefs.BATON])
+
+
+## A save from before revisits (DECISIONS 190): it can't tell a truth you left at a Reliquary from one you
+## never found, so it errs toward letting you find it; a current save keeps what you left.
+func test_an_old_save_forgets_nothing_it_left() -> void:
+	var old := RunState.from_dict({"version": 2, "levels_completed": ["kestrel", "loop", "tideworks", "mercy"], "truth_core_ids": ["mercy_truth_0417"]})
+	check(old != null and old.cores_left.is_empty(), "nothing counts as left")
+	var now := RunState.new()
+	now.cores_left.append("mercy_truth_night_sheets")
+	var back := RunState.from_dict(now.to_dict())
+	check_eq(back.cores_left, now.cores_left, "a current save keeps what you left")
+	check_eq(int(now.to_dict()["version"]), RunState.SAVE_VERSION)
