@@ -76,6 +76,7 @@ func _die_against(id: String) -> void:
 		return
 	check_false(is_instance_valid(first) and not first.is_queued_for_deletion(), "%s: the one you hurt is gone" % id)
 	check_eq(again.integrity.value, again.integrity.max_value, "%s: at full strength" % id)
+	check_eq(again.stage, 1, "%s: its first stage" % id)
 	check_false(again.is_engaged, "%s: not yet engaged" % id)
 	check(again.weak_point == null or (is_instance_valid(again.weak_point) and again.weak_point.boss == again), "%s: its own weak point" % id)
 	check_eq(get_tree().get_nodes_in_group(&"boss_parts").filter(func(n: Node) -> bool: return level.is_ancestor_of(n) and not n.is_queued_for_deletion()).size(), parts, "%s: its lanes or rollers, once" % id)

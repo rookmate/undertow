@@ -127,3 +127,58 @@ func test_with_never_warn_me_signed_it_floods_in_silence() -> void:
 	check_false(Lung.LINES.values().has(Sound.voice_line), "no call")
 	lung.call(&"_enter_phase", Lung.Phase.VENT)
 	check_eq(Sound.voice_line, "lung_vent", "an opening is a fact, still said")
+
+
+## Stages (DECISIONS 179, 180): a blow stops at two thirds; it pauses (it can't be hurt; the Steward
+## says the tide's in), then the outer basin is deep water and it fills faster.
+func test_at_two_thirds_the_tide_comes_up() -> void:
+	await _stand(Vector2i(11, 3))
+	check_eq(lung.stage_count(), 3)
+	lung.call(&"_enter_phase", Lung.Phase.VENT)
+	lung.take_hit(Lung.MAX_INTEGRITY, Vector2(1, 0), 0.0, 0.0)
+	check_eq(lung.stage, 2, "stage 2")
+	check_near(lung.integrity.ratio(), 2.0 / 3.0, 0.001, "the blow stopped at two thirds")
+	check(lung.in_transition(), "a pause between stages")
+	var before := lung.integrity.value
+	lung.take_hit(50.0, Vector2(1, 0), 0.0, 0.0)
+	check_eq(lung.integrity.value, before, "it can't be hurt while it changes")
+	check_eq(Narrator.last_line_id, "lung_rise", "the Steward says what's changed")
+	await wait_seconds(Boss.STAGE_TRANSITION + 0.1)
+	check_false(lung.in_transition())
+	check_eq(lung.phase, Lung.Phase.FILL, "then it fights again")
+	check(lung.fill_seconds() < Lung.STAGE_FILL[0], "filling faster")
+	check(lung.deep_tiles() > 0.0, "the tide up")
+	var hp := level.player.integrity.value
+	level.player.position = lung.global_position + Iso.ground_velocity(Vector2(-1, 0), lung.deep_tiles() + 0.8)
+	await wait_seconds(Lung.DEEP_TICK * 2.0 + 0.1)
+	check(level.player.integrity.value < hp, "out in the deep water, it wears you down")
+	hp = level.player.integrity.value
+	level.player.position = lung.global_position + Iso.ground_velocity(Vector2(-1, 0), 2.0)
+	await wait_seconds(Lung.DEEP_TICK * 2.0)
+	check(level.player.integrity.value >= hp or lung.in_flood(level.player.global_position), "in the shallows, it doesn't")
+
+
+## At one third the Marrow is in: no calls (the Steward can't see it), and its floods don't follow you.
+func test_at_one_third_the_marrow_rolls_in() -> void:
+	await _stand(Vector2i(11, 3))
+	lung.call(&"_enter_phase", Lung.Phase.VENT)
+	lung.take_hit(Lung.MAX_INTEGRITY, Vector2(1, 0), 0.0, 0.0)
+	await wait_seconds(Boss.STAGE_TRANSITION + 0.1)
+	lung.call(&"_enter_phase", Lung.Phase.VENT)
+	lung.take_hit(Lung.MAX_INTEGRITY, Vector2(1, 0), 0.0, 0.0)
+	check_eq(lung.stage, 3, "stage 3")
+	check_near(lung.integrity.ratio(), 1.0 / 3.0, 0.001)
+	check_eq(Narrator.last_line_id, "lung_marrow", "the Steward loses you")
+	await wait_seconds(Boss.STAGE_TRANSITION + 0.1)
+	check(lung.in_the_marrow())
+	var calls := 0
+	for k: int in 6:
+		Narrator.last_line_id = ""
+		lung.call(&"_enter_phase", Lung.Phase.FILL)
+		if Lung.LINES.values().has(Narrator.last_line_id):
+			calls += 1
+	check_eq(calls, 0, "no calls in the Marrow")
+	lung.call(&"_enter_phase", Lung.Phase.VENT)
+	lung.take_hit(Lung.MAX_INTEGRITY, Vector2(1, 0), 0.0, 0.0)
+	check_false(lung.is_alive(), "the last stage: down")
+

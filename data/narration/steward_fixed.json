@@ -208,6 +208,14 @@
 		"epilogue_rewrite_4": {
 			"text": "Good morning, Meridian. What would you like today to be?",
 			"purpose": "fact"
+		},
+		"lung_rise": {
+			"text": "The tide's in. Stay close.",
+			"purpose": "warning"
+		},
+		"lung_marrow": {
+			"text": "The Marrow. I've lost you.",
+			"purpose": "warning"
 		}
 	}
 }

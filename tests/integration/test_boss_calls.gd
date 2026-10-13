@@ -1,5 +1,6 @@
 extends TestCase
-## The Steward's calls in a boss fight are said in full: each recording ends before the boss's next call
+## The Steward's calls in a boss fight are said in full (each stage's included: a boss's CALL_GAPS and
+## WARN_LEADS hold its tightest timings across its stages): each recording ends before the boss's next call
 ## can come (a new line cuts the one being spoken), every call a boss makes is listed with its gap, and
 ## the fight waits for the Steward to finish introducing the boss.
 

@@ -627,6 +627,10 @@
   "hash": "368cb28ce855033ba0ea7bb18594d6341d01740f",
   "text": "Left basin."
  },
+ "lung_marrow": {
+  "hash": "b30e79b038933fb4bf99915257178ab121a4e269",
+  "text": "The Marrow. I've lost you."
+ },
  "lung_near": {
   "hash": "9bd1082a40e3de3dbbca4b49a72b67b52bd545b9",
   "text": "Near basin."
@@ -634,6 +638,10 @@
  "lung_right": {
   "hash": "cf8e181319fc894f33b01e0f35df546d5b7b4497",
   "text": "Right basin."
+ },
+ "lung_rise": {
+  "hash": "9f78b94bca8f95c0352dac89e2d380a1df43e925",
+  "text": "The tide's in. Stay close."
  },
  "lung_surge": {
   "hash": "be66c72ce10a141cc223f567db8f5b19668daebd",
