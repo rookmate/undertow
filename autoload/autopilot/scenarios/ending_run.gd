@@ -6,7 +6,7 @@ extends AutopilotScenario
 ## the finished run kept but not continued, and after a Rewrite the ring's gap filled.
 
 const DISTRICTS: Array[String] = ["kestrel", "loop", "tideworks", "mercy", "greywater", "vellum", "harbor", "spire"]
-const TRUTHS: Array[String] = ["kestrel_truth_evacuation", "loop_truth_long_night", "mercy_truth_0417", "vellum_truth_0522", "harbor_truth_council_order", "spire_truth_quiet"]
+const TRUTHS: Array[String] = ["kestrel_truth_evacuation", "loop_truth_long_night", "tideworks_truth_strike_records", "mercy_truth_0417", "greywater_truth_plaque", "vellum_truth_0522", "harbor_truth_council_order", "spire_truth_quiet"]
 
 var ending: String = ""
 ## The epilogue has played: the next title is the one after it.
@@ -31,7 +31,7 @@ func expected() -> Array[String]:
 
 
 ## Home from the Spire with everything built, Noor home and Teo staying. Only a Rewrite run has earned
-## its door (the voice on for half of play, six truths kept); the others haven't (two truths).
+## its door (the voice on for half of play, eight truths kept); the others haven't (two truths).
 func _prepare() -> void:
 	GameState.new_run()
 	GameState.meet_companions()

@@ -46,8 +46,9 @@ func after_each() -> void:
 	SaveService.use_directory(_real_dir)
 
 
+## Eight truths, one a district (Tunables.REWRITE_MIN_TRUTH_CORES), and the voice on for half of play.
 func _earn_rewrite() -> void:
-	for id: String in ["kestrel_truth_evacuation", "loop_truth_long_night", "mercy_truth_0417", "vellum_truth_0522", "harbor_truth_council_order"]:
+	for id: String in ["kestrel_truth_evacuation", "loop_truth_long_night", "tideworks_truth_strike_records", "mercy_truth_0417", "greywater_truth_plaque", "vellum_truth_0522", "harbor_truth_council_order", "spire_truth_quiet"]:
 		GameState.take_core(id, true)
 	GameState.add_voice_time(600.0, true)
 	GameState.add_voice_time(600.0, false)

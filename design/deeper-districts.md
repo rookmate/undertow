@@ -61,14 +61,17 @@ Kestrel Heights and the Spire keep theirs as they are (the Spire has no combat o
 | 34 | Dying in a boss fight restarts it; the checkpoint at the arena door; the boss's intro cut short on a retry |
 | 35 | Boss stages, built on the Lung (three stages) |
 | 36 | Greywater in three movements: the pump hold (crank by hand while the tide comes in; the basement drains), the old pump room as its descent; its truths moved inside them |
-| 37 | Play and time Greywater; tune. If it lands at 20+ minutes and feels earned, roll the pattern out |
-| 38+ | The other districts in turn, each with its boss's stages |
-| — | Revisits: tool doors, hardening by that district's truths, truths to the Archive |
-| — | Rewrite's truth threshold re-tuned against the new count of truths |
+| 37 | Every boss in stages (DECISIONS 183–184) |
+| 38 | Holds and descents in the Loop and the Tideworks (185) |
+| 39 | Holds and descents in Mercy General, the Vellum and Harbor Ward (186) |
+| 40 | Revisits: back to a district you've done, hardening by its truths, truths to the Archive (187) |
+| 41 | Tool doors: what the Ark's tools open, and the truths behind them (188) |
+| 42 | Rewrite needs eight truths, of 24 (189) |
 | — | Sol analysis review (reviews/deeper-districts.md), fixes, re-check |
 
 ## Open (to tune once it's played)
 
-- How many truths each district holds, and Rewrite's threshold (5 today).
+- How many truths each district holds (24 in all now, two to four each), and Rewrite's threshold (8
+  since step 42; it was 5 of 16).
 - The hardening steps' sizes.
 - Whether a retry skips the boss's first stage (decided: no; the fight restarts in full).
