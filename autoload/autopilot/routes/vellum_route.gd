@@ -144,7 +144,7 @@ func drive(level: Level, gen: int) -> void:
 	await Autopilot.snap("vellum_editor")
 	if not await _fight_editor(level, player, editor, gen):
 		return
-	check(not editor.is_alive(), "editor_beaten")
+	check(boss_down(player), "editor_beaten")
 	await Autopilot.snap("vellum_editor_down")
 	check(await Autopilot.until(Autopilot.barriers_open, 2.0, gen), "barriers_opened")
 	for cell: Vector2i in [Vector2i(40, 13), Vector2i(40, 16)]:
@@ -166,7 +166,11 @@ func _fight_editor(level: Level, player: Operator, editor: Editor, gen: int) -> 
 	var spent := 0.0
 	var frame := 0
 	var snapped_rollers := false
-	while editor.is_alive() and spent < 120.0:
+	while spent < 120.0:
+		# A fight restarted after the Operator went down: the fresh boss.
+		editor = boss_now(editor, player) as Editor
+		if editor == null or not editor.is_alive():
+			break
 		if Autopilot.stale(gen):
 			Autopilot.release_all()
 			return false

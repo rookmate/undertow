@@ -413,6 +413,20 @@ func reachable_from(start: Vector2i, indexed_only: bool = false, closed: String 
 	return seen
 
 
+## Where you come back when a boss fight starts over (DECISIONS 177): the checkpoint nearest the boss
+## ('B') that you reach from the start without crossing its barrier ('y'). (-1, -1) if there's none.
+func arena_checkpoint() -> Vector2i:
+	var b := first("B")
+	if b.x < 0:
+		return Vector2i(-1, -1)
+	var reach := reachable_from(start_cell(), false, "y")
+	var best := Vector2i(-1, -1)
+	for c: Vector2i in cells_with("C"):
+		if reach.has(c) and (best.x < 0 or Vector2(c).distance_to(Vector2(b)) < Vector2(best).distance_to(Vector2(b))):
+			best = c
+	return best
+
+
 ## Screen-space bounding box of every cell that isn't void, for camera limits.
 func world_bounds() -> Rect2:
 	var r := Rect2()

@@ -266,6 +266,12 @@ func _update_checkpoint() -> void:
 			Sound.play(&"checkpoint")
 
 
+## Back on your feet at the last checkpoint, at full Integrity; a boss fight you died in starts over.
+func restart_after_death() -> void:
+	restart_boss_fight()
+	respawn_player()
+
+
 ## Back on your feet at the last checkpoint, at full Integrity.
 func respawn_player() -> void:
 	if player == null:
@@ -707,6 +713,37 @@ func _spawn_boss() -> void:
 		var barrier := BossBarrier.new()
 		barrier.setup(c)
 		world.add_child(barrier)
+	_make_boss()
+
+
+## Dying in a boss fight restarts it (DECISIONS 177): the boss you were fighting, its weak point, the
+## lanes or rollers it works and whatever it had in the air are gone, and a fresh one stands where it was
+## built, at full strength and its first stage. It doesn't introduce itself again, and gives you a moment
+## at the checkpoint before it engages. Its barriers stay shut. Returns whether a fight was restarted.
+func restart_boss_fight() -> bool:
+	if boss == null or not is_instance_valid(boss) or not boss.is_alive() or not boss.is_engaged:
+		return false
+	var parts: Array[Node] = [boss]
+	if boss.weak_point != null and is_instance_valid(boss.weak_point):
+		parts.append(boss.weak_point)
+	parts.append_array(get_tree().get_nodes_in_group(&"boss_parts").filter(func(n: Node) -> bool: return is_ancestor_of(n)))
+	for n: Node in world.get_children():
+		if n is Projectile and (n as Projectile).team == Projectile.Team.ENEMY:
+			parts.append(n)
+	for n: Node in parts:
+		if n is Enemy:
+			_enemies.erase(n)
+			(n as Enemy).remove_from_group(&"enemies")
+		n.queue_free()
+	_make_boss()
+	if boss != null:
+		boss.retrying = true
+	return true
+
+
+## The district's boss on its 'B' cell, its weak point on 'Z', and what its fight works (lanes, rollers:
+## group "boss_parts").
+func _make_boss() -> void:
 	var b := grid.first("B")
 	if b.x < 0:
 		return
@@ -730,6 +767,7 @@ func _spawn_boss() -> void:
 			var sides := ["left", "middle", "right"]
 			for i: int in lanes.size():
 				lanes[i].setup(self, lanes[i].cells, sides[mini(i, 2)])
+				lanes[i].add_to_group(&"boss_parts")
 				fx_ground.add_child(lanes[i])
 			conductor.lanes = lanes
 			_add_weak_point(conductor, SignalBox.new())
@@ -760,6 +798,7 @@ func _spawn_boss() -> void:
 			_add_weak_point(editor, BaleStack.new())
 			var rollers := PressRollers.new()
 			rollers.editor = editor
+			rollers.add_to_group(&"boss_parts")
 			fx_ground.add_child(rollers)
 
 

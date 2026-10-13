@@ -56,7 +56,7 @@ func drive(level: Level, gen: int) -> void:
 	await Autopilot.snap("loop_conductor")
 	if not await _fight_conductor(player, boss, gen):
 		return
-	check(not boss.is_alive(), "conductor_beaten")
+	check(boss_down(player), "conductor_beaten")
 	await Autopilot.snap("loop_conductor_down")
 	check(await Autopilot.until(Autopilot.barriers_open, 2.0, gen), "barriers_opened")
 	for cell: Vector2i in [Vector2i(36, 3), Vector2i(30, 3), Vector2i(27, 3), Vector2i(25, 3)]:
@@ -72,7 +72,11 @@ func _fight_conductor(player: Operator, boss: Conductor, gen: int) -> bool:
 	var spent := 0.0
 	var frame := 0
 	var lane_rows: Array[int] = [2, 3, 4]
-	while boss.is_alive() and spent < 90.0:
+	while spent < 90.0:
+		# A fight restarted after the Operator went down: the fresh boss.
+		boss = boss_now(boss, player) as Conductor
+		if boss == null or not boss.is_alive():
+			break
 		if Autopilot.stale(gen):
 			Autopilot.release_all()
 			return false

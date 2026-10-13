@@ -127,7 +127,7 @@ func drive(level: Level, gen: int) -> void:
 	await Autopilot.snap("harbor_warden_prime")
 	if not await _fight_prime(player, prime, gen):
 		return
-	check(not prime.is_alive(), "warden_prime_beaten")
+	check(boss_down(player), "warden_prime_beaten")
 	await Autopilot.snap("harbor_warden_prime_down")
 	check(await Autopilot.until(Autopilot.barriers_open, 2.0, gen), "barriers_opened")
 	# Noor, down in the plaza's far corner: carry her to the Wardfolk's boat.
@@ -185,7 +185,11 @@ func _fight_prime(player: Operator, prime: WardenPrime, gen: int) -> bool:
 	var anchor := Iso.cell_center(Vector2i(40, 16))
 	var spent := 0.0
 	var frame := 0
-	while prime.is_alive() and spent < 120.0:
+	while spent < 120.0:
+		# A fight restarted after the Operator went down: the fresh boss.
+		prime = boss_now(prime, player) as WardenPrime
+		if prime == null or not prime.is_alive():
+			break
 		if Autopilot.stale(gen):
 			Autopilot.release_all()
 			return false

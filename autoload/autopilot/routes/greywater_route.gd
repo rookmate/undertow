@@ -122,7 +122,7 @@ func drive(level: Level, gen: int) -> void:
 	await Autopilot.snap("greywater_lung")
 	if not await _fight_lung(player, lung, gen):
 		return
-	check(not lung.is_alive(), "lung_beaten")
+	check(boss_down(player), "lung_beaten")
 	await Autopilot.snap("greywater_lung_down")
 	check(await Autopilot.until(Autopilot.barriers_open, 2.0, gen), "barriers_opened")
 	for cell: Vector2i in [Vector2i(38, 13), Vector2i(40, 16)]:
@@ -138,7 +138,11 @@ func drive(level: Level, gen: int) -> void:
 func _fight_lung(player: Operator, lung: Lung, gen: int) -> bool:
 	var spent := 0.0
 	var frame := 0
-	while lung.is_alive() and spent < 110.0:
+	while spent < 110.0:
+		# A fight restarted after the Operator went down: the fresh boss.
+		lung = boss_now(lung, player) as Lung
+		if lung == null or not lung.is_alive():
+			break
 		if Autopilot.stale(gen):
 			Autopilot.release_all()
 			return false

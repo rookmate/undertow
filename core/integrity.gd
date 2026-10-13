@@ -33,6 +33,13 @@ func heal(amount: float) -> void:
 	changed.emit(value, max_value)
 
 
+## Never below `floor_value` (the autopilot's Operator, who can't go down).
+func keep_at_least(floor_value: float) -> void:
+	if value < floor_value:
+		value = minf(floor_value, max_value)
+		changed.emit(value, max_value)
+
+
 func reset() -> void:
 	value = max_value
 	changed.emit(value, max_value)

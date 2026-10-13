@@ -79,6 +79,8 @@ for scenario in $FULL_SCENARIOS; do
     --autopilot-shots="$LOG_DIR/shots_full_$scenario" > "$log" 2>&1
   code=$?
   grep -E '^AUTOPILOT' "$log" | sed "s/^/  $scenario: /"
+  # The Operator can't go down in these runs (DECISIONS 178): where it would have, for the record.
+  grep -E '^\[autopilot\] would have gone down [0-9]+ times' "$log" | sed "s/^\[autopilot\] /  $scenario: /"
   if [ $code -ne 0 ]; then echo "  FAIL full $scenario run exited with $code"; status=1; fi
   grep -q '^AUTOPILOT PASS' "$log" || { echo "  FAIL full $scenario run did not pass"; status=1; }
   scan_log "$log" "full $scenario" && [ $code -eq 0 ] && echo "  ok"

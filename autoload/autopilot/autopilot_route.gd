@@ -136,6 +136,25 @@ func at_ark(_ark: ArkLevel, gen: int) -> bool:
 
 
 # --- Helpers for routes ---------------------------------------------------------------------------
+## The boss a fight loop works against: the same one, or, after the Operator went down and the fight
+## restarted (DECISIONS 177), the fresh one the level built in its place. Null if there's none.
+static func boss_now(old: Variant, player: Operator) -> Boss:
+	# Untyped: after a restart `old` is a freed object, which a typed argument refuses.
+	if is_instance_valid(old):
+		return old as Boss
+	if player == null or player.level == null or not is_instance_valid(player.level.boss):
+		return null
+	return player.level.boss
+
+
+## The district's boss is down (or already gone).
+static func boss_down(player: Operator) -> bool:
+	if player == null or player.level == null:
+		return false
+	var b: Boss = player.level.boss
+	return not is_instance_valid(b) or not b.is_alive()
+
+
 ## Talks this district over with Noor and Teo on the Ark (the first time you talk to Noor after it),
 ## answering `side` ("noor", "teo" or "none", Conversations.SIDES) the way a player would; checks their
 ## trust moved by what that answer says, once, and that nothing more is waiting.

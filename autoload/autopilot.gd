@@ -13,6 +13,11 @@ extends Node
 ##                              (straight into --autopilot-level=ID: photographs its start, checkpoints,
 ##                              finds and Reliquary, voice on and muted; for looking at a district)
 ##   --autopilot-shots=DIR      save screenshots at named moments into DIR
+##   --autopilot-mortal         the Operator can go down. By default it can't (DECISIONS 178): damage
+##                              lands, but at 1 Integrity it stays up, and the run notes where it would
+##                              have gone down (by district and boss) and totals it at the end. The runs
+##                              prove the game works start to end; how hard a fight is, mortal runs and
+##                              playtesting say.
 ## This node is the pilot's hands and its checklist: arguments, save isolation, checks, timing, input,
 ## walking and fighting. What happens in each scene is the scenario's (autoload/autopilot/scenarios/);
 ## how each district is played is its route's (autoload/autopilot/routes/). Every check a scenario
@@ -20,6 +25,9 @@ extends Node
 ## every one passed.
 
 const LONG_RUN_SECONDS := 55.0
+## Whether the Operator can go down (--autopilot-mortal); where it would have, by district.
+var mortal: bool = false
+var near_misses: Dictionary[String, int] = {}
 const AUTOPILOT_SAVES := "user://autopilot"
 const SCENARIOS: Array[String] = ["slice", "campaign", "loop", "tideworks", "mercy", "greywater", "vellum", "harbor", "spire", "ending_reboot", "ending_unplug", "ending_rewrite", "ring_gallery", "options", "tour"]
 
@@ -82,6 +90,8 @@ func _ready() -> void:
 			tour_level = arg.get_slice("=", 1)
 		elif arg.begins_with("--autopilot-shots="):
 			shots_dir = arg.get_slice("=", 1)
+		elif arg == "--autopilot-mortal":
+			mortal = true
 	# The scenario names a save folder, so it is checked before anything touches the disk.
 	var save_dir := save_dir_for(scenario)
 	plan = make_scenario(scenario, tour_level)
@@ -209,6 +219,13 @@ func check(condition: bool, check_id: String) -> void:
 func _finish() -> void:
 	_finished = true
 	_report_performance()
+	if not mortal:
+		var total := 0
+		var parts: PackedStringArray = []
+		for id: String in near_misses:
+			total += near_misses[id]
+			parts.append("%s %d" % [id, near_misses[id]])
+		print("[autopilot] would have gone down %d times%s" % [total, (": " + ", ".join(parts)) if total > 0 else ""])
 	var failed: PackedStringArray = []
 	for c: String in _checks:
 		if not _checks[c]:
@@ -399,6 +416,18 @@ func _on_scene_changed(key: StringName) -> void:
 		SceneRouter.LEVEL_KEY:
 			var level := scene as Level
 			if level != null and level.player != null:
+				# Going down (or, unkillable, where it would have) is worth knowing in a run's log. Once per level.
+				if not level.has_meta(&"autopilot_watching"):
+					level.set_meta(&"autopilot_watching", true)
+					level.player.cannot_go_down = not mortal
+					var note := func(what: String) -> void:
+						var b := level.boss
+						print("[autopilot] %s in %s at %s%s" % [what, level.level_id, level.player.cell(),
+							" (boss %s at %d%%)" % [b.boss_name, roundi(b.integrity.ratio() * 100.0)] if is_instance_valid(b) and b.is_engaged and b.is_alive() else ""])
+					level.player.downed.connect(func() -> void: note.call("downed"))
+					level.player.would_have_gone_down.connect(func() -> void:
+						near_misses[level.level_id] = int(near_misses.get(level.level_id, 0)) + 1
+						note.call("would have gone down"))
 				plan.on_level(level, gen)
 		&"core_choice":
 			plan.on_core_choice(scene, gen)

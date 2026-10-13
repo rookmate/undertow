@@ -22,7 +22,7 @@ func test_has_every_marker_the_district_needs() -> void:
 	for ch: String in ["w", "T", "U"]:
 		check_eq(grid.cells_with(ch).size(), 2, "two of %s" % ch)
 	check_eq(grid.cells_with("k").size(), 3, "a Clerk in the plaza, two in the newsroom")
-	check_eq(grid.cells_with("C").size(), 3, "checkpoints on the street, by the stair, by the Reliquary")
+	check_eq(grid.cells_with("C").size(), 4, "checkpoints on the street, by the stair, at the Editor's door, by the Reliquary")
 	check_eq(grid.cells_with("c").size(), 3, "three Custodians")
 	check(grid.cells_with("L").size() >= 12, "the street is lamplit")
 
@@ -235,3 +235,18 @@ func test_a_bad_legend_line_is_reported() -> void:
 	var own := LevelGrid.parse("% . teleporter\n% ab hospital_tile\n%\n#####\n#P.R#\n#####")
 	check_eq(own.parse_errors.size(), 3, "%s" % [own.parse_errors])
 	check_false(own.validate(false).is_empty(), "and the map won't load")
+
+
+## Dying in a boss fight starts it over from a checkpoint at the arena's door (DECISIONS 177): every boss
+## district has one on your side of the barrier, close by.
+func test_every_boss_has_a_checkpoint_at_its_door() -> void:
+	for id: String in LevelCatalog.LEVELS:
+		if LevelCatalog.boss_of(id) == "":
+			continue
+		var g := LevelGrid.load_file(LevelCatalog.map_of(id))
+		var c := g.arena_checkpoint()
+		check(c.x >= 0, "%s: a checkpoint you reach before its barrier" % id)
+		if c.x >= 0:
+			var d := Vector2(c).distance_to(Vector2(g.first("B")))
+			check(d <= 12.0, "%s: at the arena's door (%s, %.1f tiles from the boss)" % [id, c, d])
+

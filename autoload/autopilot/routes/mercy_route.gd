@@ -120,7 +120,7 @@ func drive(level: Level, gen: int) -> void:
 	await Autopilot.snap("mercy_surgeon")
 	if not await _fight_surgeon(player, surgeon, gen):
 		return
-	check(not surgeon.is_alive(), "surgeon_beaten")
+	check(boss_down(player), "surgeon_beaten")
 	await Autopilot.snap("mercy_surgeon_down")
 	check(await Autopilot.until(Autopilot.barriers_open, 2.0, gen), "barriers_opened")
 	for cell: Vector2i in [Vector2i(35, 12), Vector2i(35, 15), Vector2i(35, 16)]:
@@ -136,7 +136,11 @@ func drive(level: Level, gen: int) -> void:
 func _fight_surgeon(player: Operator, surgeon: Surgeon, gen: int) -> bool:
 	var spent := 0.0
 	var frame := 0
-	while surgeon.is_alive() and spent < 100.0:
+	while spent < 100.0:
+		# A fight restarted after the Operator went down: the fresh boss.
+		surgeon = boss_now(surgeon, player) as Surgeon
+		if surgeon == null or not surgeon.is_alive():
+			break
 		if Autopilot.stale(gen):
 			Autopilot.release_all()
 			return false
