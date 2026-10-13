@@ -120,6 +120,10 @@ func _draw_boss() -> void:
 	draw_rect(Rect2(at + Vector2(0, 6), Vector2(w, 10)), Color(Palette.NEAR_BLACK, 0.7))
 	var fill := Palette.IVORY if b.is_vulnerable() else Palette.IVORY_DIM
 	draw_rect(Rect2(at + Vector2(0, 6), Vector2(w * b.integrity.ratio(), 10)), fill)
+	# Notches where its stages begin.
+	for t: float in b.stage_thresholds():
+		draw_rect(Rect2(at + Vector2(w * t - 1.5, 2), Vector2(3, 18)), Palette.NEAR_BLACK)
+		draw_rect(Rect2(at + Vector2(w * t - 0.5, 2), Vector2(1, 18)), Palette.IVORY)
 
 
 func _draw_threats(p: Operator) -> void:

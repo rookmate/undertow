@@ -5,6 +5,10 @@ extends Boss
 ## a cycle), each one called by the Steward; then it sends a pressure surge out across the basin, a ring
 ## of water you roll through; then it vents and is open. The manual solution: the old hand valve, turned
 ## while it's filling, chokes it.
+## Three stages (DECISIONS 180): at two thirds the tide comes up and stays, the outer basin deep water
+## that wears you down, and it fills faster; at one third the Marrow rolls in, thicker and closer: it
+## can't see you (its floods fall where they fall) and neither can the Steward (no calls), only the
+## grates' own red light.
 
 enum Phase { IDLE, FILL, FLOOD, SURGE_WARN, SURGE, VENT, STALLED }
 ## The basin's quarters, as the Operator sees them on screen.
@@ -30,23 +34,37 @@ const SURGE_DAMAGE := 16.0
 const SURGE_WIDTH := 0.7
 const VENT_SECONDS := 3.5
 const STALL_SECONDS := 6.0
+## By stage (1, 2, 3): how long a quarter takes to fill; how far from the Lung the water's still
+## shallow (beyond it, deep: 0 for none); how long it vents.
+const STAGE_FILL: Array[float] = [1.2, 1.0, 0.85]
+const STAGE_DEEP: Array[float] = [0.0, 4.0, 3.6]
+const STAGE_VENT: Array[float] = [3.5, 3.5, 2.8]
+## Standing in the deep water costs this much, this often (roll and it misses, like any hit).
+const DEEP_DAMAGE := 6.0
+const DEEP_TICK := 0.8
+## The Marrow's edge in stage 3: past this, you see it as fog.
+const MARROW_CLEAR_TILES := 2.6
 const LINES: Dictionary[Quarter, String] = {
 	Quarter.LEFT: "lung_left", Quarter.RIGHT: "lung_right", Quarter.NEAR: "lung_near", Quarter.FAR: "lung_far",
 }
 
 ## Each warning, and how soon after it's called its hazard lands (seconds): the flood, the surge
 ## leaving the Lung. It has to be said by then.
+## Its quarters are called in stages 1 and 2 only (the Marrow hides stage 3 from the Steward), so their
+## leads are stage 2's, the shorter. A stage's word is said while the fight is paused.
 const WARN_LEADS: Dictionary[String, float] = {
-	"lung_left": FILL_SECONDS + FLOOD_STRIKE, "lung_right": FILL_SECONDS + FLOOD_STRIKE,
-	"lung_near": FILL_SECONDS + FLOOD_STRIKE, "lung_far": FILL_SECONDS + FLOOD_STRIKE,
+	"lung_left": 1.0 + FLOOD_STRIKE, "lung_right": 1.0 + FLOOD_STRIKE,
+	"lung_near": 1.0 + FLOOD_STRIKE, "lung_far": 1.0 + FLOOD_STRIKE,
 	"lung_surge": SURGE_WARN_SECONDS,
+	"lung_rise": Boss.STAGE_TRANSITION, "lung_marrow": Boss.STAGE_TRANSITION,
 }
 ## Each call, and the soonest the next can come (seconds).
 const CALL_GAPS: Dictionary[String, float] = {
-	"lung_left": FILL_SECONDS + FLOOD_SECONDS, "lung_right": FILL_SECONDS + FLOOD_SECONDS,
-	"lung_near": FILL_SECONDS + FLOOD_SECONDS, "lung_far": FILL_SECONDS + FLOOD_SECONDS,
+	"lung_left": 1.0 + FLOOD_SECONDS, "lung_right": 1.0 + FLOOD_SECONDS,
+	"lung_near": 1.0 + FLOOD_SECONDS, "lung_far": 1.0 + FLOOD_SECONDS,
 	"lung_surge": SURGE_WARN_SECONDS + SURGE_SECONDS,
 	"lung_vent": VENT_SECONDS,
+	"lung_rise": Boss.STAGE_TRANSITION, "lung_marrow": Boss.STAGE_TRANSITION,
 }
 
 var phase: Phase = Phase.IDLE
@@ -60,16 +78,79 @@ var _floods_left: int = 0
 var _fill_for: float = FILL_SECONDS
 var _struck: bool = false
 var _stalled_this_cycle: bool = false
+var _deep_in: float = 0.0
 
 
 func _ready() -> void:
 	super()
 	boss_name = "THE LUNG"
 	radius_tiles = 1.2
+	# The Marrow's fog in stage 3, drawn over what stands round it (the Lung itself keeps its place).
+	var fog := LungFog.new()
+	fog.lung = self
+	fog.z_index = 3
+	add_child(fog)
+
+
+## Stage 3's fog: thick past arm's reach.
+class LungFog:
+	extends Node2D
+	var lung: Lung
+
+	func _process(_delta: float) -> void:
+		queue_redraw()
+
+	func _draw() -> void:
+		if lung == null or not lung.in_the_marrow() or not lung.is_alive():
+			return
+		for k: int in 5:
+			var r := MARROW_CLEAR_TILES + k * 0.9
+			var ring := PackedVector2Array()
+			for i: int in 33:
+				ring.append(Iso.grid_to_world(Vector2.from_angle(TAU * i / 32.0) * r))
+			draw_polyline(ring, Color(Palette.FOG, 0.18), 34.0, true)
 
 
 func is_vulnerable() -> bool:
 	return phase == Phase.VENT or phase == Phase.STALLED
+
+
+func stage_count() -> int:
+	return 3
+
+
+func stage_line(next_stage: int) -> String:
+	return "lung_rise" if next_stage == 2 else "lung_marrow"
+
+
+## Between stages it stops, and holds its breath.
+func _on_stage_begins(_next_stage: int) -> void:
+	phase = Phase.IDLE
+	_phase_time = 0.0
+
+
+func _on_stage(_now: int) -> void:
+	_start_cycle()
+
+
+## How long a quarter takes to fill in this stage, before reading the grates yourself muted.
+func fill_seconds() -> float:
+	return STAGE_FILL[stage - 1]
+
+
+## Beyond this far from the Lung the basin's deep (0: it isn't).
+func deep_tiles() -> float:
+	return STAGE_DEEP[stage - 1]
+
+
+## In stage 3 the Marrow is in: it can't see you, and the Steward can't see it.
+func in_the_marrow() -> bool:
+	return stage >= 3
+
+
+## Whether a point (world) is out in the deep water.
+func in_deep(at: Vector2) -> bool:
+	return deep_tiles() > 0.0 and Iso.ground_distance(global_position, at) > deep_tiles()
 
 
 ## Filling a quarter: the window for the hand valve.
@@ -93,23 +174,27 @@ func _enter_phase(next: Phase) -> void:
 	_struck = false
 	match next:
 		Phase.FILL:
-			_fill_for = FILL_SECONDS + (EARLY_FILL if not Steward.voice_on else 0.0)
+			# Muted you read the grates yourself (sooner); in the Marrow nobody calls it, so it's as if muted.
+			_fill_for = fill_seconds() + (EARLY_FILL if not Steward.voice_on or in_the_marrow() else 0.0)
 			var p := player()
-			if p != null and _floods_left == FLOODS_PER_CYCLE:
+			if p != null and _floods_left == FLOODS_PER_CYCLE and not in_the_marrow():
 				quarter = quarter_of(p.global_position)
 			else:
 				quarter = ((int(quarter) + 1 + randi() % 3) % 4) as Quarter
-			call_out(LINES[quarter])
+			if not in_the_marrow():
+				call_out(LINES[quarter])
 			Sound.play(&"windup", global_position)
 		Phase.FLOOD:
 			Sound.play(&"tide_swell", global_position)
 		Phase.SURGE_WARN:
-			call_out("lung_surge")
+			if not in_the_marrow():
+				call_out("lung_surge")
 			Sound.play(&"windup", global_position)
 		Phase.SURGE:
 			Sound.play(&"carriage_run", global_position)
 		Phase.VENT:
-			call_out("lung_vent")
+			if not in_the_marrow():
+				call_out("lung_vent")
 			Sound.play(&"vent_hiss", global_position)
 
 
@@ -159,6 +244,14 @@ func _fight(delta: float) -> void:
 	_phase_time += delta
 	var p := player()
 	var player_ok := p != null and p.is_alive()
+	# The deep water past the shallows wears you down while you stand in it.
+	if player_ok and in_deep(p.global_position):
+		_deep_in += delta
+		if _deep_in >= DEEP_TICK:
+			_deep_in = 0.0
+			p.take_hit(DEEP_DAMAGE, global_position)
+	else:
+		_deep_in = 0.0
 	match phase:
 		Phase.FILL:
 			if _phase_time >= _fill_for:
@@ -181,7 +274,7 @@ func _fight(delta: float) -> void:
 			if _phase_time >= SURGE_SECONDS:
 				_enter_phase(Phase.VENT)
 		Phase.VENT:
-			if _phase_time >= VENT_SECONDS:
+			if _phase_time >= STAGE_VENT[stage - 1]:
 				_start_cycle()
 		Phase.STALLED:
 			if _phase_time >= STALL_SECONDS:
@@ -231,6 +324,17 @@ func _draw() -> void:
 	if phase == Phase.SURGE:
 		_ring(surge_radius(), Color(Palette.WATER_SHEEN, 0.9))
 		_ring(surge_radius(), Color(Palette.DANGER, 0.6))
+	# The tide up: the deep water past the shallows, its edge in red-orange.
+	if deep_tiles() > 0.0:
+		# Deep water like the tide's: dark, with a sheen on it.
+		_band(deep_tiles(), BASIN_TILES + 2.0, Color(Palette.WATER_DEEP, 0.7))
+		for k: int in 4:
+			_ring(deep_tiles() + 0.45 + k * 0.6, Color(Palette.WATER_SHEEN, 0.75 - k * 0.12))
+		_ring(deep_tiles(), Color(Palette.DANGER, 0.6))
+	# Between stages: a swell rings out from it (no flash).
+	if in_transition():
+		var k := 1.0 - _transition_left / Boss.STAGE_TRANSITION
+		_ring(lerpf(radius_tiles, BASIN_TILES, k), Color(Palette.WATER_SHEEN, 0.7 * (1.0 - k)))
 
 
 ## The quarter that's filling, as its square of the basin on the ground (local points).
@@ -247,6 +351,14 @@ func _quarter_outline(col: Color) -> void:
 
 func _quarter_fill(col: Color) -> void:
 	draw_colored_polygon(_quarter_points(), col)
+
+
+## The ground between two circles round the Lung, filled.
+func _band(inner: float, outer: float, col: Color) -> void:
+	for i: int in 32:
+		var a0 := Vector2.from_angle(TAU * i / 32.0)
+		var a1 := Vector2.from_angle(TAU * (i + 1) / 32.0)
+		draw_colored_polygon(PackedVector2Array([Iso.grid_to_world(a0 * inner), Iso.grid_to_world(a0 * outer), Iso.grid_to_world(a1 * outer), Iso.grid_to_world(a1 * inner)]), col)
 
 
 ## A circle of `tiles` radius round the Lung, on the ground.

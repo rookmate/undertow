@@ -13,7 +13,7 @@ const OPENING: Array[String] = [
 const THROUGH: Array[String] = [
 	"steward_called_the_tide", "path_kept_to_high_ground", "plaque_found", "woke_the_last_shift",
 	"no_path_in_the_marrow", "woke_in_the_marrow", "enemy_killed", "lung_engaged", "lung_called_a_flood",
-	"lung_vented", "lung_beaten", "barriers_opened", "route_completed", "core_choice_shown",
+	"lung_vented", "lung_staged", "lung_beaten", "barriers_opened", "route_completed", "core_choice_shown",
 	"greywater_cores_carried", "ark_reached", "pumphouse_restored", "pumphouse_standing",
 	"conversation_waiting", "conversation_offered", "conversation_answered",
 ]
@@ -120,6 +120,12 @@ func drive(level: Level, gen: int) -> void:
 		return
 	check(await Autopilot.until(func() -> bool: return lung.is_engaged, 3.0, gen), "lung_engaged")
 	await Autopilot.snap("greywater_lung")
+	# Its stages: the tide up, then the Marrow in (photographed once each has begun).
+	lung.stage_began.connect(func(n: int) -> void:
+		if n == lung.stage_count():
+			pass_check("lung_staged")
+		if await Autopilot.wait(Boss.STAGE_TRANSITION + 1.5, gen):
+			await Autopilot.snap("greywater_lung_stage_%d" % n))
 	if not await _fight_lung(player, lung, gen):
 		return
 	check(boss_down(player), "lung_beaten")

@@ -758,4 +758,17 @@ Asked of the user on 2026-10-09 and answered the same day.
      have gone down (district, cell, the boss and its health) and totals it at the end; the gate
      prints the total. `--autopilot-mortal` plays it for real, for judging difficulty. The restart
      rule itself is covered by its own test. The bot plays the Crane better all the same.
-
+179. **Boss stages.** A boss can have two or three stages; its fight gets harder as it's taken apart. At
+     each threshold of its integrity (two thirds and one third for three stages, half for two) it stops
+     for 3.2 s: it can't be hurt, the Steward says what's changed if it can see it, and then it fights
+     its next stage. One blow never carries it past a threshold. The boss bar is notched where its
+     stages begin. A restarted fight starts at stage 1. Each boss's calls still fit their gaps in every
+     stage (its CALL_GAPS and WARN_LEADS hold the tightest timings across its stages).
+180. **The Lung in three stages.** Stage 1 as before. **Stage 2, the tide comes up and stays:** past 4
+     tiles from it the basin is deep water that wears you down (6 every 0.8 s you stand in it; a roll
+     clears it like any hit), and it fills faster (1.0 s, from 1.2). Turning the hand valve, 5 tiles
+     out, now means wading in. **Stage 3, the Marrow rolls in:** fog past arm's reach; it can't see you
+     (its floods fall where they fall, not where you are) and neither can the Steward (no calls at
+     all: you read the grates' red light yourself), it fills faster still (0.85 s), the deep water
+     comes in to 3.6 tiles, and it vents for less (2.8 s). The Steward: "The tide's in. Stay close."
+     and "The Marrow. I've lost you."
