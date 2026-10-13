@@ -17,7 +17,7 @@ const ENGAGE_TILES := 7.0
 ## this: its first call would otherwise cut the introduction off mid-word. Muted, or cut short, it starts
 ## at once.
 const OPENING_MAX := 6.0
-## Restarted after you died (Level.restart_boss_fight): it won't engage for this long after it's back, so
+## Restarted after you died (BossEncounter.restart): it won't engage for this long after it's back, so
 ## you get your feet under you at the checkpoint.
 const RETRY_GRACE := 2.0
 ## Stages (DECISIONS 179). A boss with more than one gets harder as it's taken apart: at each threshold of
@@ -37,6 +37,13 @@ var retrying: bool = false
 ## Its stage (1 to stage_count()), and how long the transition into it has left.
 var stage: int = 1
 var _transition_left: float = 0.0
+## You went down in its fight (BossEncounter): nothing hurts it now, until it's built again.
+var _held_off: bool = false
+## Its word on the stage just begun, waiting for the call the Steward is still saying to finish (it never
+## cuts one off); the pause between stages counts from when it's said. Never waits longer than this.
+var _stage_call: String = ""
+var _stage_call_wait: float = 0.0
+const STAGE_CALL_WAIT := 3.0
 var _since_built: float = 0.0
 ## The introduction being said ("" if none), and how long it's been going.
 var _intro: String = ""
@@ -98,13 +105,23 @@ func is_switching() -> bool:
 	return false
 
 
+## Whether it can see you to start the fight (within ENGAGE_TILES): yes, unless a boss says otherwise.
+func _may_engage(_p: Operator) -> bool:
+	return true
+
+
+## The fight is lost (you went down in it): from now nothing hurts it.
+func hold_off() -> void:
+	_held_off = true
+
+
 ## Its weak point was struck (only matters while switching).
 func on_weak_point_hit() -> void:
 	pass
 
 
 func take_hit(amount: float, from_dir: Vector2, _knock_tiles: float, _stun_seconds: float) -> void:
-	if state == State.DEAD:
+	if state == State.DEAD or _held_off:
 		return
 	if in_transition() or not is_vulnerable():
 		Sound.play(&"armour_clang", global_position)
@@ -133,9 +150,8 @@ func _begin_stage(next_stage: int) -> void:
 	stage = next_stage
 	_transition_left = STAGE_TRANSITION
 	_on_stage_begins(next_stage)
-	var line := stage_line(next_stage)
-	if line != "":
-		call_out(line)
+	_stage_call = stage_line(next_stage)
+	_stage_call_wait = 0.0
 	Sound.play(&"container_drop", global_position)
 	stage_began.emit(next_stage)
 
@@ -148,7 +164,7 @@ func _think(_delta: float) -> Vector2:
 	var p := player()
 	_since_built += _delta
 	var ready_again := not retrying or _since_built >= RETRY_GRACE
-	if not is_engaged and ready_again and p != null and p.is_alive() and distance_to_player() <= ENGAGE_TILES:
+	if not is_engaged and ready_again and p != null and p.is_alive() and distance_to_player() <= ENGAGE_TILES and _may_engage(p):
 		is_engaged = true
 		engaged.emit()
 		if not retrying:
@@ -161,6 +177,12 @@ func _think(_delta: float) -> Vector2:
 		_on_engaged()
 	if is_fighting:
 		if in_transition():
+			if _stage_call != "":
+				_stage_call_wait += _delta
+				if not _call_being_said() or _stage_call_wait >= STAGE_CALL_WAIT:
+					call_out(_stage_call)
+					_stage_call = ""
+				return Vector2.ZERO
 			_transition_left -= _delta
 			if not in_transition():
 				_on_stage(stage)
@@ -189,6 +211,15 @@ func _fight(_delta: float) -> void:
 ## recording short enough to be said in full.
 func call_out(line_id: String) -> void:
 	Narrator.say_fixed(line_id, true)
+
+
+## The Steward is still saying one of this boss's own calls (every one is in its CALL_GAPS), or a warning:
+## a new stage's word waits for it. Anything else it was saying gives way.
+func _call_being_said() -> bool:
+	if Sound.voice_line == "" or Sound.voice_left() <= 0.0:
+		return false
+	var gaps: Variant = (get_script() as Script).get_script_constant_map().get("CALL_GAPS")
+	return (gaps is Dictionary and (gaps as Dictionary).has(Sound.voice_line)) or Narrator.warning_in_progress()
 
 
 func _die() -> void:

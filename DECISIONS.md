@@ -858,3 +858,24 @@ Asked of the user on 2026-10-09 and answered the same day.
      eight is about a third, as five was. On first visits you can carry two cores a district, so a run
      that favours truths gets there; one that doesn't can make it up on revisits, where every truth
      found goes straight to the Archive.
+190. **Milestone 5 review, round 1** (reviews/deeper-districts.md). **A boss fight you lose is settled as
+     you go down** (BossEncounter, out of Level): from then nothing can hurt the boss (a shot you'd fired
+     can't finish it and skip the restart), and you're back at the checkpoint by its arena's door,
+     whichever checkpoint you'd touched. **A new stage's word waits** for the call the Steward is still
+     saying for that boss (or a warning), up to 3 s, instead of cutting it off; the pause between stages
+     counts from its word. **Hardening is real**: a quicker windup strikes when its shorter telegraph
+     runs out, and an elite Warden stays faster on the hunt and on its beat. **Only the Steward's own
+     refusals** (a sealed ward, the Waiting it won't wake) take its serif and gold in a blocked prompt; a
+     shut hatch, a locked door, the Reliquary, Noor and the boat say why in plain type. **The Lung's deep
+     water** stings only where it's drawn. **A running hold's bar** redraws as it runs. **Saves from
+     before revisits** (version 2) can't tell a truth left at a Reliquary from one never found, so nothing
+     counts as left: a truth you left then can be found on a revisit (better than losing one you never
+     found); saves are version 3. **The Loop map**, with nothing new open, offers the districts you can go
+     back to. A hold's machines come out well clear of the district's boss (Harbor's from the middle pier,
+     the Vellum's from the newsroom's far side), so fighting them doesn't bring the boss in. The holds,
+     ladders, tool doors and descents moved out of Level too (Descents). And the loadout's cards keep
+     their words on them.
+191. **The Warden-Prime sees you only on its Lattice.** It's the Steward's: within reach, it starts the
+     fight only once you're on the Lattice (in the Ward, the border gate and the plaza past it), never
+     from across the fence on the Wardfolk's lanes, however close. Fighting the curfew patrol by the gate,
+     or winding the mast's generator on Net Lane, no longer brings it into a fight you haven't walked into.

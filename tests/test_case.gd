@@ -59,6 +59,19 @@ func wait_seconds(duration: float) -> void:
 	await get_tree().create_timer(duration).timeout
 
 
+## Waits, a physics frame at a time, until `condition` holds or `timeout` seconds of game time pass (the
+## runner's frames are fixed, not real time: the game's own clock is what a boss counts). Returns whether
+## it held.
+func wait_until(condition: Callable, timeout: float) -> bool:
+	var spent := 0.0
+	while not condition.call():
+		if spent > timeout:
+			return false
+		await get_tree().physics_frame
+		spent += get_physics_process_delta_time()
+	return true
+
+
 static func _same(a: Variant, b: Variant) -> bool:
 	var numeric := [TYPE_INT, TYPE_FLOAT]
 	if typeof(a) in numeric and typeof(b) in numeric:

@@ -66,6 +66,11 @@ func _ready() -> void:
 	add_child(_back)
 	Modals.push(self)
 	var open := LevelCatalog.open_districts(GameState.run)
+	# Nothing new open: the districts you can go back to (DECISIONS 187).
+	if open.is_empty():
+		for d: Dictionary in LevelCatalog.CITY:
+			if LevelCatalog.can_revisit(GameState.run, str(d["id"])):
+				open.append(str(d["id"]))
 	if open.is_empty():
 		var to_come := still_to_come()
 		if to_come.is_empty():

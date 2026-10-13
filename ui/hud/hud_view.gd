@@ -77,6 +77,10 @@ func _state_signature() -> String:
 		parts.append("%d%d%d%.1f" % [int(b.is_engaged), int(b.is_alive()), int(b.is_vulnerable()), b.integrity.value])
 	for w: Weapon in p.weapons:
 		parts.append("%s%d%s%.2f" % [Controls.prompt(w.action()), int(w.is_tuned()), w.status(), snappedf(w.readiness(), 0.02)])
+	# A hold running: its bar moves as it runs, and goes when it's done.
+	var hold := level.running_hold()
+	if hold != null:
+		parts.append("%s%.2f%d" % [hold.hold_id, hold.progress, int(hold.turning())])
 	return "|".join(parts)
 
 
@@ -168,10 +172,11 @@ func _draw_interaction(p: Operator) -> void:
 	var at := _to_screen(target.global_position + Vector2(0, -175))
 	var reason := target.blocked_reason()
 	if not target.can_interact() and reason != "":
-		var font := UiFonts.narration()
+		var steward := target.blocked_by_steward()
+		var font := reason_font(steward)
 		var w := font.get_string_size(reason, HORIZONTAL_ALIGNMENT_LEFT, -1, 24).x
 		draw_rect(Rect2(at + Vector2(-w * 0.5 - 14, -30), Vector2(w + 28, 42)), Palette.PANEL)
-		draw_string(font, at + Vector2(-w * 0.5, 0), reason, HORIZONTAL_ALIGNMENT_LEFT, -1, 24, Palette.STEWARD_GOLD)
+		draw_string(font, at + Vector2(-w * 0.5, 0), reason, HORIZONTAL_ALIGNMENT_LEFT, -1, 24, reason_color(steward))
 		return
 	var text := "%s  %s" % [Controls.prompt(&"interact"), target.prompt_verb()]
 	var label_font := UiFonts.heading()
@@ -179,6 +184,16 @@ func _draw_interaction(p: Operator) -> void:
 	draw_rect(Rect2(at + Vector2(-tw * 0.5 - 14, -30), Vector2(tw + 28, 42)), Palette.PANEL)
 	draw_rect(Rect2(at + Vector2(-tw * 0.5 - 14, -30), Vector2(tw + 28, 42)), Palette.IVORY_FAINT, false, 1.0)
 	draw_string(label_font, at + Vector2(-tw * 0.5, 0), text, HORIZONTAL_ALIGNMENT_LEFT, -1, 26, Palette.IVORY)
+
+
+## A blocked reason's type and colour: the Steward's serif and gold for its own refusals, plain type and
+## ivory for everything else (a shut hatch, a locked door, a boat).
+static func reason_font(steward: bool) -> Font:
+	return UiFonts.narration() if steward else UiFonts.label()
+
+
+static func reason_color(steward: bool) -> Color:
+	return Palette.STEWARD_GOLD if steward else Palette.IVORY
 
 
 ## What people say, in plain type and human cream (the serif belongs to the Steward).

@@ -99,7 +99,7 @@ func _think(delta: float) -> Vector2:
 			return _walk_beat(delta)
 		State.WINDUP:
 			face_player()
-			if _state_time >= WINDUP:
+			if _state_time >= windup_seconds():
 				if player_ok and distance_to_player() <= REACH + 0.25:
 					p.take_hit(DAMAGE, global_position)
 				Sound.play(&"warden_strike", global_position)
@@ -113,7 +113,7 @@ func _think(delta: float) -> Vector2:
 
 
 func _hunt(p: Operator, delta: float) -> Vector2:
-	speed_tiles = HUNT_SPEED
+	speed_tiles = HUNT_SPEED * speed_scale
 	if _unseen_for <= 0.0 and distance_to_player() <= REACH:
 		_enter(State.WINDUP)
 		return Vector2.ZERO
@@ -137,7 +137,7 @@ func _hunt(p: Operator, delta: float) -> Vector2:
 
 
 func _walk_beat(delta: float) -> Vector2:
-	speed_tiles = PATROL_SPEED
+	speed_tiles = PATROL_SPEED * speed_scale
 	if _beat.size() < 2:
 		return Vector2.ZERO
 	var target := _beat[_beat_at]

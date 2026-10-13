@@ -93,7 +93,7 @@ func _beat_it() -> void:
 		prime.call(&"_enter_phase", WardenPrime.Phase.DAZED)
 		prime.take_hit(WardenPrime.MAX_INTEGRITY, Vector2(1, 0), 0.0, 0.0)
 		if prime.in_transition():
-			await wait_seconds(Boss.STAGE_TRANSITION + 0.1)
+			await wait_until(func() -> bool: return not prime.in_transition(), Boss.STAGE_TRANSITION + Boss.STAGE_CALL_WAIT + 0.5)
 	await wait_physics_frames(3)
 
 

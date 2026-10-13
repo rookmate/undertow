@@ -141,3 +141,31 @@ func test_the_wards_mast_and_its_people() -> void:
 		check(f.current_line() != CommonsPeople.wardfolk_line(f.wardfolk_index, GameState.run), "not what they say on the Ark")
 	folk[0].interact(level.player)
 	check(folk[0].spoken_line() != "", "talked to, they answer")
+
+
+## The Warden-Prime is the Steward's (DECISIONS 191): out on the Ward's lanes across the fence it doesn't
+## see you, however close (fighting the patrol by the gate, winding the mast's generator); on its Lattice
+## at the border it does.
+func test_the_prime_sees_you_only_on_its_lattice() -> void:
+	GameState.noor_leaves_for_ward()
+	level = (load("res://game/level/harbor_ward.tscn") as PackedScene).instantiate() as Level
+	add_child(level)
+	await wait_frames(3)
+	var prime := level.boss as WardenPrime
+	check(prime != null, "the Prime")
+	if prime == null:
+		return
+	var lane := Vector2i(33, 20)
+	check_false(level.grid.is_indexed(lane), "the lane is the Ward's")
+	level.player.set_physics_process(false)
+	level.player.position = Iso.cell_center(lane) + Iso.ground_velocity(Vector2(1, 0), 0.3)
+	await wait_physics_frames(2)
+	check_eq(level.player.cell(), lane)
+	check(Iso.ground_distance(level.player.global_position, prime.global_position) < Boss.ENGAGE_TILES, "within its reach")
+	await wait_physics_frames(30)
+	check_false(prime.is_engaged, "from the lane it doesn't see you")
+	level.player.position = Iso.cell_center(Vector2i(36, 20))
+	await wait_physics_frames(5)
+	check(prime.is_engaged, "on its Lattice it does")
+	level.player.set_physics_process(true)
+

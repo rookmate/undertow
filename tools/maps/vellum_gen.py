@@ -117,9 +117,10 @@ rect(34, 15, 34, 20, '-')
 put(32, 8, 'C')
 
 # The newsroom's paper lift (the hold): haul it up by hand, while the Steward's Clerks and Custodians come
-# in off the press floor to stop you; its shaft goes down to the sorting floor.
+# in from the newsroom's far side to stop you (not from by the press hall: fighting them there would bring
+# the Editor into it); its shaft goes down to the sorting floor.
 put(31, 13, 'r')
-put(26, 4, 'h'); put(33, 4, 'h')
+put(26, 4, 'h'); put(25, 10, 'h')
 put(34, 12, 'l')
 # The sorting floor under the stacks (a descent, off the Lattice): the lift's landing, the chute tunnel,
 # the drop to the sorting hall, the side room off it, and the spike room at its end.

@@ -103,7 +103,7 @@ func _think(delta: float) -> Vector2:
 			face_player()
 			if not sees:
 				_enter(State.RECOVER)
-			elif _state_time >= WINDUP:
+			elif _state_time >= windup_seconds():
 				_hook(p)
 			return Vector2.ZERO
 		State.ATTACK:

@@ -134,7 +134,7 @@ func test_taking_it_apart_opens_the_way_and_pays() -> void:
 		conductor.call(&"_enter_phase", Conductor.Phase.VENT)
 		conductor.take_hit(Conductor.MAX_INTEGRITY, Vector2(0, -1), 0.0, 0.0)
 		if conductor.in_transition():
-			await wait_seconds(Boss.STAGE_TRANSITION + 0.1)
+			await wait_until(func() -> bool: return not conductor.in_transition(), Boss.STAGE_TRANSITION + Boss.STAGE_CALL_WAIT + 0.5)
 	check_false(conductor.is_alive())
 	await wait_frames(2)
 	for n: Node in get_tree().get_nodes_in_group(&"boss_barriers"):

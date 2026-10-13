@@ -48,6 +48,9 @@ var noor_down: NoorDown
 var noor_choice: NoorChoice
 ## A descent's dark (only where the map has one).
 var descent_dark: DescentDark
+## The boss fight, start to finish (BossEncounter), and the holds, ways down and descents (Descents).
+var encounter: BossEncounter
+var descents: Descents
 ## The street's sky and its rain: not down in a descent.
 var _backdrop: CanvasLayer
 var _rain_layer: CanvasLayer
@@ -210,8 +213,17 @@ func _populate() -> void:
 	revisit = not is_hub() and GameState.run.levels_completed.has(level_id)
 	hardening = Hardening.step(GameState.run, level_id) if revisit else 0
 	_spawn_enemies()
-	_spawn_boss()
+	encounter = BossEncounter.new()
+	encounter.name = "BossEncounter"
+	encounter.setup(self)
+	add_child(encounter)
+	encounter.build()
+	descents = Descents.new()
+	descents.name = "Descents"
+	descents.setup(self)
+	add_child(descents)
 	_spawn_people_and_finds()
+	descents.build()
 
 
 ## Greywater: the tide over the low streets (and its water), and the thick Marrow on the cells under it.
@@ -281,58 +293,37 @@ func _update_checkpoint() -> void:
 			Sound.play(&"checkpoint")
 
 
-## Back on your feet at the last checkpoint, at full Integrity; a boss fight you died in starts over, and
-## so does a hold you were running.
+## You went down: a boss fight you were in is lost (BossEncounter), whatever happens while you're down.
+func player_went_down() -> void:
+	if encounter != null:
+		encounter.player_went_down()
+
+
+## Back on your feet at the last checkpoint, at full Integrity; a boss fight you died in starts over (at
+## the checkpoint by its arena's door), and so does a hold you were running.
 func restart_after_death() -> void:
-	restart_boss_fight()
-	for n: Node in world.get_children():
-		if n is Hold:
-			(n as Hold).reset()
+	if encounter != null:
+		encounter.start_over_if_lost()
+	if descents != null:
+		descents.reset_holds()
 	respawn_player()
 
 
-## The hold running now (the HUD shows it), or null.
+## (Descents) The hold running now, or null; a passage end by id; down a descent; what's left down there.
 func running_hold() -> Hold:
-	for n: Node in world.get_children():
-		if n is Hold and (n as Hold).running:
-			return n
-	return null
+	return descents.running_hold() if descents != null else null
 
 
-## The passage end with this id ("<name>_down" / "<name>_up"), or null.
 func passage(passage_id: String) -> Passage:
-	for n: Node in world.get_children():
-		if n is Passage and (n as Passage).passage_id == passage_id:
-			return n
-	return null
+	return descents.passage(passage_id) if descents != null else null
 
 
-## Down or back up: a short fade, and you're at the other end, beside its ladder.
-func take_passage(from: Passage) -> void:
-	var to := passage(from.partner_id())
-	if to == null or player == null:
-		return
-	var fade := CanvasLayer.new()
-	fade.layer = 40
-	var black := ColorRect.new()
-	black.color = Color(Palette.NEAR_BLACK, 0.0)
-	black.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	black.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	fade.add_child(black)
-	add_child(fade)
-	Sound.play(&"dressing", player.global_position)
-	var t := create_tween()
-	t.tween_property(black, "color:a", 1.0, 0.18)
-	t.tween_callback(func() -> void:
-		var landing := to.cell
-		for d: Vector2i in [Vector2i(1, 0), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(0, -1)]:
-			if grid.is_walkable(to.cell + d) and not grid.is_occupied(to.cell + d):
-				landing = to.cell + d
-				break
-		player.position = Iso.cell_center(landing)
-		camera.reset_smoothing())
-	t.tween_property(black, "color:a", 0.0, 0.25)
-	t.tween_callback(fade.queue_free)
+func in_descent() -> bool:
+	return descents != null and descents.in_descent()
+
+
+func descent_finds_left() -> int:
+	return descents.finds_left() if descents != null else 0
 
 
 ## Below the street there's no sky and no rain; back up, they're there again.
@@ -340,22 +331,6 @@ func show_the_street(on: bool) -> void:
 	for layer: CanvasLayer in [_backdrop, _rain_layer]:
 		if layer != null:
 			layer.visible = on
-
-
-## Standing on a descent's floor (below the street).
-func in_descent() -> bool:
-	return player != null and grid.floor_at(player.cell()) == LevelGrid.Floor.CULVERT
-
-
-## Unindexed things still to find down in the descents (what glows up through a shut way down).
-func descent_finds_left() -> int:
-	var n := 0
-	for node: Node in get_tree().get_nodes_in_group(&"interactables"):
-		var it := node as Interactable
-		if it != null and it.off_path and it.still_to_find() and is_ancestor_of(it) \
-				and grid.floor_at(Iso.world_to_cell(it.global_position)) == LevelGrid.Floor.CULVERT:
-			n += 1
-	return n
 
 
 ## The enemies a hold can bring out, by name.
@@ -667,24 +642,6 @@ func _spawn_people_and_finds() -> void:
 			folk.setup(self, c, ArkFigure.Who.WARDFOLK)
 			folk.wardfolk_index = grid.cells_with(Tiles.WARDFOLK).find(c)
 			world.add_child(folk)
-	# Holds and the ways down they open (design/deeper-districts.md).
-	for c: Vector2i in grid.cells_with(Tiles.CRANK):
-		var hold := Hold.new()
-		hold.setup(self, c, grid.entity_id(c))
-		world.add_child(hold)
-	for c: Vector2i in grid.cells_with(Tiles.LADDER):
-		var way := Passage.new()
-		way.setup(self, c, grid.entity_id(c))
-		world.add_child(way)
-	# Doors the Ark's tools open (DECISIONS 188).
-	for c: Vector2i in grid.cells_with(Tiles.TOOL_DOOR):
-		var door := ToolDoor.new()
-		door.setup(self, c, grid.entity_id(c))
-		world.add_child(door)
-	if not grid.cells_with(Tiles.CULVERT).is_empty() or grid.all_cells().any(func(c: Vector2i) -> bool: return grid.floor_at(c) == LevelGrid.Floor.CULVERT):
-		descent_dark = DescentDark.new()
-		descent_dark.level = self
-		add_child(descent_dark)
 	# The Spire: where the Steward says what it did.
 	for c: Vector2i in grid.cells_with(Tiles.CONFESSION):
 		var confession := Confession.new()
@@ -849,114 +806,6 @@ func noor_dropped() -> void:
 ## The boss this level ends with ("" for none): a test arena's own, or the district's.
 func boss_id() -> String:
 	return boss_override if boss_override != "" else LevelCatalog.boss_of(level_id)
-
-
-## The district's boss on its 'B' cell, with what its fight needs: lanes ('1', '2', '3'), a signal box
-## ('Z'), and barriers ('y') that open when it falls.
-func _spawn_boss() -> void:
-	# On a revisit it stays beaten, and its barriers stay open.
-	if revisit:
-		return
-	for c: Vector2i in grid.cells_with("y"):
-		var barrier := BossBarrier.new()
-		barrier.setup(c)
-		world.add_child(barrier)
-	_make_boss()
-
-
-## Dying in a boss fight restarts it (DECISIONS 177): the boss you were fighting, its weak point, the
-## lanes or rollers it works and whatever it had in the air are gone, and a fresh one stands where it was
-## built, at full strength and its first stage. It doesn't introduce itself again, and gives you a moment
-## at the checkpoint before it engages. Its barriers stay shut. Returns whether a fight was restarted.
-func restart_boss_fight() -> bool:
-	if boss == null or not is_instance_valid(boss) or not boss.is_alive() or not boss.is_engaged:
-		return false
-	var parts: Array[Node] = [boss]
-	if boss.weak_point != null and is_instance_valid(boss.weak_point):
-		parts.append(boss.weak_point)
-	parts.append_array(get_tree().get_nodes_in_group(&"boss_parts").filter(func(n: Node) -> bool: return is_ancestor_of(n)))
-	for n: Node in world.get_children():
-		if n is Projectile and (n as Projectile).team == Projectile.Team.ENEMY:
-			parts.append(n)
-	for n: Node in parts:
-		if n is Enemy:
-			_enemies.erase(n)
-			(n as Enemy).remove_from_group(&"enemies")
-		n.queue_free()
-	_make_boss()
-	if boss != null:
-		boss.retrying = true
-	return true
-
-
-## The district's boss on its 'B' cell, its weak point on 'Z', and what its fight works (lanes, rollers:
-## group "boss_parts").
-func _make_boss() -> void:
-	var b := grid.first("B")
-	if b.x < 0:
-		return
-	match boss_id():
-		"conductor":
-			var conductor := Conductor.new()
-			add_enemy(conductor, b, Conductor.MAX_INTEGRITY)
-			boss = conductor
-			var lanes: Array[ShuntLane] = []
-			for digit: String in ["1", "2", "3"]:
-				var cells := grid.cells_with(digit)
-				if cells.is_empty():
-					continue
-				# The carriage runs away from the Conductor down its lane.
-				cells.sort_custom(func(p: Vector2i, q: Vector2i) -> bool: return p.distance_squared_to(b) < q.distance_squared_to(b))
-				var lane := ShuntLane.new()
-				lanes.append(lane)
-				lane.cells = cells
-			# As the Operator sees them: the lane furthest down-left on screen is the left track.
-			lanes.sort_custom(func(p: ShuntLane, q: ShuntLane) -> bool: return p.cells[0].y > q.cells[0].y)
-			var sides := ["left", "middle", "right"]
-			for i: int in lanes.size():
-				lanes[i].setup(self, lanes[i].cells, sides[mini(i, 2)])
-				lanes[i].add_to_group(&"boss_parts")
-				fx_ground.add_child(lanes[i])
-			conductor.lanes = lanes
-			_add_weak_point(conductor, SignalBox.new())
-		"crane":
-			var crane := Crane.new()
-			add_enemy(crane, b, Crane.MAX_INTEGRITY)
-			boss = crane
-			_add_weak_point(crane, HoistBrake.new())
-		"surgeon":
-			var surgeon := Surgeon.new()
-			add_enemy(surgeon, b, Surgeon.MAX_INTEGRITY)
-			boss = surgeon
-			_add_weak_point(surgeon, TheatreSwitch.new())
-		"lung":
-			var lung := Lung.new()
-			add_enemy(lung, b, Lung.MAX_INTEGRITY)
-			boss = lung
-			_add_weak_point(lung, HandValve.new())
-		"warden_prime":
-			var prime := WardenPrime.new()
-			add_enemy(prime, b, WardenPrime.MAX_INTEGRITY)
-			boss = prime
-			_add_weak_point(prime, RelayMast.new())
-		"editor":
-			var editor := Editor.new()
-			add_enemy(editor, b, Editor.MAX_INTEGRITY)
-			boss = editor
-			_add_weak_point(editor, BaleStack.new())
-			var rollers := PressRollers.new()
-			rollers.editor = editor
-			rollers.add_to_group(&"boss_parts")
-			fx_ground.add_child(rollers)
-
-
-func _add_weak_point(owner_boss: Boss, point: WeakPoint) -> void:
-	var z := grid.first("Z")
-	if z.x < 0:
-		return
-	add_enemy(point, z, 1.0)
-	point.boss = owner_boss
-	owner_boss.weak_point = point
 
 
 func _add_enemy(e: Enemy, cell: Vector2i, max_integrity: float) -> void:

@@ -127,6 +127,12 @@ func is_switching() -> bool:
 	return phase == Phase.SWEEP
 
 
+## It's the Steward's: it sees you only on its Lattice (in the Ward, the border and the plaza past it),
+## never out on the Wardfolk's lanes across the fence, however close (DECISIONS 191).
+func _may_engage(p: Operator) -> bool:
+	return level != null and level.grid.is_indexed(p.cell())
+
+
 func _on_engaged() -> void:
 	_enter_phase(Phase.SWEEP)
 

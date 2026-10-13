@@ -58,6 +58,10 @@ func prompt_verb() -> String:
 	return "WAKE"
 
 
+func blocked_by_steward() -> bool:
+	return true
+
+
 func blocked_reason() -> String:
 	if woken:
 		return ""

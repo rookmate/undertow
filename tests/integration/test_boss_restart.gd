@@ -62,13 +62,18 @@ func _die_against(id: String) -> void:
 	if first == null:
 		return
 	var parts := get_tree().get_nodes_in_group(&"boss_parts").filter(func(n: Node) -> bool: return level.is_ancestor_of(n)).size()
-	# The checkpoint at the arena's door, on your side of its barrier, is where you come back.
-	level.checkpoint_cell = level.grid.arena_checkpoint()
+	# The checkpoint at the arena's door, on your side of its barrier, is where you come back: whichever
+	# checkpoint you last touched (here none: you walked straight in from the start).
+	var door := level.grid.arena_checkpoint()
+	check(door.x >= 0, "%s: a checkpoint by its arena's door" % id)
 	level.player.position = first.global_position + Iso.ground_velocity(Vector2(0, 1), 3.0)
 	await wait_physics_frames(3)
 	check(first.is_engaged, "%s: engaged" % id)
 	Sound.hush()
 	await wait_physics_frames(30)
+	# Deep into the fight: into its next stage if it has one, half its strength gone.
+	if first.stage_count() > 1:
+		first.call(&"_begin_stage", 2)
 	first.integrity.take(first.integrity.max_value * 0.5)
 	level.player.self_damage(10000.0)
 	await wait_seconds(Operator.DOWNED_SECONDS + 0.2)
@@ -83,7 +88,7 @@ func _die_against(id: String) -> void:
 	check(again.weak_point == null or (is_instance_valid(again.weak_point) and again.weak_point.boss == again), "%s: its own weak point" % id)
 	check_eq(get_tree().get_nodes_in_group(&"boss_parts").filter(func(n: Node) -> bool: return level.is_ancestor_of(n) and not n.is_queued_for_deletion()).size(), parts, "%s: its lanes or rollers, once" % id)
 	check_eq(_enemy_shots(), 0, "%s: nothing of the old fight in the air" % id)
-	check(level.player.is_alive() and Iso.world_to_cell(level.player.global_position) == level.checkpoint_cell, "%s: you're back by the arena" % id)
+	check(level.player.is_alive() and Iso.world_to_cell(level.player.global_position) == door, "%s: you're back by the arena's door" % id)
 	check_eq(level.living_enemies().filter(func(e: Enemy) -> bool: return e is Boss).size(), 1, "%s: one boss" % id)
 	# A moment to get your feet under you, even within reach.
 	level.player.position = again.global_position + Iso.ground_velocity(Vector2(0, 1), 3.0)
@@ -94,3 +99,27 @@ func _die_against(id: String) -> void:
 	level.queue_free()
 	level = null
 	await wait_frames(2)
+
+
+## Going down settles the fight (BossEncounter): a shot you'd already fired, landing while you're down,
+## can't finish the boss and skip the restart.
+func test_a_shot_still_in_the_air_cant_finish_it_once_youre_down() -> void:
+	level = (load("res://tests/fixtures/conductor_arena.tscn") as PackedScene).instantiate() as Level
+	# A first visit (back in a district you've done, its boss stays beaten).
+	GameState.run.levels_completed.erase(level.level_id)
+	add_child(level)
+	await wait_frames(3)
+	var c := level.boss as Conductor
+	level.player.position = c.global_position + Iso.ground_velocity(Vector2(0, 1), 3.0)
+	await wait_physics_frames(3)
+	check(c.is_engaged, "engaged")
+	Sound.hush()
+	c.call(&"_enter_phase", Conductor.Phase.VENT)
+	check(c.is_vulnerable(), "open")
+	level.player.self_damage(10000.0)
+	await wait_physics_frames(2)
+	c.take_hit(c.integrity.max_value * 10.0, Vector2(1, 0), 0.0, 0.0)
+	check(c.is_alive(), "the blow that lands after you've gone down doesn't finish it")
+	await wait_seconds(Operator.DOWNED_SECONDS + 0.2)
+	check(level.boss != null and level.boss != c and level.boss.is_alive() and level.boss.retrying, "the fight starts over")
+
