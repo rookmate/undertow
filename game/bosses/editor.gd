@@ -6,6 +6,9 @@ extends Boss
 ## and lights the gap); it pulps the page; it turns the Feed on you (look away: FeedBlind) and throws the
 ## bales it made; then it re-inks, open to blows. The manual solution: knock the bale stack into the
 ## pulper while it's pulping, and it jams.
+## Three stages (DECISIONS 184): at two thirds its rollers leave the headlines wet behind them, pools of
+## ink on the floor that sting you while you stand in them; at one third its presses run backwards (the
+## rollers come back from the door toward it), three rolls a cycle.
 
 enum Phase { IDLE, ROLL_WARN, ROLL, PULP, FEED_WARN, FEED, INK, JAMMED }
 ## Which way a roller runs: from the press toward the door (down the grid's y), or across the hall
@@ -41,18 +44,27 @@ const BALE_DAMAGE := 10.0
 const BALE_SPEED := 6.5
 const INK_SECONDS := 3.5
 const JAM_SECONDS := 6.0
+## Stage 2: pools of ink left after each roll, how long they stay wet, what they do.
+const INK_POOLS := 3
+const INK_POOL_SECONDS := 8.0
+const INK_POOL_DAMAGE := 5.0
+const INK_POOL_TICK := 0.6
 
 ## Each warning, and how soon after it's called its hazard lands (seconds): the rollers setting off,
 ## the Feed. It has to be said by then.
 const WARN_LEADS: Dictionary[String, float] = {
 	"editor_rollers": ROLL_WARN_SECONDS,
 	"editor_feed": FEED_WARN_SECONDS,
+	"editor_headlines": Boss.STAGE_TRANSITION,
+	"editor_backwards": Boss.STAGE_TRANSITION,
 }
 ## Each call, and the soonest the next can come (seconds).
 const CALL_GAPS: Dictionary[String, float] = {
 	"editor_rollers": ROLL_WARN_SECONDS + ROLL_SECONDS,
 	"editor_feed": FEED_WARN_SECONDS + FEED_SECONDS,
 	"editor_ink": INK_SECONDS,
+	"editor_headlines": Boss.STAGE_TRANSITION,
+	"editor_backwards": Boss.STAGE_TRANSITION,
 }
 
 var phase: Phase = Phase.IDLE
@@ -69,6 +81,9 @@ var _warn_for: float = ROLL_WARN_SECONDS
 var _struck: bool = false
 var _rolls_left: int = 0
 var _jammed_this_cycle: bool = false
+## Stage 2 on: wet ink on the floor (cell -> seconds left).
+var ink_pools: Dictionary[Vector2i, float] = {}
+var _ink_tick: float = 0.0
 
 
 func _ready() -> void:
@@ -81,6 +96,32 @@ func is_vulnerable() -> bool:
 	return phase == Phase.INK or phase == Phase.JAMMED
 
 
+func stage_count() -> int:
+	return 3
+
+
+func stage_line(next_stage: int) -> String:
+	return "editor_headlines" if next_stage == 2 else "editor_backwards"
+
+
+func _on_stage_begins(_next_stage: int) -> void:
+	phase = Phase.IDLE
+	_phase_time = 0.0
+
+
+func _on_stage(_now: int) -> void:
+	_start_cycle()
+
+
+## Stage 3: its presses run backwards.
+func backwards() -> bool:
+	return stage >= 3
+
+
+func in_ink(at: Vector2) -> bool:
+	return ink_pools.has(Iso.world_to_cell(at))
+
+
 ## Pulping the page: the window for the bale stack.
 func is_switching() -> bool:
 	return phase == Phase.PULP
@@ -91,7 +132,7 @@ func _on_engaged() -> void:
 
 
 func _start_cycle() -> void:
-	_rolls_left = ROLLS_PER_CYCLE
+	_rolls_left = ROLLS_PER_CYCLE + (1 if backwards() else 0)
 	_jammed_this_cycle = false
 	sweep = Sweep.DOWN
 	_enter_phase(Phase.ROLL_WARN)
@@ -142,9 +183,13 @@ func roller_span() -> Vector2:
 ## Where its run starts and ends (y for DOWN, x for ACROSS). Down the hall, it comes out of the press.
 func run_span() -> Vector2:
 	var h := hall()
+	var run: Vector2
 	if sweep == Sweep.DOWN:
-		return Vector2(grid_cell().y + 1.0, h.end.y)
-	return Vector2(h.end.x, h.position.x) if across_dir < 0 else Vector2(h.position.x, h.end.x)
+		run = Vector2(grid_cell().y + 1.0, h.end.y)
+	else:
+		run = Vector2(h.end.x, h.position.x) if across_dir < 0 else Vector2(h.position.x, h.end.x)
+	# Backwards (stage 3): the same run, the other way.
+	return Vector2(run.y, run.x) if backwards() else run
 
 
 ## Where the roller is now along its run.
@@ -199,6 +244,15 @@ func _fight(delta: float) -> void:
 	_phase_time += delta
 	var p := player()
 	var player_ok := p != null and p.is_alive()
+	# The wet ink: it dries, and while it's wet it stings whoever stands in it.
+	for c: Vector2i in ink_pools.keys():
+		ink_pools[c] -= delta
+		if ink_pools[c] <= 0.0:
+			ink_pools.erase(c)
+	_ink_tick -= delta
+	if player_ok and in_ink(p.global_position) and _ink_tick <= 0.0:
+		_ink_tick = INK_POOL_TICK
+		p.take_hit(INK_POOL_DAMAGE, p.global_position)
 	match phase:
 		Phase.ROLL_WARN:
 			if _phase_time >= _warn_for:
@@ -213,8 +267,10 @@ func _fight(delta: float) -> void:
 						_struck = true
 			if _phase_time >= ROLL_SECONDS:
 				_rolls_left -= 1
+				if stage >= 2:
+					_spill_ink()
 				if _rolls_left > 0:
-					sweep = Sweep.ACROSS
+					sweep = Sweep.ACROSS if sweep == Sweep.DOWN else Sweep.DOWN
 					across_dir = -across_dir
 					_enter_phase(Phase.ROLL_WARN)
 				else:
@@ -234,6 +290,21 @@ func _fight(delta: float) -> void:
 		Phase.JAMMED:
 			if _phase_time >= JAM_SECONDS:
 				_start_cycle()
+
+
+## Stage 2 on: the headlines left wet behind the roller, a few pools of ink on the hall floor (never on
+## the Editor, never in the gap you stood in).
+func _spill_ink() -> void:
+	var h := hall()
+	var tries := 0
+	var spilled := 0
+	while spilled < INK_POOLS and tries < 40:
+		tries += 1
+		var c := Vector2i(randi_range(int(h.position.x), int(h.end.x) - 1), randi_range(int(h.position.y) + 2, int(h.end.y) - 1))
+		if level == null or not level.grid.is_walkable(c) or in_gap(Vector2(c)) or ink_pools.has(c):
+			continue
+		ink_pools[c] = INK_POOL_SECONDS
+		spilled += 1
 
 
 ## The bales it made of the page, thrown in a fan at you.

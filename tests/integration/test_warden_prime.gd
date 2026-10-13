@@ -88,8 +88,12 @@ func test_the_relay_struck_while_it_sweeps_stalls_it() -> void:
 
 func _beat_it() -> void:
 	await _stand(Vector2i(4, 9))
-	prime.call(&"_enter_phase", WardenPrime.Phase.DAZED)
-	prime.take_hit(WardenPrime.MAX_INTEGRITY, Vector2(1, 0), 0.0, 0.0)
+	# Through its stages: each blow stops at the next threshold, and it pauses before the next.
+	for k: int in prime.stage_count():
+		prime.call(&"_enter_phase", WardenPrime.Phase.DAZED)
+		prime.take_hit(WardenPrime.MAX_INTEGRITY, Vector2(1, 0), 0.0, 0.0)
+		if prime.in_transition():
+			await wait_seconds(Boss.STAGE_TRANSITION + 0.1)
 	await wait_physics_frames(3)
 
 

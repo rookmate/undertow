@@ -399,6 +399,22 @@
   "hash": "386eb387c2e9e334711bf0a8653c17bc79500cfe",
   "text": "You have company. Noor doesn't trust me. Teo built part of me. Both of them will want something from you."
  },
+ "conductor_clear_left": {
+  "hash": "80c8c51700af2744065ea8470ef6e2a0ed9e821f",
+  "text": "Left's clear."
+ },
+ "conductor_clear_middle": {
+  "hash": "bc3bfa4b37a3991646985fb9179af5b6cd9151fe",
+  "text": "Middle's clear."
+ },
+ "conductor_clear_right": {
+  "hash": "4ee200a939362a4a9006bce6b1ccf1470a0f1c72",
+  "text": "Right's clear."
+ },
+ "conductor_express": {
+  "hash": "5fd5e1ccd1bc51a53450da27bd299ce55bf34786",
+  "text": "Express. Two at once."
+ },
  "conductor_left": {
   "hash": "deaaffc4f05ca9d48d57f4ba2fe6f05f52687b6c",
   "text": "Left track."
@@ -547,6 +563,14 @@
   "hash": "4e577ebbdfe65578d398cd08ca384d8664827462",
   "text": "Whatever you choose, I won't say which. That's the first thing I've ever kept back for your sake."
  },
+ "crane_buckle": {
+  "hash": "a8b5034ac949f44e6bc01b2a85063ce027ba3278",
+  "text": "It's going over. Off the line."
+ },
+ "crane_double": {
+  "hash": "d7b595cc8dabb27ce5ca24f709e1fdb06d8c4cfc",
+  "text": "Two loads now. Along the jib."
+ },
  "crane_drop": {
   "hash": "618748c183e39fe030a2f8e3ea99e33e56f2963c",
   "text": "Drop, move."
@@ -559,9 +583,17 @@
   "hash": "e53775b968c5da9711d6124344a1e5478cab71e1",
   "text": "Closer."
  },
+ "editor_backwards": {
+  "hash": "ce4784f1574333f0eb0211b4b9d30faae6cba0ee",
+  "text": "It's running backwards."
+ },
  "editor_feed": {
   "hash": "9defd12cfcd7dc1613aca3a41491e153eebb5f31",
   "text": "Look away."
+ },
+ "editor_headlines": {
+  "hash": "4e32c9f84a42e8ebd5261cac32777f622711029e",
+  "text": "The ink's wet. Mind the floor."
  },
  "editor_ink": {
   "hash": "dab6591750cf3d25171e87e397fee95dc061efa7",
@@ -899,6 +931,10 @@
   "hash": "cd56894ec22f8278ba5e9dc365c8fb44bf8ce7be",
   "text": "It's suturing. Now."
  },
+ "surgeon_triage": {
+  "hash": "fc5c27719181048ed84a17a8207020f4b303678e",
+  "text": "Triage. Both ways now."
+ },
  "tide_swell": {
   "hash": "36b94742958072ac02c5e89823446880bf217fd2",
   "text": "The tide's turning. High ground, now."
@@ -914,6 +950,14 @@
  "ward_sealed": {
   "hash": "cf77fc2b1618f417afbfc6da59889ff6d9501010",
   "text": "Sealed for their safety. Leave them."
+ },
+ "warden_prime_blind": {
+  "hash": "04d8ec4ebb118a25d33315dc11e28d5309365b1a",
+  "text": "The mast's gone. It's blind."
+ },
+ "warden_prime_called": {
+  "hash": "eff9b741eebcb32e6742213ccb965bedfad6b419",
+  "text": "It's calling the others in."
  },
  "warden_prime_charge": {
   "hash": "2bda24acf4f56c58ae169804ee5cf432c9bb2208",

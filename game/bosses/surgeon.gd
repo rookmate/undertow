@@ -6,6 +6,8 @@ extends Boss
 ## all but close to the table; then it bends over the table to suture: open to blows. With the voice on,
 ## the Steward calls each move. The manual solution: throw the theatre lamp's switch while it's marking
 ## a line; it loses its guide and stalls, open for longer.
+## Two stages (DECISIONS 183): at half, triage: it cuts in a cross (two lines at once, the second across
+## the first), lines up faster, and its mist creeps in closer to the table.
 
 enum Phase { IDLE, MARK, CUT, MIST_WARN, MIST, SUTURE, STALLED }
 
@@ -32,18 +34,23 @@ const MIST_DAMAGE := 4.0
 const SUTURE_SECONDS := 3.5
 const STALL_SECONDS := 6.0
 const ARM_HEIGHT := 150.0
+## Stage 2: how long it takes to line up a cut; how close to the table the mist reaches.
+const TRIAGE_MARK := 0.85
+const TRIAGE_SAFE := 1.4
 
 ## Each warning, and how soon after it's called its hazard lands (seconds): the cut, the mist's first
 ## sting. It has to be said by then.
 const WARN_LEADS: Dictionary[String, float] = {
-	"surgeon_incision": MARK_SECONDS + CUT_SECONDS * 0.5,
+	"surgeon_incision": TRIAGE_MARK + CUT_SECONDS * 0.5,
 	"surgeon_mist": MIST_WARN_SECONDS,
+	"surgeon_triage": Boss.STAGE_TRANSITION,
 }
 ## Each call, and the soonest the next can come (seconds).
 const CALL_GAPS: Dictionary[String, float] = {
-	"surgeon_incision": MARK_SECONDS + CUT_SECONDS + CUT_RECOVER,
+	"surgeon_incision": TRIAGE_MARK + CUT_SECONDS + CUT_RECOVER,
 	"surgeon_mist": MIST_WARN_SECONDS + MIST_SECONDS,
 	"surgeon_suture": SUTURE_SECONDS,
+	"surgeon_triage": Boss.STAGE_TRANSITION,
 }
 
 var phase: Phase = Phase.IDLE
@@ -79,6 +86,31 @@ func is_vulnerable() -> bool:
 	return phase == Phase.SUTURE or phase == Phase.STALLED
 
 
+func stage_count() -> int:
+	return 2
+
+
+func stage_line(_next_stage: int) -> String:
+	return "surgeon_triage"
+
+
+func _on_stage_begins(_next_stage: int) -> void:
+	_enter_phase(Phase.IDLE)
+
+
+func _on_stage(_now: int) -> void:
+	_start_cycle()
+
+
+## In triage: the second line, across the first.
+func crossed() -> bool:
+	return stage >= 2
+
+
+func mist_safe() -> float:
+	return TRIAGE_SAFE if stage >= 2 else MIST_SAFE
+
+
 ## It's lining up a cut: the window for the lamp switch.
 func is_switching() -> bool:
 	return phase == Phase.MARK
@@ -100,7 +132,7 @@ func _enter_phase(next: Phase) -> void:
 	_struck = false
 	match next:
 		Phase.MARK:
-			_mark_for = MARK_SECONDS + (EARLY_MARK if not Steward.voice_on else 0.0)
+			_mark_for = (TRIAGE_MARK if stage >= 2 else MARK_SECONDS) + (EARLY_MARK if not Steward.voice_on else 0.0)
 			_aim_at_player()
 			call_out("surgeon_incision")
 			Sound.play(&"windup", global_position)
@@ -125,16 +157,19 @@ func _aim_at_player() -> void:
 		cut_dir = Iso.ground_dir_between(global_position, p.global_position)
 
 
-## Whether a point (world) lies on the incision line.
+## Whether a point (world) lies on the incision line (or, in triage, the one across it).
 func on_line(at: Vector2) -> bool:
 	var rel := Iso.world_to_grid(at) - Iso.world_to_grid(global_position)
-	return absf(rel.dot(cut_dir)) <= CUT_LENGTH and absf(rel.cross(cut_dir)) <= CUT_WIDTH
+	if absf(rel.dot(cut_dir)) <= CUT_LENGTH and absf(rel.cross(cut_dir)) <= CUT_WIDTH:
+		return true
+	var across := Vector2(-cut_dir.y, cut_dir.x)
+	return crossed() and absf(rel.dot(across)) <= CUT_LENGTH and absf(rel.cross(across)) <= CUT_WIDTH
 
 
 ## Whether a point (world) is out in the mist: too far from the table, but still in the theatre.
 func in_mist(at: Vector2) -> bool:
 	var d := Iso.ground_distance(global_position, at)
-	return d > MIST_SAFE and d <= MIST_REACH
+	return d > mist_safe() and d <= MIST_REACH
 
 
 func _fight(delta: float) -> void:
@@ -223,20 +258,23 @@ func _draw() -> void:
 	if phase != Phase.STALLED:
 		draw_circle(lamp_at + Vector2(0, 6), 18.0, Palette.STEWARD_GOLD_HOT, true, -1.0, true)
 	# The guide line it lays for the cut (its own light, gold), and the cut itself (red-orange: danger).
-	var a_end := Iso.ground_velocity(cut_dir, 1.0) * CUT_LENGTH
-	if phase == Phase.MARK:
-		var k := clampf(_phase_time / _mark_for, 0.2, 1.0)
-		_dashed(-a_end, a_end, Color(Palette.STEWARD_GOLD, 0.35 + 0.5 * k))
-	if phase == Phase.CUT:
-		draw_line(-a_end, a_end, Color(Palette.DANGER, 0.9), 6.0, true)
-		draw_line(-a_end, a_end, Color(Palette.IVORY, 0.6), 2.0, true)
+	var ends: Array[Vector2] = [Iso.ground_velocity(cut_dir, 1.0) * CUT_LENGTH]
+	if crossed():
+		ends.append(Iso.ground_velocity(Vector2(-cut_dir.y, cut_dir.x), 1.0) * CUT_LENGTH)
+	for a_end: Vector2 in ends:
+		if phase == Phase.MARK:
+			var k := clampf(_phase_time / _mark_for, 0.2, 1.0)
+			_dashed(-a_end, a_end, Color(Palette.STEWARD_GOLD, 0.35 + 0.5 * k))
+		if phase == Phase.CUT:
+			draw_line(-a_end, a_end, Color(Palette.DANGER, 0.9), 6.0, true)
+			draw_line(-a_end, a_end, Color(Palette.IVORY, 0.6), 2.0, true)
 	# The mist: from the table's clear ring (red-orange, the edge that matters) out to the theatre's
 	# reach, where it thins out.
 	if phase == Phase.MIST_WARN or phase == Phase.MIST:
-		_ring(MIST_SAFE, Color(Palette.DANGER, 0.85))
+		_ring(mist_safe(), Color(Palette.DANGER, 0.85))
 		_ring(MIST_REACH, Color(Palette.STERILE_MIST, 0.25 if phase == Phase.MIST_WARN else 0.5))
 		if phase == Phase.MIST:
-			_annulus(MIST_SAFE, MIST_REACH, Color(Palette.STERILE_MIST, 0.16))
+			_annulus(mist_safe(), MIST_REACH, Color(Palette.STERILE_MIST, 0.16))
 
 
 func _dashed(from: Vector2, to: Vector2, col: Color) -> void:

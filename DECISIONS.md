@@ -790,3 +790,20 @@ Asked of the user on 2026-10-09 and answered the same day.
      gallery with machines in it, a side room with someone still waiting, and the outfall chamber
      where the last shift hid the brass plaque (moved down from the pump room wall). Then back up,
      the Marrow, and the Lung in its three stages.
+183. **Every boss in stages, part 1.** **The Conductor** (two stages): at half it runs express: two
+     lanes at once (the one you're on and another), carriages half again as fast, the lights up for 1.3 s,
+     and the Steward calls the lane that's clear ("Left's clear.") instead of the one that's coming.
+     **The Surgeon** (two stages): at half, triage: it cuts in a cross, a second line across the first,
+     lines up faster (0.85 s), and its mist creeps in to 1.4 tiles from the table. **The Crane** (three
+     stages): at two thirds it lifts two loads at once, the second beside the first across the jib (step
+     out along the jib, not across it); at one third a leg buckles and it goes over toward you along a
+     line it shows you for the whole pause (off the line, or 30 damage), and lying across the pier it
+     aims quicker (0.75 s) and rests less (2.8 s). Each has its word as a stage begins.
+184. **Every boss in stages, part 2.** **The Editor** (three stages): at two thirds its rollers leave
+     the headlines wet behind them, three pools of ink on the hall floor after each roll that sting while
+     you stand in them (5 every 0.6 s) and dry in 8 s; at one third its presses run backwards (the
+     rollers come back toward it) and it rolls three times a cycle. **The Warden-Prime** (three stages):
+     at two thirds it calls two Wardens in off the border, hunting you, and its light sweeps faster
+     (2.6 s); they're linked through it and drop when it falls; at one third the relay mast burns out (no
+     stalling it any more) and, blind, it stops sweeping and charges, again and again, each called a
+     second ahead. Kestrel Heights has no boss, and the Spire has no fight, on purpose.
