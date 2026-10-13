@@ -10,13 +10,18 @@ var _blink: float = 0.0
 var _glow: PointLight2D
 
 
+## How long "FILED TO THE ARCHIVE" shows over it.
+const FILED_SECONDS := 3.0
+var _filed: float = 0.0
+
 func setup(owner_level: Level, at: Vector2i, id: String) -> void:
 	level = owner_level
 	core_id = id
 	off_path = true
 	cell = at
 	position = Iso.cell_center(at)
-	taken = GameState.run.found_core_ids.has(id) or GameState.run.truth_core_ids.has(id)
+	# Carried, or left behind at the Reliquary: gone either way.
+	taken = GameState.run.found_core_ids.has(id) or GameState.run.truth_core_ids.has(id) or GameState.run.cores_left.has(id)
 	_glow = PointLight2D.new()
 	_glow.texture = LightTextures.radial()
 	_glow.color = Palette.TRUTH_CYAN
@@ -44,11 +49,22 @@ func interact(_player: Operator) -> void:
 		return
 	taken = true
 	Sound.play(&"truth_find", global_position)
-	GameState.find_core(core_id)
+	if level != null and level.revisit:
+		# A revisit's truth goes straight to the Archive (DECISIONS 176): its Reliquary won't open again.
+		GameState.file_truth(core_id)
+		_filed = FILED_SECONDS
+	else:
+		GameState.find_core(core_id)
+
+
+## Said over it for a moment once a revisit's truth is filed.
+func spoken_line() -> String:
+	return "FILED TO THE ARCHIVE" if _filed > 0.0 else ""
 
 
 func _process(delta: float) -> void:
 	_blink += delta
+	_filed = maxf(0.0, _filed - delta)
 	visible = is_present()
 	_glow.enabled = is_present() and not taken
 	queue_redraw()

@@ -1,7 +1,7 @@
 class_name LevelAudio
 extends Node
 ## A level's sound: footsteps by surface, and the ambience layers. Rain everywhere above ground; the stacks
-## close in (dry room tone, the rain far above); the Lattice hums only while the Steward is with you, so
+## and a descent below the street close in (room tone, the rain far above); the Lattice hums only while the Steward is with you, so
 ## muting it (or walking off its hardware) is heard as well as seen. The Ark sits in the estuary wind.
 
 ## Ground tiles walked between footsteps.
@@ -23,7 +23,7 @@ func _ambience() -> void:
 	if level.is_hub():
 		Sound.set_ambience({&"estuary": 1.0, &"rain": 0.45})
 		return
-	var below := level.grid.floor_at(level.player.cell()) == LevelGrid.Floor.STACKS
+	var below := level.grid.floor_at(level.player.cell()) == LevelGrid.Floor.STACKS or level.in_descent()
 	Sound.set_ambience({
 		&"rain": 0.3 if below else 1.0,
 		&"underground": 1.0 if below else 0.0,

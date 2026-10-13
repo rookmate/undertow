@@ -109,7 +109,8 @@ func test_the_dock_opens_the_loop_map() -> void:
 	if not open.is_empty():
 		check_eq(map.chosen, open[0], "the first open district is chosen")
 	map.choose("vellum")
-	check_eq(map.chosen, "", "a done district can't be chosen")
+	check_eq(map.chosen, "vellum", "a done district can be gone back to (DECISIONS 187)")
+	check((map.get("_detail") as Label).text.contains(Hardening.describe(Hardening.step(GameState.run, "vellum"))), "and the map says how hard it is now")
 	var summary := map.open_summary()
 	await wait_frames(2)
 	check(Modals.is_top(summary), "the run so far opens over the map")

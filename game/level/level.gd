@@ -198,7 +198,17 @@ func location_key() -> String:
 	return "level:" + level_id
 
 
+## Back in a district you've done (DECISIONS 187): its boss stays beaten and its barriers open, its
+## machines as hard as the truths you've carried out of it make them (Hardening), what you find goes
+## straight to the Archive, and the Reliquary, opened once, takes you home.
+var revisit: bool = false
+## How hard it is now (Hardening.step); 0 on a first visit.
+var hardening: int = 0
+
+
 func _populate() -> void:
+	revisit = not is_hub() and GameState.run.levels_completed.has(level_id)
+	hardening = Hardening.step(GameState.run, level_id) if revisit else 0
 	_spawn_enemies()
 	_spawn_boss()
 	_spawn_people_and_finds()
@@ -754,12 +764,23 @@ func nearest_interactable(at: Vector2) -> Interactable:
 
 ## Custodians scrub in pairs ('c'); Clerks ('k') keep their distance.
 func _spawn_enemies() -> void:
+	var used: Dictionary[Vector2i, bool] = {}
 	for c: Vector2i in grid.cells_with("c"):
 		_add_enemy(Custodian.new(), c, Custodian.MAX_INTEGRITY)
+		used[c] = true
 		for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
 			if grid.is_walkable(c + d) and not grid.is_occupied(c + d) and grid.char_at(c + d) == ".":
 				_add_enemy(Custodian.new(), c + d, Custodian.MAX_INTEGRITY)
+				used[c + d] = true
 				break
+	# Harder on a revisit (Hardening): one more Custodian beside each one placed.
+	if hardening >= Hardening.MORE_FROM:
+		for c: Vector2i in grid.cells_with("c"):
+			for d: Vector2i in [Vector2i(0, 1), Vector2i(0, -1), Vector2i(-1, 0), Vector2i(1, 0)]:
+				if grid.is_walkable(c + d) and not grid.is_occupied(c + d) and not used.has(c + d):
+					_add_enemy(Custodian.new(), c + d, Custodian.MAX_INTEGRITY)
+					used[c + d] = true
+					break
 	for k: Vector2i in grid.cells_with("k"):
 		_add_enemy(Clerk.new(), k, Clerk.MAX_INTEGRITY)
 	for x: Vector2i in grid.cells_with("X"):
@@ -828,6 +849,9 @@ func boss_id() -> String:
 ## The district's boss on its 'B' cell, with what its fight needs: lanes ('1', '2', '3'), a signal box
 ## ('Z'), and barriers ('y') that open when it falls.
 func _spawn_boss() -> void:
+	# On a revisit it stays beaten, and its barriers stay open.
+	if revisit:
+		return
 	for c: Vector2i in grid.cells_with("y"):
 		var barrier := BossBarrier.new()
 		barrier.setup(c)
@@ -938,6 +962,8 @@ func _add_enemy(e: Enemy, cell: Vector2i, max_integrity: float) -> void:
 func add_enemy(e: Enemy, cell: Vector2i, max_integrity: float) -> Enemy:
 	e.setup(self, cell, max_integrity)
 	world.add_child(e)
+	if revisit:
+		Hardening.apply(e, hardening)
 	_enemies.append(e)
 	e.died.connect(func(dead: Enemy) -> void: enemy_died.emit(dead))
 	return e

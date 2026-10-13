@@ -5,6 +5,7 @@ extends Interactable
 
 var level_id: String = ""
 var opened: bool = false
+var _leaving: bool = false
 
 
 func setup(owner_level: Level, cell: Vector2i, id: String) -> void:
@@ -14,11 +15,16 @@ func setup(owner_level: Level, cell: Vector2i, id: String) -> void:
 
 
 func prompt_verb() -> String:
-	return "OPEN THE RELIQUARY"
+	return "BACK TO THE ARK" if _revisit() else "OPEN THE RELIQUARY"
 
 
 func can_interact() -> bool:
-	return not opened and not _carrying()
+	return not opened and not _leaving and not _carrying()
+
+
+## A district you've done: it opened once (DECISIONS 176); now it's the way home.
+func _revisit() -> bool:
+	return level != null and level.revisit
 
 
 ## Carrying Noor, set her down first: opening it ends the district, and leaving without her is leaving her.
@@ -31,7 +37,15 @@ func _carrying() -> bool:
 
 
 func interact(_player: Operator) -> void:
-	if opened:
+	if opened or _leaving:
+		return
+	if _revisit():
+		# What you found here is in the Archive already: no choice to make, straight home.
+		_leaving = true
+		GameState.set_location("ark")
+		SaveFlow.checkpoint(get_tree())
+		if not SceneRouter.resume(GameState.run.location):
+			SceneRouter.goto(&"title")
 		return
 	opened = true
 	GameState.set_location("reliquary:" + level_id)
@@ -72,5 +86,5 @@ func _draw() -> void:
 	draw_set_transform(c, 0.0, Vector2(1.0, Iso.SQUASH))
 	RingPainter.paint(self, Vector2.ZERO, hw * 0.4, _ring_look())
 	draw_set_transform(Vector2.ZERO)
-	if opened:
+	if opened or _revisit():
 		draw_colored_polygon(PackedVector2Array([c + Vector2(-hw * 0.3, 0), c + Vector2(0, -hh * 0.3), c + Vector2(hw * 0.3, 0), c + Vector2(0, hh * 0.3)]), Palette.NEAR_BLACK)

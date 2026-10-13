@@ -111,6 +111,8 @@ func test_down_there_its_dark_but_for_your_lamp() -> void:
 	for layer: Node in level.get_children():
 		if layer is CanvasLayer and (layer as CanvasLayer).layer < 0:
 			check_false((layer as CanvasLayer).visible, "no sky down there")
+	check_eq(Sound.layer_target(&"underground"), 1.0, "the walls close in")
+	check(Sound.layer_target(&"rain") < 0.5, "the rain is far above")
 	var up := level.passage("fixture_shaft_up")
 	up.interact(level.player)
 	await wait_seconds(0.8)

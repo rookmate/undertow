@@ -52,6 +52,8 @@ func test_every_boss_fight_starts_over_when_you_die() -> void:
 
 
 func _die_against(id: String) -> void:
+	# A first visit: back in a district you've done, its boss stays beaten (DECISIONS 187).
+	GameState.run.levels_completed.erase(id)
 	level = (load(LevelCatalog.scene_of(id)) as PackedScene).instantiate() as Level
 	add_child(level)
 	await wait_frames(3)

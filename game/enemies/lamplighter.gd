@@ -49,7 +49,7 @@ func _exit_tree() -> void:
 
 
 func windup_seconds() -> float:
-	return WINDUP
+	return WINDUP * windup_scale
 
 
 ## Voice on: a lamp that walks with you (not a target, nothing to fear). Muted: it hunts.

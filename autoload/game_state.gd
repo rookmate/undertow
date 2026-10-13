@@ -93,6 +93,26 @@ func find_core(core_id: String) -> void:
 	state_changed.emit(&"found_core_ids")
 
 
+## A truth found on a revisit goes straight to the Archive (DECISIONS 176): carried, and its log filed,
+## with no Reliquary choice.
+func file_truth(core_id: String) -> void:
+	take_core(core_id, true)
+	var log_id := str(ContentDb.core(core_id).get("log", ""))
+	if log_id != "":
+		unlock_log(log_id)
+
+
+## What a Reliquary offered and you didn't carry: gone for the rest of the run.
+func leave_cores(core_ids: Array[String]) -> void:
+	var changed := false
+	for id: String in core_ids:
+		if not run.cores_left.has(id):
+			run.cores_left.append(id)
+			changed = true
+	if changed:
+		state_changed.emit(&"cores_left")
+
+
 ## The Reliquary has made its offer; found cores were either carried or left behind.
 func clear_found_cores() -> void:
 	if run.found_core_ids.is_empty():

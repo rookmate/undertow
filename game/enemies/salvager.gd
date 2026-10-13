@@ -26,7 +26,7 @@ func _ready() -> void:
 
 
 func windup_seconds() -> float:
-	return WINDUP
+	return WINDUP * windup_scale
 
 
 func _think(delta: float) -> Vector2:

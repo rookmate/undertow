@@ -25,6 +25,9 @@ var scrap_value: int = 1
 var steward_aims_at: bool = true
 ## False for things that never attack (a boss's weak point): something to hit, nothing to fear.
 var is_threat: bool = true
+## A revisit (Hardening): the share of its windup it still takes, and whether it's one of the elites.
+var windup_scale: float = 1.0
+var elite: bool = false
 
 var _state_time: float = 0.0
 var _knock: Vector2 = Vector2.ZERO
@@ -54,6 +57,17 @@ func setup(owner_level: Level, cell: Vector2i, max_integrity: float) -> void:
 
 func is_alive() -> bool:
 	return state != State.DEAD
+
+
+## One of a revisit's elites (Hardening): harder to take apart, a little faster, marked at its feet.
+func make_elite(integrity_mult: float, speed_mult: float) -> void:
+	elite = true
+	integrity.max_value *= integrity_mult
+	integrity.value = integrity.max_value
+	speed_tiles *= speed_mult
+	var mark := EliteMark.new()
+	mark.name = "EliteMark"
+	add_child(mark)
 
 
 ## Whether the Operator's weapons can strike it now. Every hit query goes through this (Level.
