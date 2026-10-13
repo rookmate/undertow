@@ -168,6 +168,17 @@ review at the end.
 
 **Milestone status: Act 3 and the ending are done and reviewed. The game can be played start to end.**
 
+## Milestone 5: deeper districts, harder bosses (planned)
+
+Districts of 20–30 minutes through play (truths found by exploring, locked behind holds and descents,
+revisits that harden), bosses in two or three stages, a boss fight restarted in full when you die.
+Plan: `design/deeper-districts.md`.
+
+| Step | What | Status |
+|---|---|---|
+| 33 | Noor's Mast counts what's left in a district, never where; the plan | done |
+| 34 | Dying in a boss fight restarts it | next |
+
 ## Later milestones (planned)
 
 - The art pack (painted sprites in place of the code-drawn placeholders), the voice actor, the writing,

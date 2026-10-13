@@ -1,7 +1,7 @@
 extends TestCase
-## Noor's Mast (design/act-3.md): with it on the Ark, a district's map rings every unindexed place still
-## to find, on the Steward's map and your own scan alike, and what you've found drops off. Without it,
-## nothing is marked.
+## Noor's Mast (DECISIONS 174): with it on the Ark, a district's map says how many unindexed places are
+## still to find, on the Steward's map and your own scan alike, never where; what you've found comes off
+## the count. Without it, there's no count.
 
 var level: Level
 
@@ -41,14 +41,14 @@ func _still_to_find() -> Array[Interactable]:
 	return out
 
 
-func test_without_the_mast_nothing_is_marked() -> void:
+func test_without_the_mast_there_is_no_count() -> void:
 	await _open()
 	await wait_frames(10)
-	check(level.unindexed_to_find().is_empty())
-	check(level.hud.minimap.mast_marks().is_empty(), "no marks on the map")
+	check_eq(level.unindexed_left(), -1)
+	check_eq(level.hud.minimap.mast_label(), "", "nothing on the map")
 
 
-func test_with_the_mast_the_map_rings_what_is_still_to_find() -> void:
+func test_with_the_mast_the_map_counts_what_is_still_to_find() -> void:
 	GameState.restore_building(GameState.MAST)
 	await _open()
 	var things := _still_to_find()
@@ -56,11 +56,12 @@ func test_with_the_mast_the_map_rings_what_is_still_to_find() -> void:
 	await wait_frames(10)
 	var map := level.hud.minimap
 	check_eq(map.mode(), Assists.MapMode.STEWARD, "voice on: the Steward's map")
-	check_eq(map.mast_marks().size(), things.size(), "every one ringed on it all the same")
+	check_eq(map.mast_count(), things.size(), "every one counted on it all the same")
+	check(map.mast_label().contains("%d UNINDEXED" % things.size()), map.mast_label())
 	Steward.set_voice(false)
 	await wait_frames(10)
 	check_eq(map.mode(), Assists.MapMode.HAND_SCAN)
-	check_eq(map.mast_marks().size(), things.size(), "muted: the same marks")
+	check_eq(map.mast_count(), things.size(), "muted: the same count")
 	var cache: TruthCache = null
 	for it: Interactable in things:
 		if it is TruthCache:
@@ -68,4 +69,4 @@ func test_with_the_mast_the_map_rings_what_is_still_to_find() -> void:
 	check(cache != null, "a truth cache among them")
 	cache.interact(level.player)
 	await wait_frames(10)
-	check_eq(map.mast_marks().size(), things.size() - 1, "found: off the map")
+	check_eq(map.mast_count(), things.size() - 1, "found: off the count")

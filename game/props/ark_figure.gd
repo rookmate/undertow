@@ -75,7 +75,7 @@ func current_line() -> String:
 	match who:
 		Who.NOOR:
 			if GameState.run.buildings_restored.has(GameState.MAST):
-				return "The Mast hears the places the Lattice never listed. They're on your map now. Every district."
+				return "The Mast hears what the Lattice never listed. It can't say where. It'll tell you how many."
 			var t := GameState.run.noor_trust
 			if t >= 2:
 				return "You read the logs. Then you know what it is."

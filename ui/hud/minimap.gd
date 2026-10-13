@@ -3,8 +3,8 @@ extends Control
 ## Top-right of the HUD. Voice on: the Steward's map, drawn in its gold, "100% charted", and silent about
 ## everywhere it never indexed (the stacks aren't on it). Off the Lattice it can't place you. Muted: a
 ## hand scan, only what you have seen, with an honest percentage, and anything you found marked in cyan.
-## With Noor's Mast on the Ark, either map rings every unindexed place still to find, in the Ward's cyan:
-## her map, not the Steward's.
+## With Noor's Mast on the Ark, either map says how many unindexed places are still to find here, in the
+## Ward's cyan (her count, not the Steward's), and never where.
 ##
 ## Drawing a thousand cell polygons in GDScript costs milliseconds, so the map is split into chunks that
 ## each keep their draw list and redraw only when something in them changes (a cell seen for the first
@@ -14,6 +14,8 @@ extends Control
 const PANEL_SIZE := Vector2(330, 236)
 ## Room kept free under the map for the charted label.
 const LABEL_BAND := 34.0
+## Room for the Mast's count above the charted label, once there's a Mast.
+const MAST_BAND := 18.0
 const MARGIN := 12.0
 const CHUNK := 8
 const CHECK_SECONDS := 0.1
@@ -25,8 +27,8 @@ var _marks: _MarkLayer
 var _mode_signature: String = ""
 var _label_text: String = ""
 var _check_in: float = 0.0
-## Noor's marks, refreshed with the label (the Mast: unindexed places still to find).
-var _mast_marks: Array[Vector2] = []
+## The Mast's count, refreshed with the label (-1 without a Mast).
+var _mast_count: int = -1
 var _tile: float = 1.0
 var _origin: Vector2 = Vector2.ZERO
 ## Per cell, computed once: its polygon on the map and its colour on each kind of map.
@@ -89,7 +91,10 @@ func _process(delta: float) -> void:
 	if _check_in > 0.0:
 		return
 	_check_in = CHECK_SECONDS
-	_mast_marks = level.unindexed_to_find()
+	var count := level.unindexed_left()
+	if count != _mast_count:
+		_mast_count = count
+		queue_redraw()
 	var a := Steward.assists()
 	var mode_signature := "%d|%d" % [mode(), int(a.signal_lost)]
 	if mode_signature != _mode_signature:
@@ -139,13 +144,29 @@ func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, PANEL_SIZE), Palette.IVORY_FAINT, false, 1.0)
 	var label_col := Palette.STEWARD_GOLD if mode() == Assists.MapMode.STEWARD and not Steward.assists().signal_lost else Palette.IVORY
 	draw_string(UiFonts.mono_medium(), Vector2(12, PANEL_SIZE.y - 12), charted_label(), HORIZONTAL_ALIGNMENT_LEFT, -1, 14, label_col)
+	if mast_label() != "":
+		draw_string(UiFonts.mono_medium(), Vector2(12, PANEL_SIZE.y - 12 - MAST_BAND), mast_label(), HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Palette.WARD_CYAN)
+
+
+## The Mast's count ("" without a Mast).
+func mast_label() -> String:
+	if _mast_count < 0:
+		return ""
+	if _mast_count == 0:
+		return "MAST · NOTHING UNINDEXED LEFT HERE"
+	return "MAST · %d UNINDEXED HERE" % _mast_count
+
+
+func mast_count() -> int:
+	return _mast_count
 
 
 ## Fits the level into the panel and works out every cell's polygon and static colours, once.
 func _prepare() -> void:
 	var grid := level.grid
 	var span := float(grid.size.x + grid.size.y)
-	var area := PANEL_SIZE - Vector2(MARGIN * 2.0, MARGIN * 2.0 + LABEL_BAND)
+	var band := LABEL_BAND + (MAST_BAND if level.mast_reaches() else 0.0)
+	var area := PANEL_SIZE - Vector2(MARGIN * 2.0, MARGIN * 2.0 + band)
 	_tile = minf(area.x / span, area.y / (span * Iso.SQUASH))
 	var map_size := Vector2(span * _tile, span * _tile * Iso.SQUASH)
 	var corner := Vector2(MARGIN, MARGIN) + (area - map_size) * 0.5
@@ -198,16 +219,9 @@ func draw_marks(ci: CanvasItem) -> void:
 		# What you found yourself, in its own colour, wherever it was.
 		for c: Vector2i in level.found_cache_cells():
 			ci.draw_circle(to_map(Vector2(c) + Vector2(0.5, 0.5)), 4.0, Palette.TRUTH_CYAN, true, -1.0, true)
-	for g: Vector2 in _mast_marks:
-		ci.draw_arc(to_map(g), 5.0, 0.0, TAU, 14, Palette.WARD_CYAN, 1.5, true)
 	# Off the Lattice the Steward's map can't place you (your own scan always can).
 	if mode() == Assists.MapMode.HAND_SCAN or not Steward.assists().signal_lost:
 		ci.draw_circle(to_map(Iso.world_to_grid(level.player.global_position)), 4.0, Palette.IVORY, true, -1.0, true)
-
-
-## Where Noor's marks are on the map now (grid coordinates).
-func mast_marks() -> Array[Vector2]:
-	return _mast_marks
 
 
 func _seen(c: Vector2i) -> bool:
