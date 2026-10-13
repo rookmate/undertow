@@ -730,3 +730,17 @@ Asked of the user on 2026-10-09 and answered the same day.
      Rewrite's record is written: every save writes the record down first if it's missing, and if it
      can't, the save fails (the player is told) and the finished run stays. A record is judged by its
      fields, not just by whether it parses; a broken main file gives way to a good backup.
+
+## Milestone 5: deeper districts, harder bosses (planned)
+
+174. **Noor's Mast counts; it doesn't point** (the user's call; replaces 156's rings). With it on the Ark
+     each district's map says how many unindexed places are still to find there ("MAST · 2 UNINDEXED
+     HERE", in the Ward's cyan, voice on or off), never where. Finding them is the player's to do.
+175. **Revisits harden by what you took from that district** (the user's call): the more of a
+     district's truths you've carried out, the harder its enemies are when you come back. Only that
+     district's truths count, not the run's.
+176. **Truths found on a revisit go straight to the Archive** (the user's call): a district's Reliquary
+     opens once; what you find when you come back is filed without a core choice.
+177. **Dying in a boss fight restarts it** (the user's call): the boss is back at full strength and
+     its first stage, you're back at the checkpoint by the arena at full Integrity. (Today the boss
+     keeps the damage you did.)

@@ -581,20 +581,26 @@ func waiting_near(at: Vector2, tiles: float) -> bool:
 	return false
 
 
-## Cells of truth caches whose core has been taken (the hand-scan map marks them).
-## With Noor's Mast on the Ark, every unindexed place in the district still to find, where it is (grid
-## coordinates), voice on or off; without it, nothing (design/act-3.md).
-func unindexed_to_find() -> Array[Vector2]:
-	var out: Array[Vector2] = []
-	if is_hub() or not GameState.run.buildings_restored.has(GameState.MAST):
-		return out
-	for n: Node in get_tree().get_nodes_in_group(&"interactables"):
-		var it := n as Interactable
+## Noor's Mast reaches this district: it's built on the Ark, and this isn't the Ark.
+func mast_reaches() -> bool:
+	return not is_hub() and GameState.run.buildings_restored.has(GameState.MAST)
+
+
+## With the Mast, how many unindexed places in the district are still to find (a truth cache, a slip, one
+## of the Waiting off the path), voice on or off; -1 without it. It says how many, never where: finding
+## them is yours to do (DECISIONS 174).
+func unindexed_left() -> int:
+	if not mast_reaches():
+		return -1
+	var n := 0
+	for node: Node in get_tree().get_nodes_in_group(&"interactables"):
+		var it := node as Interactable
 		if it != null and it.off_path and it.still_to_find() and is_ancestor_of(it):
-			out.append(Iso.world_to_grid(it.global_position))
-	return out
+			n += 1
+	return n
 
 
+## Cells of truth caches whose core has been taken (the hand-scan map marks them).
 func found_cache_cells() -> Array[Vector2i]:
 	var out: Array[Vector2i] = []
 	for n: Node in world.get_children():
