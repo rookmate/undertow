@@ -85,7 +85,7 @@ In the Council Chamber: three doors, as the brief has them.
 - **Unplug:** shut it down for good. The survivors rebuild slowly by themselves. The narration stops,
   and the epilogue plays in total silence: no voice, no sound, its words on the screen only.
 - **Rewrite** (hidden until its three conditions hold: Noor and Teo both still with you, the voice on
-  for 35–65% of play, five truth cores kept): restore it with its memories made public and people who
+  for 35–65% of play, eight truth cores kept (five before milestone 5; DECISIONS 189)): restore it with its memories made public and people who
   can overrule it. The only ending where the Steward speaks to someone other than you: to Noor, to Teo,
   to the Commons. Afterwards the title's ring has its gap filled in cyan.
 

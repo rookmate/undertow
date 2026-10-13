@@ -854,3 +854,7 @@ Asked of the user on 2026-10-09 and answered the same day.
      one, the Council's). **The Tideworks**, the customs shed behind the quay's containers, on a Steward
      lock the **Jammer** jams: what customs impounded (the Harbor Ward radio society's mast parts, held
      three years for "unlicensed broadcast"). The gate plays one: back to Kestrel with the Jammer.
+189. **Rewrite needs eight truths** (from five). There are 24 truth cores now (16 before milestone 5):
+     eight is about a third, as five was. On first visits you can carry two cores a district, so a run
+     that favours truths gets there; one that doesn't can make it up on revisits, where every truth
+     found goes straight to the Archive.

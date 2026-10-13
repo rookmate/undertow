@@ -12,7 +12,9 @@ const PATH_TILES_AHEAD := 3
 # --- Ending: Rewrite unlock --------------------------------------------------------------------------
 const REWRITE_VOICE_RATIO_MIN := 0.35
 const REWRITE_VOICE_RATIO_MAX := 0.65
-const REWRITE_MIN_TRUTH_CORES := 5
+## About a third of the game's truths (DECISIONS 189): 8 of 24, as 5 of 16 was before the districts
+## went deeper. One a district, roughly; revisits can make up what a first visit left.
+const REWRITE_MIN_TRUTH_CORES := 8
 
 # --- Voice off -----------------------------------------------------------------------------------------
 const MUTED_DAMAGE_TAKEN_MULT := 1.4

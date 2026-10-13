@@ -185,7 +185,7 @@ Plan: `design/deeper-districts.md`.
 | 39 | Holds and descents in Mercy General, the Vellum and Harbor Ward | done |
 | 40 | Revisits: back to a district you've done, hardening by that district's truths, truths to the Archive | done |
 | 41 | Tool doors: what the Ark's tools open on a revisit, and the truths behind them | done |
-| 42 | Rewrite's truth threshold re-tuned against the new count | next |
+| 42 | Rewrite's truth threshold re-tuned against the new count | done |
 | — | Sol analysis review (reviews/deeper-districts.md), fixes, re-check | |
 
 ## Later milestones (planned)
