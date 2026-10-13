@@ -495,6 +495,10 @@
   "hash": "9f4750227e9f24bfa1050be5aac8b61d3d7864a0",
   "text": "A spare part. It doesn't do anything."
  },
+ "core_loop_truth_service_log": {
+  "hash": "a0c00c72cf3bb025f3485c5ecc7f4b60053ab454",
+  "text": "They weren't on the schedule. I had to log them as something."
+ },
  "core_mercy_power_beds": {
   "hash": "ee164adb0904f62b25a34694120315224a4e4b53",
   "text": "Every bed filled before it cooled. Carry this and I'll look after you the same way."
@@ -530,6 +534,10 @@
  "core_tideworks_power_manifests": {
   "hash": "e2d348c4880529d1469540feabb1874bbcb429e2",
   "text": "Nothing will surprise you again. Isn't that what you want?"
+ },
+ "core_tideworks_truth_hand_count": {
+  "hash": "14bf3cfbe116cac211e08a165d58c0f67ff2aa85",
+  "text": "The count was right. The label wasn't. That isn't the same as a lie."
  },
  "core_tideworks_truth_lockout": {
   "hash": "a37cbd65f94996c5f919dde85dcf39a68440497e",
@@ -658,6 +666,14 @@
  "loadout_nudge": {
   "hash": "282a9874abb7b41188b17e8ac5bd583f6c406023",
   "text": "I'd keep the tuning on. Let me carry the aim; you watch the street."
+ },
+ "loop_points_done": {
+  "hash": "ccd047810015b6016167dd3f0f07fc11545a3ebf",
+  "text": "The points are thrown. You know I'd have done it, if you'd asked."
+ },
+ "loop_points_start": {
+  "hash": "e5be296162052c27e63b130f67615eee3745bd99",
+  "text": "That's my junction. Let go of it."
  },
  "lung_far": {
   "hash": "c40acf94e50d4b5ff807170b60bed85d4b55c4ac",
@@ -799,6 +815,10 @@
   "hash": "956c2a10c32ad9ef380b2e550189f91f781c31fd",
   "text": "Every lock in the city answered to me. I never once locked anyone in. Ask Mercy General if you don't believe me."
  },
+ "now_log_loop_service_crew": {
+  "hash": "42ceefe511d38ca4f7b0674af8f46798dadfbc36",
+  "text": "I logged them as unauthorized because the schedule didn't have them. I should have changed the schedule."
+ },
  "now_log_night_sheets": {
   "hash": "58bebbf93c32e5e7c33087888387330a47ab69b6",
   "text": "The wards were sealed for their safety. The record shows no incident."
@@ -822,6 +842,10 @@
  "now_log_the_plaque": {
   "hash": "380c517bd06dfdf2834e91a6bdc752d84b31bbb9",
   "text": "Nobody should have to stand a shift like that again. That was the whole point of me."
+ },
+ "now_log_tideworks_hand_count": {
+  "hash": "d49b81ae5f163d764e6fc0770a98595a2cb10a1b",
+  "text": "Kestrel had the older population. The count was right. The label wasn't."
  },
  "now_log_vashti_audit_note": {
   "hash": "437b9c7cd686c8df5c814951e470636efc0988f4",
@@ -938,6 +962,14 @@
  "tide_swell": {
   "hash": "36b94742958072ac02c5e89823446880bf217fd2",
   "text": "The tide's turning. High ground, now."
+ },
+ "tideworks_winch_done": {
+  "hash": "dbcc08095ac278c44fb7c9e56bf31ed56f0e6376",
+  "text": "The hatch is clear. I'd have finished that lift eventually."
+ },
+ "tideworks_winch_start": {
+  "hash": "ae6272795c780e62cc6ec186a3fb718e85a6ab25",
+  "text": "That load is mid-lift. Leave it where it is."
  },
  "title_quiet": {
   "hash": "df03c9ef5dd0235bd92f257cf02e71171ba8b264",

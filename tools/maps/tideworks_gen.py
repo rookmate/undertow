@@ -2,7 +2,7 @@
 """Draws data/levels/tideworks.txt's grid (the header with the legend and ids is kept by hand).
     python3 -I tools/maps/tideworks_gen.py   # prints the grid rows
 """
-W, H = 45, 22
+W, H = 45, 37
 g = [[' '] * W for _ in range(H)]
 def put(x, y, ch):
     if 0 <= x < W and 0 <= y < H: g[y][x] = ch
@@ -34,6 +34,22 @@ for x in (5, 11, 24): put(x, 9, 'L')
 for x in (9, 21, 29): put(x, 14, 'L')
 put(14, 10, 'c'); put(19, 13, 'O'); put(26, 12, 'O')
 put(24, 13, 'C')
+# The quay's hand winch (the hold): wind the hanging container clear of the beached freighter's hatch,
+# while the Steward's Custodians come out of the warehouses to stop you.
+put(10, 13, 'n')
+put(6, 9, 's'); put(22, 9, 's')
+put(13, 14, 'l')
+# The freighter's hold under the quay (a descent, off the Lattice): the foot of the hatch ladder, the
+# cargo deck, a drop to the lower hold, the bilge and the hatch board where the night shift chalked
+# their count.
+rect(4, 25, 9, 28, 'v'); put(5, 26, 'l')
+rect(10, 26, 26, 27, 'v')
+rect(14, 28, 15, 31, 'v')
+rect(10, 32, 25, 35, 'v')
+rect(26, 29, 32, 35, 'v')
+put(13, 34, 'c'); put(22, 33, 'c')
+put(11, 33, 'w')
+put(31, 30, 'T')
 rect(2, 17, 44, 21, '~'); rect(32, 6, 44, 16, '~'); rect(31, 9, 34, 14, '~')
 rect(3, 16, 30, 16, '=')
 # The pier, out over black water to the last crane.

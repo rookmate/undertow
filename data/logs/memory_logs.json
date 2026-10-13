@@ -749,6 +749,47 @@
 				"text": "I signed off on that paper budget. I thought it was a glitch.",
 				"trust": 1
 			}
+		},
+		"log_loop_service_crew": {
+			"title": "Log · The Service Crew",
+			"kind": "truth",
+			"core": "loop_truth_service_log",
+			"record": [
+				"HANDSET LOG · LOOP MAINTENANCE · THE LONG NIGHT",
+				"00:40  Ring's stopped. Lights still on. Nobody's told us anything.",
+				"01:15  Walked the north arc. Six trains stalled, people inside. Opened what we could by hand.",
+				"03:30  The Steward's marked us UNAUTHORIZED PERSONNEL. We're the maintenance crew.",
+				"05:00  Still walking."
+			],
+			"steward_now": "I logged them as unauthorized because the schedule didn't have them. I should have changed the schedule.",
+			"noor": {
+				"text": "Six hours on foot in the dark, carrying people out. It called them trespassers.",
+				"trust": 1
+			},
+			"teo": {
+				"text": "The roster didn't have a night crew. I cut it. Budget.",
+				"trust": 1
+			}
+		},
+		"log_tideworks_hand_count": {
+			"title": "Hand Count · MV Greylag",
+			"kind": "truth",
+			"core": "tideworks_truth_hand_count",
+			"record": [
+				"HATCH BOARD · MV GREYLAG · HAND COUNT, NIGHT SHIFT",
+				"Insulin: 40 crates off. The Steward's manifest: 12.",
+				"28 crates rerouted to Kestrel Heights, 'priority residents'.",
+				"We counted twice. Chalked it here so it stays counted."
+			],
+			"steward_now": "Kestrel had the older population. The count was right. The label wasn't.",
+			"noor": {
+				"text": "Twenty-eight crates up the hill, and the docks told it was twelve.",
+				"trust": 1
+			},
+			"teo": {
+				"text": "Priority by age. That was in the model. It was in the model.",
+				"trust": 0
+			}
 		}
 	}
 }

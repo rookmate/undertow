@@ -299,6 +299,22 @@
 			"blurb": "A dull cracked sphere at the centre of the room. Labelled 0214.",
 			"steward": "That one's the night I stopped. I won't ask you to leave it.",
 			"log": "log_0214_the_quiet"
+		},
+		"loop_truth_service_log": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "The service tunnels inside the ring",
+			"blurb": "A maintenance crew's own handset log, wired into a core and left where nobody would look.",
+			"steward": "They weren't on the schedule. I had to log them as something.",
+			"log": "log_loop_service_crew"
+		},
+		"tideworks_truth_hand_count": {
+			"kind": "truth",
+			"name": "Cracked Core",
+			"origin": "The beached freighter's hold",
+			"blurb": "A night shift's hand count of the last cargo, chalked on a hatch board and wired into a core.",
+			"steward": "The count was right. The label wasn't. That isn't the same as a lie.",
+			"log": "log_tideworks_hand_count"
 		}
 	}
 }

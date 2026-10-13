@@ -807,3 +807,13 @@ Asked of the user on 2026-10-09 and answered the same day.
      (2.6 s); they're linked through it and drop when it falls; at one third the relay mast burns out (no
      stalling it any more) and, blind, it stops sweeping and charges, again and again, each called a
      second ahead. Kestrel Heights has no boss, and the Spire has no fight, on purpose.
+185. **Holds and descents in the Loop and the Tideworks**, the same parts as Greywater's, smaller (45 s,
+     three waves of Custodians each). **The Loop:** on platform B, **throw the points by hand** ("That's
+     my junction. Let go of it."), which unlocks the service hatch beside them; down it, **the service
+     tunnels inside the viaduct**: someone still waiting there and the maintenance crew's handset log
+     (they walked the ring for six hours carrying people out; the Steward logged them as unauthorized
+     personnel). **The Tideworks:** on the quay, **wind the hanging container clear by hand** ("That
+     load is mid-lift."), which clears the beached freighter's hatch; down it, **the freighter's hold**:
+     someone waiting and the night shift's hand count of the last cargo, chalked on a hatch board (40
+     crates of insulin off; the Steward's manifest said 12; 28 went up the hill). The full campaign
+     run's time limit goes to 2100 s to fit the longer districts.

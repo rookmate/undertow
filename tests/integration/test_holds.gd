@@ -127,3 +127,29 @@ func test_a_done_hold_stays_done() -> void:
 	await _open()
 	check(_hold().done and not _hold().can_interact(), "done on the way back")
 	check(level.passage("fixture_shaft_down").can_interact())
+
+
+## Every district's hold (data/holds.json, the test arena's aside) is placed once, in one district, with
+## the pair of ladders it opens in the same map and something still to find below.
+func test_every_hold_is_placed_with_its_way_down() -> void:
+	var placed: Dictionary[String, String] = {}
+	for id: String in LevelCatalog.LEVELS:
+		var g := LevelGrid.load_file(LevelCatalog.map_of(id))
+		for c: Vector2i in g.cells_with(Tiles.CRANK):
+			var hold := g.entity_id(c)
+			check(Holds.has(hold), "%s: %s is a hold" % [id, hold])
+			check_false(placed.has(hold), "%s placed once" % hold)
+			placed[hold] = id
+			var ladders: Array[String] = []
+			for l: Vector2i in g.cells_with(Tiles.LADDER):
+				ladders.append(g.entity_id(l))
+			var way := Holds.opens(hold)
+			check(ladders.has(way + "_down") and ladders.has(way + "_up"), "%s: both ends of %s" % [id, way])
+			var below := 0
+			for k: Vector2i in g.cells_with("T") + g.cells_with("w") + g.cells_with("U"):
+				if g.floor_at(k) == LevelGrid.Floor.CULVERT:
+					below += 1
+			check(below > 0, "%s: something to find down there" % id)
+	for hold: String in ["greywater_pumps", "loop_points", "tideworks_winch"]:
+		check(placed.has(hold), "%s is in its district" % hold)
+
