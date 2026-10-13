@@ -5,6 +5,10 @@ extends Boss
 ## the load round in a ring (stay inside it, or roll through), then rests with its cab lowered: open to
 ## blows. With the voice on, the Steward calls each move. The manual solution: throw the hoist brake
 ## while it's lifting and the load drops back onto its own trolley; it stalls, open for longer.
+## Three stages (DECISIONS 183): at two thirds it lifts two loads at once, the second beside the first
+## (step out along the jib, not across it); at one third a leg buckles and it goes over across the pier
+## along a line it shows you first (off the line, or it lands on you), and lying there it drops quicker
+## and rests less.
 
 enum Phase { IDLE, LIFT, AIM, DROP, SWING_WARN, SWING, REST, STALLED }
 
@@ -29,18 +33,31 @@ const STALL_SECONDS := 6.0
 const HOOK_HEIGHT := 220.0
 const MIN_REACH := 1.6
 const MAX_REACH := 5.0
+## Stage 2: the second load hangs this far beside the first (tiles, across the jib).
+const SECOND_LOAD := 2.2
+## Stage 3: the fall's line (how long, how wide, tiles), what it does to you; then its quicker aim and
+## shorter rest.
+const FALL_LENGTH := 9.0
+const FALL_WIDTH := 1.6
+const FALL_DAMAGE := 30.0
+const FALLEN_AIM := 0.75
+const FALLEN_REST := 2.8
 
 ## Each warning, and how soon after it's called its hazard lands (seconds): the load coming down, the
 ## swing. It has to be said by then.
 const WARN_LEADS: Dictionary[String, float] = {
-	"crane_drop": AIM_SECONDS + DROP_SECONDS,
+	"crane_drop": FALLEN_AIM + DROP_SECONDS,
 	"crane_swing": SWING_WARN_SECONDS,
+	"crane_double": Boss.STAGE_TRANSITION,
+	"crane_buckle": Boss.STAGE_TRANSITION,
 }
 ## Each call, and the soonest the next can come (seconds): after the last drop it swings at once.
 const CALL_GAPS: Dictionary[String, float] = {
-	"crane_drop": AIM_SECONDS + DROP_SECONDS + DROP_SETTLE,
+	"crane_drop": FALLEN_AIM + DROP_SECONDS + DROP_SETTLE,
 	"crane_swing": SWING_WARN_SECONDS + SWING_SECONDS,
-	"crane_rest": REST_SECONDS,
+	"crane_rest": FALLEN_REST,
+	"crane_double": Boss.STAGE_TRANSITION,
+	"crane_buckle": Boss.STAGE_TRANSITION,
 }
 
 var phase: Phase = Phase.IDLE
@@ -56,6 +73,11 @@ var _mark: Vector2 = Vector2.ZERO
 var _aim_for: float = AIM_SECONDS
 var _struck: bool = false
 var _stalled_this_cycle: bool = false
+## Stage 2: the second load's spot. Stage 3: the line it falls along (ground direction), and whether
+## it's down.
+var _mark2: Vector2 = Vector2.ZERO
+var fall_dir: Vector2 = Vector2(1, 0)
+var fallen: bool = false
 
 
 func _ready() -> void:
@@ -67,6 +89,47 @@ func _ready() -> void:
 
 func is_vulnerable() -> bool:
 	return phase == Phase.REST or phase == Phase.STALLED
+
+
+func stage_count() -> int:
+	return 3
+
+
+func stage_line(next_stage: int) -> String:
+	return "crane_double" if next_stage == 2 else "crane_buckle"
+
+
+func _on_stage_begins(next_stage: int) -> void:
+	phase = Phase.IDLE
+	_phase_time = 0.0
+	load_height = 0.0
+	if next_stage == 3:
+		# A leg buckles: it'll go over toward you, along a line it shows you first.
+		var p := player()
+		if p != null and Iso.ground_distance(global_position, p.global_position) > 0.2:
+			fall_dir = Iso.ground_dir_between(global_position, p.global_position)
+
+
+func _on_stage(now: int) -> void:
+	if now == 3:
+		fallen = true
+		Sound.play(&"container_drop", global_position)
+		var p := player()
+		if p != null and p.is_alive() and on_fall_line(p.global_position):
+			p.take_hit(FALL_DAMAGE, global_position)
+	_start_cycle()
+
+
+## Whether a point (world) lies on the line it falls along (stage 3).
+func on_fall_line(at: Vector2) -> bool:
+	var rel := Iso.world_to_grid(at) - Iso.world_to_grid(global_position)
+	var along := rel.dot(fall_dir)
+	return along >= 0.0 and along <= FALL_LENGTH and absf(rel.cross(fall_dir)) <= FALL_WIDTH * 0.5
+
+
+## Stage 2 on: a second load beside the first (null spot before).
+func second_mark() -> Vector2:
+	return _mark2
 
 
 ## The hoist is lifting: the window for the brake.
@@ -90,7 +153,7 @@ func _enter_phase(next: Phase) -> void:
 	_struck = false
 	match next:
 		Phase.AIM:
-			_aim_for = AIM_SECONDS + (EARLY_MARK if not Steward.voice_on else 0.0)
+			_aim_for = (FALLEN_AIM if fallen else AIM_SECONDS) + (EARLY_MARK if not Steward.voice_on else 0.0)
 			call_out("crane_drop")
 		Phase.SWING_WARN:
 			call_out("crane_swing")
@@ -119,6 +182,10 @@ func _fight(delta: float) -> void:
 		Phase.AIM:
 			if p != null:
 				_mark = _reach(p.global_position) if _phase_time < _aim_for * 0.7 else _mark
+			if stage >= 2:
+				# The second load beside the first, across the jib.
+				var out := Iso.ground_dir_between(global_position, _mark)
+				_mark2 = _mark + Iso.ground_velocity(Vector2(-out.y, out.x), SECOND_LOAD)
 			load_at = load_at.lerp(_mark, clampf(delta * 6.0, 0.0, 1.0))
 			if _phase_time >= _aim_for:
 				load_at = _mark
@@ -128,7 +195,8 @@ func _fight(delta: float) -> void:
 			if not _struck and _phase_time >= DROP_SECONDS:
 				_struck = true
 				Sound.play(&"container_drop", load_at)
-				if p != null and p.is_alive() and Iso.ground_distance(p.global_position, load_at) <= DROP_RADIUS:
+				if p != null and p.is_alive() and (Iso.ground_distance(p.global_position, load_at) <= DROP_RADIUS \
+						or (stage >= 2 and Iso.ground_distance(p.global_position, _mark2) <= DROP_RADIUS)):
 					p.take_hit(DROP_DAMAGE, load_at)
 			if _phase_time >= DROP_SECONDS + DROP_SETTLE:
 				_enter_phase(Phase.LIFT if _drops_left > 0 else Phase.SWING_WARN)
@@ -149,7 +217,7 @@ func _fight(delta: float) -> void:
 				_enter_phase(Phase.REST)
 		Phase.REST:
 			load_height = 0.0
-			if _phase_time >= REST_SECONDS:
+			if _phase_time >= (FALLEN_REST if fallen else REST_SECONDS):
 				_start_cycle()
 		Phase.STALLED:
 			load_height = 0.0
@@ -198,9 +266,23 @@ func _draw() -> void:
 	var load_pos := to + Vector2(0, -load_height)
 	draw_line(jib_tip, load_pos + Vector2(0, -40), Palette.IRON_DARK, 1.5, true)
 	draw_rect(Rect2(load_pos + Vector2(-34, -40), Vector2(68, 40)), Palette.CONTAINER_TEAL)
-	# Danger marks: the drop's spot, the swing's ring (red-orange: danger and nothing else).
+	# Danger marks: the drop's spot (two from stage 2), the swing's ring, the line it falls along
+	# (red-orange: danger and nothing else).
 	if phase == Phase.AIM:
 		_ring(_mark - global_position, DROP_RADIUS * clampf(_phase_time / _aim_for, 0.2, 1.0), Color(Palette.DANGER, 0.85))
+		if stage >= 2:
+			_ring(_mark2 - global_position, DROP_RADIUS * clampf(_phase_time / _aim_for, 0.2, 1.0), Color(Palette.DANGER, 0.85))
+			draw_rect(Rect2(_mark2 - global_position + Vector2(-34, -40 - load_height), Vector2(68, 40)), Palette.CONTAINER_TEAL.darkened(0.2))
+	if in_transition() and stage == 3:
+		var k := 1.0 - _transition_left / Boss.STAGE_TRANSITION
+		var side := Vector2(-fall_dir.y, fall_dir.x) * FALL_WIDTH * 0.5
+		var strip := PackedVector2Array([Iso.grid_to_world(side), Iso.grid_to_world(side + fall_dir * FALL_LENGTH), Iso.grid_to_world(-side + fall_dir * FALL_LENGTH), Iso.grid_to_world(-side)])
+		draw_colored_polygon(strip, Color(Palette.DANGER, 0.15 + 0.35 * k))
+		strip.append(strip[0])
+		draw_polyline(strip, Color(Palette.DANGER, 0.9), 3.0, true)
+	if fallen:
+		# The jib down across the pier.
+		draw_line(Vector2.ZERO, Iso.grid_to_world(fall_dir * FALL_LENGTH), iron.darkened(0.3), 12.0, true)
 	if phase == Phase.SWING_WARN or phase == Phase.SWING:
 		_ring(Vector2.ZERO, SWING_INNER, Color(Palette.DANGER, 0.5))
 		_ring(Vector2.ZERO, SWING_OUTER, Color(Palette.DANGER, 0.85))

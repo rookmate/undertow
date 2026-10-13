@@ -129,8 +129,12 @@ func test_taking_it_apart_opens_the_way_and_pays() -> void:
 	await _stand(Vector2i(5, 7))
 	await wait_frames(2)
 	var scrap := GameState.run.scrap
-	conductor.call(&"_enter_phase", Conductor.Phase.VENT)
-	conductor.take_hit(Conductor.MAX_INTEGRITY, Vector2(0, -1), 0.0, 0.0)
+	# Through its stages: each blow stops at the next threshold, and it pauses before the next.
+	for k: int in conductor.stage_count():
+		conductor.call(&"_enter_phase", Conductor.Phase.VENT)
+		conductor.take_hit(Conductor.MAX_INTEGRITY, Vector2(0, -1), 0.0, 0.0)
+		if conductor.in_transition():
+			await wait_seconds(Boss.STAGE_TRANSITION + 0.1)
 	check_false(conductor.is_alive())
 	await wait_frames(2)
 	for n: Node in get_tree().get_nodes_in_group(&"boss_barriers"):

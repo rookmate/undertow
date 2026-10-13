@@ -6,6 +6,8 @@ extends Boss
 ## Steward calls the lane first ("Left track."). Muted, the lights flicker a beat earlier if you watch
 ## them yourself. The manual solution: strike the signal box while it's switching and the whole gantry
 ## stalls, open for longer (the Steward never mentions the box).
+## Two stages (DECISIONS 183): at half, it runs express: two lanes at once, the lane you're on and
+## another, faster carriages, and the Steward calls the one that's clear instead.
 
 enum Phase { IDLE, WARN, RUN, GAP, VENT, STALLED }
 
@@ -17,11 +19,16 @@ const EARLY_FLICKER := 0.35
 const GAP_SECONDS := 0.5
 const VENT_SECONDS := 3.0
 const STALL_SECONDS := 6.0
+## Stage 2: how much faster its carriages run, and how long two lanes' lights show.
+const EXPRESS := 1.5
+const EXPRESS_WARN := 1.3
 
 ## Each warning, and how soon after it's called its hazard lands (seconds): the carriage. It has to be
-## said by then.
+## said by then. Stage 2's calls are the clear lane's.
 const WARN_LEADS: Dictionary[String, float] = {
 	"conductor_left": WARN_SECONDS, "conductor_middle": WARN_SECONDS, "conductor_right": WARN_SECONDS,
+	"conductor_clear_left": EXPRESS_WARN, "conductor_clear_middle": EXPRESS_WARN, "conductor_clear_right": EXPRESS_WARN,
+	"conductor_express": Boss.STAGE_TRANSITION,
 }
 ## Each call, and the soonest the next can come (seconds): the next track's, after this one's carriage
 ## has run and the gap.
@@ -29,7 +36,11 @@ const CALL_GAPS: Dictionary[String, float] = {
 	"conductor_left": WARN_SECONDS + ShuntLane.CARRIAGE_SECONDS + GAP_SECONDS,
 	"conductor_middle": WARN_SECONDS + ShuntLane.CARRIAGE_SECONDS + GAP_SECONDS,
 	"conductor_right": WARN_SECONDS + ShuntLane.CARRIAGE_SECONDS + GAP_SECONDS,
+	"conductor_clear_left": EXPRESS_WARN + ShuntLane.CARRIAGE_SECONDS / EXPRESS + GAP_SECONDS,
+	"conductor_clear_middle": EXPRESS_WARN + ShuntLane.CARRIAGE_SECONDS / EXPRESS + GAP_SECONDS,
+	"conductor_clear_right": EXPRESS_WARN + ShuntLane.CARRIAGE_SECONDS / EXPRESS + GAP_SECONDS,
 	"conductor_vent": VENT_SECONDS,
+	"conductor_express": Boss.STAGE_TRANSITION,
 }
 
 var phase: Phase = Phase.IDLE
@@ -40,6 +51,9 @@ var stalls: int = 0
 var _phase_time: float = 0.0
 var _runs_left: int = 0
 var _lane: ShuntLane
+## Stage 2: the lanes running this time (two), and the one that's clear.
+var _running: Array[ShuntLane] = []
+var _clear: ShuntLane
 var _warn_for: float = WARN_SECONDS
 var _stalled_this_cycle: bool = false
 
@@ -52,6 +66,35 @@ func _ready() -> void:
 
 func is_vulnerable() -> bool:
 	return phase == Phase.VENT or phase == Phase.STALLED
+
+
+func stage_count() -> int:
+	return 2
+
+
+func stage_line(_next_stage: int) -> String:
+	return "conductor_express"
+
+
+func _on_stage_begins(_next_stage: int) -> void:
+	for l: ShuntLane in lanes:
+		l.warn(-1.0)
+		l.speed = EXPRESS
+	_enter_phase(Phase.IDLE)
+
+
+func _on_stage(_now: int) -> void:
+	_start_cycle()
+
+
+## The lanes being warned or running now (stage 1: one; stage 2: two).
+func running_lanes() -> Array[ShuntLane]:
+	return _running
+
+
+## Stage 2: the lane that's clear this run (null in stage 1).
+func clear_lane() -> ShuntLane:
+	return _clear
 
 
 ## The points are moving: the window for the signal box (its weak point).
@@ -80,9 +123,18 @@ func _next_run() -> void:
 				_lane = l
 	if _lane == null or (_runs_left < RUNS_PER_CYCLE - 1 and randf() < 0.5):
 		_lane = lanes[randi() % lanes.size()]
-	_warn_for = WARN_SECONDS + (EARLY_FLICKER if not Steward.voice_on else 0.0)
+	_warn_for = (EXPRESS_WARN if stage >= 2 else WARN_SECONDS) + (EARLY_FLICKER if not Steward.voice_on else 0.0)
+	_running = [_lane]
+	_clear = null
+	if stage >= 2 and lanes.size() >= 3:
+		# Express: yours and another; the Steward calls the one that's clear.
+		var others := lanes.filter(func(l: ShuntLane) -> bool: return l != _lane)
+		_running.append(others[randi() % others.size()])
+		for l: ShuntLane in lanes:
+			if not _running.has(l):
+				_clear = l
 	_enter_phase(Phase.WARN)
-	call_out("conductor_" + _lane.side)
+	call_out("conductor_clear_" + _clear.side if _clear != null else "conductor_" + _lane.side)
 	Sound.play(&"windup", global_position)
 
 
@@ -96,12 +148,14 @@ func _fight(delta: float) -> void:
 	_phase_time += delta
 	match phase:
 		Phase.WARN:
-			_lane.warn(clampf(_phase_time / _warn_for, 0.0, 1.0))
+			for l: ShuntLane in _running:
+				l.warn(clampf(_phase_time / _warn_for, 0.0, 1.0))
 			if _phase_time >= _warn_for:
-				_lane.fire()
+				for l: ShuntLane in _running:
+					l.fire()
 				_enter_phase(Phase.RUN)
 		Phase.RUN:
-			if not _lane.is_running():
+			if _running.all(func(l: ShuntLane) -> bool: return not l.is_running()):
 				_enter_phase(Phase.GAP)
 		Phase.GAP:
 			if _phase_time >= GAP_SECONDS:
@@ -125,7 +179,8 @@ func on_weak_point_hit() -> void:
 		return
 	_stalled_this_cycle = true
 	stalls += 1
-	_lane.warn(-1.0)
+	for l: ShuntLane in _running:
+		l.warn(-1.0)
 	_enter_phase(Phase.STALLED)
 	Sound.play(&"vent_hiss", global_position)
 
@@ -154,7 +209,7 @@ func _draw() -> void:
 	# Three lamps, one per lane; the warned lane's burns red-orange (danger).
 	for i: int in 3:
 		var lamp_pos := Vector2(-34 + i * 34, -h - 5)
-		var lit := phase == Phase.WARN and _lane != null and lanes.find(_lane) == i
+		var lit := phase == Phase.WARN and i < lanes.size() and _running.has(lanes[i])
 		draw_circle(lamp_pos, 7.0, Palette.DANGER if lit else Palette.GREY_DEEP, true, -1.0, true)
 	# The shunting arm and its housing: the core shows when it vents or stalls.
 	var drop := 60.0 if is_vulnerable() else 0.0

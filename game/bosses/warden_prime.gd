@@ -5,6 +5,9 @@ extends Boss
 ## at you. Then it lines up a charge and rams across the plaza: step aside, and if it hits a wall it's
 ## dazed and open. The manual solution: strike the relay mast that links it while it sweeps, and it
 ## loses its link and stalls.
+## Three stages (DECISIONS 184): at two thirds it calls two Wardens in off the border and its light
+## sweeps faster; at one third the relay mast burns out (no stalling it now): blind, it stops sweeping
+## and comes at you, charge after charge.
 
 enum Phase { IDLE, SWEEP, VOLLEY, CHARGE_WARN, CHARGE, RECOVER, DAZED, STALLED }
 
@@ -30,19 +33,26 @@ const CHARGE_DAMAGE := 20.0
 const RECOVER_SECONDS := 0.9
 const DAZE_SECONDS := 3.5
 const STALL_SECONDS := 6.0
+## Stage 2: its light's sweep; stage 3: its charges' warning.
+const CALLED_SWEEP := 2.6
+const BLIND_CHARGE_WARN := 1.0
 
 ## Each warning, and how soon after it's called its hazard lands (seconds): the volley (once you've
 ## been in the beam long enough), the charge.
 const WARN_LEADS: Dictionary[String, float] = {
 	"warden_prime_light": MARK_SECONDS + VOLLEY_WARN,
-	"warden_prime_charge": CHARGE_WARN_SECONDS,
+	"warden_prime_charge": BLIND_CHARGE_WARN,
+	"warden_prime_called": Boss.STAGE_TRANSITION,
+	"warden_prime_blind": Boss.STAGE_TRANSITION,
 }
 ## Each call, and the soonest the next can come (seconds): after the light, a volley and then the charge;
 ## after the charge, a wall at once (dazed).
 const CALL_GAPS: Dictionary[String, float] = {
 	"warden_prime_light": MARK_SECONDS + VOLLEY_WARN + VOLLEY_SHOTS * VOLLEY_GAP,
-	"warden_prime_charge": CHARGE_WARN_SECONDS,
+	"warden_prime_charge": BLIND_CHARGE_WARN,
 	"warden_prime_dazed": DAZE_SECONDS,
+	"warden_prime_called": Boss.STAGE_TRANSITION,
+	"warden_prime_blind": Boss.STAGE_TRANSITION,
 }
 
 var phase: Phase = Phase.IDLE
@@ -73,6 +83,45 @@ func is_vulnerable() -> bool:
 	return phase == Phase.DAZED or phase == Phase.STALLED
 
 
+func stage_count() -> int:
+	return 3
+
+
+func stage_line(next_stage: int) -> String:
+	return "warden_prime_called" if next_stage == 2 else "warden_prime_blind"
+
+
+func _on_stage_begins(next_stage: int) -> void:
+	phase = Phase.IDLE
+	_phase_time = 0.0
+	if next_stage == 2 and level != null:
+		# Two Wardens in off the border, hunting you (gone with it if the fight starts over).
+		var b := level.grid.first("B")
+		for off: Vector2i in [Vector2i(-4, -1), Vector2i(4, -1)]:
+			var c := b + off
+			if not level.grid.is_walkable(c):
+				continue
+			var w := level.spawn_kind("warden", c)
+			if w != null:
+				w.add_to_group(&"boss_parts")
+	if next_stage == 3 and weak_point != null and is_instance_valid(weak_point):
+		# The relay mast burns out: no stalling it now.
+		weak_point.retire()
+
+
+func _on_stage(_now: int) -> void:
+	_enter_phase(Phase.CHARGE_WARN if blind() else Phase.SWEEP)
+
+
+## Stage 3: the mast's gone; it doesn't sweep, it comes at you.
+func blind() -> bool:
+	return stage >= 3
+
+
+func sweep_seconds() -> float:
+	return CALLED_SWEEP if stage >= 2 else SWEEP_SECONDS
+
+
 ## Sweeping: the window for the relay mast.
 func is_switching() -> bool:
 	return phase == Phase.SWEEP
@@ -100,7 +149,7 @@ func _enter_phase(next: Phase) -> void:
 			_shots_left = VOLLEY_SHOTS
 			_shot_in = VOLLEY_WARN
 		Phase.CHARGE_WARN:
-			_warn_for = CHARGE_WARN_SECONDS + (EARLY_WARN if not Steward.voice_on else 0.0)
+			_warn_for = (BLIND_CHARGE_WARN if blind() else CHARGE_WARN_SECONDS) + (EARLY_WARN if not Steward.voice_on else 0.0)
 			_aim_charge()
 			call_out("warden_prime_charge")
 			Sound.play(&"windup", global_position)
@@ -137,14 +186,14 @@ func _fight(delta: float) -> void:
 	var player_ok := p != null and p.is_alive()
 	match phase:
 		Phase.SWEEP:
-			var k := clampf(_phase_time / SWEEP_SECONDS, 0.0, 1.0)
+			var k := clampf(_phase_time / sweep_seconds(), 0.0, 1.0)
 			beam_dir = Vector2.from_angle(_sweep_from + deg_to_rad(SWEEP_SPAN_DEG) * k)
 			if player_ok and in_light(p.global_position):
 				_in_light += delta
 				if _in_light >= MARK_SECONDS:
 					_enter_phase(Phase.VOLLEY)
 					return
-			if _phase_time >= SWEEP_SECONDS:
+			if _phase_time >= sweep_seconds():
 				_enter_phase(Phase.CHARGE_WARN)
 		Phase.VOLLEY:
 			_shot_in -= delta
@@ -171,10 +220,10 @@ func _fight(delta: float) -> void:
 				_enter_phase(Phase.RECOVER)
 		Phase.RECOVER:
 			if _phase_time >= RECOVER_SECONDS:
-				_enter_phase(Phase.SWEEP)
+				_enter_phase(Phase.CHARGE_WARN if blind() else Phase.SWEEP)
 		Phase.DAZED:
 			if _phase_time >= DAZE_SECONDS:
-				_enter_phase(Phase.SWEEP)
+				_enter_phase(Phase.CHARGE_WARN if blind() else Phase.SWEEP)
 		Phase.STALLED:
 			if _phase_time >= STALL_SECONDS:
 				_enter_phase(Phase.SWEEP)
@@ -209,6 +258,10 @@ func on_weak_point_hit() -> void:
 
 
 func _die() -> void:
+	# The Wardens it called in are linked through it: they drop with it.
+	for n: Node in get_tree().get_nodes_in_group(&"boss_parts"):
+		if n is Warden and (n as Warden).is_alive() and level != null and level.is_ancestor_of(n):
+			n.call(&"_die")
 	super()
 	Narrator.notify(&"boss_down", level.level_id if level != null else "")
 

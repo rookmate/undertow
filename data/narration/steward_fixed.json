@@ -224,6 +224,50 @@
 		"greywater_pumps_done": {
 			"text": "You drained the sump by hand. I could have done it in a minute. I didn't.",
 			"purpose": "fact"
+		},
+		"conductor_express": {
+			"text": "Express. Two at once.",
+			"purpose": "warning"
+		},
+		"conductor_clear_left": {
+			"text": "Left's clear.",
+			"purpose": "warning"
+		},
+		"conductor_clear_middle": {
+			"text": "Middle's clear.",
+			"purpose": "warning"
+		},
+		"conductor_clear_right": {
+			"text": "Right's clear.",
+			"purpose": "warning"
+		},
+		"surgeon_triage": {
+			"text": "Triage. Both ways now.",
+			"purpose": "warning"
+		},
+		"crane_double": {
+			"text": "Two loads now. Along the jib.",
+			"purpose": "warning"
+		},
+		"crane_buckle": {
+			"text": "It's going over. Off the line.",
+			"purpose": "warning"
+		},
+		"editor_headlines": {
+			"text": "The ink's wet. Mind the floor.",
+			"purpose": "warning"
+		},
+		"editor_backwards": {
+			"text": "It's running backwards.",
+			"purpose": "warning"
+		},
+		"warden_prime_called": {
+			"text": "It's calling the others in.",
+			"purpose": "warning"
+		},
+		"warden_prime_blind": {
+			"text": "The mast's gone. It's blind.",
+			"purpose": "warning"
 		}
 	}
 }

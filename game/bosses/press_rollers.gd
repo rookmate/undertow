@@ -21,6 +21,13 @@ func gap_lit() -> bool:
 func _draw() -> void:
 	if editor == null or not is_instance_valid(editor) or not editor.is_alive():
 		return
+	# Wet ink on the floor (stage 2 on): black and glossy, a red-orange rim (it stings).
+	for c: Vector2i in editor.ink_pools:
+		var k := clampf(editor.ink_pools[c] / 1.5, 0.0, 1.0)
+		var d := Iso.cell_diamond(c)
+		draw_colored_polygon(d, Color(Palette.BLACK_MIRROR, 0.85 * k))
+		d.append(d[0])
+		draw_polyline(d, Color(Palette.DANGER, 0.5 * k), 2.0, true)
 	var span := editor.roller_span()
 	var gap := Vector2(editor.gap_start, editor.gap_start + Editor.GAP_CELLS)
 	match editor.phase:

@@ -15,6 +15,8 @@ var level: Level
 var warning: float = -1.0
 ## 0..1 along the lane while a carriage is running, -1 when not.
 var run: float = -1.0
+## How fast its carriage runs (1: as built; the Conductor's express, faster).
+var speed: float = 1.0
 var _struck: bool = false
 
 
@@ -48,7 +50,7 @@ func is_running() -> bool:
 func _physics_process(delta: float) -> void:
 	if run < 0.0:
 		return
-	run += delta / CARRIAGE_SECONDS
+	run += delta * speed / CARRIAGE_SECONDS
 	var p := level.player if level != null else null
 	if p != null and p.is_alive() and not _struck and has_cell(p.cell()):
 		var front := _at(run)
