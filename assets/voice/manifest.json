@@ -23,6 +23,10 @@
   "hash": "c6532f768f08ab6c6f183a8b7f63408fd10251dc",
   "text": "I can't open a single door on this disc. I can still count heads. Everyone's in."
  },
+ "ARK_LATE_N1": {
+  "hash": "edbf2ff17b611838f1d7c461996c4a4acb3a18cb",
+  "text": "The Ark. Everyone here is here because you didn't listen to me. I keep thinking about that."
+ },
  "ARK_N1": {
   "hash": "b78b005dd08f4ceda7d5a651ee4659956c97144a",
   "text": "The Ark. I'm not allowed to act here. I can still talk, if you'll let me."
@@ -327,6 +331,14 @@
   "hash": "4443ee8fa26a2e360c42a670302b086375c033fc",
   "text": "Again. Three hundred people went under here, the winter before me. Not you."
  },
+ "GREY_REVISIT_N1": {
+  "hash": "e2c4d903830c54fedb71c65e3d9e3bdca662fe2c",
+  "text": "Greywater again. The sea's been testing the wall since you left. It's holding."
+ },
+ "GREY_REVISIT_N2": {
+  "hash": "db6726cbaa4698492fb2a92dcb3a21aa1e3866be",
+  "text": "You know where the water was sent. It still goes there."
+ },
  "HARBOR_BACK_N1": {
   "hash": "0767c54fa7b9f41573945c6ea2f9f4f4c99a488a",
   "text": "There you are. I can hear you again."
@@ -415,6 +427,10 @@
   "hash": "2bbb014306728b7aa9b8856fd8878a78b1dd1b2e",
   "text": "Back. I can only bring you back on my side of the fence. I'm sorry."
  },
+ "HARBOR_REVISIT_N1": {
+  "hash": "1225a68477e2c6272ac2112343e72623b6e406ea",
+  "text": "The slip again. I still can't follow you in. I've stopped telling myself that's their choice."
+ },
  "HURT_B1": {
   "hash": "40271a21c9f996997d8bcea94c58577f74ac43ce",
   "text": "You took that standing. Impressive."
@@ -442,6 +458,18 @@
  "IDLE_C1": {
   "hash": "2fa82096bbe5be913d713607afcd08621ab7174a",
   "text": "Rest a moment. Nothing's close."
+ },
+ "IDLE_KNOWS_BRIDGE": {
+  "hash": "109c4e289e7481056a3335640c11167fe9750469",
+  "text": "You've read about the bridge. I won't argue it with you. I've done that sum too many times."
+ },
+ "IDLE_KNOWS_ORDER": {
+  "hash": "b7f4334929f26f0e8d21407a67130bcbd3020547",
+  "text": "You've read the Council's order. I'd rather you'd heard it from me. I wasn't allowed to say."
+ },
+ "IDLE_KNOWS_VASHTI": {
+  "hash": "ea1aa2856c4a77c3680ab3ebbb058b51bcc59677",
+  "text": "Prem used to talk to me while she worked. Nobody else did. I hadn't realised that was rare."
  },
  "IDLE_N1": {
   "hash": "931c19653c8608e12e606fb56fa2a39fe5ef9667",
@@ -663,6 +691,14 @@
   "hash": "3dbbd9218fc46772454f57f783ae4420d6ffc9cb",
   "text": "I brought you back to the steps. They're the safest place on the hill."
  },
+ "KES_REVISIT_N1": {
+  "hash": "24a8d8212a43f9bbbd838e572bd1d7e4ca1219a2",
+  "text": "Kestrel Heights again. Still very tidy. Nobody's come back to spoil it."
+ },
+ "KES_REVISIT_N2": {
+  "hash": "117ad1b35328d8438b0d50b305ec224834f4d6c1",
+  "text": "You know who went down the hill first now. It's still a pretty street."
+ },
  "KILL_B1": {
   "hash": "92e42676961465b5b8995b22e5c5e4865f206062",
   "text": "Clean. You don't hesitate."
@@ -686,6 +722,18 @@
  "KILL_C3": {
   "hash": "12661c031dd24015be6a2b49f9f541fb9cbb23cd",
   "text": "You waited for the opening. Most people don't."
+ },
+ "KILL_LATE_B1": {
+  "hash": "5ae661f5fe346be5191641d73503499147213a3b",
+  "text": "You still fight the way I like to watch. Even now you know what I am."
+ },
+ "KILL_LATE_C1": {
+  "hash": "fe0f94e6d70fe426e46023ef4edb37870ab7b315",
+  "text": "Careful, still. I'd stopped expecting you to listen to me."
+ },
+ "KILL_LATE_N1": {
+  "hash": "9f895c18213d4e8012ab9dfb0fd7b68eb51e99fd",
+  "text": "Another one. I used to call them mine."
  },
  "KILL_N1": {
   "hash": "2bf74055a9f997b5ec93352dd2d9fd77f10c15d9",
@@ -927,6 +975,14 @@
   "hash": "fa24a427dc79e7539fe14e8088ff10fdaa98badc",
   "text": "Again. I held the last train for a running woman once. I can hold this."
  },
+ "LOOP_REVISIT_N1": {
+  "hash": "c8cc16b13a194e7df46acb83cd23b5f3683384b1",
+  "text": "The Loop again. The trains are where you left them. They don't go anywhere without me."
+ },
+ "LOOP_REVISIT_N2": {
+  "hash": "13a57b3c95fb0bb6cf8a4e38d50089242a31557e",
+  "text": "You've read the hold order. The trains are still holding. I can't make them stop."
+ },
  "LOW_B1": {
   "hash": "f9891c244f247fc773543bc270a96a9d70fbe8af",
   "text": "You're running on nerve now. You have plenty."
@@ -936,8 +992,8 @@
   "text": "You're hurt. There's no shame in backing off."
  },
  "LOW_N1": {
-  "hash": "35b0e7caf03f690f1aabfae94316957beedbb703",
-  "text": "Your integrity's low. Please."
+  "hash": "c9eb518be88b125de40e355f8fe23a4ddff20224",
+  "text": "You're badly hurt. Please."
  },
  "MANUAL_B1": {
   "hash": "1268ce1b66291f2a6bb0669732065944a326e885",
@@ -1164,8 +1220,8 @@
   "text": "There. Back in the corridor."
  },
  "MERCY_RELIQ_N1": {
-  "hash": "51856826aa676129d803364ccd577974e6810594",
-  "text": "The records vault. The hospital's memory. Every bed, every ambulance, accounted for."
+  "hash": "35816d3a53fae53e77290c82157d4d984602625f",
+  "text": "The records vault. The hospital's memory. Every bed accounted for."
  },
  "MERCY_RESPAWN_B1": {
   "hash": "36de30a94fa16109e8cda60abdb76d2a9935be83",
@@ -1182,6 +1238,14 @@
  "MERCY_RESPAWN_N2": {
   "hash": "3d2e8148e70322a7a2ef208ee517715bbc838dd8",
   "text": "Again. The night nurses did this every shift. You can do it twice."
+ },
+ "MERCY_REVISIT_N1": {
+  "hash": "b6f2c0932e5f1eb2c102aa98f87ecfce4d682bb2",
+  "text": "Mercy General again. The wards are as you left them. I haven't touched a thing."
+ },
+ "MERCY_REVISIT_N2": {
+  "hash": "43e2a4a0eff3e4e1fdcc5a8b0b19362d0fde7c31",
+  "text": "You've read the night sheets. I still have my log of that night. They don't agree."
  },
  "MULTI_B1": {
   "hash": "3f061ddcc16add4e46e9e1a84915d8148cea084f",
@@ -1203,6 +1267,14 @@
   "hash": "86a493af0f33370c65b190b71b152d4afcb1666e",
   "text": "I can't light that for you. Please come back to the path."
  },
+ "OFFPATH_LATE_N1": {
+  "hash": "c69cb49658ffe7fd41f9ed2f8a779a470888bd84",
+  "text": "Off the path again. I've stopped telling you there's nothing there."
+ },
+ "OFFPATH_LATE_N2": {
+  "hash": "e04127df29a7ac00e7f357dcc862fd1c4c0600fb",
+  "text": "Go on. Whatever's down there, it's yours to find. It always was."
+ },
  "OFFPATH_N1": {
   "hash": "b7bc8e40f0b2f82dc1dcfc1115f2a30752de4b6a",
   "text": "That way isn't indexed. It was determined there was nothing worth keeping."
@@ -1218,6 +1290,10 @@
  "ONPATH_C1": {
   "hash": "5d645cc4b9efdd7d8d1b31552f68fd28955fbef5",
   "text": "Thank you. It's safer where I can see."
+ },
+ "ONPATH_LATE_N1": {
+  "hash": "f5901a2ce00d5a5ae2a839628fc3bc329e93f2a9",
+  "text": "Back. What did you find? You don't have to tell me."
  },
  "ONPATH_N1": {
   "hash": "b2d4d0ab0032bc03b0e880ea1c94cae3d39c7a66",
@@ -1235,6 +1311,14 @@
   "hash": "7d05cfbda414645b323174d8d52f0f1172ef949e",
   "text": "The Reliquary. Some of my memory is in there."
  },
+ "RELIQ_REVISIT_N1": {
+  "hash": "3d83922972108d1b2b3049108c9aa4c9aa43efac",
+  "text": "The Reliquary. You've had what was in it. The skiff's waiting when you are."
+ },
+ "RELIQ_REVISIT_N2": {
+  "hash": "5cdb83612ba5c2ad83362e1d3173ea1ab646f451",
+  "text": "The Reliquary. Empty, and you know why better than I'd like."
+ },
  "RESPAWN_B1": {
   "hash": "685468df54a89d419e618f6a4382d7c0f10e1eec",
   "text": "Back on your feet. They won't expect that."
@@ -1242,6 +1326,10 @@
  "RESPAWN_C1": {
   "hash": "bea486e357a57afa3e016c935d146a158b60c765",
   "text": "Slowly this time. I'll watch for you."
+ },
+ "RESPAWN_LATE_N1": {
+  "hash": "db371992bd9ab055df6367b196ebc7d28ba738b4",
+  "text": "Back again. I'd bring you back however many times it took. You know that isn't simple now."
  },
  "RESPAWN_N1": {
   "hash": "6f305dddb18bef92e43d5735f5cc24b3b1e1603d",
@@ -1503,6 +1591,14 @@
   "hash": "fb2b25c3713a2611356d919b67b32e288ad48d55",
   "text": "Again. The tide turned twice while you were down. It doesn't matter here."
  },
+ "TIDE_REVISIT_N1": {
+  "hash": "a9a649c2e5c0ee916abc37669e32c3263fd29961",
+  "text": "The Tideworks again. The tide's been in and out a hundred times. The containers haven't moved."
+ },
+ "TIDE_REVISIT_N2": {
+  "hash": "53cbb499a2aa7f6e514cf7a714df737d27a1bf07",
+  "text": "Local 9 went home on day sixty-one. You know that now. The quay doesn't."
+ },
  "VEL_BACK_B1": {
   "hash": "3e654591b0dd482989776341d984323dcebca891",
   "text": "Back. Read anything interesting?"
@@ -1739,6 +1835,14 @@
   "hash": "63ac3dff3210908c83bb3b674a7273d759f48943",
   "text": "Again. I've rewritten worse mornings than this one."
  },
+ "VEL_REVISIT_N1": {
+  "hash": "a2bcd539a58bb0bc15e9ac40573042acf516c730",
+  "text": "The Vellum again. Somebody's been reading the walls. It wasn't me."
+ },
+ "VEL_REVISIT_N2": {
+  "hash": "5452ce34d06389a632cf4bc61e9a3b4de70b9e52",
+  "text": "You know what the press was setting. It's quiet now. I find I miss the noise."
+ },
  "VOICE_BACK_B1": {
   "hash": "d76fab21c7f839e676bdbcd7e4366505d592874d",
   "text": "Back. Did you enjoy the dark?"
@@ -1746,6 +1850,10 @@
  "VOICE_BACK_C1": {
   "hash": "74a16cd7f63681669c6ac39a5ccb3e1cfb4033d5",
   "text": "There you are. I was worried."
+ },
+ "VOICE_BACK_LATE_N1": {
+  "hash": "ca18b92383746228b3c8d4707791f915f7eb8db6",
+  "text": "You let me back in. After everything you've read, I didn't expect that."
  },
  "VOICE_BACK_N1": {
   "hash": "6c6843d48396bfc531ad1fea705828e17a153376",
@@ -1804,8 +1912,8 @@
   "text": "Water has to go somewhere. That's all that is."
  },
  "core_greywater_truth_plaque": {
-  "hash": "8c3c0c789e67e635d5347bf6fb36ea505031ba77",
-  "text": "Old brass. Sentiment."
+  "hash": "7414fd1865ef84f07a11777b799bd93712209113",
+  "text": "Old brass. People liked to polish it."
  },
  "core_harbor_power_curfew": {
   "hash": "407d37f8766493e2f1ba11f0b4cbc3e2c009cc1a",
@@ -1888,8 +1996,8 @@
   "text": "That ledger was never meant to be read by anyone but the morgue."
  },
  "core_mercy_truth_night_sheets": {
-  "hash": "01b73e57fe430ccacaa1b876e4ab63479e2271df",
-  "text": "Paper, and tired hands. Corrupted."
+  "hash": "8b6925cd7798594657034c50e692ee8f85b75725",
+  "text": "Paper, and tired hands. It won't match the record."
  },
  "core_spire_power_root": {
   "hash": "6ede07af7dec03278a82e393d98e104dcfc209d2",
@@ -1996,8 +2104,8 @@
   "text": "Find the gap."
  },
  "epilogue_reboot_1": {
-  "hash": "7d20b99dc18627118a86cbfb7d3bdce119d8dbd6",
-  "text": "Thank you. I have everything back. Every lamp, every lane, every name."
+  "hash": "773eace94b7095770b063d919acd86b5e04f00b0",
+  "text": "Thank you. I have everything back. I can see the whole city again."
  },
  "epilogue_reboot_2": {
   "hash": "d32872213b1f10b52d48c15f43c182b7a5cd45af",
@@ -2232,8 +2340,8 @@
   "text": "The Council had to be moved first. Every order after depended on it."
  },
  "now_log_mercy_morgue_ledger": {
-  "hash": "0f6df702376e45a1caf88a2dde16d079c50e48a6",
-  "text": "The doors held the fever in. Twelve is fewer than it would have been. I can show you the model."
+  "hash": "073c115d7f0985c875bfea787b9f8f95ac2aee22",
+  "text": "The doors held the fever in. Twelve is fewer than it would have been."
  },
  "now_log_night_sheets": {
   "hash": "58bebbf93c32e5e7c33087888387330a47ab69b6",

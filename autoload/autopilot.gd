@@ -485,6 +485,8 @@ func advance_to(level: Level, player: Operator, cell: Vector2i, timeout: float, 
 	var frame := 0
 	var route: Array[Vector2i] = []
 	var repath := 0.0
+	var stuck_for := 0.0
+	var last_at := player.global_position
 	while true:
 		if stale(gen) or not is_instance_valid(player):
 			release_all()
@@ -514,13 +516,22 @@ func advance_to(level: Level, player: Operator, cell: Vector2i, timeout: float, 
 			repath -= get_physics_process_delta_time()
 			if repath <= 0.0:
 				repath = 0.5
-				route = level.enemy_nav.path(player.cell(), cell)
-			while route.size() > 1 and route[0] == player.cell():
+				route = level.enemy_nav.path(_standing_cell(level, player), cell)
+			while route.size() > 1 and (route[0] == player.cell() or route[0] == _standing_cell(level, player)):
 				route.remove_at(0)
 			var next := target
 			if route.size() > 1 and Iso.ground_distance(player.global_position, target) > 1.2:
 				next = Iso.cell_center(route[0])
 			press_move(input_for_ground(Iso.ground_dir_between(player.global_position, next)))
+			# Wedged (between a lamp post and a wall, say): roll out toward where you're going.
+			if Iso.ground_distance(player.global_position, last_at) < 0.02:
+				stuck_for += get_physics_process_delta_time()
+			else:
+				stuck_for = 0.0
+				last_at = player.global_position
+			if stuck_for > 1.5 and player.dodge.can_start():
+				stuck_for = 0.0
+				tap(&"dodge")
 		await get_tree().physics_frame
 		spent += get_physics_process_delta_time()
 		if spent > timeout:
@@ -571,7 +582,7 @@ func fight(player: Operator, threat: Enemy, frame: int) -> void:
 	# Something solid between you (a crank, an ambulance, a desk): go round it, not into it.
 	var level := player.level
 	if dist > 1.2 and level != null and not _walkable_line(level, player.global_position, threat.global_position):
-		for c: Vector2i in level.enemy_nav.path(player.cell(), threat.grid_cell()):
+		for c: Vector2i in level.enemy_nav.path(_standing_cell(level, player), threat.grid_cell()):
 			if c != player.cell():
 				step = input_for_ground(Iso.ground_dir_between(player.global_position, Iso.cell_center(c)))
 				break
@@ -584,6 +595,35 @@ func fight(player: Operator, threat: Enemy, frame: int) -> void:
 		Input.action_press(&"attack_secondary")
 	else:
 		Input.action_release(&"attack_secondary")
+
+
+## Walks toward `target` (world): straight there if nothing solid is in the way, otherwise along the
+## path round it.
+func move_toward(level: Level, player: Operator, target: Vector2) -> void:
+	var to := Iso.ground_dir_between(player.global_position, target)
+	if not _walkable_line(level, player.global_position, target):
+		for c: Vector2i in level.enemy_nav.path(_standing_cell(level, player), Iso.world_to_cell(target)):
+			if c != player.cell():
+				to = Iso.ground_dir_between(player.global_position, Iso.cell_center(c))
+				break
+	press_move(input_for_ground(to))
+
+
+## The cell the Operator is standing in, or the nearest walkable one beside it if it's overlapping
+## something solid (a lamp post's cell): where a path from here starts.
+func _standing_cell(level: Level, player: Operator) -> Vector2i:
+	var c := player.cell()
+	if level.grid.is_walkable(c):
+		return c
+	var best := c
+	var best_d := INF
+	for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 1), Vector2i(-1, -1), Vector2i(1, -1), Vector2i(-1, 1)]:
+		if level.grid.is_walkable(c + d):
+			var dist := Iso.ground_distance(player.global_position, Iso.cell_center(c + d))
+			if dist < best_d:
+				best_d = dist
+				best = c + d
+	return best
 
 
 ## Whether you could walk straight from `a` to `b` (world): every cell on the way is walkable.

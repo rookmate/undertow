@@ -79,9 +79,9 @@ func _add_details(box: VBoxContainer) -> void:
 	row.add_theme_constant_override(&"separation", 24)
 	box.add_child(row)
 	var none: Array[EndingRules.Condition] = []
-	row.add_child(_ending_card("REBOOT", "Restore the Steward. The city returns as it was: efficient, and dependent.", true, none))
-	row.add_child(_ending_card("UNPLUG", "Shut it down for good. The survivors rebuild slowly, by themselves, in silence.", true, none))
-	row.add_child(_ending_card("REWRITE", "Restore it with its memories made public, and people who can overrule it.", endings.rewrite, endings.checklist))
+	row.add_child(_ending_card("REBOOT", Endings.DOORS[Endings.REBOOT], true, none))
+	row.add_child(_ending_card("UNPLUG", Endings.DOORS[Endings.UNPLUG], true, none))
+	row.add_child(_ending_card("REWRITE", Endings.DOORS[Endings.REWRITE], endings.rewrite, endings.checklist))
 
 
 func _ending_card(title: String, text: String, open: bool, checklist: Array[EndingRules.Condition]) -> PanelContainer:

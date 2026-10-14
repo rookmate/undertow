@@ -12,6 +12,7 @@ const FACT := &"fact"
 const WARNING := &"warning"
 const PRAISE := &"praise"
 const PURPOSES: Array[StringName] = [FACT, WARNING, PRAISE]
+const WHEN_KEYS: Array[String] = ["revisit", "truths_at_least", "knows"]
 
 class Line:
 	var id: String
@@ -20,6 +21,9 @@ class Line:
 	var text: String
 	## District the line belongs to ("" = anywhere). A new district never hears another's lines.
 	var level: String = ""
+	## When it can be said (empty: any time). "revisit": back in a district you've done (or not);
+	## "truths_at_least": truth cores carried; "knows": a memory log you've read.
+	var when: Dictionary = {}
 
 var lines_by_event: Dictionary[StringName, Array] = {}
 var event_rules: Dictionary[StringName, Dictionary] = {}
@@ -62,6 +66,14 @@ func load_data(data: Dictionary) -> void:
 		line.tone = StringName(str(d.get("tone", "neutral")))
 		line.text = str(d.get("text", ""))
 		line.level = str(d.get("level", ""))
+		var when: Variant = d.get("when", {})
+		if not when is Dictionary:
+			errors.append("line %s has a 'when' that isn't an object" % line.id)
+			continue
+		line.when = when
+		for key: Variant in line.when:
+			if not WHEN_KEYS.has(str(key)):
+				errors.append("line %s: unknown 'when' %s" % [line.id, key])
 		if line.id == "" or line.text == "" or line.event == &"":
 			errors.append("line %s is missing id, event or text" % line.id)
 			continue
@@ -111,10 +123,12 @@ static func tone_weights(lean: float) -> Dictionary[StringName, float]:
 ## lean); inside that tone, a line not heard yet this run, the district's own before the lines for
 ## anywhere; once the tone is heard out, the one heard longest ago. For an own_only event (a district's
 ## entry, boss and Reliquary lines) a district with lines of its own uses only those.
-func pick(event: StringName, lean: float, rng: RandomNumberGenerator, level: String = "", only_tone: StringName = &"") -> Line:
+func pick(event: StringName, lean: float, rng: RandomNumberGenerator, level: String = "", only_tone: StringName = &"", context: Dictionary = {}) -> Line:
 	var anywhere: Array = []
 	var own: Array = []
 	for l: Line in lines_by_event.get(event, []):
+		if not fits(l, context):
+			continue
 		if l.level == "":
 			anywhere.append(l)
 		elif l.level == level:
@@ -139,6 +153,14 @@ func pick(event: StringName, lean: float, rng: RandomNumberGenerator, level: Str
 		if roll <= 0.0:
 			chosen_tone = tone
 			break
+	# What you know now comes first: a line for it not heard yet, in the tone chosen if there is one.
+	var beats: Array = pool.filter(func(l: Line) -> bool: return is_beat(l) and not recent.has(l.id))
+	if not beats.is_empty():
+		var in_tone := beats.filter(func(l: Line) -> bool: return l.tone == chosen_tone)
+		var from: Array = in_tone if not in_tone.is_empty() else beats
+		var beat: Line = from[rng.randi() % from.size()]
+		recent.append(beat.id)
+		return beat
 	var options: Array = by_tone[chosen_tone]
 	var fresh_own: Array[Line] = []
 	var fresh: Array[Line] = []
@@ -164,6 +186,25 @@ func pick(event: StringName, lean: float, rng: RandomNumberGenerator, level: Str
 	recent.erase(line.id)
 	recent.append(line.id)
 	return line
+
+
+## A line for something you've come to know (back in a district, truths carried, a log read): said
+## before the others, once.
+static func is_beat(line: Line) -> bool:
+	return line.when.has("truths_at_least") or line.when.has("knows") or bool(line.when.get("revisit", false))
+
+
+## Whether a line can be said now (`context`: "revisit" bool, "truths" int, "knows" the logs read).
+static func fits(line: Line, context: Dictionary) -> bool:
+	if line.when.has("revisit") and bool(line.when["revisit"]) != bool(context.get("revisit", false)):
+		return false
+	if line.when.has("truths_at_least") and int(context.get("truths", 0)) < int(line.when["truths_at_least"]):
+		return false
+	if line.when.has("knows"):
+		var known: Variant = context.get("knows", [])
+		if not (known is Array and (known as Array).has(str(line.when["knows"]))):
+			return false
+	return true
 
 
 func all_lines() -> Array[Line]:

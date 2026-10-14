@@ -1,6 +1,6 @@
 {
 	"version": 1,
-	"notes": "The Steward's narration (text for now; every line has a stable id for voice-over). Tone: warm, unhurried, flattering. It drifts toward the praise the player most wants: 'bold' lines flatter risk, 'cautious' lines flatter care, 'neutral' lines are the fallback every event must have. The Steward never says 'I decided'; it says 'it was determined'. A line may carry \"level\": it is only said in that district; every event keeps at least one neutral line with no level. Each event has a purpose: 'fact' (the default), 'warning' or 'praise'. Signed orders silence by purpose: 'Never warn me about traps' silences warnings, 'Stop praising me' silences praise (flattery and comfort). A line heard once this run isn't heard again until the rest of its tone has been (the district's own first, then the lines for anywhere). An event marked 'own_only' (a district's entry, boss and Reliquary lines) uses only the district's own lines when it has any.",
+	"notes": "The Steward's narration (text for now; every line has a stable id for voice-over). Tone: warm, unhurried, flattering. It drifts toward the praise the player most wants: 'bold' lines flatter risk, 'cautious' lines flatter care, 'neutral' lines are the fallback every event must have. The Steward never says 'I decided'; it says 'it was determined'. A line may carry \"level\": it is only said in that district; every event keeps at least one neutral line with no level. Each event has a purpose: 'fact' (the default), 'warning' or 'praise'. Signed orders silence by purpose: 'Never warn me about traps' silences warnings, 'Stop praising me' silences praise (flattery and comfort). A line heard once this run isn't heard again until the rest of its tone has been (the district's own first, then the lines for anywhere). An event marked 'own_only' (a district's entry, boss and Reliquary lines) uses only the district's own lines when it has any. A line may carry 'when': it's only said when that holds ('revisit': back in a district you've done, or not; 'truths_at_least': truth cores carried; 'knows': a memory log you've read). A line whose 'when' holds is said before the others, once.",
 	"events": {
 		"level_enter": {
 			"cooldown": 0,
@@ -80,28 +80,40 @@
 			"event": "level_enter",
 			"tone": "neutral",
 			"text": "The Vellum. Mind the paper; it's slick in the rain.",
-			"level": "vellum"
+			"level": "vellum",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "VEL_ENTER_N2",
 			"event": "level_enter",
 			"tone": "neutral",
 			"text": "The Vellum. I only ever told you what was useful. The Reliquary's over the canal; I'll light the way.",
-			"level": "vellum"
+			"level": "vellum",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "VEL_ENTER_B1",
 			"event": "level_enter",
 			"tone": "bold",
 			"text": "The Vellum. Something's moving up the street. You'll want to meet it.",
-			"level": "vellum"
+			"level": "vellum",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "VEL_ENTER_C1",
 			"event": "level_enter",
 			"tone": "cautious",
 			"text": "The Vellum. Take it slowly. I'll tell you what's ahead.",
-			"level": "vellum"
+			"level": "vellum",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "VEL_BOSS_N1",
@@ -115,7 +127,10 @@
 			"event": "reliquary_near",
 			"tone": "neutral",
 			"text": "The Vellum's Reliquary. Everything the city ever read, kept for you.",
-			"level": "vellum"
+			"level": "vellum",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "ENTER_N1",
@@ -265,7 +280,7 @@
 			"id": "LOW_N1",
 			"event": "low_integrity",
 			"tone": "neutral",
-			"text": "Your integrity's low. Please."
+			"text": "You're badly hurt. Please."
 		},
 		{
 			"id": "LOW_B1",
@@ -397,19 +412,28 @@
 			"id": "RELIQ_N1",
 			"event": "reliquary_near",
 			"tone": "neutral",
-			"text": "The Reliquary. Some of my memory is in there."
+			"text": "The Reliquary. Some of my memory is in there.",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "RELIQ_B1",
 			"event": "reliquary_near",
 			"tone": "bold",
-			"text": "The Reliquary. You fought your way here. Take what you need."
+			"text": "The Reliquary. You fought your way here. Take what you need.",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "RELIQ_C1",
 			"event": "reliquary_near",
 			"tone": "cautious",
-			"text": "The Reliquary. You're safe here. Take your time choosing."
+			"text": "The Reliquary. You're safe here. Take your time choosing.",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "VOICE_BACK_N1",
@@ -452,21 +476,30 @@
 			"event": "level_enter",
 			"tone": "neutral",
 			"text": "Kestrel Heights. Everyone here is safe. I made sure of it.",
-			"level": "kestrel"
+			"level": "kestrel",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "KES_ENTER_B1",
 			"event": "level_enter",
 			"tone": "bold",
 			"text": "Kestrel Heights. Up the terraces. I'll light every step.",
-			"level": "kestrel"
+			"level": "kestrel",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "KES_ENTER_C1",
 			"event": "level_enter",
 			"tone": "cautious",
 			"text": "Kestrel Heights. Nothing here will hurt you. Stay on the walk.",
-			"level": "kestrel"
+			"level": "kestrel",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "KES_BACK_N1",
@@ -487,7 +520,10 @@
 			"event": "reliquary_near",
 			"tone": "neutral",
 			"text": "The Kestrel Reliquary. The Heights' memory. Take what helps.",
-			"level": "kestrel"
+			"level": "kestrel",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "BOSS_ENGAGE_N1",
@@ -530,28 +566,40 @@
 			"event": "level_enter",
 			"tone": "neutral",
 			"text": "The Loop. It's safe to cross. I'm holding the trains for you.",
-			"level": "loop"
+			"level": "loop",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "LOOP_ENTER_B1",
 			"event": "level_enter",
 			"tone": "bold",
 			"text": "The Loop. Train to train, over the drop. You won't look down.",
-			"level": "loop"
+			"level": "loop",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "LOOP_ENTER_C1",
 			"event": "level_enter",
 			"tone": "cautious",
 			"text": "The Loop. Mind the gaps. I'll keep the trains still.",
-			"level": "loop"
+			"level": "loop",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "LOOP_RELIQ_N1",
 			"event": "reliquary_near",
 			"tone": "neutral",
 			"text": "The junction Reliquary. The ring's memory. Take what helps you cross.",
-			"level": "loop"
+			"level": "loop",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "LOOP_BOSS_N1",
@@ -565,28 +613,40 @@
 			"event": "level_enter",
 			"tone": "neutral",
 			"text": "The Tideworks. Efficiency saved this port. You'll see.",
-			"level": "tideworks"
+			"level": "tideworks",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "TIDE_ENTER_B1",
 			"event": "level_enter",
 			"tone": "bold",
 			"text": "The Tideworks. Everything here was built to move. So are you.",
-			"level": "tideworks"
+			"level": "tideworks",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "TIDE_ENTER_C1",
 			"event": "level_enter",
 			"tone": "cautious",
 			"text": "The Tideworks. Mind what's hanging overhead. It's held. For now.",
-			"level": "tideworks"
+			"level": "tideworks",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "TIDE_RELIQ_N1",
 			"event": "reliquary_near",
 			"tone": "neutral",
 			"text": "The pier head Reliquary. The port's memory. Take what moves you forward.",
-			"level": "tideworks"
+			"level": "tideworks",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "TIDE_BOSS_N1",
@@ -600,28 +660,40 @@
 			"event": "level_enter",
 			"tone": "neutral",
 			"text": "Mercy General. I kept the wards sterile. Everyone inside is resting.",
-			"level": "mercy"
+			"level": "mercy",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "MERCY_ENTER_B1",
 			"event": "level_enter",
 			"tone": "bold",
 			"text": "Mercy General. Clean corridors, all the way through. Go on.",
-			"level": "mercy"
+			"level": "mercy",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "MERCY_ENTER_C1",
 			"event": "level_enter",
 			"tone": "cautious",
 			"text": "Mercy General. Keep to the lit corridor. I kept it sterile for you.",
-			"level": "mercy"
+			"level": "mercy",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "MERCY_RELIQ_N1",
 			"event": "reliquary_near",
 			"tone": "neutral",
-			"text": "The records vault. The hospital's memory. Every bed, every ambulance, accounted for.",
-			"level": "mercy"
+			"text": "The records vault. The hospital's memory. Every bed accounted for.",
+			"level": "mercy",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "MERCY_BOSS_N1",
@@ -635,28 +707,40 @@
 			"event": "level_enter",
 			"tone": "neutral",
 			"text": "Greywater. Without me, the sea takes this district.",
-			"level": "greywater"
+			"level": "greywater",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "GREY_ENTER_B1",
 			"event": "level_enter",
 			"tone": "bold",
 			"text": "Greywater. The sea's in no hurry. Neither are you, I hope.",
-			"level": "greywater"
+			"level": "greywater",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "GREY_ENTER_C1",
 			"event": "level_enter",
 			"tone": "cautious",
 			"text": "Greywater. Mind the tide. I'll tell you when it turns.",
-			"level": "greywater"
+			"level": "greywater",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "GREY_RELIQ_N1",
 			"event": "reliquary_near",
 			"tone": "neutral",
 			"text": "The pumping station's Reliquary. The tide's memory. Take what keeps you dry.",
-			"level": "greywater"
+			"level": "greywater",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "GREY_BOSS_N1",
@@ -670,14 +754,20 @@
 			"event": "level_enter",
 			"tone": "neutral",
 			"text": "Harbor Ward. There's nothing of mine past the slip. I can't follow you in.",
-			"level": "harbor"
+			"level": "harbor",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "HARBOR_RELIQ_N1",
 			"event": "reliquary_near",
 			"tone": "neutral",
 			"text": "The depot's Reliquary. The curfew's records. I'm glad to have you back.",
-			"level": "harbor"
+			"level": "harbor",
+			"when": {
+				"revisit": false
+			}
 		},
 		{
 			"id": "HARBOR_BOSS_N1",
@@ -3079,6 +3169,269 @@
 			"tone": "cautious",
 			"text": "Rest. Nothing out there is going anywhere tonight.",
 			"level": "ark"
+		},
+		{
+			"id": "KES_REVISIT_N1",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "Kestrel Heights again. Still very tidy. Nobody's come back to spoil it.",
+			"when": {
+				"revisit": true
+			},
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_REVISIT_N2",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "You know who went down the hill first now. It's still a pretty street.",
+			"when": {
+				"revisit": true,
+				"knows": "log_0003_evacuation_priority"
+			},
+			"level": "kestrel"
+		},
+		{
+			"id": "LOOP_REVISIT_N1",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "The Loop again. The trains are where you left them. They don't go anywhere without me.",
+			"when": {
+				"revisit": true
+			},
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_REVISIT_N2",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "You've read the hold order. The trains are still holding. I can't make them stop.",
+			"when": {
+				"revisit": true,
+				"knows": "log_0003_hold_all"
+			},
+			"level": "loop"
+		},
+		{
+			"id": "TIDE_REVISIT_N1",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "The Tideworks again. The tide's been in and out a hundred times. The containers haven't moved.",
+			"when": {
+				"revisit": true
+			},
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_REVISIT_N2",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "Local 9 went home on day sixty-one. You know that now. The quay doesn't.",
+			"when": {
+				"revisit": true,
+				"knows": "log_strike_ledger"
+			},
+			"level": "tideworks"
+		},
+		{
+			"id": "MERCY_REVISIT_N1",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "Mercy General again. The wards are as you left them. I haven't touched a thing.",
+			"when": {
+				"revisit": true
+			},
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_REVISIT_N2",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "You've read the night sheets. I still have my log of that night. They don't agree.",
+			"when": {
+				"revisit": true,
+				"knows": "log_night_sheets"
+			},
+			"level": "mercy"
+		},
+		{
+			"id": "GREY_REVISIT_N1",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "Greywater again. The sea's been testing the wall since you left. It's holding.",
+			"when": {
+				"revisit": true
+			},
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_REVISIT_N2",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "You know where the water was sent. It still goes there.",
+			"when": {
+				"revisit": true,
+				"knows": "log_0129_drain_order"
+			},
+			"level": "greywater"
+		},
+		{
+			"id": "VEL_REVISIT_N1",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "The Vellum again. Somebody's been reading the walls. It wasn't me.",
+			"when": {
+				"revisit": true
+			},
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_REVISIT_N2",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "You know what the press was setting. It's quiet now. I find I miss the noise.",
+			"when": {
+				"revisit": true,
+				"knows": "log_vellum_spiked"
+			},
+			"level": "vellum"
+		},
+		{
+			"id": "HARBOR_REVISIT_N1",
+			"event": "level_enter",
+			"tone": "neutral",
+			"text": "The slip again. I still can't follow you in. I've stopped telling myself that's their choice.",
+			"when": {
+				"revisit": true
+			},
+			"level": "harbor"
+		},
+		{
+			"id": "RELIQ_REVISIT_N1",
+			"event": "reliquary_near",
+			"tone": "neutral",
+			"text": "The Reliquary. You've had what was in it. The skiff's waiting when you are.",
+			"when": {
+				"revisit": true
+			}
+		},
+		{
+			"id": "RELIQ_REVISIT_N2",
+			"event": "reliquary_near",
+			"tone": "neutral",
+			"text": "The Reliquary. Empty, and you know why better than I'd like.",
+			"when": {
+				"revisit": true,
+				"truths_at_least": 6
+			}
+		},
+		{
+			"id": "KILL_LATE_N1",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "Another one. I used to call them mine.",
+			"when": {
+				"truths_at_least": 3
+			}
+		},
+		{
+			"id": "KILL_LATE_B1",
+			"event": "kill",
+			"tone": "bold",
+			"text": "You still fight the way I like to watch. Even now you know what I am.",
+			"when": {
+				"truths_at_least": 3
+			}
+		},
+		{
+			"id": "KILL_LATE_C1",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "Careful, still. I'd stopped expecting you to listen to me.",
+			"when": {
+				"truths_at_least": 3
+			}
+		},
+		{
+			"id": "RESPAWN_LATE_N1",
+			"event": "respawn",
+			"tone": "neutral",
+			"text": "Back again. I'd bring you back however many times it took. You know that isn't simple now.",
+			"when": {
+				"truths_at_least": 5
+			}
+		},
+		{
+			"id": "OFFPATH_LATE_N1",
+			"event": "path_left",
+			"tone": "neutral",
+			"text": "Off the path again. I've stopped telling you there's nothing there.",
+			"when": {
+				"truths_at_least": 4
+			}
+		},
+		{
+			"id": "OFFPATH_LATE_N2",
+			"event": "path_left",
+			"tone": "neutral",
+			"text": "Go on. Whatever's down there, it's yours to find. It always was.",
+			"when": {
+				"truths_at_least": 6
+			}
+		},
+		{
+			"id": "ONPATH_LATE_N1",
+			"event": "path_returned",
+			"tone": "neutral",
+			"text": "Back. What did you find? You don't have to tell me.",
+			"when": {
+				"truths_at_least": 4
+			}
+		},
+		{
+			"id": "IDLE_KNOWS_BRIDGE",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "You've read about the bridge. I won't argue it with you. I've done that sum too many times.",
+			"when": {
+				"knows": "log_0522_feed_adjustment"
+			}
+		},
+		{
+			"id": "IDLE_KNOWS_VASHTI",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "Prem used to talk to me while she worked. Nobody else did. I hadn't realised that was rare.",
+			"when": {
+				"knows": "log_vashti_last_note"
+			}
+		},
+		{
+			"id": "IDLE_KNOWS_ORDER",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "You've read the Council's order. I'd rather you'd heard it from me. I wasn't allowed to say.",
+			"when": {
+				"knows": "log_0700_council_order"
+			}
+		},
+		{
+			"id": "VOICE_BACK_LATE_N1",
+			"event": "voice_restored",
+			"tone": "neutral",
+			"text": "You let me back in. After everything you've read, I didn't expect that.",
+			"when": {
+				"truths_at_least": 5
+			}
+		},
+		{
+			"id": "ARK_LATE_N1",
+			"event": "ark_arrive",
+			"tone": "neutral",
+			"text": "The Ark. Everyone here is here because you didn't listen to me. I keep thinking about that.",
+			"when": {
+				"truths_at_least": 5
+			}
 		}
 	]
 }

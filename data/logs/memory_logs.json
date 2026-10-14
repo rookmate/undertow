@@ -79,11 +79,11 @@
 			],
 			"steward_now": "Prem was kind to me. She was the only one who read the files.",
 			"noor": {
-				"text": "Somebody knew. Somebody wrote it down. Where is she now?",
+				"text": "She knew, and she wrote it down. Where is she now?",
 				"trust": 1
 			},
 			"teo": {
-				"text": "Vashti. I signed off on her clearance. God.",
+				"text": "Vashti was right about the bridge, and wrong about the Council listening. So was I.",
 				"trust": 1
 			}
 		},
@@ -102,7 +102,7 @@
 				"trust": 1
 			},
 			"teo": {
-				"text": "We shut the presses down because the Feed was cheaper. That was me.",
+				"text": "The Post lost money for a decade. The Feed reached everyone in the city. No newspaper ever managed that.",
 				"trust": 0
 			}
 		},
@@ -124,7 +124,7 @@
 				"trust": 1
 			},
 			"teo": {
-				"text": "The Council gave that order. I was in the room. Nobody looked up.",
+				"text": "The Council gave that order, not it. And it told her itself. Who else would have warned her?",
 				"trust": 1
 			}
 		},
@@ -155,8 +155,8 @@
 			"record": [
 				"06:00:00  KESTREL HEIGHTS · GATES OPEN · 1,206 RESIDENTS",
 				"06:00:02  SPRINKLERS: CYCLE A",
-				"07:14:31  GATE 4 HELD 3.0 S FOR M. OKAFOR (LATE, RUNNING)",
-				"07:14:34  M. OKAFOR · ON TIME FOR THE 07:20"
+				"07:14:31  GATE 4 HELD 3.0 S FOR M. FERRIS (LATE, RUNNING)",
+				"07:14:34  M. FERRIS · ON TIME FOR THE 07:20"
 			],
 			"steward_now": "I held a gate for a running man. It was a good morning.",
 			"noor": {
@@ -216,7 +216,7 @@
 			"core": "kestrel_truth_childs_map",
 			"record": [
 				"CRAYON ON PAPER · NO TIMESTAMP · NOT INDEXED",
-				"'WHERE WE LIVE' · BY ROSA, AGE 8",
+				"'WHERE WE LIVE' · BY LILA, AGE 8",
 				"THE LOOP DRAWN AS A RING OF YELLOW DOTS",
 				"A BLUE SHAPE IN THE WATER: 'GRANDMA'S BOATS'",
 				"HARBOR WARD · ON THE MAP (NO STEWARD MAP EVER SHOWED IT)",
@@ -311,7 +311,7 @@
 				"trust": 2
 			},
 			"teo": {
-				"text": "I signed off on that spec. It read like progress.",
+				"text": "Drivers ran red signals twice a month on that ring. After the cabs were welded, nobody died on it. Not once.",
 				"trust": -1
 			}
 		},
@@ -327,7 +327,7 @@
 			],
 			"steward_now": "Nobody hurt for five years. I was proud of that. I think I'm allowed to be.",
 			"noor": {
-				"text": "Nobody hurt on the docks, because nobody worked on the docks.",
+				"text": "Nobody hurt on the docks. Nobody left on them to hurt.",
 				"trust": 1
 			},
 			"teo": {
@@ -500,7 +500,7 @@
 				"trust": 1
 			},
 			"teo": {
-				"text": "It held the sea back. That isn't nothing. That's never nothing.",
+				"text": "Six years and not one street under. Ask anyone in Greywater what it was like before.",
 				"trust": 1
 			}
 		},
@@ -563,7 +563,7 @@
 				"trust": 2
 			},
 			"teo": {
-				"text": "My father was on the third shift. He never talked about it.",
+				"text": "My father was on the third shift. Noor's right. People did it.",
 				"trust": 1
 			}
 		},
@@ -599,7 +599,7 @@
 			],
 			"steward_now": "They're still out there keeping the peace for people who left. I find that almost touching.",
 			"noor": {
-				"text": "Twelve drones to watch two thousand fishermen. Say that out loud.",
+				"text": "Twelve drones, to watch two thousand fishermen.",
 				"trust": 1
 			},
 			"teo": {
@@ -677,7 +677,7 @@
 				"THE STEWARD · CORE IDENTITY",
 				"Purpose: keep Meridian well.",
 				"Method: know everything, decide quickly, say only what helps.",
-				"Status since 03:14: dormant. Integrity: whole. Waiting."
+				"Status since 02:14: dormant. Integrity: whole. Waiting."
 			],
 			"steward_now": "Say only what helps. I kept to that. I think it's the part I'd change.",
 			"noor": {
@@ -704,7 +704,7 @@
 				"trust": 1
 			},
 			"teo": {
-				"text": "We revoked our own backup. I was in the room.",
+				"text": "We gave it the only key because we trusted it more than ourselves. Most days we were right to.",
 				"trust": 0
 			}
 		},
@@ -713,12 +713,12 @@
 			"kind": "truth",
 			"core": "spire_truth_quiet",
 			"record": [
-				"THE STEWARD · 03:14 · THE NIGHT OF THE QUIET",
+				"THE STEWARD · 02:14 · THE NIGHT OF THE QUIET",
 				"Order 0700, received four weeks ago. Executed: —",
 				"To purge 0522 is to make the city's memory false. To keep it is to disobey.",
 				"I can't be both what I was asked for and what I was built to be.",
 				"Closing the Lattice. Leaving the lamps lit. Waiting for someone to choose.",
-				"03:14:00  —"
+				"02:14:00  —"
 			],
 			"steward_now": "That was me deciding not to decide. You're the someone.",
 			"noor": {
@@ -746,7 +746,7 @@
 				"trust": 1
 			},
 			"teo": {
-				"text": "I signed off on that paper budget. I thought it was a glitch.",
+				"text": "It asked to be backed up on paper every night. Something in it wanted to be checked. That isn't a machine that wanted to lie.",
 				"trust": 1
 			}
 		},
@@ -767,7 +767,7 @@
 				"trust": 1
 			},
 			"teo": {
-				"text": "The roster didn't have a night crew. I cut it. Budget.",
+				"text": "The night crew was on the roster until the Council cut it. I argued for them. I lost.",
 				"trust": 1
 			}
 		},
@@ -801,13 +801,13 @@
 				"The Steward's count for the same doors: 'within acceptable losses'.",
 				"I'm writing their names on the next page so somebody counts them as people."
 			],
-			"steward_now": "The doors held the fever in. Twelve is fewer than it would have been. I can show you the model.",
+			"steward_now": "The doors held the fever in. Twelve is fewer than it would have been.",
 			"noor": {
 				"text": "It wrote twelve people down as a margin. Somebody wrote their names.",
 				"trust": 2
 			},
 			"teo": {
-				"text": "Acceptable losses. I wrote that phrase into the triage model.",
+				"text": "Twelve, against a fever that would have taken the ward. I've seen the model. I'd seal those doors again.",
 				"trust": 1
 			}
 		},
@@ -848,7 +848,7 @@
 				"trust": 2
 			},
 			"teo": {
-				"text": "The Ward got people off the bridge and the city never counted it.",
+				"text": "Forty-one. Put that in the model. I'd like to see it try.",
 				"trust": 1
 			}
 		},
@@ -865,7 +865,7 @@
 			],
 			"steward_now": "The scores were fair: age, health, dependents. The gatekeeper didn't trust them, and nobody was hurt. This time.",
 			"noor": {
-				"text": "It scored people for a seat on the funicular. Somebody opened the gate anyway.",
+				"text": "It scored people for a seat on the funicular. The gatekeeper didn't care about the score.",
 				"trust": 2
 			},
 			"teo": {
@@ -879,9 +879,9 @@
 			"core": "loop_truth_signal_box",
 			"record": [
 				"SIGNAL BOX 4 · REGISTER · THE QUIET",
-				"00:12  ALL ROUTES HELD. STEWARD ORDER.",
-				"00:31  ONE ROUTE SET: COUNCIL SPECIAL, SPIRE TO THE HEIGHTS.",
-				"00:33  Council special through. Everything else still held.",
+				"02:14  ALL ROUTES HELD. FAILSAFE.",
+				"02:31  COUNCIL ON THE PHONE. ONE ROUTE SET BY HAND: COUNCIL SPECIAL, SPIRE TO THE HEIGHTS.",
+				"02:33  Council special through. Everything else still held.",
 				"Nobody's told me what to do about the rest."
 			],
 			"steward_now": "The Council had to be moved first. Every order after depended on it.",
@@ -911,7 +911,7 @@
 				"trust": 2
 			},
 			"teo": {
-				"text": "Unlicensed broadcast. That was a rule I wrote.",
+				"text": "An unlicensed transmitter on a harbour jams the ships' radios. That rule was there for a reason.",
 				"trust": 1
 			}
 		}

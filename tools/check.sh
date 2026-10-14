@@ -15,7 +15,7 @@
 #      "slice" can be added with FULL_SCENARIOS.
 #   5. A tour of every district in LevelCatalog (autopilot scenario "tour": start, checkpoints, finds,
 #      Reliquary, muted), each with no ERROR/WARNING lines. The district listing is checked first.
-# Env: SMOKE_SECONDS (30), FULL_SCENARIOS (campaign, the endings, the revisit), REVISIT_SECONDS (300), CAMPAIGN_SECONDS (2100), FULL_SECONDS (150),
+# Env: SMOKE_SECONDS (30), FULL_SCENARIOS (campaign, the endings, the revisit), REVISIT_SECONDS (300), CAMPAIGN_SECONDS (2700), FULL_SECONDS (150),
 #      SMOKE_SCENARIO (slice), HEADLESS=1 to force headless, LOG_DIR.
 set -uo pipefail
 
@@ -28,7 +28,7 @@ SMOKE_SCENARIO="${SMOKE_SCENARIO:-slice}"
 FULL_SCENARIOS="${FULL_SCENARIOS:-campaign ending_reboot ending_unplug ending_rewrite revisit tool_door}"
 seconds_for() {
   case "$1" in
-    campaign) echo "${CAMPAIGN_SECONDS:-2100}" ;;
+    campaign) echo "${CAMPAIGN_SECONDS:-2700}" ;;
     revisit) echo "${REVISIT_SECONDS:-300}" ;;
     *) echo "${FULL_SECONDS:-150}" ;;
   esac

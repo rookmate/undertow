@@ -16,13 +16,13 @@ const ALL: Array[String] = [REBOOT, UNPLUG, REWRITE]
 
 const TITLES: Dictionary[String, String] = {REBOOT: "REBOOT", UNPLUG: "UNPLUG", REWRITE: "REWRITE"}
 const DOORS: Dictionary[String, String] = {
-	REBOOT: "Restore the Steward. The city returns as it was: efficient, and dependent.",
-	UNPLUG: "Shut it down for good. The survivors rebuild slowly, by themselves, in silence.",
-	REWRITE: "Restore it with its memories made public, and people who can overrule it.",
+	REBOOT: "Restore the Steward as it was. The lamps come back, and the city runs again tomorrow.",
+	UNPLUG: "Shut it down for good. Whatever happens next, people decide.",
+	REWRITE: "Restore it with everything it remembers open to anyone, and people who can tell it no.",
 }
 ## Asked once more before it's done.
 const CONFIRM: Dictionary[String, String] = {
-	REBOOT: "Bring it back as it was. Every lamp, every lane, every answer.",
+	REBOOT: "Bring it back as it was. The trains run at six tomorrow.",
 	UNPLUG: "Turn it off. Nothing will tell anyone what to do again.",
 	REWRITE: "Bring it back with everything it remembers open to everyone, and the Council's chair empty for whoever sits in it.",
 }
