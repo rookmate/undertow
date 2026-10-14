@@ -62,6 +62,6 @@ and [`../../reviews/painted-art-complete.md`](../../reviews/painted-art-complete
 
 Editor imports run serially because parallel empty-cache imports crashed while Godot 4.7.2 saved an
 existing font resource. A fresh copy with the committed import setting loads without errors or
-warnings. The final gate passes 515 tests and every gameplay scenario, and the exported pack was
+warnings. The final gate passes 523 tests and every gameplay scenario, and the exported pack was
 loaded and toured. The preview's initial save-slot mistake and subsequent isolation are recorded
 in the review; affected local files are preserved in the ignored reports.
