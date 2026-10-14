@@ -44,6 +44,10 @@
 ! 6,33 NO LATTICE. THE STEWARD HAS NO MAP HERE, AND MUTING CHANGES NOTHING.
 ! 33,19 [voice_on] THE BORDER: THE LATTICE STARTS AGAIN HERE.
 ! 29,20 THE MAST'S HAND GENERATOR. WIND IT AND THE FERRY HATCH OPENS.
+;
+; Places the Steward remarks on ('& x,y line_id', a line in steward_fixed.json): once a run, when you
+;   come near while it's with you.
+& 37,19 place_harbor_border
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bbbbbbb~~
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bbbbbbb~~

@@ -35,6 +35,15 @@
 @ 2,11 loop_truth_signal_box
 ! 23,9 THE POINTS LEVER. THROW THE POINTS BY HAND AND THE SERVICE HATCH OPENS.
 ! 22,17 [voice_on] THE CAB IS OFF THE LATTICE. {voice_toggle} MUTES THE STEWARD.
+;
+; Places the Steward remarks on ('& x,y line_id', a line in steward_fixed.json): once a run, when you
+;   come near while it's with you.
+& 3,16 place_loop_platform_a
+& 12,17 place_loop_carriage
+& 21,16 place_loop_cab
+& 20,12 place_loop_gantry
+& 18,9 place_loop_platform_b
+& 34,8 place_loop_second_train
 
                        ,,L,
                        ,,,,y111111111111111r

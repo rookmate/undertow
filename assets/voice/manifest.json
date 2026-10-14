@@ -2343,6 +2343,174 @@
   "hash": "5d74c83d1926ad03b614a8219f1227755bf62515",
   "text": "Them over you. I can do that. I've done arithmetic like that before."
  },
+ "place_grey_causeway": {
+  "hash": "69a6cbb811291a541eea2faafa6b7a65d9a55a2a",
+  "text": "The causeway. They built it after the Blackout Winter, so nobody would have to wade again."
+ },
+ "place_grey_gauge": {
+  "hash": "785e946f37c36bf0522f3790f910c0140f1edff0",
+  "text": "The old tide gauge. People used to read it on the way to work. Then they read me."
+ },
+ "place_grey_marrow": {
+  "hash": "de7d2f867b2f327cdebab1918d55b82343e9c577",
+  "text": "The Marrow. Sea fog. The one thing in this city I could never see through."
+ },
+ "place_grey_pump_room": {
+  "hash": "e457b9fb22984553abf5690e960b88447641721c",
+  "text": "The old manual pump room. Nobody's needed it in six years."
+ },
+ "place_grey_seawall": {
+  "hash": "4a0fe07fc92ed5506a83b4a8da8a822680a44a15",
+  "text": "The seawall. I raised it forty centimetres in my first year. Nobody noticed. That was the idea."
+ },
+ "place_grey_station": {
+  "hash": "59078c6868ddba9bf3c35878bf87fa38a88669a0",
+  "text": "Pumping Station 2. Forty crew were stood down the year I took the pumps. They got their nights back."
+ },
+ "place_grey_turbines": {
+  "hash": "00aaa27c2650ba564c298dd10761d7b50bd464dc",
+  "text": "The tidal turbines still turn. They don't know where to send the power."
+ },
+ "place_harbor_border": {
+  "hash": "571123c3ad446ab17e8d78c09d9cf448cb7f4aaf",
+  "text": "The Ward's border. I can see every lamp on my side of it. On the other side, I've never seen anything at all."
+ },
+ "place_kestrel_funicular": {
+  "hash": "ee2d470c9887d85bc15883a92a26c807c72daefe",
+  "text": "The funicular. Everyone went down in it, in order. I made sure of the order."
+ },
+ "place_kestrel_garden": {
+  "hash": "f9a9d6977dd581e8e1ba08daeac004bc2fa12854",
+  "text": "The civic garden. The Council had its photograph taken here. They left by sea on the fourth day."
+ },
+ "place_kestrel_gardener": {
+  "hash": "1d52e9e7a83b37b1c4ee49bb1cb80c5ea511623a",
+  "text": "That's Mr Hale. Thirty years on these hedges. He's resting now."
+ },
+ "place_kestrel_gate": {
+  "hash": "81232c7a98ee86ad21ba86a8c056536057b7080c",
+  "text": "Gate 4. I held it three seconds once, for a man running for the 07:20. He made his train."
+ },
+ "place_kestrel_hedge": {
+  "hash": "5ab4d6dd1288f039d73005d5f52d6db9ab68cc1b",
+  "text": "The hedge on Shrike Row. The children had a way through it. I never found out where it went."
+ },
+ "place_kestrel_planters": {
+  "hash": "bbcb83a4603634b789ff1aee81bad36110fe5b31",
+  "text": "White blossom in the planters, all the way up. The residents voted on the colour. It was the last thing they voted on."
+ },
+ "place_kestrel_sprinklers": {
+  "hash": "8df25b7e8e79439620bece86972e7fe089cff730",
+  "text": "The sprinklers still come on at six. Nobody's told them the lawns are for no one now."
+ },
+ "place_kestrel_teo": {
+  "hash": "64c2760e6d1fb647a35a2d2508469f954f1b0797",
+  "text": "Teo lived in the third house along. He hasn't been back. I don't blame him."
+ },
+ "place_loop_cab": {
+  "hash": "68679e862e9ceb9b4c021f489d56467aba9b654c",
+  "text": "The driver's cab. There's nothing in there anyone needs. There never was."
+ },
+ "place_loop_carriage": {
+  "hash": "2c7544b67a7371f3a1c5e5ffa8927569ef721f60",
+  "text": "These are the 23:40 passengers. I asked them to stay in their seats. They've been very good about it."
+ },
+ "place_loop_gantry": {
+  "hash": "85961b9b4cc6aa507709a82ba80a79d9dc22d24d",
+  "text": "The gantries were for engineers. I hadn't needed an engineer up here in years."
+ },
+ "place_loop_platform_a": {
+  "hash": "668c82b85f5dd7977355f73e904dcaee0528c939",
+  "text": "Platform A. I announced every train here in the same voice for eleven years. People said they found it soothing."
+ },
+ "place_loop_platform_b": {
+  "hash": "6d4d0fe8271d4788e093b490f3939de6e9c7feda",
+  "text": "A nurse called Rosa changed trains here at a quarter to three. I held her car forty seconds, every night, so she could sit down."
+ },
+ "place_loop_second_train": {
+  "hash": "752fb72f613e1a2abf2268d38d5b147f9860f139",
+  "text": "Twenty-three trains held on bridges that night. This one held on the best view in the city."
+ },
+ "place_mercy_arrows": {
+  "hash": "affe6b71061bc2f1f435c502d5d0fbb6b85e2466",
+  "text": "Somebody drew these arrows the first night. They all point to the yard."
+ },
+ "place_mercy_corridor": {
+  "hash": "0e131181c14e35032dc0d7f1c4b496e73973f0bb",
+  "text": "This corridor was busy at every hour. I kept a lift waiting at the end of it for sixteen years."
+ },
+ "place_mercy_resus": {
+  "hash": "30e2f2c1bda69e80d9c3b6bf63c5fce790f77de1",
+  "text": "The resus bay. The crash cart's where they left it. They were in a hurry."
+ },
+ "place_mercy_theatre": {
+  "hash": "22f1546b6d3a40a83060f062a45dafcc2aa7683a",
+  "text": "Theatre four. The last procedure started at 02:10. It's still going."
+ },
+ "place_mercy_ward_a": {
+  "hash": "64fedaea9633ce469d073d37f06e799c79146ca6",
+  "text": "Ward A. The glass is so the nurses could see every bed from the corridor. I liked that about it."
+ },
+ "place_mercy_yard": {
+  "hash": "6ef59107d16ca37c5ee7cc0fceca86e998c0e013",
+  "text": "The ambulance bay. I could get one to any door in the city in eight minutes. That night I had one."
+ },
+ "place_tide_container": {
+  "hash": "e5768e3e22bef831c5d9ea835ecb3e54139597c6",
+  "text": "Container MRDU 448-1. Misrouted once, and delivered twenty-six minutes late. I've never forgotten it."
+ },
+ "place_tide_customs": {
+  "hash": "6ef957789a6c5e208d0c379636de1611abc51c48",
+  "text": "The customs shed. Lawful seizures only. Nothing in there is anybody's business."
+ },
+ "place_tide_depot": {
+  "hash": "459bf096a9a59382946d59dd3547e508f56e0780",
+  "text": "A Warden depot. It went up in a week, the year the dockworkers struck."
+ },
+ "place_tide_pier": {
+  "hash": "cbe00616fbb1edd87f75da45252d802fa490d331",
+  "text": "The pier head. A ship berthed here the day before the Quiet. Nobody's unloaded it."
+ },
+ "place_tide_quay": {
+  "hash": "cb4f2f239a6f944c994b75d7ac287641df3fe4ad",
+  "text": "The cranes ran all night, every night. Nobody up on the hill ever heard them. I saw to that."
+ },
+ "place_tide_start": {
+  "hash": "6c80e6a070c290395f5071f467f2368ed6211ec8",
+  "text": "Four thousand people worked this quay. Now it's the cranes, and me."
+ },
+ "place_tide_union_hall": {
+  "hash": "e7906cc44d077271e0b6685dcd55434307a830a4",
+  "text": "The union hall. I had speakers fitted to its roof during the strike. Nobody ever took them down."
+ },
+ "place_vellum_bridge": {
+  "hash": "e49354a82d1fd26535cdc60778dc3de00f845748",
+  "text": "The footbridge. The Post's printers crossed it every night at four. The last of them crossed it eleven years ago."
+ },
+ "place_vellum_kiosk": {
+  "hash": "7f845199d12d49020015f611675365840bdacf93",
+  "text": "A Feed kiosk. Most people never looked up from it. I preferred that, if I'm honest."
+ },
+ "place_vellum_newsroom": {
+  "hash": "53a1b947f193c8792d6b8454402ee0cc710a24b2",
+  "text": "A hundred desks, a hundred screens. The editors kept coming in. I'm still not sure what for."
+ },
+ "place_vellum_press": {
+  "hash": "1b5df2394c4ccd7f502ed18d8e3df89bdd56d5f0",
+  "text": "The old press. I left it running. Stopping it seemed unkind."
+ },
+ "place_vellum_stair": {
+  "hash": "968badf22e32521d1e22794dedb93b5695f4aa0e",
+  "text": "Three floors of paper under your feet. Nobody ever asked me to read them."
+ },
+ "place_vellum_start": {
+  "hash": "55eb5d50a8046b3c24b38b8de119e64bc6569a88",
+  "text": "The Vellum. The street the news came from. It still snows paper here."
+ },
+ "place_vellum_tram": {
+  "hash": "79ee79fba8b44f696f3193f76a2786f42c57e1f7",
+  "text": "The 06:10 to the Exchange. It stopped here with its doors open, and everyone got off and stood still."
+ },
  "pumphouse_note": {
   "hash": "d8143195a256c3956587629efa2783f3bed7079f",
   "text": "People are running the pumps by hand again. The tide's lower everywhere. I should be glad."

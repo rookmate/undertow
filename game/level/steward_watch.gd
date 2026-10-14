@@ -10,6 +10,8 @@ const MULTI_KILL_WINDOW := 2.0
 const IDLE_SECONDS := 9.0
 const RELIQUARY_TILES := 4.0
 const MODE_REPORT_EVERY := 4.0
+## Within this of a place (tiles), the Steward remarks on it.
+const PLACE_TILES := 2.5
 
 var level: Level
 var _last_kill_at: float = -INF
@@ -19,6 +21,7 @@ var _was_indexed: bool = true
 var _reliquary_said: bool = false
 var _checkpoint_said: bool = false
 var _mode_reported: Dictionary[String, float] = {}
+var _places_done: Dictionary[Vector2i, bool] = {}
 
 
 func setup(owner_level: Level) -> void:
@@ -85,6 +88,11 @@ func _process(delta: float) -> void:
 	if not _checkpoint_said and cell != level.grid.start_cell() and cell == level.checkpoint_cell:
 		_checkpoint_said = true
 		_say(&"checkpoint")
+	# The places it has something to say about.
+	for c: Vector2i in level.grid.places:
+		if not _places_done.has(c) and Iso.ground_distance(p.global_position, Iso.cell_center(c)) <= PLACE_TILES:
+			if Narrator.say_place(level.grid.places[c]):
+				_places_done[c] = true
 	if not _reliquary_said and Iso.ground_distance(p.global_position, Iso.cell_center(level.grid.first("R"))) < RELIQUARY_TILES:
 		# Said once, when it can be (not over a line being heard out).
 		_reliquary_said = not Narrator.in_full_in_progress()
