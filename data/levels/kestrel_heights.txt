@@ -25,6 +25,17 @@
 @ 9,31 kestrel_truth_gate_list
 ! 9,15 [voice_on] {voice_toggle}  MUTE THE STEWARD. IT CAN'T SEE PAST THE HEDGE.
 ! 28,19 [muted] MUTED, THE GATES WON'T OPEN.  {voice_toggle}  BRINGS IT BACK.
+;
+; Places the Steward remarks on ('& x,y line_id', a line in steward_fixed.json): once a run, when you
+;   come near while it's with you.
+& 7,23 place_kestrel_funicular
+& 15,23 place_kestrel_planters
+& 11,24 place_kestrel_sprinklers
+& 28,17 place_kestrel_gate
+& 10,15 place_kestrel_hedge
+& 18,5 place_kestrel_gardener
+& 25,4 place_kestrel_garden
+& 14,5 place_kestrel_teo
 ################################
 ###l###d###l###d###l###d###l####
 ##vvvvvvvvvvvvvvvvvvvvvvF,,,,,F=

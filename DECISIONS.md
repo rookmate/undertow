@@ -890,3 +890,10 @@ Asked of the user on 2026-10-09 and answered the same day.
      and hurts are remarked on a little less often (10, 9 and 10 s apart). Coming back from mute, it
      speaks in the district's words (its own lines for that were never reached). Each of the Waiting has
      their own words when woken (data/companions/waiting.json).
+193. **The Steward knows where you are.** A map can name places it remarks on ('& x,y line_id', one of
+     its fixed lines): within two and a half tiles, while it's with you, it says the line once a run, and
+     only into a silence (never over itself, a warning or a line being heard out). Forty-two of them,
+     five to eight a district, each on the lit path and each telling you something about what you're
+     looking at that you couldn't have known ("Gate 4. I held it three seconds once, for a man running
+     for the 07:20. He made his train." "Somebody drew these arrows the first night. They all point to
+     the yard."). Muted, or off its Lattice, it says nothing; come back and it may.

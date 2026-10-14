@@ -87,6 +87,22 @@ func notify(event: StringName, level: String = "") -> String:
 	return line.id
 
 
+## A place's line (a map's '&', StewardWatch): the Steward noticing where you are. Said once a run, and
+## only into a silence (never over itself, a warning or a line being heard out, and a moment after its
+## last), while it's with you. Returns whether it's done with: said now, or heard already this run.
+func say_place(line_id: String) -> bool:
+	if selector.recent.has(line_id):
+		return true
+	if not allows(LineSelector.FACT) or warning_in_progress() or in_full_in_progress():
+		return false
+	if (Sound.voice_line != "" and Sound.voice_left() > 0.0) or _clock - _last_spoken_at < MIN_GAP:
+		return false
+	if not say_fixed(line_id):
+		return false
+	selector.recent.append(line_id)
+	return true
+
+
 ## Whether the Steward may say a line with this purpose now: it's listening and reaches you, and no
 ## signed order forbids it.
 func allows(purpose: StringName) -> bool:

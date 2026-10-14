@@ -41,6 +41,16 @@
 ! 17,12 THE CAUSEWAY STAYS DRY AT HIGH WATER.
 ! 20,4 THE STATION'S HAND CRANK. RUN THE PUMPS BY HAND AND THE SUMP DRAINS.
 ! 11,5 THE SUMP STAIR: UNDER WATER UNTIL THE PUMPS RUN.
+;
+; Places the Steward remarks on ('& x,y line_id', a line in steward_fixed.json): once a run, when you
+;   come near while it's with you.
+& 5,21 place_grey_seawall
+& 13,9 place_grey_gauge
+& 16,12 place_grey_causeway
+& 23,10 place_grey_marrow
+& 24,6 place_grey_station
+& 6,5 place_grey_pump_room
+& 30,5 place_grey_turbines
 ############################################
 #######d###########d#######d################
 ##,,,,,s:w::::,,,,,,,,,,,,,s,,,~~~L,,,,,,,L

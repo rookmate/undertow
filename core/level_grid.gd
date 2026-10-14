@@ -85,6 +85,8 @@ var size: Vector2i = Vector2i.ZERO
 var entity_ids: Dictionary[Vector2i, String] = {}
 ## Place hints from the map's '! x,y text' lines: shown near that cell ({action} becomes its key).
 var hints: Dictionary[Vector2i, String] = {}
+## Places the Steward remarks on ('& x,y line_id'): cell to one of its fixed lines.
+var places: Dictionary[Vector2i, String] = {}
 ## Problems found while parsing (bad '@', '!' or '%' lines); validate() adds the rest.
 var parse_errors: PackedStringArray = []
 ## The map's own legend: its characters renamed to named tiles' codes ('% <char> <tile>' lines).
@@ -112,6 +114,9 @@ static func parse(text: String) -> LevelGrid:
 			continue
 		if row.begins_with("!"):
 			grid._parse_hint_line(row)
+			continue
+		if row.begins_with("&"):
+			grid._parse_place_line(row)
 			continue
 		if row.begins_with("%"):
 			grid._parse_legend_line(row)
@@ -168,6 +173,15 @@ func _parse_hint_line(line: String) -> void:
 		parse_errors.append("bad hint line '%s' (expected '! x,y text')" % line)
 		return
 	hints[Vector2i(xy[0].to_int(), xy[1].to_int())] = rest.substr(space + 1).strip_edges()
+
+
+func _parse_place_line(line: String) -> void:
+	var parts := line.substr(1).strip_edges().split(" ", false)
+	var xy := parts[0].split(",") if parts.size() == 2 else PackedStringArray()
+	if xy.size() != 2 or not xy[0].is_valid_int() or not xy[1].is_valid_int():
+		parse_errors.append("bad place line '%s' (expected '& x,y line_id')" % line)
+		return
+	places[Vector2i(xy[0].to_int(), xy[1].to_int())] = parts[1]
 
 
 ## '% <char> <tile>': in this map, <char> means the named tile (Tiles.BY_NAME).

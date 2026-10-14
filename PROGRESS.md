@@ -197,8 +197,8 @@ First drafts, for a human writer and the voice actor to take further.
 | Step | What | Status |
 |---|---|---|
 | 43 | No repeats: deep district pools for everything the Steward reacts to (about 340 new lines); each of the Waiting their own words | done |
-| 44 | Places: the Steward remarks on landmarks as you reach them | next |
-| 45 | The arc: lines for what you've come to know, and for revisits | |
+| 44 | Places: the Steward remarks on landmarks as you reach them | done |
+| 45 | The arc: lines for what you've come to know, and for revisits | next |
 | 46 | The logs and the rest: Teo argues as well as confesses, the ending menu weighs nothing, continuity | |
 | — | Sol analysis review, fixes, re-check | |
 

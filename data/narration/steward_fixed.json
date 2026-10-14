@@ -312,6 +312,174 @@
 		"tideworks_customs_jammed": {
 			"text": "Those goods were impounded lawfully.",
 			"purpose": "fact"
+		},
+		"place_kestrel_funicular": {
+			"text": "The funicular. Everyone went down in it, in order. I made sure of the order.",
+			"purpose": "fact"
+		},
+		"place_kestrel_planters": {
+			"text": "White blossom in the planters, all the way up. The residents voted on the colour. It was the last thing they voted on.",
+			"purpose": "fact"
+		},
+		"place_kestrel_sprinklers": {
+			"text": "The sprinklers still come on at six. Nobody's told them the lawns are for no one now.",
+			"purpose": "fact"
+		},
+		"place_kestrel_gate": {
+			"text": "Gate 4. I held it three seconds once, for a man running for the 07:20. He made his train.",
+			"purpose": "fact"
+		},
+		"place_kestrel_hedge": {
+			"text": "The hedge on Shrike Row. The children had a way through it. I never found out where it went.",
+			"purpose": "fact"
+		},
+		"place_kestrel_gardener": {
+			"text": "That's Mr Hale. Thirty years on these hedges. He's resting now.",
+			"purpose": "fact"
+		},
+		"place_kestrel_garden": {
+			"text": "The civic garden. The Council had its photograph taken here. They left by sea on the fourth day.",
+			"purpose": "fact"
+		},
+		"place_kestrel_teo": {
+			"text": "Teo lived in the third house along. He hasn't been back. I don't blame him.",
+			"purpose": "fact"
+		},
+		"place_loop_platform_a": {
+			"text": "Platform A. I announced every train here in the same voice for eleven years. People said they found it soothing.",
+			"purpose": "fact"
+		},
+		"place_loop_carriage": {
+			"text": "These are the 23:40 passengers. I asked them to stay in their seats. They've been very good about it.",
+			"purpose": "fact"
+		},
+		"place_loop_cab": {
+			"text": "The driver's cab. There's nothing in there anyone needs. There never was.",
+			"purpose": "fact"
+		},
+		"place_loop_gantry": {
+			"text": "The gantries were for engineers. I hadn't needed an engineer up here in years.",
+			"purpose": "fact"
+		},
+		"place_loop_platform_b": {
+			"text": "A nurse called Rosa changed trains here at a quarter to three. I held her car forty seconds, every night, so she could sit down.",
+			"purpose": "fact"
+		},
+		"place_loop_second_train": {
+			"text": "Twenty-three trains held on bridges that night. This one held on the best view in the city.",
+			"purpose": "fact"
+		},
+		"place_tide_start": {
+			"text": "Four thousand people worked this quay. Now it's the cranes, and me.",
+			"purpose": "fact"
+		},
+		"place_tide_depot": {
+			"text": "A Warden depot. It went up in a week, the year the dockworkers struck.",
+			"purpose": "fact"
+		},
+		"place_tide_union_hall": {
+			"text": "The union hall. I had speakers fitted to its roof during the strike. Nobody ever took them down.",
+			"purpose": "fact"
+		},
+		"place_tide_quay": {
+			"text": "The cranes ran all night, every night. Nobody up on the hill ever heard them. I saw to that.",
+			"purpose": "fact"
+		},
+		"place_tide_customs": {
+			"text": "The customs shed. Lawful seizures only. Nothing in there is anybody's business.",
+			"purpose": "fact"
+		},
+		"place_tide_pier": {
+			"text": "The pier head. A ship berthed here the day before the Quiet. Nobody's unloaded it.",
+			"purpose": "fact"
+		},
+		"place_tide_container": {
+			"text": "Container MRDU 448-1. Misrouted once, and delivered twenty-six minutes late. I've never forgotten it.",
+			"purpose": "fact"
+		},
+		"place_mercy_yard": {
+			"text": "The ambulance bay. I could get one to any door in the city in eight minutes. That night I had one.",
+			"purpose": "fact"
+		},
+		"place_mercy_resus": {
+			"text": "The resus bay. The crash cart's where they left it. They were in a hurry.",
+			"purpose": "fact"
+		},
+		"place_mercy_ward_a": {
+			"text": "Ward A. The glass is so the nurses could see every bed from the corridor. I liked that about it.",
+			"purpose": "fact"
+		},
+		"place_mercy_arrows": {
+			"text": "Somebody drew these arrows the first night. They all point to the yard.",
+			"purpose": "fact"
+		},
+		"place_mercy_corridor": {
+			"text": "This corridor was busy at every hour. I kept a lift waiting at the end of it for sixteen years.",
+			"purpose": "fact"
+		},
+		"place_mercy_theatre": {
+			"text": "Theatre four. The last procedure started at 02:10. It's still going.",
+			"purpose": "fact"
+		},
+		"place_grey_seawall": {
+			"text": "The seawall. I raised it forty centimetres in my first year. Nobody noticed. That was the idea.",
+			"purpose": "fact"
+		},
+		"place_grey_gauge": {
+			"text": "The old tide gauge. People used to read it on the way to work. Then they read me.",
+			"purpose": "fact"
+		},
+		"place_grey_causeway": {
+			"text": "The causeway. They built it after the Blackout Winter, so nobody would have to wade again.",
+			"purpose": "fact"
+		},
+		"place_grey_marrow": {
+			"text": "The Marrow. Sea fog. The one thing in this city I could never see through.",
+			"purpose": "fact"
+		},
+		"place_grey_station": {
+			"text": "Pumping Station 2. Forty crew were stood down the year I took the pumps. They got their nights back.",
+			"purpose": "fact"
+		},
+		"place_grey_pump_room": {
+			"text": "The old manual pump room. Nobody's needed it in six years.",
+			"purpose": "fact"
+		},
+		"place_grey_turbines": {
+			"text": "The tidal turbines still turn. They don't know where to send the power.",
+			"purpose": "fact"
+		},
+		"place_vellum_start": {
+			"text": "The Vellum. The street the news came from. It still snows paper here.",
+			"purpose": "fact"
+		},
+		"place_vellum_tram": {
+			"text": "The 06:10 to the Exchange. It stopped here with its doors open, and everyone got off and stood still.",
+			"purpose": "fact"
+		},
+		"place_vellum_kiosk": {
+			"text": "A Feed kiosk. Most people never looked up from it. I preferred that, if I'm honest.",
+			"purpose": "fact"
+		},
+		"place_vellum_bridge": {
+			"text": "The footbridge. The Post's printers crossed it every night at four. The last of them crossed it eleven years ago.",
+			"purpose": "fact"
+		},
+		"place_vellum_newsroom": {
+			"text": "A hundred desks, a hundred screens. The editors kept coming in. I'm still not sure what for.",
+			"purpose": "fact"
+		},
+		"place_vellum_stair": {
+			"text": "Three floors of paper under your feet. Nobody ever asked me to read them.",
+			"purpose": "fact"
+		},
+		"place_vellum_press": {
+			"text": "The old press. I left it running. Stopping it seemed unkind.",
+			"purpose": "fact"
+		},
+		"place_harbor_border": {
+			"text": "The Ward's border. I can see every lamp on my side of it. On the other side, I've never seen anything at all.",
+			"purpose": "fact"
 		}
 	}
 }

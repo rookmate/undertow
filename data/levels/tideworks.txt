@@ -34,6 +34,16 @@
 @ 25,4 tideworks_truth_impounded
 ! 10,12 THE QUAY'S HAND WINCH. WIND THE CONTAINER CLEAR AND THE FREIGHTER'S HATCH OPENS.
 ! 9,7 THE WARDENS' DEPOT. WHAT THEY LEFT IS STILL ON THE RACK.
+;
+; Places the Steward remarks on ('& x,y line_id', a line in steward_fixed.json): once a run, when you
+;   come near while it's with you.
+& 4,11 place_tide_start
+& 10,8 place_tide_depot
+& 7,8 place_tide_union_hall
+& 17,12 place_tide_quay
+& 21,9 place_tide_customs
+& 31,11 place_tide_pier
+& 26,9 place_tide_container
 ###################################
 ######d#######d#######d#######d####  L,,,,,
 ##iiiii-,:::::-,                     ,,,R,,

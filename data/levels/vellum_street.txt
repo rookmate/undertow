@@ -50,6 +50,16 @@
 ! 21,6 THE CLERKS FLASH THE FEED. TURN YOUR BACK ON THE SCREEN, OR ROLL.
 ! 27,12 [voice_on] THE STAIR GOES DOWN TO THE DEEP STACKS. THE STEWARD NEVER LOOKED.
 ! 31,12 THE PAPER LIFT. HAUL IT UP BY HAND AND ITS SHAFT GOES DOWN TO THE SORTING FLOOR.
+;
+; Places the Steward remarks on ('& x,y line_id', a line in steward_fixed.json): once a run, when you
+;   come near while it's with you.
+& 12,37 place_vellum_start
+& 13,30 place_vellum_tram
+& 14,18 place_vellum_kiosk
+& 18,6 place_vellum_bridge
+& 30,9 place_vellum_newsroom
+& 29,12 place_vellum_stair
+& 35,8 place_vellum_press
 #############################################
 #############################################
 #############################################

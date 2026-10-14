@@ -567,7 +567,15 @@ func fight(player: Operator, threat: Enemy, frame: int) -> void:
 		press_move(input_for_ground(Vector2(-to.y, to.x)))
 		tap(&"dodge")
 		return
-	press_move(input_for_ground(to) if dist > 1.2 else Vector2.ZERO)
+	var step := input_for_ground(to)
+	# Something solid between you (a crank, an ambulance, a desk): go round it, not into it.
+	var level := player.level
+	if dist > 1.2 and level != null and not _walkable_line(level, player.global_position, threat.global_position):
+		for c: Vector2i in level.enemy_nav.path(player.cell(), threat.grid_cell()):
+			if c != player.cell():
+				step = input_for_ground(Iso.ground_dir_between(player.global_position, Iso.cell_center(c)))
+				break
+	press_move(step if dist > 1.2 else Vector2.ZERO)
 	if dist <= 1.7 and frame % 18 < 2:
 		Input.action_press(&"attack_primary")
 	else:
@@ -576,6 +584,15 @@ func fight(player: Operator, threat: Enemy, frame: int) -> void:
 		Input.action_press(&"attack_secondary")
 	else:
 		Input.action_release(&"attack_secondary")
+
+
+## Whether you could walk straight from `a` to `b` (world): every cell on the way is walkable.
+func _walkable_line(level: Level, a: Vector2, b: Vector2) -> bool:
+	var steps := maxi(1, ceili(Iso.ground_distance(a, b) / 0.3))
+	for i: int in range(1, steps):
+		if not level.grid.is_walkable(Iso.world_to_cell(a.lerp(b, float(i) / steps))):
+			return false
+	return true
 
 
 func press_aim(input: Vector2) -> void:

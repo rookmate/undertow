@@ -45,6 +45,15 @@
 ! 7,9 [voice_on] THE WARDS ARE SEALED. THE STEWARD WON'T OPEN THEM.
 ! 7,15 [muted] MUTED, THE SEALS DROP TO THEIR CRANKS.  {interact}  TURNS ONE.
 ! 12,19 THE EMERGENCY GENERATOR. CRANK IT BY HAND AND THE MORGUE LIFT RUNS.
+;
+; Places the Steward remarks on ('& x,y line_id', a line in steward_fixed.json): once a run, when you
+;   come near while it's with you.
+& 7,23 place_mercy_yard
+& 6,13 place_mercy_resus
+& 7,10 place_mercy_ward_a
+& 7,6 place_mercy_arrows
+& 20,4 place_mercy_corridor
+& 29,5 place_mercy_theatre
 #########################################
 #########d#######d#######d###############
 ##       =====================L.........L
