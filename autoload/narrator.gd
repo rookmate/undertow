@@ -23,6 +23,16 @@ var _rng := RandomNumberGenerator.new()
 var _clock: float = 0.0
 var _last_spoken_at: float = -INF
 var _last_event_at: Dictionary[StringName, float] = {}
+## What it saw of the last moment it was told about (notify's `seen`), said or not.
+var last_seen: Dictionary = {}
+## The story line it's saying (a hold's, a place's): no remark cuts it off.
+var _story: String = ""
+## Nor a reply, for a hold's (what it admits there is what you came for); a place's gives way to one.
+var _story_holds: bool = false
+## When the Steward last stopped talking (its clock): a place's line waits for a silence after it.
+var _quiet_since: float = -INF
+## Seconds of silence a place's line waits for.
+const PLACE_QUIET := 1.5
 
 
 func _ready() -> void:
@@ -31,12 +41,15 @@ func _ready() -> void:
 	for e: String in selector.errors:
 		Diagnostics.error("Narrator: %s" % e)
 	_rng.randomize()
+	selector.recent = GameState.run.narration_heard
 	# Cooldowns, recent lines and tone counts belong to one run.
 	GameState.run_replaced.connect(reset_session)
 
 
 func _process(delta: float) -> void:
 	_clock += delta / maxf(Engine.time_scale, 0.01)
+	if speaking():
+		_quiet_since = _clock
 	# The next line waiting to be heard out, once the one before it is over (dropped if it can't be said
 	# now: muted, or out of its reach).
 	while not _in_full_queue.is_empty() and not in_full_in_progress():
@@ -52,7 +65,9 @@ func seed_rng(value: int) -> void:
 
 
 func reset_session() -> void:
-	selector.recent.clear()
+	# What's been heard is the run's own (saved with it): a new run starts with none, a continued one with
+	# what it had.
+	selector.recent = GameState.run.narration_heard
 	_last_event_at.clear()
 	_last_spoken_at = -INF
 	last_line_id = ""
@@ -60,9 +75,10 @@ func reset_session() -> void:
 		tone_counts[t] = 0
 
 
-## Something happened that the Steward might comment on, in district `level` ("" anywhere). Returns the
-## line spoken, or "".
-func notify(event: StringName, level: String = "") -> String:
+## Something happened that the Steward might comment on, in district `level` ("" anywhere); `seen` is what
+## it saw of the moment (LineSelector.fits: "reach"). Returns the line spoken, or "".
+func notify(event: StringName, level: String = "", seen: Dictionary = {}) -> String:
+	last_seen = seen
 	if not Steward.assists().narration:
 		return ""
 	var since_event := _clock - float(_last_event_at.get(event, -INF))
@@ -70,13 +86,16 @@ func notify(event: StringName, level: String = "") -> String:
 		return ""
 	if _clock - _last_spoken_at < MIN_GAP and not selector.is_priority(event):
 		return ""
-	if not purpose_allowed(selector.purpose_of(event)):
+	if warning_in_progress() or in_full_in_progress() or story_in_progress():
 		return ""
-	if warning_in_progress() or in_full_in_progress():
-		return ""
-	# "Stop praising me": and no drift toward the voice you like to hear.
+	# "Stop praising me": and no drift toward the voice you like to hear. Its lines for what you know are
+	# facts, and still said.
 	var plain := GameState.has_override(Overrides.NO_PRAISE)
-	var line := selector.pick(event, 0.0 if plain else GameState.run.playstyle_profile.lean(), _rng, level, &"neutral" if plain else &"", context_for(level))
+	var allowed: Array[StringName] = []
+	for p: StringName in LineSelector.PURPOSES:
+		if purpose_allowed(p):
+			allowed.append(p)
+	var line := selector.pick(event, 0.0 if plain else GameState.run.playstyle_profile.lean(), _rng, level, &"neutral" if plain else &"", context_for(level).merged(seen), allowed)
 	if line == null:
 		return ""
 	_last_event_at[event] = _clock
@@ -95,19 +114,40 @@ func say_place(line_id: String) -> bool:
 		return true
 	if not allows(LineSelector.FACT) or warning_in_progress() or in_full_in_progress():
 		return false
-	if (Sound.voice_line != "" and Sound.voice_left() > 0.0) or _clock - _last_spoken_at < MIN_GAP:
+	if speaking() or _clock - _last_spoken_at < MIN_GAP or _clock - _quiet_since < PLACE_QUIET:
 		return false
-	if not say_fixed(line_id):
+	if not say_story(line_id, false):
 		return false
 	selector.recent.append(line_id)
 	return true
 
 
+## One of its story lines (a hold's, a place's): said like any fixed line, but none of its remarks cuts
+## it off, even one for a moment that matters (leaving the path). With `holds_replies` (a hold's), its
+## other fixed lines don't either (a reply, a find's line): only a warning or a boss's call does.
+## Returns whether it was said.
+func say_story(line_id: String, holds_replies: bool = true) -> bool:
+	var said := say_fixed(line_id)
+	if said:
+		_story = line_id
+		_story_holds = holds_replies
+	return said
+
+
+func story_in_progress() -> bool:
+	return _story != "" and Sound.voice_line == _story and Sound.voice_left() > 0.0
+
+
 ## What the Steward's lines can know about now: whether you're back in a district you've done, how many
-## truth cores you carry, which memory logs you've read.
+## truth cores you carry, which memory logs you've read (not just recovered).
 func context_for(level: String) -> Dictionary:
 	var r := GameState.run
-	return {"revisit": level != "" and r.levels_completed.has(level), "truths": r.cores_truth(), "knows": r.logs_unlocked}
+	return {"revisit": level != "" and r.levels_completed.has(level), "truths": r.cores_truth(), "knows": r.logs_read}
+
+
+## It's saying something now.
+func speaking() -> bool:
+	return Sound.voice_line != "" and Sound.voice_left() > 0.0
 
 
 ## Whether the Steward may say a line with this purpose now: it's listening and reaches you, and no
@@ -132,12 +172,16 @@ func purpose_allowed(purpose: StringName) -> bool:
 ## A one-off line, voiced and subtitled. One of the Steward's own lines is judged by its own purpose
 ## (VoiceLines.purpose_of), whatever the caller says; `purpose` only counts for text that isn't one of
 ## them. While a warning is being said nothing else is, unless `urgent` (a boss's call, which its fight
-## spaces so it never cuts its own: Boss.CALL_GAPS). Returns whether it was said.
+## spaces so it never cuts its own: Boss.CALL_GAPS). While a hold's story line is, only a warning or a
+## boss's call cuts in. Returns whether it was said.
 func speak_text(line_id: String, text: String, purpose: StringName, urgent: bool = false) -> bool:
 	var known := VoiceLines.purpose_of(line_id)
-	if not allows(known if known != &"" else purpose):
+	var judged := known if known != &"" else purpose
+	if not allows(judged):
 		return false
 	if (warning_in_progress() or in_full_in_progress()) and not urgent:
+		return false
+	if story_in_progress() and _story_holds and not urgent and judged != LineSelector.WARNING:
 		return false
 	_last_spoken_at = _clock
 	last_line_id = line_id

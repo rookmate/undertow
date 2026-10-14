@@ -964,3 +964,21 @@ Asked of the user on 2026-10-09 and answered the same day.
      decide"; Rewrite "people who can tell it no". Continuity: the Quiet was at 02:14 in every record; the
      signal box's register runs after it, the Council on the phone; one Rosa (the night nurse; the child
      who drew the map is Lila) and the running man at Gate 4 is M. Ferris.
+202. **What the Steward knows, and when it talks** (reviews/writing-pass.md, round 1). Its lines know a
+     memory log only once you've read it (replayed in the Archive or opened at the Clinic), not as soon
+     as you carry it. What it's said this run is saved with the run, so Continue doesn't hear its place
+     lines and beats as new. A beat, once heard, leaves the pool for the run, unless it's all the event
+     has (a district's one revisit greeting). Lines can carry their own purpose, so what it knows (the
+     bridge, Vashti, the order) still plays under "Stop praising me" while its flattery doesn't. A hold's
+     lines and a place's line are its story: no remark starts over them (a warning still does). Everything
+     else keeps the old timing, because a remark that cut a boss's call short was holding the fight's
+     pace. A hold's lines also hold off its other fixed lines (a reply, a find's line), though not a
+     warning or a boss's call; a place's line gives way to them. A place's line waits 1.5 s after it last
+     stopped talking. Nineteen lines rewritten so they say only what it can see, keep to canon
+     (Platform A: six years) and stop cheering.
+203. **It says what it saw** (reviews/writing-pass.md, round 2). A reactive line claims only what its
+     event knows. A kill knows how far away you were: a line can need `reach` "close" (within 1.8 tiles)
+     or "far" (3 or more), and is said only then. A hit, a close dodge, halfway and a boss down know
+     that it happened, not what you did around it, so their lines say what the Steward expects of you or
+     what you beat, not where you stood or what you did next. A beat heard leaves silence behind it,
+     except a district's one revisit greeting. Two kills at once are "close" or "far" only if both were.

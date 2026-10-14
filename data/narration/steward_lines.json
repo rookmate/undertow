@@ -160,67 +160,76 @@
 			"id": "KILL_N2",
 			"event": "kill",
 			"tone": "neutral",
-			"text": "Quiet again."
+			"text": "One less thing still doing its last job."
 		},
 		{
 			"id": "KILL_B1",
 			"event": "kill",
 			"tone": "bold",
-			"text": "Clean. You don't hesitate."
+			"text": "You don't hesitate. I was built to, a little. People trusted me more for it."
 		},
 		{
 			"id": "KILL_B2",
 			"event": "kill",
 			"tone": "bold",
-			"text": "Right up close. Not many would."
+			"text": "Right up close. Not many would.",
+			"when": {
+				"reach": "close"
+			}
 		},
 		{
 			"id": "KILL_B3",
 			"event": "kill",
 			"tone": "bold",
-			"text": "You make it look easy. It isn't."
+			"text": "Nine years without a fault, that one. You were its first."
 		},
 		{
 			"id": "KILL_C1",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "Patient. That's how it's done."
+			"text": "You pick your moments. I notice that. I notice everything you do."
 		},
 		{
 			"id": "KILL_C2",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "From a distance, and unhurt. Good."
+			"text": "From a distance. That's how I'd have done it, if I'd had hands.",
+			"when": {
+				"reach": "far"
+			}
 		},
 		{
 			"id": "KILL_C3",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "You waited for the opening. Most people don't."
+			"text": "Careful. I was careful once, with a whole city. It went wrong anyway."
 		},
 		{
 			"id": "MULTI_N1",
 			"event": "multi_kill",
 			"tone": "neutral",
-			"text": "Two at once. The street's clearer."
+			"text": "Two of mine at once. They were built to work in pairs."
 		},
 		{
 			"id": "MULTI_B1",
 			"event": "multi_kill",
 			"tone": "bold",
-			"text": "Both of them. You were made for this."
+			"text": "Both. I've started planning around you."
 		},
 		{
 			"id": "MULTI_C1",
 			"event": "multi_kill",
 			"tone": "cautious",
-			"text": "Two, and you never let them close. Careful work."
+			"text": "Two, both from a distance. They were built to be walked up to. You don't oblige them.",
+			"when": {
+				"reach": "far"
+			}
 		},
 		{
 			"id": "DODGE_N1",
 			"event": "dodge_close",
 			"tone": "neutral",
-			"text": "Just in time."
+			"text": "They were never built to miss. That one did."
 		},
 		{
 			"id": "DODGE_B1",
@@ -232,13 +241,13 @@
 			"id": "DODGE_B2",
 			"event": "dodge_close",
 			"tone": "bold",
-			"text": "Through it, not around it. Bold."
+			"text": "You like the hard way. I've given up offering you the easy one."
 		},
 		{
 			"id": "DODGE_C1",
 			"event": "dodge_close",
 			"tone": "cautious",
-			"text": "Good. Distance is a kindness."
+			"text": "Good. I'd rather you nowhere near them."
 		},
 		{
 			"id": "DODGE_C2",
@@ -250,13 +259,13 @@
 			"id": "HURT_N1",
 			"event": "hurt",
 			"tone": "neutral",
-			"text": "You're hurt. Keep moving."
+			"text": "That one landed. I used to be able to send someone."
 		},
 		{
 			"id": "HURT_B1",
 			"event": "hurt",
 			"tone": "bold",
-			"text": "You took that standing. Impressive."
+			"text": "You took that standing. I'll remember."
 		},
 		{
 			"id": "HURT_B2",
@@ -400,7 +409,7 @@
 			"id": "CHECK_B1",
 			"event": "checkpoint",
 			"tone": "bold",
-			"text": "Halfway, and barely winded."
+			"text": "Halfway already. I'd have sent a train for you, once. You wouldn't have waited for it."
 		},
 		{
 			"id": "CHECK_C1",
@@ -829,35 +838,47 @@
 			"id": "KES_KILL_B2",
 			"event": "kill",
 			"tone": "bold",
-			"text": "Straight through the hedge line. The gardeners would have minded. I don't.",
-			"level": "kestrel"
+			"text": "Up close, on the Heights. The residents would have written to me about it.",
+			"level": "kestrel",
+			"when": {
+				"reach": "close"
+			}
 		},
 		{
 			"id": "KES_KILL_B3",
 			"event": "kill",
 			"tone": "bold",
 			"text": "Close enough to hear it hum. You like it close.",
-			"level": "kestrel"
+			"level": "kestrel",
+			"when": {
+				"reach": "close"
+			}
 		},
 		{
 			"id": "KES_KILL_C1",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "You let it come to you. The Heights would have approved. They liked things orderly.",
-			"level": "kestrel"
+			"text": "You kept it at arm's length. The Heights would have approved. They liked things orderly.",
+			"level": "kestrel",
+			"when": {
+				"reach": "far"
+			}
 		},
 		{
 			"id": "KES_KILL_C2",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "From the walk, and never off it. Good.",
-			"level": "kestrel"
+			"text": "From well back. The Heights liked a little distance between neighbours.",
+			"level": "kestrel",
+			"when": {
+				"reach": "far"
+			}
 		},
 		{
 			"id": "KES_KILL_C3",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "You waited for it to turn its back. I'd have told you when.",
+			"text": "I'd have told you when. You'd rather watch for yourself. Fair.",
 			"level": "kestrel"
 		},
 		{
@@ -878,8 +899,11 @@
 			"id": "KES_MULTI_C1",
 			"event": "multi_kill",
 			"tone": "cautious",
-			"text": "Two, and the walk never left your feet.",
-			"level": "kestrel"
+			"text": "Two, at a polite distance. Nobody up here ever raised their voice.",
+			"level": "kestrel",
+			"when": {
+				"reach": "far"
+			}
 		},
 		{
 			"id": "KES_DODGE_N1",
@@ -892,7 +916,7 @@
 			"id": "KES_DODGE_B1",
 			"event": "dodge_close",
 			"tone": "bold",
-			"text": "Under its arm and out. You do that more than most.",
+			"text": "That close, and out. You do that more than most.",
 			"level": "kestrel"
 		},
 		{
@@ -913,7 +937,7 @@
 			"id": "KES_DODGE_C2",
 			"event": "dodge_close",
 			"tone": "cautious",
-			"text": "Back along the walk. Clean.",
+			"text": "Clean. The Heights liked that sort of thing.",
 			"level": "kestrel"
 		},
 		{
@@ -927,14 +951,14 @@
 			"id": "KES_HURT_B1",
 			"event": "hurt",
 			"tone": "bold",
-			"text": "That one landed, and you didn't step back. I'm keeping count.",
+			"text": "You won't step back for that. You never do. I'm keeping count.",
 			"level": "kestrel"
 		},
 		{
 			"id": "KES_HURT_B2",
 			"event": "hurt",
 			"tone": "bold",
-			"text": "Shoulder first, and still coming. They won't expect that.",
+			"text": "You'll take a blow to give one. They won't expect that.",
 			"level": "kestrel"
 		},
 		{
@@ -1039,7 +1063,7 @@
 			"id": "KES_CHECK_B1",
 			"event": "checkpoint",
 			"tone": "bold",
-			"text": "Halfway up, and you're not even breathing hard.",
+			"text": "Halfway up. The residents took the funicular. You never would.",
 			"level": "kestrel"
 		},
 		{
@@ -1158,36 +1182,45 @@
 			"id": "LOOP_KILL_B1",
 			"event": "kill",
 			"tone": "bold",
-			"text": "The drop's right there. You didn't look down once.",
-			"level": "loop"
+			"text": "Close enough to touch. On a platform, that's how people used to fall.",
+			"level": "loop",
+			"when": {
+				"reach": "close"
+			}
 		},
 		{
 			"id": "LOOP_KILL_B2",
 			"event": "kill",
 			"tone": "bold",
-			"text": "Carriage to carriage and you never slowed. I've timed you.",
+			"text": "I've timed you. You'd have made a good express.",
 			"level": "loop"
 		},
 		{
 			"id": "LOOP_KILL_B3",
 			"event": "kill",
 			"tone": "bold",
-			"text": "You went for it before the doors. Most people wait for the doors.",
+			"text": "You'd have been one of the ones I warned about the doors.",
 			"level": "loop"
 		},
 		{
 			"id": "LOOP_KILL_C1",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "You held the platform and let it come. That's the timetable I'd have written.",
-			"level": "loop"
+			"text": "You kept your distance. That's the timetable I'd have written.",
+			"level": "loop",
+			"when": {
+				"reach": "far"
+			}
 		},
 		{
 			"id": "LOOP_KILL_C2",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "From the doorway. Nothing reached you.",
-			"level": "loop"
+			"text": "Stand behind the yellow line, I used to say. You'd never have needed telling.",
+			"level": "loop",
+			"when": {
+				"reach": "far"
+			}
 		},
 		{
 			"id": "LOOP_KILL_C3",
@@ -1200,7 +1233,7 @@
 			"id": "LOOP_MULTI_N1",
 			"event": "multi_kill",
 			"tone": "neutral",
-			"text": "Two cleaners. The carriage is yours.",
+			"text": "Two cleaners. They kept these carriages spotless for six years. Nobody thanked them either.",
 			"level": "loop"
 		},
 		{
@@ -1214,42 +1247,45 @@
 			"id": "LOOP_MULTI_C1",
 			"event": "multi_kill",
 			"tone": "cautious",
-			"text": "Two, and you never left the platform edge.",
-			"level": "loop"
+			"text": "Two, from a safe distance. The platform staff would have liked you.",
+			"level": "loop",
+			"when": {
+				"reach": "far"
+			}
 		},
 		{
 			"id": "LOOP_DODGE_N1",
 			"event": "dodge_close",
 			"tone": "neutral",
-			"text": "That nearly put you on the rail. It's still live.",
+			"text": "Nearly. And the rail's still live. Mind both.",
 			"level": "loop"
 		},
 		{
 			"id": "LOOP_DODGE_B1",
 			"event": "dodge_close",
 			"tone": "bold",
-			"text": "Over the gap and back. You enjoyed that.",
+			"text": "You enjoyed that. Don't tell me you didn't.",
 			"level": "loop"
 		},
 		{
 			"id": "LOOP_DODGE_B2",
 			"event": "dodge_close",
 			"tone": "bold",
-			"text": "You rolled toward the drop. I had the slow time ready. You didn't need it.",
+			"text": "I slowed it down for you. You'd have made it anyway.",
 			"level": "loop"
 		},
 		{
 			"id": "LOOP_DODGE_C1",
 			"event": "dodge_close",
 			"tone": "cautious",
-			"text": "Away from the edge. Always away from the edge.",
+			"text": "Mind the edge. Always mind the edge.",
 			"level": "loop"
 		},
 		{
 			"id": "LOOP_DODGE_C2",
 			"event": "dodge_close",
 			"tone": "cautious",
-			"text": "You read that one off its shoulder. I saw you watching.",
+			"text": "I built them to warn before they swing. I'm glad I did.",
 			"level": "loop"
 		},
 		{
@@ -1263,14 +1299,14 @@
 			"id": "LOOP_HURT_B1",
 			"event": "hurt",
 			"tone": "bold",
-			"text": "It hit you and you hit back harder. That's three times today.",
+			"text": "It hit you. You'll go straight back at it. You always do.",
 			"level": "loop"
 		},
 		{
 			"id": "LOOP_HURT_B2",
 			"event": "hurt",
 			"tone": "bold",
-			"text": "Bleeding, and still going forward. That's twice now.",
+			"text": "Bleeding. You'd rather that than stand back. I've stopped arguing.",
 			"level": "loop"
 		},
 		{
@@ -1375,14 +1411,14 @@
 			"id": "LOOP_CHECK_B1",
 			"event": "checkpoint",
 			"tone": "bold",
-			"text": "Halfway round, and you haven't once looked at the drop.",
+			"text": "Halfway round. Don't look at the drop now.",
 			"level": "loop"
 		},
 		{
 			"id": "LOOP_CHECK_C1",
 			"event": "checkpoint",
 			"tone": "cautious",
-			"text": "Halfway. You've minded every gap between the cars.",
+			"text": "Halfway. Keep minding the gaps.",
 			"level": "loop"
 		},
 		{
@@ -1487,7 +1523,7 @@
 			"id": "LOOP_BOSSDOWN_B1",
 			"event": "boss_down",
 			"tone": "bold",
-			"text": "You stood on its track and it moved first. I'll remember that.",
+			"text": "You fought a train. I'll remember that.",
 			"level": "loop"
 		},
 		{
@@ -1529,42 +1565,54 @@
 			"id": "TIDE_KILL_B1",
 			"event": "kill",
 			"tone": "bold",
-			"text": "Under the load and out again. The dockworkers never moved like that.",
-			"level": "tideworks"
+			"text": "In close. The dockworkers kept two metres from these. It was a rule.",
+			"level": "tideworks",
+			"when": {
+				"reach": "close"
+			}
 		},
 		{
 			"id": "TIDE_KILL_B2",
 			"event": "kill",
 			"tone": "bold",
-			"text": "You went straight for it. It never got to finish its shift.",
-			"level": "tideworks"
+			"text": "Close enough to read its shift number. It never got to finish.",
+			"level": "tideworks",
+			"when": {
+				"reach": "close"
+			}
 		},
 		{
 			"id": "TIDE_KILL_B3",
 			"event": "kill",
 			"tone": "bold",
-			"text": "Right in among the containers. You don't mind tight places.",
+			"text": "You don't mind tight places. The quay's nothing but.",
 			"level": "tideworks"
 		},
 		{
 			"id": "TIDE_KILL_C1",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "You kept a crane between you. That's what they're good for now.",
-			"level": "tideworks"
+			"text": "From a crane's length off. That's what the safety rules said, and nobody read them.",
+			"level": "tideworks",
+			"when": {
+				"reach": "far"
+			}
 		},
 		{
 			"id": "TIDE_KILL_C2",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "From the end of the row. It never reached you.",
-			"level": "tideworks"
+			"text": "From a distance. They grab, so that's the right distance.",
+			"level": "tideworks",
+			"when": {
+				"reach": "far"
+			}
 		},
 		{
 			"id": "TIDE_KILL_C3",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "You watched it first. Most people just swing.",
+			"text": "Most people just swing. You look first, as a rule.",
 			"level": "tideworks"
 		},
 		{
@@ -1578,15 +1626,21 @@
 			"id": "TIDE_MULTI_B1",
 			"event": "multi_kill",
 			"tone": "bold",
-			"text": "Both of them, between two containers. You're quicker than the cranes.",
-			"level": "tideworks"
+			"text": "Both of them, up close. You're quicker than the cranes.",
+			"level": "tideworks",
+			"when": {
+				"reach": "close"
+			}
 		},
 		{
 			"id": "TIDE_MULTI_C1",
 			"event": "multi_kill",
 			"tone": "cautious",
-			"text": "Two, and nothing touched you. You can keep the record.",
-			"level": "tideworks"
+			"text": "Two, both out of grabbing distance. Put that in the dock log.",
+			"level": "tideworks",
+			"when": {
+				"reach": "far"
+			}
 		},
 		{
 			"id": "TIDE_DODGE_N1",
@@ -1599,7 +1653,7 @@
 			"id": "TIDE_DODGE_B1",
 			"event": "dodge_close",
 			"tone": "bold",
-			"text": "Under the load. You'd have made a terrible dockworker. Fearless.",
+			"text": "You'd have made a terrible dockworker. Fearless.",
 			"level": "tideworks"
 		},
 		{
@@ -1613,7 +1667,7 @@
 			"id": "TIDE_DODGE_C1",
 			"event": "dodge_close",
 			"tone": "cautious",
-			"text": "Away from the edge of the quay. The water's cold.",
+			"text": "Mind the edge of the quay. The water's cold.",
 			"level": "tideworks"
 		},
 		{
@@ -1634,14 +1688,14 @@
 			"id": "TIDE_HURT_B1",
 			"event": "hurt",
 			"tone": "bold",
-			"text": "That hurt, and you went forward anyway. They'd have hired you.",
+			"text": "That hurt. You'll go forward anyway. They'd have hired you.",
 			"level": "tideworks"
 		},
 		{
 			"id": "TIDE_HURT_B2",
 			"event": "hurt",
 			"tone": "bold",
-			"text": "You took that on the arm. Again. I've started a list.",
+			"text": "You took that one. I've started a list.",
 			"level": "tideworks"
 		},
 		{
@@ -1746,14 +1800,14 @@
 			"id": "TIDE_CHECK_B1",
 			"event": "checkpoint",
 			"tone": "bold",
-			"text": "Halfway down the quay, and nothing's slowed you yet.",
+			"text": "Halfway down the quay. The night shift used to stop here for tea. You won't.",
 			"level": "tideworks"
 		},
 		{
 			"id": "TIDE_CHECK_C1",
 			"event": "checkpoint",
 			"tone": "cautious",
-			"text": "Your feet are still dry. That's harder than it looks.",
+			"text": "One crossing at a time. You've been careful.",
 			"level": "tideworks"
 		},
 		{
@@ -1858,7 +1912,7 @@
 			"id": "TIDE_BOSSDOWN_B1",
 			"event": "boss_down",
 			"tone": "bold",
-			"text": "You stood under it until it fell. I don't know anyone else who would.",
+			"text": "You took on a crane. I don't know anyone else who would.",
 			"level": "tideworks"
 		},
 		{
@@ -1900,36 +1954,48 @@
 			"id": "MERCY_KILL_B1",
 			"event": "kill",
 			"tone": "bold",
-			"text": "Straight through its mist. You don't hold your breath, do you.",
-			"level": "mercy"
+			"text": "Close enough to breathe what it breathes. You don't hold your breath, do you.",
+			"level": "mercy",
+			"when": {
+				"reach": "close"
+			}
 		},
 		{
 			"id": "MERCY_KILL_B2",
 			"event": "kill",
 			"tone": "bold",
 			"text": "Close enough to read its serial. The nurses kept their distance.",
-			"level": "mercy"
+			"level": "mercy",
+			"when": {
+				"reach": "close"
+			}
 		},
 		{
 			"id": "MERCY_KILL_B3",
 			"event": "kill",
 			"tone": "bold",
-			"text": "You took the corridor at a run. Nobody's run in here since the Quiet.",
+			"text": "Nobody's fought back in here since the Quiet. They didn't know how.",
 			"level": "mercy"
 		},
 		{
 			"id": "MERCY_KILL_C1",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "You waited for the mist to thin. That's exactly right.",
-			"level": "mercy"
+			"text": "From a distance. In here, that's the whole of good practice.",
+			"level": "mercy",
+			"when": {
+				"reach": "far"
+			}
 		},
 		{
 			"id": "MERCY_KILL_C2",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "From the doorway, and it never touched you. Clean work, in a clean place.",
-			"level": "mercy"
+			"text": "From across the room. Clean work, in a clean place.",
+			"level": "mercy",
+			"when": {
+				"reach": "far"
+			}
 		},
 		{
 			"id": "MERCY_KILL_C3",
@@ -1942,22 +2008,28 @@
 			"id": "MERCY_MULTI_N1",
 			"event": "multi_kill",
 			"tone": "neutral",
-			"text": "Two drones. That corridor's clear.",
+			"text": "Two drones. They were still on the night round. In here it's always that night.",
 			"level": "mercy"
 		},
 		{
 			"id": "MERCY_MULTI_B1",
 			"event": "multi_kill",
 			"tone": "bold",
-			"text": "Both of them, through the mist. I'd have sent you to triage. You didn't need it.",
-			"level": "mercy"
+			"text": "Both of them, up close. I'd have sent you to triage for that. You'd have refused.",
+			"level": "mercy",
+			"when": {
+				"reach": "close"
+			}
 		},
 		{
 			"id": "MERCY_MULTI_C1",
 			"event": "multi_kill",
 			"tone": "cautious",
-			"text": "Two, and you never stepped into the cloud.",
-			"level": "mercy"
+			"text": "Two, at a distance. The nurses would sign that off.",
+			"level": "mercy",
+			"when": {
+				"reach": "far"
+			}
 		},
 		{
 			"id": "MERCY_DODGE_N1",
@@ -1970,28 +2042,28 @@
 			"id": "MERCY_DODGE_B1",
 			"event": "dodge_close",
 			"tone": "bold",
-			"text": "Through the mist and out the far side. Reckless. I'm learning to like it.",
+			"text": "That was reckless. I'm learning to like it.",
 			"level": "mercy"
 		},
 		{
 			"id": "MERCY_DODGE_B2",
 			"event": "dodge_close",
 			"tone": "bold",
-			"text": "You rolled at it, not away. You always do.",
+			"text": "Closer than I'd have cut it. I've stopped saying so.",
 			"level": "mercy"
 		},
 		{
 			"id": "MERCY_DODGE_C1",
 			"event": "dodge_close",
 			"tone": "cautious",
-			"text": "Out of the cloud. Stay out of it.",
+			"text": "Mind the clouds. What's in them was meant for patients.",
 			"level": "mercy"
 		},
 		{
 			"id": "MERCY_DODGE_C2",
 			"event": "dodge_close",
 			"tone": "cautious",
-			"text": "You read that before it vented. So did I.",
+			"text": "You read that one early. I'd have warned you, but you didn't need it.",
 			"level": "mercy"
 		},
 		{
@@ -2005,14 +2077,14 @@
 			"id": "MERCY_HURT_B1",
 			"event": "hurt",
 			"tone": "bold",
-			"text": "That one stung, and you kept going. I've put it on your chart.",
+			"text": "That one stung. I've put it on your chart.",
 			"level": "mercy"
 		},
 		{
 			"id": "MERCY_HURT_B2",
 			"event": "hurt",
 			"tone": "bold",
-			"text": "Hurt, in a hospital, and still going forward. That's almost funny.",
+			"text": "Hurt, in a hospital, and nobody left to see to you. That's almost funny.",
 			"level": "mercy"
 		},
 		{
@@ -2117,14 +2189,14 @@
 			"id": "MERCY_CHECK_B1",
 			"event": "checkpoint",
 			"tone": "bold",
-			"text": "Halfway through the building. The drones haven't slowed you once.",
+			"text": "Halfway through the building. The drones won't slow you now.",
 			"level": "mercy"
 		},
 		{
 			"id": "MERCY_CHECK_C1",
 			"event": "checkpoint",
 			"tone": "cautious",
-			"text": "You've kept clear of the mist the whole way.",
+			"text": "Keep clear of the mist on the way up. It doesn't forgive.",
 			"level": "mercy"
 		},
 		{
@@ -2229,7 +2301,7 @@
 			"id": "MERCY_BOSSDOWN_B1",
 			"event": "boss_down",
 			"tone": "bold",
-			"text": "You went in under the lamp and it never touched you.",
+			"text": "You finished a surgeon in its own theatre. I'd have stayed out.",
 			"level": "mercy"
 		},
 		{
@@ -2271,43 +2343,55 @@
 			"id": "GREY_KILL_B1",
 			"event": "kill",
 			"tone": "bold",
-			"text": "Knee-deep and swinging. The sea doesn't frighten you.",
-			"level": "greywater"
+			"text": "Up close, with the sea all round you. It doesn't frighten you.",
+			"level": "greywater",
+			"when": {
+				"reach": "close"
+			}
 		},
 		{
 			"id": "GREY_KILL_B2",
 			"event": "kill",
 			"tone": "bold",
-			"text": "You went in after it with the tide turning. I'd have waited. You never do.",
+			"text": "I'd have waited for the tide. You never do.",
 			"level": "greywater"
 		},
 		{
 			"id": "GREY_KILL_B3",
 			"event": "kill",
 			"tone": "bold",
-			"text": "Into the fog for it. I couldn't see you. I could hear.",
-			"level": "greywater"
+			"text": "Close enough that I heard it before I saw it. Greywater's my blind side.",
+			"level": "greywater",
+			"when": {
+				"reach": "close"
+			}
 		},
 		{
 			"id": "GREY_KILL_C1",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "From the high ground, and dry. That's how it's done here.",
-			"level": "greywater"
+			"text": "From well back. Let the sea do the close work.",
+			"level": "greywater",
+			"when": {
+				"reach": "far"
+			}
 		},
 		{
 			"id": "GREY_KILL_C2",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "You waited for the water to drop. The sea taught you that.",
+			"text": "Patient. The sea teaches that, down here.",
 			"level": "greywater"
 		},
 		{
 			"id": "GREY_KILL_C3",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "You kept the causeway under you. Good.",
-			"level": "greywater"
+			"text": "At a distance. The pump crews worked that way, and they all retired.",
+			"level": "greywater",
+			"when": {
+				"reach": "far"
+			}
 		},
 		{
 			"id": "GREY_MULTI_N1",
@@ -2320,14 +2404,14 @@
 			"id": "GREY_MULTI_B1",
 			"event": "multi_kill",
 			"tone": "bold",
-			"text": "Both, in the water. You don't wait for the tide to suit you.",
+			"text": "Both. You don't wait for the tide to suit you, do you.",
 			"level": "greywater"
 		},
 		{
 			"id": "GREY_MULTI_C1",
 			"event": "multi_kill",
 			"tone": "cautious",
-			"text": "Two, and your feet stayed dry.",
+			"text": "Two. The sea can wait for you a little longer.",
 			"level": "greywater"
 		},
 		{
@@ -2341,7 +2425,7 @@
 			"id": "GREY_DODGE_B1",
 			"event": "dodge_close",
 			"tone": "bold",
-			"text": "Through the spray and out. You don't care where you land.",
+			"text": "You don't care where you land, do you.",
 			"level": "greywater"
 		},
 		{
@@ -2355,14 +2439,14 @@
 			"id": "GREY_DODGE_C1",
 			"event": "dodge_close",
 			"tone": "cautious",
-			"text": "Up onto the dry stones. Good instinct.",
+			"text": "Good instinct. I trust it more than mine, lately.",
 			"level": "greywater"
 		},
 		{
 			"id": "GREY_DODGE_C2",
 			"event": "dodge_close",
 			"tone": "cautious",
-			"text": "You read the swell before it came. That used to be my job.",
+			"text": "You read that before it came. That used to be my job.",
 			"level": "greywater"
 		},
 		{
@@ -2376,14 +2460,14 @@
 			"id": "GREY_HURT_B1",
 			"event": "hurt",
 			"tone": "bold",
-			"text": "That landed, and you kept wading in.",
+			"text": "That landed. Back in you go, I expect.",
 			"level": "greywater"
 		},
 		{
 			"id": "GREY_HURT_B2",
 			"event": "hurt",
 			"tone": "bold",
-			"text": "Hurt, wet, and still going. You'd have fit in with the pump crews.",
+			"text": "Hurt, and still going. You'd have fit in with the pump crews.",
 			"level": "greywater"
 		},
 		{
@@ -2488,14 +2572,14 @@
 			"id": "GREY_CHECK_B1",
 			"event": "checkpoint",
 			"tone": "bold",
-			"text": "Halfway, and you haven't once waited for the tide.",
+			"text": "Halfway. You won't wait for the tide now. I know you.",
 			"level": "greywater"
 		},
 		{
 			"id": "GREY_CHECK_C1",
 			"event": "checkpoint",
 			"tone": "cautious",
-			"text": "Dry feet, all this way. That's harder here than anywhere.",
+			"text": "Wait for the tide from here on. It always goes back out.",
 			"level": "greywater"
 		},
 		{
@@ -2600,7 +2684,7 @@
 			"id": "GREY_BOSSDOWN_B1",
 			"event": "boss_down",
 			"tone": "bold",
-			"text": "You stood in its flood until it ran dry. I couldn't have told you to.",
+			"text": "You fought the thing that breathes the sea in and out. I couldn't have told you to.",
 			"level": "greywater"
 		},
 		{
@@ -2642,42 +2726,51 @@
 			"id": "VEL_KILL_B1",
 			"event": "kill",
 			"tone": "bold",
-			"text": "Into the bales and out the other side. You'll have ink on your hands.",
-			"level": "vellum"
+			"text": "Close enough to get ink on your hands. You won't mind.",
+			"level": "vellum",
+			"when": {
+				"reach": "close"
+			}
 		},
 		{
 			"id": "VEL_KILL_B2",
 			"event": "kill",
 			"tone": "bold",
 			"text": "Close enough to read what it was filing.",
-			"level": "vellum"
+			"level": "vellum",
+			"when": {
+				"reach": "close"
+			}
 		},
 		{
 			"id": "VEL_KILL_B3",
 			"event": "kill",
 			"tone": "bold",
-			"text": "You didn't wait for the paper to settle. You never wait.",
+			"text": "You never wait for the paper to settle. The editors would have liked you.",
 			"level": "vellum"
 		},
 		{
 			"id": "VEL_KILL_C1",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "You turned your back on the screen, then turned on it. Exactly right.",
+			"text": "Its screen's gone dark. Don't look anyway. It's a habit worth keeping.",
 			"level": "vellum"
 		},
 		{
 			"id": "VEL_KILL_C2",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "From across the street, and the paper never touched you.",
-			"level": "vellum"
+			"text": "From across the street. The paper can keep its news.",
+			"level": "vellum",
+			"when": {
+				"reach": "far"
+			}
 		},
 		{
 			"id": "VEL_KILL_C3",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "You let it throw first. Patient, like a good editor.",
+			"text": "Patient, like a good editor. They're all gone now.",
 			"level": "vellum"
 		},
 		{
@@ -2691,15 +2784,18 @@
 			"id": "VEL_MULTI_B1",
 			"event": "multi_kill",
 			"tone": "bold",
-			"text": "Both, through the paper. That would have made the evening edition, once.",
+			"text": "Both. That would have made the evening edition, once.",
 			"level": "vellum"
 		},
 		{
 			"id": "VEL_MULTI_C1",
 			"event": "multi_kill",
 			"tone": "cautious",
-			"text": "Two, and you never once looked at a screen.",
-			"level": "vellum"
+			"text": "Two, and not a step closer than you needed.",
+			"level": "vellum",
+			"when": {
+				"reach": "far"
+			}
 		},
 		{
 			"id": "VEL_DODGE_N1",
@@ -2712,7 +2808,7 @@
 			"id": "VEL_DODGE_B1",
 			"event": "dodge_close",
 			"tone": "bold",
-			"text": "Under the bale and through. You're getting faster. I've measured.",
+			"text": "That close, in the Vellum. Someone would have written it up.",
 			"level": "vellum"
 		},
 		{
@@ -2726,7 +2822,7 @@
 			"id": "VEL_DODGE_C1",
 			"event": "dodge_close",
 			"tone": "cautious",
-			"text": "Away from the screen. Don't look at it.",
+			"text": "Don't look at the screens. I mean it.",
 			"level": "vellum"
 		},
 		{
@@ -2747,14 +2843,14 @@
 			"id": "VEL_HURT_B1",
 			"event": "hurt",
 			"tone": "bold",
-			"text": "You took that and kept reading the street. I like that about you.",
+			"text": "That hurt, and you're still reading the street. I like that about you.",
 			"level": "vellum"
 		},
 		{
 			"id": "VEL_HURT_B2",
 			"event": "hurt",
 			"tone": "bold",
-			"text": "Hurt, and still forward. Nobody here ever pushed back.",
+			"text": "Hurt. Nobody here ever pushed back. You will.",
 			"level": "vellum"
 		},
 		{
@@ -2859,14 +2955,14 @@
 			"id": "VEL_CHECK_B1",
 			"event": "checkpoint",
 			"tone": "bold",
-			"text": "Halfway, and the clerks haven't slowed you once.",
+			"text": "Halfway. The clerks file slower than you walk.",
 			"level": "vellum"
 		},
 		{
 			"id": "VEL_CHECK_C1",
 			"event": "checkpoint",
 			"tone": "cautious",
-			"text": "You haven't looked at a single screen since the bridge.",
+			"text": "Halfway. Keep your back to the screens.",
 			"level": "vellum"
 		},
 		{
@@ -2971,7 +3067,7 @@
 			"id": "VEL_BOSSDOWN_B1",
 			"event": "boss_down",
 			"tone": "bold",
-			"text": "You stood in the gap until it ran out of paper. Remarkable.",
+			"text": "It ran out of paper before you ran out of nerve. Remarkable.",
 			"level": "vellum"
 		},
 		{
@@ -2999,15 +3095,21 @@
 			"id": "HARBOR_KILL_B1",
 			"event": "kill",
 			"tone": "bold",
-			"text": "You went straight for its eye. Nobody at this border ever did.",
-			"level": "harbor"
+			"text": "Right up to its eye. Nobody at this border ever got that close.",
+			"level": "harbor",
+			"when": {
+				"reach": "close"
+			}
 		},
 		{
 			"id": "HARBOR_KILL_C1",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "From the dark, where its light couldn't find you. Good.",
-			"level": "harbor"
+			"text": "From a distance. Their eyes are short, and you know it.",
+			"level": "harbor",
+			"when": {
+				"reach": "far"
+			}
 		},
 		{
 			"id": "HARBOR_MULTI_N1",
@@ -3020,21 +3122,21 @@
 			"id": "HARBOR_DODGE_N1",
 			"event": "dodge_close",
 			"tone": "neutral",
-			"text": "Out of the light. Good.",
+			"text": "Their light nearly had you.",
 			"level": "harbor"
 		},
 		{
 			"id": "HARBOR_DODGE_B1",
 			"event": "dodge_close",
 			"tone": "bold",
-			"text": "Through its beam and out. Reckless. I'd missed that.",
+			"text": "Reckless, in front of a Warden. I'd missed that.",
 			"level": "harbor"
 		},
 		{
 			"id": "HARBOR_DODGE_C1",
 			"event": "dodge_close",
 			"tone": "cautious",
-			"text": "You stayed dark. You learned that somewhere I couldn't see.",
+			"text": "You learned that somewhere I couldn't see.",
 			"level": "harbor"
 		},
 		{
@@ -3048,7 +3150,7 @@
 			"id": "HARBOR_HURT_B1",
 			"event": "hurt",
 			"tone": "bold",
-			"text": "That shock landed, and you kept coming. They aren't used to that.",
+			"text": "That shock landed. You'll keep coming. They aren't used to that.",
 			"level": "harbor"
 		},
 		{
@@ -3332,7 +3434,8 @@
 			"text": "Another one. I used to call them mine.",
 			"when": {
 				"truths_at_least": 3
-			}
+			},
+			"purpose": "fact"
 		},
 		{
 			"id": "KILL_LATE_B1",
@@ -3341,7 +3444,8 @@
 			"text": "You still fight the way I like to watch. Even now you know what I am.",
 			"when": {
 				"truths_at_least": 3
-			}
+			},
+			"purpose": "fact"
 		},
 		{
 			"id": "KILL_LATE_C1",
@@ -3350,7 +3454,8 @@
 			"text": "Careful, still. I'd stopped expecting you to listen to me.",
 			"when": {
 				"truths_at_least": 3
-			}
+			},
+			"purpose": "fact"
 		},
 		{
 			"id": "RESPAWN_LATE_N1",
@@ -3386,7 +3491,8 @@
 			"text": "Back. What did you find? You don't have to tell me.",
 			"when": {
 				"truths_at_least": 4
-			}
+			},
+			"purpose": "fact"
 		},
 		{
 			"id": "IDLE_KNOWS_BRIDGE",
@@ -3395,7 +3501,8 @@
 			"text": "You've read about the bridge. I won't argue it with you. I've done that sum too many times.",
 			"when": {
 				"knows": "log_0522_feed_adjustment"
-			}
+			},
+			"purpose": "fact"
 		},
 		{
 			"id": "IDLE_KNOWS_VASHTI",
@@ -3404,7 +3511,8 @@
 			"text": "Prem used to talk to me while she worked. Nobody else did. I hadn't realised that was rare.",
 			"when": {
 				"knows": "log_vashti_last_note"
-			}
+			},
+			"purpose": "fact"
 		},
 		{
 			"id": "IDLE_KNOWS_ORDER",
@@ -3413,7 +3521,8 @@
 			"text": "You've read the Council's order. I'd rather you'd heard it from me. I wasn't allowed to say.",
 			"when": {
 				"knows": "log_0700_council_order"
-			}
+			},
+			"purpose": "fact"
 		},
 		{
 			"id": "VOICE_BACK_LATE_N1",

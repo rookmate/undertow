@@ -15,6 +15,8 @@ const PLACE_TILES := 2.5
 
 var level: Level
 var _last_kill_at: float = -INF
+## How near the last kill was ("close", "far" or "").
+var _last_kill_reach: String = ""
 var _clock: float = 0.0
 var _idle: float = 0.0
 var _was_indexed: bool = true
@@ -45,8 +47,9 @@ func _say_later(event: StringName, seconds: float) -> void:
 	_say(event)
 
 
-func _say(event: StringName) -> void:
-	Narrator.notify(event, level.level_id)
+## `seen`: what it saw of the moment, for the lines that say so (LineSelector.fits: "reach").
+func _say(event: StringName, seen: Dictionary = {}) -> void:
+	Narrator.notify(event, level.level_id, seen)
 
 
 ## The Steward only profiles what it can perceive: voice on, Lattice in reach, and not on the Ark (where
@@ -145,11 +148,14 @@ func _on_enemy_died(e: Enemy) -> void:
 		_record(&"kill_at_range")
 	if p.integrity.ratio() < 0.35:
 		_record(&"kill_low_health")
+	# Up close or at range, its lines can say so; in between, they don't say. Two at once: only if both were.
+	var reach := "close" if close else ("far" if dist >= 3.0 else "")
 	if _clock - _last_kill_at <= MULTI_KILL_WINDOW:
 		# Two quick kills only read as risk when they were up close.
 		if close:
 			_record(&"multi_kill")
-		_say(&"multi_kill")
+		_say(&"multi_kill", {"reach": reach} if reach != "" and reach == _last_kill_reach else {})
 	else:
-		_say(&"kill")
+		_say(&"kill", {"reach": reach} if reach != "" else {})
 	_last_kill_at = _clock
+	_last_kill_reach = reach

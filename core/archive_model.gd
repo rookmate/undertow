@@ -51,6 +51,7 @@ static func replay(log_id: String) -> Replay:
 	if not GameState.run.logs_unlocked.has(log_id):
 		r.error = "That memory wasn't recovered."
 		return r
+	GameState.mark_log_read(log_id)
 	r.first_time = GameState.mark_log_replayed(log_id)
 	if not r.first_time:
 		return r

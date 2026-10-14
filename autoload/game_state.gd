@@ -145,6 +145,14 @@ func unlock_log(log_id: String) -> void:
 	state_changed.emit(&"logs_unlocked")
 
 
+## A memory log you've read (the Archive or the Clinic): the Steward's lines can know you know it.
+func mark_log_read(log_id: String) -> void:
+	if run.logs_read.has(log_id):
+		return
+	run.logs_read.append(log_id)
+	state_changed.emit(&"logs_read")
+
+
 ## Returns true the first time a log is replayed (reactions and trust apply only then).
 func mark_log_replayed(log_id: String) -> bool:
 	if run.logs_replayed.has(log_id):

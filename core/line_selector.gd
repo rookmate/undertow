@@ -12,7 +12,7 @@ const FACT := &"fact"
 const WARNING := &"warning"
 const PRAISE := &"praise"
 const PURPOSES: Array[StringName] = [FACT, WARNING, PRAISE]
-const WHEN_KEYS: Array[String] = ["revisit", "truths_at_least", "knows"]
+const WHEN_KEYS: Array[String] = ["revisit", "truths_at_least", "knows", "reach"]
 
 class Line:
 	var id: String
@@ -21,8 +21,11 @@ class Line:
 	var text: String
 	## District the line belongs to ("" = anywhere). A new district never hears another's lines.
 	var level: String = ""
+	## What it's for, if not its event's (a line for what you know is a fact even among praise).
+	var purpose: StringName = &""
 	## When it can be said (empty: any time). "revisit": back in a district you've done (or not);
-	## "truths_at_least": truth cores carried; "knows": a memory log you've read.
+	## "truths_at_least": truth cores carried; "knows": a memory log you've read; "reach": how near the
+	## thing it's about was when it saw it ("close" or "far": a kill up close, or at range).
 	var when: Dictionary = {}
 
 var lines_by_event: Dictionary[StringName, Array] = {}
@@ -66,6 +69,9 @@ func load_data(data: Dictionary) -> void:
 		line.tone = StringName(str(d.get("tone", "neutral")))
 		line.text = str(d.get("text", ""))
 		line.level = str(d.get("level", ""))
+		line.purpose = StringName(str(d.get("purpose", "")))
+		if line.purpose != &"" and not PURPOSES.has(line.purpose):
+			errors.append("line %s has unknown purpose %s" % [line.id, line.purpose])
 		var when: Variant = d.get("when", {})
 		if not when is Dictionary:
 			errors.append("line %s has a 'when' that isn't an object" % line.id)
@@ -74,6 +80,8 @@ func load_data(data: Dictionary) -> void:
 		for key: Variant in line.when:
 			if not WHEN_KEYS.has(str(key)):
 				errors.append("line %s: unknown 'when' %s" % [line.id, key])
+		if line.when.has("reach") and not ["close", "far"].has(str(line.when["reach"])):
+			errors.append("line %s: 'reach' is close or far, not %s" % [line.id, line.when["reach"]])
 		if line.id == "" or line.text == "" or line.event == &"":
 			errors.append("line %s is missing id, event or text" % line.id)
 			continue
@@ -123,17 +131,25 @@ static func tone_weights(lean: float) -> Dictionary[StringName, float]:
 ## lean); inside that tone, a line not heard yet this run, the district's own before the lines for
 ## anywhere; once the tone is heard out, the one heard longest ago. For an own_only event (a district's
 ## entry, boss and Reliquary lines) a district with lines of its own uses only those.
-func pick(event: StringName, lean: float, rng: RandomNumberGenerator, level: String = "", only_tone: StringName = &"", context: Dictionary = {}) -> Line:
+func pick(event: StringName, lean: float, rng: RandomNumberGenerator, level: String = "", only_tone: StringName = &"", context: Dictionary = {}, allowed: Array[StringName] = []) -> Line:
 	var anywhere: Array = []
 	var own: Array = []
 	for l: Line in lines_by_event.get(event, []):
 		if not fits(l, context):
+			continue
+		if not allowed.is_empty() and not allowed.has(purpose_of_line(l)):
 			continue
 		if l.level == "":
 			anywhere.append(l)
 		elif l.level == level:
 			own.append(l)
 	var pool: Array = own if not own.is_empty() and own_only(event) else own + anywhere
+	# A line for something you've come to know is said once: heard, it's out of the pool, and if that
+	# leaves nothing it says nothing. Except a district's own word for an own_only event (its only
+	# greeting on a revisit): that comes round again.
+	var unspent := pool.filter(func(l: Line) -> bool: return not (is_beat(l) and recent.has(l.id)))
+	if not unspent.is_empty() or not own_only(event):
+		pool = unspent
 	if only_tone != &"" and pool.any(func(l: Line) -> bool: return l.tone == only_tone):
 		pool = pool.filter(func(l: Line) -> bool: return l.tone == only_tone)
 	if pool.is_empty():
@@ -188,14 +204,22 @@ func pick(event: StringName, lean: float, rng: RandomNumberGenerator, level: Str
 	return line
 
 
+## What a line is for: its own purpose, or its event's.
+func purpose_of_line(line: Line) -> StringName:
+	return line.purpose if line.purpose != &"" else purpose_of(line.event)
+
+
 ## A line for something you've come to know (back in a district, truths carried, a log read): said
 ## before the others, once.
 static func is_beat(line: Line) -> bool:
 	return line.when.has("truths_at_least") or line.when.has("knows") or bool(line.when.get("revisit", false))
 
 
-## Whether a line can be said now (`context`: "revisit" bool, "truths" int, "knows" the logs read).
+## Whether a line can be said now (`context`: "revisit" bool, "truths" int, "knows" the logs read,
+## "reach" what it saw: "close", "far" or nothing). A line about how near it was needs to have seen it.
 static func fits(line: Line, context: Dictionary) -> bool:
+	if line.when.has("reach") and str(context.get("reach", "")) != str(line.when["reach"]):
+		return false
 	if line.when.has("revisit") and bool(line.when["revisit"]) != bool(context.get("revisit", false)):
 		return false
 	if line.when.has("truths_at_least") and int(context.get("truths", 0)) < int(line.when["truths_at_least"]):
