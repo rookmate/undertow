@@ -334,7 +334,7 @@
 			"purpose": "fact"
 		},
 		"place_kestrel_gardener": {
-			"text": "That's Mr Hale. Thirty years on these hedges. He's resting now.",
+			"text": "Mr Hale kept these hedges thirty years. I told him when to cut them back. He listened.",
 			"purpose": "fact"
 		},
 		"place_kestrel_garden": {
@@ -350,7 +350,7 @@
 			"purpose": "fact"
 		},
 		"place_loop_carriage": {
-			"text": "These are the 23:40 passengers. I asked them to stay in their seats. They've been very good about it.",
+			"text": "The 23:40 stopped here. I asked its passengers to stay in their seats. Most people do what I ask.",
 			"purpose": "fact"
 		},
 		"place_loop_cab": {
@@ -402,7 +402,7 @@
 			"purpose": "fact"
 		},
 		"place_mercy_resus": {
-			"text": "The resus bay. The crash cart's where they left it. They were in a hurry.",
+			"text": "The resus bay. The crash team worked from here. That night they left in a hurry.",
 			"purpose": "fact"
 		},
 		"place_mercy_ward_a": {
@@ -418,7 +418,7 @@
 			"purpose": "fact"
 		},
 		"place_mercy_theatre": {
-			"text": "Theatre four. The last procedure started at 02:10. It's still going.",
+			"text": "Theatre four. The last procedure started at 02:10. I never told it to stop.",
 			"purpose": "fact"
 		},
 		"place_grey_seawall": {
@@ -442,7 +442,7 @@
 			"purpose": "fact"
 		},
 		"place_grey_pump_room": {
-			"text": "The old manual pump room. Nobody's needed it in six years.",
+			"text": "The old manual pump room. Nobody needed it for six years. Then the Quiet.",
 			"purpose": "fact"
 		},
 		"place_grey_turbines": {

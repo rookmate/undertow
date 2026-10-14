@@ -69,7 +69,9 @@ echo "== 3/5 ${SMOKE_SECONDS}s run from the main scene (autopilot scenario: $SMO
 # with vsync blocks forever. --max-fps keeps the frame rate realistic.
 MODE=(--disable-vsync --max-fps 60)
 if [ -n "${HEADLESS:-}" ] || [ -z "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ]; then MODE=(--headless); echo "  (headless)"; else echo "  (windowed)"; fi
-timeout $((SMOKE_SECONDS + 90)) godot "${MODE[@]}" --path . -- --autopilot \
+# Line-buffered: a run its timeout cuts off still leaves its last lines in the log (what it was doing).
+LINES=(stdbuf -oL -eL)
+timeout $((SMOKE_SECONDS + 90)) "${LINES[@]}" godot "${MODE[@]}" --path . -- --autopilot \
   --autopilot-seconds="$SMOKE_SECONDS" --autopilot-scenario="$SMOKE_SCENARIO" \
   --autopilot-shots="$LOG_DIR/shots" > "$LOG_DIR/smoke.log" 2>&1
 code=$?
@@ -82,7 +84,7 @@ echo "== 4/5 full runs (${FULL_SCENARIOS})"
 for scenario in $FULL_SCENARIOS; do
   log="$LOG_DIR/full_$scenario.log"
   run_seconds=$(seconds_for "$scenario")
-  timeout $(( run_seconds + 90 )) godot "${MODE[@]}" --path . -- --autopilot \
+  timeout $(( run_seconds + 90 )) "${LINES[@]}" godot "${MODE[@]}" --path . -- --autopilot \
     --autopilot-seconds="$run_seconds" --autopilot-scenario="$scenario" \
     --autopilot-shots="$LOG_DIR/shots_full_$scenario" > "$log" 2>&1
   code=$?

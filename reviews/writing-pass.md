@@ -780,3 +780,139 @@ I made no edits. Eligibility checks were read-only source models, not engine rep
    like these."
 
 Three lines rewritten and voiced.
+
+## Round 11 findings (verbatim from sol_analyst)
+
+Round 10's findings were fixed correctly. Milestone 6 is still not ready to close: one P2 defect remains in the place writing. No P0, P1 or P3 findings.
+
+1. **P2. Mercy can announce that the defeated Surgeon's procedure is still going.**
+
+   Confirmed: [place_mercy_theatre](/home/homebox/Documents/rookmate/undertow/data/narration/steward_fixed.json:421) says, "Theatre four. The last procedure started at 02:10. It's still going." The defeat line explicitly says [its last procedure stopped unfinished](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2324), and [BossEncounter.build](/home/homebox/Documents/rookmate/undertow/game/level/boss_encounter.gd:21) leaves the Surgeon defeated on revisits.
+
+   Complete Mercy while muted, leaving this place line unheard. Return with the voice on and approach [the theatre marker](/home/homebox/Documents/rookmate/undertow/data/levels/mercy_general.txt:56). [StewardWatch](/home/homebox/Documents/rookmate/undertow/game/level/steward_watch.gd:96) checks proximity, and [Narrator.say_place](/home/homebox/Documents/rookmate/undertow/autoload/narrator.gd:112) checks heard history, voice availability and silence. Neither checks whether the procedure remains active. Once other speech finishes, the stale line is eligible.
+
+   The contradictory wording and eligibility are confirmed. Encounter frequency and its effect on players are unmeasured. This is a remaining milestone defect, separate from Round 10's repairs. Make the line valid after the defeat, or restrict its delivery to the active encounter. Cover the unheard-line-on-revisit case.
+
+The Round 10 repairs hold:
+
+- **Boss bookkeeping.** The [Boss guard](/home/homebox/Documents/rookmate/undertow/game/level/steward_watch.gd:153) returns before ordinary kill narration and before updating the pair's timestamp, distance or kind. All six bosses inherit `Boss` and retain their separate `boss_down` notifications. The [regression test](/home/homebox/Documents/rookmate/undertow/tests/integration/test_adaptive_narration.gd:207) checks the Editor followed by a Custodian.
+- **Two cleaners.** [LOOP_MULTI_N1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:1233) requires `custodian`. Pair context supplies a kind only when both deaths match, and the expanded selector test covers the Loop and missing shared kind.
+- **Salvager cargo.** [GREY_KILL_N6](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2395) now describes its kind's history after the Quiet, without claiming what this defeated machine carried.
+- **Tideworks writing.** [TIDE_KILL_N3](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:1563) describes a historical safety period, without announcing that this kill ends it. [TIDE_MULTI_N1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:1635) adds the quay's working history.
+
+I found no new unsupported observation, canon conflict or exact duplicate in the rewrites. Independent read-only checks confirmed **684 Steward lines**, matching manifest text and voice-settings hashes, clips for every line, and no orphan manifest entries. All **468 pooled texts are distinct**. The **43 new or rewritten pooled texts against HEAD** have new or changed recordings; all decode cleanly, and none duplicates another Steward text.
+
+Earlier read-state, saved history, spent-beat, purpose-filtering, pair-distance and story-protection repairs remain intact. I found no weakened existing assertion or removed gate check. Both requested diffs pass `git diff --check`.
+
+Current primary logs confirm clean import, **542 passing tests**, gold and serif ownership checks, and the **30-second native smoke pass**. The running campaign has reached Tideworks but has no final result; a completed full gate on this tree remains unverified.
+
+Low-value nits remain separate: repeated openings and shared sentence templates do not warrant additional findings. Real actor delivery and narration density in play remain unverified and belong to the later polish recorded in PROGRESS.md.
+
+I made no edits. The place-line counterexample was checked against source branches, not reproduced in the engine.
+
+## Round 11 fixes
+
+The place lines hadn't been part of the round 7 audit, so all 42 were read for a state the player can
+change (a boss beaten, a hold done, one of the Waiting woken and gone). Four, and one idle line, said
+something that stops being true:
+
+- place_mercy_theatre "Theatre four. The last procedure started at 02:10. I never told it to stop."
+- place_grey_pump_room "The old manual pump room. Nobody needed it for six years. Then the Quiet."
+- place_kestrel_gardener "Mr Hale kept these hedges thirty years. I told him when to cut them back. He
+  listened." (he's one of the Waiting: woken, he's gone)
+- place_loop_carriage "The 23:40 stopped here. I asked its passengers to stay in their seats. Most people
+  do what I ask." (the same)
+- TIDE_IDLE_N1 "The containers have hung where they stopped for nine days. I keep meaning to put them
+  down." (the winch hold winds one clear)
+
+Each is now true in either state, so no line needs a condition for it and the revisit case Sol names
+can't contradict them. Five lines rewritten and voiced.
+
+## Round 12 findings (verbatim from sol_analyst)
+
+Round 11's fixes are correct. Milestone 6 is still not ready to close: one P2 state mismatch remains. No P0, P1 or P3 findings.
+
+1. **P2. Mercy can describe a crash cart after the player’s pickup makes it disappear.**
+
+   Confirmed: [place_mercy_resus](/home/homebox/Documents/rookmate/undertow/data/narration/steward_fixed.json:405) says, "The resus bay. The crash cart's where they left it. They were in a hurry."
+
+   The cart and Gauntlet are drawn together by [WeaponFind](/home/homebox/Documents/rookmate/undertow/game/props/weapon_find.gd:44). Taking the Gauntlet records ownership, and [the presence check](/home/homebox/Documents/rookmate/undertow/game/props/weapon_find.gd:19) then hides the entire node, including the cart. There is no separate crash-cart rendering elsewhere.
+
+   Pick up the Gauntlet while muted, then restore the voice and approach [the resus marker](/home/homebox/Documents/rookmate/undertow/data/levels/mercy_general.txt:52). The unheard place line remains eligible: [StewardWatch](/home/homebox/Documents/rookmate/undertow/game/level/steward_watch.gd:96) checks proximity, and [Narrator.say_place](/home/homebox/Documents/rookmate/undertow/autoload/narrator.gd:112) checks heard history, voice availability and silence, without checking ownership or the cart’s presence. The same mismatch remains possible on a revisit.
+
+   The disappearing cart and line eligibility are confirmed from source. The inferred player-facing effect is the Steward describing an object missing from the scene; encounter frequency is unmeasured. Keep the cart as scenery after taking its Gauntlet, or rewrite/gate the line. Cover pickup while muted followed by an unheard-line delivery. This is a remaining milestone issue, not a regression from the five round 11 rewrites.
+
+The round 11 repairs hold:
+
+- **Mercy theatre:** "I never told it to stop" describes the Steward’s past omission and remains valid after the player defeats the Surgeon.
+- **Greywater pump room:** the six-year interval is explicitly historical.
+- **Mr Hale and the Loop passengers:** both lines describe history without claiming those people remain present.
+- **Tideworks idle:** the plural wording describes the hanging scenery loads without identifying the cleared hatch obstruction.
+
+I checked all 42 place lines and the other requested fixed district lines against their callers: the ten hold replies, three finds, three tool doors and the Waiting’s refusal, plus Mercy’s ward refusal. I found no additional state contradiction worth reporting. Holds announce their start or completion, finds follow acquisition, and the Waiting and ward refusals require the relevant person or seal to remain unresolved.
+
+No round 11 rewrite introduces a new unsupported claim, canon conflict or exact duplicate. Independent read-only checks confirmed **684 Steward lines**, current manifest text and voice-settings hashes, clips for every line, and no orphan recordings or manifest entries. All **468 pooled texts are distinct**. All five rewritten Ogg files changed and decode cleanly. The milestone’s new or rewritten Steward texts introduce no exact duplicates.
+
+Earlier read-state, saved history, spent-beat, purpose-filtering, pair-distance, enemy-kind and story-protection repairs remain intact. I found no weakened assertion or removed gate check. Both requested diffs pass `git diff --check`.
+
+Current primary logs confirm clean import, **542 passing tests**, gold and serif ownership checks, and the **30-second native smoke pass**. The current full gate is still running its campaign; its completion remains unverified.
+
+Low-value nits remain separate: repeated openings and shared sentence templates do not warrant further findings. Real actor delivery and narration density in play remain unverified and belong to the later polish recorded in PROGRESS.md.
+
+I made no edits. The counterexample was checked against source branches, not reproduced in the engine.
+
+## Round 12 fixes
+
+- place_mercy_resus "The resus bay. The crash team worked from here. That night they left in a hurry."
+  (the crash cart goes with the Gauntlet when you take it). True with or without the cart, so the
+  muted-pickup case can't contradict it. One line rewritten and voiced.
+
+## Round 13 findings (verbatim from sol_analyst)
+
+Round 12's fix is correct, and all five round 11 rewrites still hold. **No P0, P1, P2 or P3 findings worth fixing.** The writing review can close. Milestone 6 is ready to close once the current full gate passes; that result remains unverified.
+
+Confirmed from the content and its callers:
+
+- [place_mercy_resus](/home/homebox/Documents/rookmate/undertow/data/narration/steward_fixed.json:405) now describes the crash team's past work and departure. Taking the Gauntlet still [hides the cart with it](/home/homebox/Documents/rookmate/undertow/game/props/weapon_find.gd:19), but the line makes no claim that the cart remains. Pickup while muted, later delivery and revisits no longer produce the named contradiction.
+- [place_mercy_theatre](/home/homebox/Documents/rookmate/undertow/data/narration/steward_fixed.json:421) describes the Steward's failure to order a stop, rather than claiming the procedure continues. It remains compatible with the player stopping the Surgeon.
+- [place_grey_pump_room](/home/homebox/Documents/rookmate/undertow/data/narration/steward_fixed.json:445) makes the six-year interval historical. Completing the pumps or restoring the Pumphouse does not contradict it.
+- [place_kestrel_gardener](/home/homebox/Documents/rookmate/undertow/data/narration/steward_fixed.json:337) describes Mr Hale's work and obedience without claiming he remains present. His [own waking line](/home/homebox/Documents/rookmate/undertow/data/companions/waiting.json:5) supports the cutting instructions.
+- [place_loop_carriage](/home/homebox/Documents/rookmate/undertow/data/narration/steward_fixed.json:353) describes the train's stop and the earlier instruction to its passengers. Waking those passengers does not invalidate it.
+- [TIDE_IDLE_N1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:1782) describes the remaining hanging scenery loads. Completing the winch clears the hatch obstruction; it does not remove the district's [HangingContainer scenery](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:462).
+
+I found no new unsupported observation or canon conflict in these six rewrites. Their historical details are authored backstory, consistent with the established setting. My writing judgment is that each adds history or the Steward's perspective and meets the pass's subtext criterion.
+
+Independent read-only checks confirmed **684 Steward lines**, matching manifest text and voice-settings hashes, clips for every line, and no orphan clips or manifest entries. All **468 pooled texts are distinct**. None of the milestone's **441 new or rewritten Steward texts** introduces an exact duplicate. All six uncommitted Ogg files changed and decode cleanly.
+
+The earlier read-state, saved narration history, spent-beat, purpose-filtering, pair-distance, enemy-kind and story-protection repairs remain intact. I found no weakened assertion or removed gate check. Both requested diffs pass `git diff --check`.
+
+Primary logs confirm clean import, [542 passing tests](/home/homebox/Documents/rookmate/undertow/reports/check/tests.log:561), gold and serif ownership checks, and the [30-second smoke pass](/home/homebox/Documents/rookmate/undertow/reports/check/smoke.log:21). The current campaign has no final result, so those logs do not yet establish a completed full gate on this tree.
+
+Low-value nits remain separate: repeated openings and shared sentence templates do not warrant another fix round. Real actor delivery and narration density in play remain unmeasured and belong to the later polish described in PROGRESS.md.
+
+I reviewed both requested diffs without editing anything. The state checks were source-based, not engine reproductions.
+
+## After round 13
+
+Round 13 found nothing. The gate then failed twice on the same tree, both times in the campaign and
+never in the game: the autopilot (the bot that plays it) stalled. Once it was wedged against the Harbor
+fence while fighting the Warden-Prime, so its 180 s for the fight ran out with the Prime still at 96%.
+Once it was wedged between a lamp post and the Vellum's wall at the start. The bot's old check only
+counted standing perfectly still; sliding along a wall reset it. Now `Autopilot.unstick` judges by
+progress: walking somewhere and not 0.4 tiles from where it stood 2 s ago, it rolls out, toward the next
+cell of its path and then to either side. `advance_to` and the Warden-Prime tactic use it. Only the bot
+changed; no check did. And the gate's runs are line-buffered (`tools/check.sh`), so a run its timeout
+cuts off still leaves its last lines; the first failure lost them. The gate passed on this tree.
+
+## Closed
+
+**Review closed after 13 rounds.** Round 1 found the engineering problems: knowing a log as soon as you
+carry it, Continue forgetting what was said, beats repeating, remarks cutting off the hold lines, facts
+silenced with the praise. Rounds 2 to 12 were the long tail of one kind of fault: a reactive line saying
+something its event can't know (where you stood, what you did next, which machine it was, a tide it
+didn't check, a state a boss or a hold changes). The fix was two new things the Steward is told, how far
+away a kill was and what died, and about 160 lines rewritten so each says only what it saw. Until
+round 8 the reviewer sampled; asked to check every line at once, the tail ended within a few rounds.
+
+Still to settle by listening, not by the gate: how the lines sound in a real voice (these are drafts
+for the writer and the actor), and whether the narration comes too often or too seldom in play.

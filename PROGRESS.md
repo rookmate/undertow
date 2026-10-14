@@ -93,7 +93,7 @@ Sol's closure check found nothing open. 229 tests.
 
 **Milestone status: the vertical slice is done and reviewed.**
 
-## Milestone 2: Act 1 (in progress)
+## Milestone 2: Act 1 (done)
 
 Following the world bible's order. Same gates per step, a video per visible step, Sol analysis review
 at the end. The user's answers (2026-10-09) are in DECISIONS.md 80–87.
@@ -188,7 +188,7 @@ Plan: `design/deeper-districts.md`.
 | 42 | Rewrite's truth threshold re-tuned against the new count | done |
 | — | Sol analysis review (reviews/deeper-districts.md), fixes, re-check: closed after 7 rounds | done |
 
-## Milestone 6: the writing pass (in progress)
+## Milestone 6: the writing pass (done)
 
 The Steward written the way Bastion's narrator was (design/writing-review.md): what it says adds what you
 couldn't know, it doesn't repeat itself, it knows where you are, and it changes as you learn what it did.
@@ -200,7 +200,17 @@ First drafts, for a human writer and the voice actor to take further.
 | 44 | Places: the Steward remarks on landmarks as you reach them | done |
 | 45 | The arc: lines for what you've come to know, and for revisits | done |
 | 46 | The logs and the rest: Teo argues as well as confesses, the ending menu weighs nothing, continuity | done |
-| — | Sol analysis review, fixes, re-check | rounds 1 to 10 fixed and gated (reviews/writing-pass.md); round 11 fixes next |
+| — | Sol analysis review, fixes, re-check | done (13 rounds; closed) |
+
+**Review (reviews/writing-pass.md).** Round 1 found the engineering problems (DECISIONS 202): the
+Steward now knows a memory log only once you've read it, Continue keeps what it has said, a beat is said
+once, a hold's lines can't be cut off, and its facts survive "Stop praising me". Rounds 2 to 12 were one
+kind of fault, a line claiming what its event can't know (DECISIONS 203): a kill now tells it how far
+away it was and what died, and about 160 lines were rewritten to say only what it saw. The gate's bot
+also learned to roll out of wedges by progress (DECISIONS 204). 542 tests.
+
+**Milestone status: the writing pass is done and reviewed.** The lines are drafts for a human writer
+and the voice actor.
 
 ## Painted art
 
