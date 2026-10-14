@@ -38,6 +38,7 @@ func glow_color() -> Color:
 
 
 func _physics_process(delta: float) -> void:
+	visible = player != null and player.is_alive() and not player.carrying
 	if player == null or not player.can_act():
 		_idle(delta)
 		return

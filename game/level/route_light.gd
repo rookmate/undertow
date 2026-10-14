@@ -22,6 +22,7 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
-	draw_rect(Rect2(-3, -40, 6, 40), Palette.IRON_DARK)
+	var bounds := Rect2(-8, -48, 16, 48)
+	ArtCatalog.paint(self, "route_light", bounds)
 	var on := Steward.voice_on and fmod(_t, PERIOD) < 0.5
-	draw_circle(Vector2(0, -44), 5.0, Palette.STEWARD_GOLD_HOT if on else Palette.GREY_DEEP, true, -1.0, true)
+	draw_circle(ArtCatalog.anchor("route_light", "lens", bounds), 2.5, Palette.STEWARD_GOLD_HOT if on else Palette.GREY_DEEP, true, -1.0, true)

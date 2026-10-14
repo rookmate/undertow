@@ -69,24 +69,7 @@ func _set_open(value: bool) -> void:
 
 
 func _draw() -> void:
-	var h := 96.0
 	var hw := Iso.HALF_W * 0.48
-	var hh := Iso.HALF_H * 0.48
-	var a := Vector2(-hw, -hh * 0.0)
-	var b := Vector2(hw, 0.0)
-	# Posts either side; the leaves swing back against them when open.
-	for p: Vector2 in [a, b]:
-		draw_rect(Rect2(p + Vector2(-5, -h - 10), Vector2(10, h + 10)), Palette.IRON_DARK)
-		draw_circle(p + Vector2(0, -h - 14), 7.0, Palette.IRON_DARK, true, -1.0, true)
-	var gilt := Palette.STEWARD_GOLD if Steward.voice_on else Palette.GREY_COLD
-	if open:
-		for p: Vector2 in [a, b]:
-			draw_line(p + Vector2(0, -8), p + Vector2(0, -h + 8), Palette.IRON_DARK, 6.0, true)
-		return
-	# Shut: two leaves of whiplash ironwork across the walk.
-	for k: int in 9:
-		var u := k / 8.0
-		var x := a.lerp(b, u)
-		draw_line(x + Vector2(0, -6), x + Vector2(0, -h + 14 + sin(u * PI) * 10.0), Palette.IRON_DARK, 3.0, true)
-	draw_line(a + Vector2(0, -h * 0.55), b + Vector2(0, -h * 0.55), Palette.IRON_DARK, 4.0, true)
-	draw_arc(a.lerp(b, 0.5) + Vector2(0, -h + 26), hw * 0.9, PI, TAU, 16, gilt, 2.0, true)
+	ArtCatalog.door(self, "smart_gate", Rect2(-hw - 7, -110, hw * 2 + 14, 110), 0.94 if open else 0.0, true)
+	if not open and Steward.voice_on:
+		draw_arc(Vector2(0, -70), hw * 0.9, PI, TAU, 16, Palette.STEWARD_GOLD, 1.5, true)

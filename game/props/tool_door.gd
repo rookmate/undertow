@@ -92,19 +92,6 @@ func _process(delta: float) -> void:
 
 func _draw() -> void:
 	var hw := Iso.HALF_W * 0.85
-	var h := 96.0
-	# The frame: two posts and a lintel.
-	for x: float in [-hw, hw]:
-		draw_rect(Rect2(Vector2(x - 5, -h), Vector2(10, h)), Palette.IRON_DARK)
-	draw_line(Vector2(-hw, -h), Vector2(hw, -h), Palette.IRON_DARK, 8.0, true)
-	# The leaf swings back as it opens.
-	var leaf := hw * 2.0 * (1.0 - _open_amount)
-	if leaf > 2.0:
-		draw_rect(Rect2(Vector2(-hw + 5, -h + 6), Vector2(leaf - 10, h - 6)), Palette.STONE_OLD.darkened(0.35))
-		draw_rect(Rect2(Vector2(-hw + 5, -h + 6), Vector2(leaf - 10, h - 6)), Palette.IRON_DARK, false, 2.0)
-		# Its lock plate, by the handle.
-		draw_rect(Rect2(Vector2(-hw + leaf - 22, -h * 0.55), Vector2(10, 16)), Palette.GREY_COLD)
-	# What's behind it, still there: a glow through the gap at the sill.
+	ArtCatalog.door(self, "tool_door", Rect2(-hw, -96, hw * 2, 96), _open_amount)
 	if still_behind():
-		var a := 0.25 + 0.15 * sin(_t * 2.0)
-		draw_line(Vector2(-hw + 6, -2), Vector2(hw - 6, -2), Color(Palette.TRUTH_CYAN, a), 4.0, true)
+		draw_line(Vector2(-hw + 6, -2), Vector2(hw - 6, -2), Color(Palette.TRUTH_CYAN, 0.25 + 0.15 * sin(_t * 2.0)), 4.0, true)

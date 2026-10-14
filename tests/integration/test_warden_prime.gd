@@ -117,6 +117,8 @@ func test_noor_waits_for_the_fight_then_you_carry_her_home() -> void:
 	await wait_frames(2)
 	check(level.player.carrying, "on your shoulder")
 	check_false(level.player.can_act(), "no weapons while you carry her")
+	await wait_physics_frames(2)
+	check(level.player.weapons.all(func(w: Weapon) -> bool: return not w.visible), "equipped tools are stowed while carrying her")
 	var patrol := 0
 	for e: Enemy in level.living_enemies():
 		if e is Warden and (e as Warden).hunting:
@@ -241,3 +243,19 @@ func test_carried_again_the_same_patrol_comes_after_you() -> void:
 	check_eq(level.curfew_patrol().size(), 2, "picked up again: the same two, no more")
 	check_eq(level.living_enemies().size(), wardens, "nobody new")
 	check(level.curfew_patrol().all(func(w: Warden) -> bool: return w.hunting), "and they're after you again")
+
+
+func test_retired_relay_allows_the_operator_to_walk_through() -> void:
+	await _beat_it()
+	var relay := prime.weak_point
+	check_false(relay.is_alive(), "the defeated boss's relay is retired")
+	var p := level.player
+	p.set_physics_process(false)
+	p.position = relay.global_position + Iso.ground_velocity(Vector2(0, -1), 0.8)
+	await wait_physics_frames(2)
+	var destination := relay.global_position + Iso.ground_velocity(Vector2(0, 1), 0.8)
+	for tick: int in 50:
+		p.velocity = Iso.ground_velocity(Vector2(0, 1), 2.0)
+		p.move_and_slide()
+		await wait_physics_frames(1)
+	check(Iso.world_to_grid(p.position).y >= Iso.world_to_grid(destination).y - 0.15, "walked through the retired fitting rather than hitting its capsule")

@@ -34,8 +34,7 @@ func interact(player: Operator) -> void:
 
 
 func _draw() -> void:
-	draw_colored_polygon(PackedVector2Array([Vector2(-56, 0), Vector2(0, 26), Vector2(56, 0), Vector2(0, -26)]), Color(Palette.NEAR_BLACK, 0.4))
-	draw_colored_polygon(PackedVector2Array([Vector2(-60, -10), Vector2(10, 22), Vector2(60, -4), Vector2(-6, -34)]), Palette.BOATHOUSE)
-	draw_colored_polygon(PackedVector2Array([Vector2(-48, -14), Vector2(8, 12), Vector2(48, -8), Vector2(-4, -28)]), Palette.PIER_PLANK)
-	draw_line(Vector2(-6, -34), Vector2(-6, -84), Palette.IRON_DARK, 3.0)
-	draw_rect(Rect2(-2, -86, 10, 12), Palette.WARD_CYAN_HOT)
+	draw_colored_polygon(Fx.ground_ellipse(0.85, 20, false), Color(Palette.NEAR_BLACK, 0.4))
+	ArtCatalog.paint(self, "boat", Rect2(-60, -64, 120, 86))
+	ArtCatalog.paint(self, "lantern_housing", Rect2(14, -60, 12, 24))
+	draw_circle(Vector2(20, -45), 3.0, Palette.WARD_CYAN_HOT, true, -1.0, true)

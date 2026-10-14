@@ -77,6 +77,11 @@ window/size/window_height_override=900
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[editor]
+
+; Serial imports avoid the 4.7.2 cold-import crash while saving dynamic font resources.
+import/use_multiple_threads=false
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true

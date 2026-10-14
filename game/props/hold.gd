@@ -135,18 +135,11 @@ func brought_out() -> Array[Enemy]:
 
 
 func _draw() -> void:
-	draw_colored_polygon(PackedVector2Array([Vector2(-26, 0), Vector2(0, 12), Vector2(26, 0), Vector2(0, -12)]), Color(Palette.NEAR_BLACK, 0.4))
-	# A pump's hand crank: a stout post, a wheel on it, turning while it runs.
-	draw_rect(Rect2(-7, -54, 14, 54), Palette.IRON_DARK)
-	var c := Vector2(0, -58)
+	draw_colored_polygon(Fx.ground_ellipse(0.4, 18, false), Color(Palette.NEAR_BLACK, 0.4))
+	ArtCatalog.paint(self, "crank", Rect2(-24, -84, 48, 90))
 	var spin := _t * 3.0 if turning() else 0.0
-	draw_arc(c, 18.0, 0.0, TAU, 20, Palette.IRON_DARK.lightened(0.2), 4.0, true)
-	for k: int in 4:
-		var a := spin + k * PI * 0.5
-		draw_line(c, c + Vector2.from_angle(a) * 18.0, Palette.IRON_DARK.lightened(0.2), 3.0, true)
-	draw_line(c + Vector2.from_angle(spin) * 18.0, c + Vector2.from_angle(spin) * 18.0 + Vector2(10, 4), Palette.STONE_OLD, 4.0, true)
-	if running and not done:
-		# Its own lamp, people's light: cream, brighter as it goes.
-		draw_circle(Vector2(0, -90), 6.0 + 4.0 * ratio(), Color(Palette.HUMAN_CREAM, 0.5 + 0.5 * ratio()), true, -1.0, true)
-	elif done:
-		draw_circle(Vector2(0, -90), 7.0, Palette.HUMAN_CREAM, true, -1.0, true)
+	draw_set_transform(Vector2(0, -58), spin)
+	ArtCatalog.paint(self, "valve_wheel", Rect2(-18, -18, 36, 36))
+	draw_set_transform(Vector2.ZERO)
+	if running or done:
+		draw_circle(Vector2(0, -90), 7.0, Color(Palette.HUMAN_CREAM, 1.0 if done else 0.5 + 0.5 * ratio()), true, -1.0, true)

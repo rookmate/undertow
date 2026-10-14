@@ -92,6 +92,23 @@ func player() -> Operator:
 	return level.player if level != null else null
 
 
+func paint_body(model: String, height: float, offset: Vector2 = Vector2.ZERO) -> void:
+	var direction := Iso.grid_to_world(facing_ground)
+	draw_set_transform(offset, 0.0, Vector2(-1.0 if direction.x < 0.0 else 1.0, 1.0))
+	ArtCatalog.actor(self, body_key(model), height, Vector2.ZERO, hit_flash())
+	draw_set_transform(Vector2.ZERO)
+
+
+func body_key(model: String) -> String:
+	return model + ("_back" if Iso.grid_to_world(facing_ground).y < -0.25 else "_front")
+
+
+func body_anchor(model: String, anchor_id: String, height: float, offset: Vector2 = Vector2.ZERO) -> Vector2:
+	var point := ArtCatalog.actor_anchor(body_key(model), anchor_id, height)
+	point.x *= -1.0 if Iso.grid_to_world(facing_ground).x < 0.0 else 1.0
+	return point + offset
+
+
 func distance_to_player() -> float:
 	var p := player()
 	if p == null:

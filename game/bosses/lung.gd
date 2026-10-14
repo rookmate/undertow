@@ -309,18 +309,15 @@ func _physics_process(delta: float) -> void:
 
 func _draw() -> void:
 	draw_shadow(58.0, 26.0)
-	var flash := hit_flash()
-	var body := Palette.PUMP_CONCRETE.lerp(Palette.IVORY, flash)
-	# The controller: a squat drum with a bellows on top that breathes with the schedule.
+	var tint := Color.WHITE * (1.0 + hit_flash())
 	var breath := sin(Time.get_ticks_msec() / 1000.0 * (6.0 if is_vulnerable() else 1.6)) * 8.0
-	draw_colored_polygon(PackedVector2Array([Vector2(-50, -8), Vector2(0, 18), Vector2(50, -8), Vector2(50, -70), Vector2(0, -44), Vector2(-50, -70)]), body.darkened(0.2))
-	draw_colored_polygon(PackedVector2Array([Vector2(-50, -70), Vector2(0, -44), Vector2(50, -70), Vector2(0, -96)]), body)
-	draw_colored_polygon(PackedVector2Array([Vector2(-30, -84), Vector2(30, -84), Vector2(22, -120 - breath), Vector2(-22, -120 - breath)]), Palette.PUMP_ROOF)
-	for k: int in 3:
-		draw_line(Vector2(-26 + k * 2, -94 - k * 9), Vector2(26 - k * 2, -94 - k * 9), Palette.IRON_DARK, 2.0, true)
+	ArtCatalog.paint(self, "lung", Rect2(-50, -96, 100, 114), tint)
+	ArtCatalog.paint(self, "lung_bellows", Rect2(-30, -128 - breath, 60, 44 + breath), tint)
 	# Its gauge: the Steward's (gold); open, the needle drops and it glows.
-	draw_circle(Vector2(0, -58), 10.0, Palette.IRON_DARK, true, -1.0, true)
-	draw_circle(Vector2(0, -58), 6.0, Palette.STEWARD_GOLD_HOT if is_vulnerable() else Palette.STEWARD_GOLD, true, -1.0, true)
+	var gauge := Vector2(0, -58)
+	var needle := Vector2(0, -6).rotated(-0.7 if is_vulnerable() else 0.7)
+	draw_line(gauge, gauge + needle, Palette.STEWARD_GOLD_HOT, 1.5, true)
+	draw_circle(gauge, 2.0, Palette.STEWARD_GOLD_HOT if is_vulnerable() else Palette.STEWARD_GOLD, true, -1.0, true)
 	# The quarter about to flood: its edge in red-orange (danger); flooding, the water over it.
 	if phase == Phase.FILL or phase == Phase.FLOOD:
 		_quarter_outline(Color(Palette.DANGER, 0.9 if phase == Phase.FILL else 0.4))

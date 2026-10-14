@@ -291,18 +291,13 @@ func _draw() -> void:
 			var k := clampf(_phase_time / (VOLLEY_WARN if phase == Phase.VOLLEY else _warn_for), 0.0, 1.0)
 			draw_line(Vector2.ZERO, Iso.grid_to_world(d * reach), Color(Palette.DANGER, 0.3 + 0.5 * k), 3.0 + 4.0 * k, true)
 	draw_shadow(46.0, 20.0)
-	var flash := hit_flash()
-	var body := Palette.IRON_DARK.lightened(0.18).lerp(Palette.IVORY, flash)
+	var tint := Color.WHITE * (1.0 + hit_flash())
 	var reel := 0.0 if phase != Phase.DAZED else sin(_phase_time * 9.0) * 6.0
-	# A big riot drone: a heavy hull on four legs, a shield, the searchlight on a mast, the red eye.
-	for x: float in [-30.0, -12.0, 12.0, 30.0]:
-		draw_line(Vector2(x * 0.7, -50), Vector2(x, 0), Palette.IRON_DARK, 6.0)
-	draw_colored_polygon(PackedVector2Array([Vector2(-40, -50), Vector2(40, -50), Vector2(32, -112), Vector2(-32, -112)]), body)
-	draw_rect(Rect2(-34, -84, 68, 10), Palette.CLERK_SHELL.darkened(0.3))
-	draw_line(Vector2(0, -112), Vector2(reel, -150), Palette.IRON_DARK, 5.0)
+	ArtCatalog.paint(self, "warden_prime", Rect2(-40, -112, 80, 112), tint)
+	var mast_bounds := Rect2(-15 + reel, -168, 30, 58)
+	var lens := ArtCatalog.anchor("warden_mast", "lens", mast_bounds)
 	var lamp := Palette.STEWARD_GOLD_HOT if phase == Phase.SWEEP else Palette.GREY_DEEP
-	draw_circle(Vector2(reel, -156), 11.0, Palette.IRON_DARK, true, -1.0, true)
-	draw_circle(Vector2(reel, -156), 7.0, lamp, true, -1.0, true)
+	draw_circle(lens, 4.0, lamp, true, -1.0, true)
+	ArtCatalog.paint(self, "warden_mast", mast_bounds, tint)
 	var eye := Palette.GREY_DEEP if is_vulnerable() else Palette.DANGER_HOT
-	draw_circle(Vector2(0, -96), 9.0, Palette.BLACK_MIRROR, true, -1.0, true)
-	draw_circle(Vector2(0, -96), 5.0, eye, true, -1.0, true)
+	draw_circle(Vector2(0, -96), 3.0, eye, true, -1.0, true)

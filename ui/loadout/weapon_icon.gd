@@ -1,6 +1,6 @@
 class_name WeaponIcon
 extends Control
-## Placeholder icons for the reclaimed city tools: chipped municipal paint, a half-peeled asset tag.
+## Painted icons for the reclaimed city tools: chipped municipal paint, a half-peeled asset tag.
 
 var weapon_id: String = ""
 
@@ -10,36 +10,11 @@ func _ready() -> void:
 
 
 func _draw() -> void:
-	var c := size * 0.5
-	var paint := Palette.IRON_VERDIGRIS
-	match weapon_id:
-		WeaponDefs.BATON:
-			draw_line(c + Vector2(-50, 50), c + Vector2(40, -40), Palette.IRON_DARK, 16.0, true)
-			draw_line(c + Vector2(0, 0), c + Vector2(40, -40), Palette.IVORY, 10.0, true)
-			draw_rect(Rect2(c + Vector2(-56, 30), Vector2(26, 14)), paint)
-		WeaponDefs.RIOT_DRONE:
-			draw_circle(c, 46.0, Palette.IRON_DARK, true, -1.0, true)
-			draw_circle(c, 30.0, paint, true, -1.0, true)
-			for k: int in 4:
-				var a := TAU * k / 4.0 + PI * 0.25
-				draw_line(c + Vector2.from_angle(a) * 46.0, c + Vector2.from_angle(a) * 66.0, Palette.GREY_COLD, 4.0, true)
-			draw_circle(c, 7.0, Palette.IVORY, true, -1.0, true)
-		WeaponDefs.DEFIB:
-			draw_rect(Rect2(c + Vector2(-40, -30), Vector2(80, 70)), Palette.IRON_DARK)
-			draw_rect(Rect2(c + Vector2(-34, -24), Vector2(68, 22)), paint)
-			draw_line(c + Vector2(-10, 10), c + Vector2(4, 22), Palette.IVORY, 4.0, true)
-			draw_line(c + Vector2(4, 22), c + Vector2(-4, 30), Palette.IVORY, 4.0, true)
-		WeaponDefs.SIGNAL_JAMMER:
-			# A hand-built box: a scavenged antenna, taped in the Ward's cyan.
-			draw_rect(Rect2(c + Vector2(-38, -20), Vector2(76, 52)), Palette.IRON_DARK)
-			draw_line(c + Vector2(20, -20), c + Vector2(34, -64), Palette.GREY_COLD, 4.0, true)
-			for k: int in 3:
-				draw_line(c + Vector2(-38, -6 + k * 16), c + Vector2(38, -6 + k * 16), Palette.WARD_CYAN, 5.0)
-			draw_circle(c + Vector2(-18, 8), 6.0, Palette.WARD_CYAN_HOT, true, -1.0, true)
-		_:
-			draw_arc(c, 46.0, 0.0, TAU, 32, Palette.GREY_DEEP, 3.0, true)
-			draw_string(UiFonts.heading(), c + Vector2(-10, 16), "?", HORIZONTAL_ALIGNMENT_LEFT, -1, 48, Palette.GREY_DEEP)
-	# Half-peeled asset tag (the Ward's jammer never had one).
-	if WeaponDefs.is_playable(weapon_id) and weapon_id != WeaponDefs.SIGNAL_JAMMER:
-		draw_rect(Rect2(c + Vector2(20, 40), Vector2(44, 18)), Palette.PAPER)
-		draw_line(c + Vector2(24, 46), c + Vector2(58, 46), Palette.GREY_DEEP, 2.0)
+	var key: String = {
+		WeaponDefs.BATON: "baton", WeaponDefs.RIOT_DRONE: "drone",
+		WeaponDefs.DEFIB: "gauntlet", WeaponDefs.SIGNAL_JAMMER: "jammer",
+	}.get(weapon_id, "")
+	if key != "":
+		ArtCatalog.fit(self, key, Rect2(size * 0.1, size * 0.8))
+	else:
+		draw_string(UiFonts.heading(), size * 0.5 + Vector2(-10, 16), "?", HORIZONTAL_ALIGNMENT_LEFT, -1, 48, Palette.GREY_DEEP)

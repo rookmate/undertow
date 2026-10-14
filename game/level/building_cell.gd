@@ -10,8 +10,6 @@ enum Facade { PLAIN, DOOR, NEON_MAGENTA, NEON_LIME, ARCHIVE, LAUNDRY, SIGNAL_ROO
 const STORY := 74.0
 const STORIES := 3
 const PARAPET := 16.0
-const GLOW_LAYER := 0
-const GILT_LAYER := 1
 
 var cell: Vector2i
 var facade: Facade = Facade.PLAIN
@@ -24,14 +22,15 @@ var show_right: bool = true
 var gilt_lit: bool = true:
 	set(value):
 		gilt_lit = value
-		if _emissive != null:
-			_emissive.set_layer_enabled(GILT_LAYER, value)
+		if _gilt_emissive != null:
+			_gilt_emissive.set_layer_enabled(0, value)
 
 var _base := DrawOps.new()
 var _glow := DrawOps.new()
 var _gilt := DrawOps.new()
-var look: DistrictLook = DistrictLook.new()
-var _emissive: Emissive
+var _ornaments := DrawOps.new()
+var look: DistrictLook = DistrictLook.for_district("vellum")
+var _gilt_emissive: Emissive
 
 
 func setup(at: Vector2i, kind: Facade, left_open: bool, right_open: bool, district_look: DistrictLook = null) -> void:
@@ -42,11 +41,20 @@ func setup(at: Vector2i, kind: Facade, left_open: bool, right_open: bool, distri
 	show_left = left_open
 	show_right = right_open
 	position = Iso.cell_center(at)
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+	texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
 	add_to_group(&"gilt")
 	_build()
-	_emissive = Emissive.new()
-	_emissive.layers = [_glow, _gilt]
-	add_child(_emissive)
+	var window_light := Emissive.new()
+	window_light.layers = [_glow]
+	add_child(window_light)
+	if not _ornaments.is_empty():
+		_ornaments.add_layer(self, &"PaintedFacade")
+	# Gold sits above the painted ironwork; only this last layer follows the voice toggle.
+	_gilt_emissive = Emissive.new()
+	_gilt_emissive.layers = [_gilt]
+	_gilt_emissive.set_layer_enabled(0, gilt_lit)
+	add_child(_gilt_emissive)
 	if is_neon():
 		var col := neon_color()
 		var light := PointLight2D.new()
@@ -86,39 +94,37 @@ func _build() -> void:
 	var left := Vector2(-hw, 0)
 	var up := Vector2(0, -h)
 	if show_left:
-		_base.poly(PackedVector2Array([left, bottom, bottom + up, left + up]), look.wall_shade)
+		_wall_material(PackedVector2Array([left, bottom, bottom + up, left + up]), look.wall_shade, true)
 		_face(left, bottom, h, false)
 	if show_right:
-		_base.poly(PackedVector2Array([bottom, right, right + up, bottom + up]), look.wall)
+		_wall_material(PackedVector2Array([bottom, right, right + up, bottom + up]), look.wall, false)
 		_face(bottom, right, h, true)
-	_base.poly(PackedVector2Array([top + up, right + up, bottom + up, left + up]), look.wall_top)
-	_base.polyline(PackedVector2Array([left + up, top + up, right + up]), Color(Palette.NEAR_BLACK, 0.5), 2.0)
+	var roof := PackedVector2Array([top + up, right + up, bottom + up, left + up])
+	_base.textured_poly(roof, PackedVector2Array([Vector2.ZERO, Vector2.RIGHT, Vector2.ONE, Vector2.DOWN]), look.roof_texture)
 	if facade == Facade.SIGNAL_ROOM and show_left and show_right:
-		# A signal mast on the roof, its lamps the old cream ones people switched by hand.
 		var foot := up + Vector2(0, -4)
-		_base.line(foot, foot + Vector2(0, -90), Palette.IRON_DARK, 4.0)
+		_base.sprite("relay_mast", Rect2(foot + Vector2(-12, -90), Vector2(24, 90)))
 		for k: int in 3:
-			_glow.circle(foot + Vector2(0, -40 - k * 22), 5.0, Palette.HUMAN_CREAM)
+			_glow.circle(foot + Vector2(0, -40 - k * 22), 4.0, Palette.HUMAN_CREAM)
 	if roof_mast and show_left and show_right:
-		# A Ward mast: scrap lattice wired on a roof, the Ward's cyan lamp at the top (dark if it's the
-		# Ward's own, unpowered); on the Commons, a cable strung down to the bunting.
 		var foot := up + Vector2(0, -4)
-		var tip := foot + Vector2(0, -170)
-		_base.line(foot + Vector2(-14, 0), tip, Palette.IRON_DARK, 3.0)
-		_base.line(foot + Vector2(14, 0), tip, Palette.IRON_DARK, 3.0)
-		for k: int in 5:
-			var t := (k + 1) / 6.0
-			var y := foot.y + (tip.y - foot.y) * t
-			var half := 14.0 * (1.0 - t)
-			_base.line(Vector2(-half, y), Vector2(half, y), Palette.IRON_DARK, 2.0)
-		_base.line(tip, tip + Vector2(-22, -14), Palette.GREY_COLD, 2.0)
-		_base.line(tip, tip + Vector2(20, -10), Palette.GREY_COLD, 2.0)
-		if facade == Facade.COMMONS:
-			_base.line(tip + Vector2(0, 20), right + up + Vector2(-6, -STORY * 0.4), Color(Palette.IRON_DARK, 0.8), 1.5)
-		if mast_dark:
-			_base.circle(tip + Vector2(0, -4), 6.0, Palette.IRON_DARK.lightened(0.15))
-		else:
-			_glow.circle(tip + Vector2(0, -4), 6.0, Palette.WARD_CYAN)
+		_base.sprite("relay_mast", Rect2(foot + Vector2(-22, -176), Vector2(44, 176)))
+		if not mast_dark:
+			_glow.circle(foot + Vector2(0, -170), 5.0, Palette.WARD_CYAN)
+
+
+func _wall_material(points: PackedVector2Array, _tone: Color, shaded: bool) -> void:
+	# Atlas materials repeat inside their crop, never into a neighbouring atlas panel.
+	var tint := Color.WHITE.darkened(0.24) if shaded else Color.WHITE
+	var h := height()
+	var base_a := points[0]
+	var base_b := points[1]
+	var y := 0.0
+	while y < h:
+		var end := minf(y + Iso.HALF_W, h)
+		var strip := PackedVector2Array([base_a + Vector2(0, -y), base_b + Vector2(0, -y), base_b + Vector2(0, -end), base_a + Vector2(0, -end)])
+		_base.textured_poly(strip, PackedVector2Array([Vector2.DOWN, Vector2.ONE, Vector2(1, 1 - (end - y) / Iso.HALF_W), Vector2(0, 1 - (end - y) / Iso.HALF_W)]), look.wall_texture, tint)
+		y = end
 
 
 ## Point on a face: `a`→`b` is the face's bottom edge, u runs along it (0..1), v is height in px.
@@ -126,107 +132,81 @@ static func _on_face(a: Vector2, b: Vector2, u: float, v: float) -> Vector2:
 	return a.lerp(b, u) + Vector2(0, -v)
 
 
+func _face_ornament(a: Vector2, b: Vector2, bounds: Rect2, texture: Texture2D) -> void:
+	var points := PackedVector2Array([
+		_on_face(a, b, bounds.position.x, bounds.position.y),
+		_on_face(a, b, bounds.end.x, bounds.position.y),
+		_on_face(a, b, bounds.end.x, bounds.end.y),
+		_on_face(a, b, bounds.position.x, bounds.end.y),
+	])
+	_ornaments.textured_poly(points, PackedVector2Array([Vector2.DOWN, Vector2.ONE, Vector2.RIGHT, Vector2.ZERO]), texture)
+
+
+func _module(a: Vector2, b: Vector2, bounds: Rect2, key: String) -> void:
+	_face_ornament(a, b, bounds, ArtCatalog.texture(key))
+
+
 func _face(a: Vector2, b: Vector2, h: float, street_side: bool) -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(Vector3i(cell.x, cell.y, 1 if street_side else 2))
-	if facade == Facade.HOSPITAL or facade == Facade.HOSPITAL_DOOR:
-		_hospital_face(a, b, h, street_side, rng)
-		return
-	if facade == Facade.PUMPING_STATION or facade == Facade.PUMPING_STATION_DOOR:
-		_pump_face(a, b, h, street_side)
-		return
-	if facade == Facade.BOATHOUSE or facade == Facade.BOATHOUSE_DOOR:
-		_boathouse_face(a, b, h, street_side, rng)
+	if look.black_glass:
+		_module(a, b, Rect2(0.02, 4, 0.96, h - 12), "glass_frame")
+		if rng.randf() < 0.25:
+			var c := _on_face(a, b, 0.5, h * 0.55)
+			var arc := PackedVector2Array()
+			for i: int in 25:
+				var t := deg_to_rad(-30.0 + 300.0 * i / 24.0)
+				arc.append(c + Vector2(sin(t), -cos(t)) * 22.0)
+			_base.polyline(arc, Color(Palette.GREY_COLD, 0.25), 2.0)
 		return
 	if facade == Facade.BRIDGE_STUB:
-		_bridge_face(a, b, h)
+		_module(a, b, Rect2(0.04, h - 28, 0.92, 55), "bridge_rebar")
 		return
-	if look.black_glass:
-		_black_glass_face(a, b, h, rng)
+	if facade in [Facade.HOSPITAL, Facade.HOSPITAL_DOOR]:
+		if street_side and facade == Facade.HOSPITAL_DOOR:
+			_module(a, b, Rect2(0.15, 0, 0.7, 90), "ward_seal")
+		else:
+			_module(a, b, Rect2(0.16, 66, 0.68, 70), "hospital_frame")
+		if street_side and (cell.x + cell.y) % 3 == 0:
+			_gilt.circle(_on_face(a, b, 0.5, h - PARAPET - 10), 5.0, Palette.STEWARD_GOLD_HOT)
 		return
-	var mortar := Color(Palette.NEAR_BLACK, 0.16)
-	var v := 12.0
-	while v < h - PARAPET:
-		_base.line(_on_face(a, b, 0.0, v), _on_face(a, b, 1.0, v), mortar, 1.0)
-		v += 12.0
-	_base.line(_on_face(a, b, 0.0, h - PARAPET), _on_face(a, b, 1.0, h - PARAPET), Palette.STONE_OLD, 4.0)
+	if facade in [Facade.PUMPING_STATION, Facade.PUMPING_STATION_DOOR]:
+		_module(a, b, Rect2(0.14, h - 86, 0.5, 54), "louvre")
+		_module(a, b, Rect2(0.72, 0, 0.18, h - PARAPET), "pipe")
+		if street_side and facade == Facade.PUMPING_STATION_DOOR:
+			_module(a, b, Rect2(0.12, 0, 0.52, 72), "tool_door")
+		if street_side and (cell.x + cell.y) % 2 == 0:
+			_gilt.line(_on_face(a, b, 0.2, h - PARAPET - 26), _on_face(a, b, 0.6, h - PARAPET - 26), Palette.STEWARD_GOLD, 1.5)
+		return
 	for story: int in STORIES:
 		var base := story * STORY
-		if story == 0 and facade == Facade.DOOR and street_side:
+		if story == 0 and street_side and facade in [Facade.DOOR, Facade.BOATHOUSE_DOOR]:
 			_door(a, b)
 			continue
-		if facade == Facade.WORKSHOP:
-			# A roller shutter half up on the ground floor, light and sparks inside; warm windows above.
-			if story == 0 and street_side:
-				var shutter := PackedVector2Array([_on_face(a, b, 0.15, 0.0), _on_face(a, b, 0.85, 0.0), _on_face(a, b, 0.85, 40.0), _on_face(a, b, 0.15, 40.0)])
-				_glow.poly(shutter, Color(Palette.HUMAN_CREAM, 0.5))
-				for k: int in 5:
-					var slat := 44.0 + k * 6.0
-					_base.line(_on_face(a, b, 0.15, slat), _on_face(a, b, 0.85, slat), Palette.IRON_DARK, 2.0)
-			else:
-				_window(a, b, base, true, rng)
+		if story == 0 and street_side and facade == Facade.WORKSHOP:
+			_module(a, b, Rect2(0.12, 0, 0.76, 68), "shutter")
+			_glow.line(_on_face(a, b, 0.18, 3), _on_face(a, b, 0.82, 3), Color(Palette.HUMAN_CREAM, 0.7), 2.0)
 			continue
-		if facade == Facade.SIGNAL_ROOM:
-			# Restored and staffed by people: warm windows, and the signal lamps on its mast (below).
-			_window(a, b, base, true, rng)
-			continue
-		if facade == Facade.PUMPHOUSE:
-			# Run by people again: warm windows, the crews' cranks back on the wall, a pipe down the face.
-			_window(a, b, base, true, rng)
-			if story == 0 and street_side:
-				_base.line(_on_face(a, b, 0.85, 0.0), _on_face(a, b, 0.85, STORY * STORIES), Palette.IRON_DARK.lightened(0.15), 8.0)
-			continue
-		if facade == Facade.COMMONS:
-			# The Wardfolk's way of living, brought to the Ark: every window warm, cyan bunting strung across.
-			_window(a, b, base, true, rng)
-			if story == 2 and street_side:
-				for k: int in 5:
-					var u := 0.1 + k * 0.2
-					_glow.circle(_on_face(a, b, u, base + STORY * 0.8 - absf(sin(u * PI)) * 10.0), 4.0, Palette.WARD_CYAN)
-			continue
-		if facade == Facade.CLINIC:
-			# Staffed by people: every window warm, and a cross lit in cream over the door (not red:
-			# red-orange is danger, and this is the opposite).
-			_window(a, b, base, true, rng)
-			if story == 2 and street_side:
-				var c := _on_face(a, b, 0.5, base + STORY * 0.5)
-				_glow.poly(PackedVector2Array([c + Vector2(-5, -16), c + Vector2(5, -16), c + Vector2(5, 16), c + Vector2(-5, 16)]), Palette.HUMAN_CREAM)
-				_glow.poly(PackedVector2Array([c + Vector2(-16, -5), c + Vector2(16, -5), c + Vector2(16, 5), c + Vector2(-16, 5)]), Palette.HUMAN_CREAM)
-			continue
-		if facade == Facade.ARCHIVE:
-			# Restored and in use: every window warm, a rose of stained glass over the door.
-			_window(a, b, base, true, rng)
-			if story == 1 and street_side:
-				_rose(a, b, base)
-			continue
-		_window(a, b, base, rng.randf() < (0.42 if street_side else 0.22), rng)
-		if story == 1:
+		var staffed := facade in [Facade.ARCHIVE, Facade.SIGNAL_ROOM, Facade.WORKSHOP, Facade.CLINIC, Facade.PUMPHOUSE, Facade.COMMONS]
+		_window(a, b, base, staffed or rng.randf() < (0.42 if street_side else 0.22), rng)
+		if story == 1 and facade not in [Facade.BOATHOUSE, Facade.BOATHOUSE_DOOR]:
 			_balcony(a, b, base)
 		if facade == Facade.LAUNDRY and street_side and story >= 1:
-			_laundry(a, b, base, rng)
+			_module(a, b, Rect2(0.05, base + 28, 0.90, 43), "laundry")
+		if facade == Facade.ARCHIVE and street_side and story == 1:
+			_module(a, b, Rect2(0.3, base + 12, 0.4, 38), "rose")
+		if facade == Facade.PUMPHOUSE and street_side and story == 0:
+			_module(a, b, Rect2(0.80, 0, 0.16, STORY * STORIES), "pipe")
+		if facade == Facade.CLINIC and street_side and story == 2:
+			var c := _on_face(a, b, 0.5, base + STORY * 0.5)
+			_glow.line(c + Vector2(0, -14), c + Vector2(0, 14), Palette.HUMAN_CREAM, 6.0)
+			_glow.line(c + Vector2(-14, 0), c + Vector2(14, 0), Palette.HUMAN_CREAM, 6.0)
+		if facade == Facade.COMMONS and street_side and story == 2:
+			for k: int in 5:
+				var u := 0.1 + k * 0.2
+				_glow.circle(_on_face(a, b, u, base + STORY * 0.8 - absf(sin(u * PI)) * 10), 3.0, Palette.WARD_CYAN)
 	if street_side and is_neon():
 		_neon(a, b)
-
-
-## The Spire's walls: tall dark mirror panes, a cold vein up some of the mullions, and now and then the
-## ring burned into the glass (grey: an afterimage, not its gold).
-func _black_glass_face(a: Vector2, b: Vector2, h: float, rng: RandomNumberGenerator) -> void:
-	for k: int in 3:
-		var u0 := k / 3.0 + 0.02
-		var u1 := (k + 1) / 3.0 - 0.02
-		var pane := PackedVector2Array([_on_face(a, b, u0, 6.0), _on_face(a, b, u1, 6.0), _on_face(a, b, u1, h - PARAPET - 6.0), _on_face(a, b, u0, h - PARAPET - 6.0)])
-		_base.poly(pane, Palette.BLACK_MIRROR)
-		_base.line(_on_face(a, b, u0 + 0.04, 30.0), _on_face(a, b, u0 + 0.12, h * 0.6), Color(Palette.SPIRE_COLD, 0.06), 3.0)
-		if rng.randf() < 0.3:
-			_base.line(_on_face(a, b, u1 + 0.02, 6.0), _on_face(a, b, u1 + 0.02, h - PARAPET - 6.0), Color(Palette.SPIRE_COLD, 0.3), 1.5)
-	if rng.randf() < 0.25:
-		# The ring's afterimage: a band with its gap at the upper right.
-		var c := _on_face(a, b, 0.5, h * 0.55)
-		var arc := PackedVector2Array()
-		for i: int in 25:
-			var t := deg_to_rad(-30.0 + 300.0 * i / 24.0)
-			arc.append(c + Vector2(sin(t), -cos(t)) * 22.0)
-		_base.polyline(arc, Color(Palette.GREY_COLD, 0.25), 2.0)
 
 
 func _window(a: Vector2, b: Vector2, base: float, lit: bool, rng: RandomNumberGenerator) -> void:
@@ -238,145 +218,34 @@ func _window(a: Vector2, b: Vector2, base: float, lit: bool, rng: RandomNumberGe
 	var transom := PackedVector2Array([_on_face(a, b, u0, v1 + 3.0), _on_face(a, b, u1, v1 + 3.0), _on_face(a, b, (u0 + u1) * 0.5, v1 + 13.0)])
 	var stain := Palette.STAINED_ROSE if rng.randf() < 0.5 else Palette.STAINED_TEAL
 	if lit:
-		_glow.poly(pane, Color(Palette.HUMAN_CREAM, 0.55))
+		_base.poly(pane, Palette.BLACK_MIRROR)
+		_glow.poly(pane, Color(Palette.WARD_CYAN if facade in [Facade.BOATHOUSE, Facade.BOATHOUSE_DOOR] else Palette.HUMAN_CREAM, 0.55))
 		_glow.poly(transom, Color(stain.lightened(0.25), 0.9))
 	else:
 		_base.poly(pane, Palette.BLACK_MIRROR)
 		_base.poly(transom, Color(stain, 0.5))
-	_base.polyline(PackedVector2Array([pane[0], pane[1], pane[2], pane[3], pane[0]]), Palette.IRON_DARK, 2.0)
+	_face_ornament(a, b, Rect2(0.24, base + 6.0, 0.52, 66.0), look.window_texture)
 
 
 func _balcony(a: Vector2, b: Vector2, base: float) -> void:
 	var v := base + 8.0
-	_base.line(_on_face(a, b, 0.18, v), _on_face(a, b, 0.82, v), Palette.IRON_DARK, 3.0)
-	_base.line(_on_face(a, b, 0.18, v + 16.0), _on_face(a, b, 0.82, v + 16.0), Palette.IRON_VERDIGRIS, 2.0)
-	for k: int in 6:
-		var u := lerpf(0.2, 0.8, k / 5.0)
-		_base.line(_on_face(a, b, u, v), _on_face(a, b, u, v + 16.0), Palette.IRON_DARK, 1.5)
+	_face_ornament(a, b, Rect2(0.16, base + 5.0, 0.68, 19.0), look.balcony_texture)
 	# The gilt: ten years of the Steward laid over the ironwork, a gold vein along the rail.
 	_gilt.line(_on_face(a, b, 0.18, v + 16.0), _on_face(a, b, 0.82, v + 16.0), Palette.STEWARD_GOLD_HOT, 1.5)
 
 
-## Washing still on the line, days after everyone left.
-func _laundry(a: Vector2, b: Vector2, base: float, rng: RandomNumberGenerator) -> void:
-	var v := base + STORY - 10.0
-	_base.line(_on_face(a, b, 0.08, v), _on_face(a, b, 0.92, v), Palette.IRON_DARK, 1.0)
-	var cloths: Array[Color] = [look.blossom, Palette.HUMAN_CREAM, Palette.STAINED_TEAL.lightened(0.3), look.blossom.darkened(0.15)]
-	var u := 0.12
-	while u < 0.86:
-		var w := rng.randf_range(0.08, 0.14)
-		var drop := rng.randf_range(14.0, 24.0)
-		_base.poly(PackedVector2Array([_on_face(a, b, u, v), _on_face(a, b, u + w, v), _on_face(a, b, u + w, v - drop), _on_face(a, b, u, v - drop)]), cloths[rng.randi() % cloths.size()])
-		u += w + rng.randf_range(0.03, 0.06)
-
-
-func _rose(a: Vector2, b: Vector2, base: float) -> void:
-	var c := _on_face(a, b, 0.5, base + 30.0)
-	var petals := PackedVector2Array()
-	for i: int in 13:
-		var ang := TAU * i / 12.0
-		petals.append(c + Vector2(cos(ang) * 14.0, sin(ang) * 18.0))
-	_glow.poly(petals, Color(Palette.STAINED_ROSE.lightened(0.3), 0.9))
-	_base.polyline(petals, Palette.IRON_DARK, 2.0)
-
-
-## Mercy General's walls from the inside: painted panels, a grey-blue dado and a handrail; the arrows
-## people chalked looking for a way out (human cream); every third ceiling light still working, the
-## Steward's (it dies when muted). Locked doors are double doors with dark portholes.
-func _hospital_face(a: Vector2, b: Vector2, h: float, street_side: bool, rng: RandomNumberGenerator) -> void:
-	for k: int in 3:
-		var u := (k + 1) * 0.25
-		_base.line(_on_face(a, b, u, 0.0), _on_face(a, b, u, h - PARAPET), Color(Palette.NEAR_BLACK, 0.12), 1.0)
-	var dado := PackedVector2Array([_on_face(a, b, 0.0, 0.0), _on_face(a, b, 1.0, 0.0), _on_face(a, b, 1.0, 46.0), _on_face(a, b, 0.0, 46.0)])
-	_base.poly(dado, Color(Palette.WARD_GLASS.darkened(0.55), 0.85))
-	_base.line(_on_face(a, b, 0.0, 52.0), _on_face(a, b, 1.0, 52.0), Palette.WARD_WALL_SHADE.darkened(0.3), 3.0)
-	if facade == Facade.HOSPITAL_DOOR and street_side:
-		var door := PackedVector2Array([_on_face(a, b, 0.2, 0.0), _on_face(a, b, 0.8, 0.0), _on_face(a, b, 0.8, 84.0), _on_face(a, b, 0.2, 84.0)])
-		_base.poly(door, Palette.WARD_WALL_SHADE.darkened(0.15))
-		_base.line(_on_face(a, b, 0.5, 0.0), _on_face(a, b, 0.5, 84.0), Palette.NEAR_BLACK, 2.0)
-		for u: float in [0.35, 0.65]:
-			_base.circle(_on_face(a, b, u, 62.0), 6.0, Palette.BLACK_MIRROR)
-	elif rng.randf() < 0.4:
-		# A chalk arrow: this way out, someone thought.
-		var y := rng.randf_range(70.0, 120.0)
-		var dir := 1.0 if rng.randf() < 0.5 else -1.0
-		var tail := _on_face(a, b, 0.5 - 0.22 * dir, y)
-		var tip := _on_face(a, b, 0.5 + 0.22 * dir, y)
-		var chalk := Color(Palette.HUMAN_CREAM, 0.75)
-		_base.line(tail, tip, chalk, 3.0)
-		_base.line(tip, tip + (tail - tip).rotated(0.5) * 0.3, chalk, 3.0)
-		_base.line(tip, tip + (tail - tip).rotated(-0.5) * 0.3, chalk, 3.0)
-	if (cell.x + cell.y) % 3 == 0 and street_side:
-		_gilt.circle(_on_face(a, b, 0.5, h - PARAPET - 10.0), 5.0, Palette.STEWARD_GOLD_HOT)
-
-
-## A pumping station: board-marked concrete, louvres high up, a big pipe down the face, kelp and a tide
-## stain low on it; its doors are steel. The gilt on the louvres is the Steward's (dies when muted).
-func _pump_face(a: Vector2, b: Vector2, h: float, street_side: bool) -> void:
-	for k: int in 6:
-		var v := 30.0 + k * 34.0
-		_base.line(_on_face(a, b, 0.0, v), _on_face(a, b, 1.0, v), Color(Palette.NEAR_BLACK, 0.12), 1.0)
-	_base.poly(PackedVector2Array([_on_face(a, b, 0.0, 0.0), _on_face(a, b, 1.0, 0.0), _on_face(a, b, 1.0, 26.0), _on_face(a, b, 0.0, 26.0)]), Color(Palette.KELP_DARK, 0.55))
-	_base.line(_on_face(a, b, 0.0, 30.0), _on_face(a, b, 1.0, 30.0), Color(Palette.LOW_STREET_WET, 0.8), 2.0)
-	_base.line(_on_face(a, b, 0.78, 0.0), _on_face(a, b, 0.78, h - PARAPET), Palette.IRON_DARK.lightened(0.15), 8.0)
-	for k: int in 4:
-		var v := h - PARAPET - 30.0 - k * 9.0
-		_base.line(_on_face(a, b, 0.2, v), _on_face(a, b, 0.6, v), Palette.IRON_DARK, 3.0)
-	if street_side and (cell.x + cell.y) % 2 == 0:
-		_gilt.line(_on_face(a, b, 0.2, h - PARAPET - 26.0), _on_face(a, b, 0.6, h - PARAPET - 26.0), Palette.STEWARD_GOLD, 1.5)
-	if facade == Facade.PUMPING_STATION_DOOR and street_side:
-		var door := PackedVector2Array([_on_face(a, b, 0.22, 0.0), _on_face(a, b, 0.68, 0.0), _on_face(a, b, 0.68, 70.0), _on_face(a, b, 0.22, 70.0)])
-		_base.poly(door, Palette.IRON_DARK.lightened(0.1))
-		_base.line(_on_face(a, b, 0.45, 0.0), _on_face(a, b, 0.45, 70.0), Palette.NEAR_BLACK, 2.0)
-
-
-## A Harbor Ward boat-house: tarred clapboard, a few small windows lit cyan by the Wardfolk's own wiring
-## (never gold: there's nothing of the Steward here), a hand-painted sign, a cable strung off the eave.
-func _boathouse_face(a: Vector2, b: Vector2, h: float, street_side: bool, rng: RandomNumberGenerator) -> void:
-	var v := 9.0
-	while v < h - PARAPET:
-		_base.line(_on_face(a, b, 0.0, v), _on_face(a, b, 1.0, v), Color(Palette.NEAR_BLACK, 0.22), 1.0)
-		v += 9.0
-	for story: int in STORIES:
-		if rng.randf() < (0.5 if street_side else 0.25):
-			var u := rng.randf_range(0.2, 0.6)
-			var w := PackedVector2Array([_on_face(a, b, u, story * STORY + 30.0), _on_face(a, b, u + 0.18, story * STORY + 30.0), _on_face(a, b, u + 0.18, story * STORY + 52.0), _on_face(a, b, u, story * STORY + 52.0)])
-			_glow.poly(w, Color(Palette.WARD_CYAN, 0.75))
-	if facade == Facade.BOATHOUSE_DOOR and street_side:
-		var door := PackedVector2Array([_on_face(a, b, 0.3, 0.0), _on_face(a, b, 0.7, 0.0), _on_face(a, b, 0.7, 60.0), _on_face(a, b, 0.3, 60.0)])
-		_base.poly(door, Palette.BOATHOUSE_SHADE.darkened(0.3))
-		_glow.line(_on_face(a, b, 0.32, 64.0), _on_face(a, b, 0.68, 64.0), Palette.WARD_CYAN_HOT, 2.0)
-	elif street_side and rng.randf() < 0.5:
-		# A hand-painted sign: NETS, ROPE, ENGINES.
-		var board := PackedVector2Array([_on_face(a, b, 0.15, 90.0), _on_face(a, b, 0.85, 90.0), _on_face(a, b, 0.85, 110.0), _on_face(a, b, 0.15, 110.0)])
-		_base.poly(board, Palette.HUMAN_CREAM.darkened(0.5))
-		for k: int in 4:
-			var u := 0.25 + k * 0.14
-			_base.line(_on_face(a, b, u, 96.0), _on_face(a, b, u + 0.08, 104.0), Palette.BOATHOUSE_SHADE, 2.0)
-
-
-## The Harbor Bridge's severed end: board-marked concrete, its rebar bent out where the deck tore away.
-func _bridge_face(a: Vector2, b: Vector2, h: float) -> void:
-	for k: int in 5:
-		var v := 36.0 + k * 40.0
-		_base.line(_on_face(a, b, 0.0, v), _on_face(a, b, 1.0, v), Color(Palette.NEAR_BLACK, 0.14), 1.0)
-	for k: int in 4:
-		var u := 0.15 + k * 0.22
-		var foot := _on_face(a, b, u, h - PARAPET)
-		_base.line(foot, foot + Vector2(-6 + k * 4, -26), Palette.RUST, 2.5)
-
-
 func _door(a: Vector2, b: Vector2) -> void:
-	var door := PackedVector2Array([_on_face(a, b, 0.32, 0.0), _on_face(a, b, 0.68, 0.0), _on_face(a, b, 0.68, 52.0), _on_face(a, b, 0.5, 62.0), _on_face(a, b, 0.32, 52.0)])
-	_glow.poly(door, Color(Palette.HUMAN_CREAM, 0.45))
-	_base.polyline(PackedVector2Array([door[0], door[4], door[3], door[2], door[1]]), Palette.IRON_DARK, 3.0)
+	var door := PackedVector2Array([_on_face(a, b, 0.32, 0), _on_face(a, b, 0.68, 0), _on_face(a, b, 0.68, 62), _on_face(a, b, 0.32, 62)])
+	_base.poly(door, Palette.BLACK_MIRROR)
+	_glow.poly(door, Color(Palette.WARD_CYAN if facade == Facade.BOATHOUSE_DOOR else Palette.HUMAN_CREAM, 0.45))
+	_face_ornament(a, b, Rect2(0.2, 0, 0.6, 72), look.door_texture)
 
 
 func _neon(a: Vector2, b: Vector2) -> void:
 	var col := neon_color()
 	var hot := Color(col.r * 1.7, col.g * 1.7, col.b * 1.7)
 	var plate := PackedVector2Array([_on_face(a, b, 0.78, 96.0), _on_face(a, b, 0.92, 96.0), _on_face(a, b, 0.92, 196.0), _on_face(a, b, 0.78, 196.0)])
-	_base.poly(plate, Color(Palette.NEAR_BLACK, 0.8))
+	_module(a, b, Rect2(0.76, 94, 0.18, 104), "pane")
 	_glow.polyline(PackedVector2Array([plate[0], plate[1], plate[2], plate[3], plate[0]]), hot, 2.5)
 	var squiggle := PackedVector2Array()
 	for k: int in 12:

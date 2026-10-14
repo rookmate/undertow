@@ -90,12 +90,9 @@ func _draw() -> void:
 	var lift := Vector2(0, -CHEST_HEIGHT)
 	draw_colored_polygon(_shadow(), Color(Palette.NEAR_BLACK, 0.3))
 	if tumbling:
-		var a := _travelled * 6.0
-		var corners := PackedVector2Array()
-		for i: int in 4:
-			corners.append(lift + Vector2.from_angle(a + i * TAU / 4.0) * size)
-		draw_colored_polygon(corners, color)
-		draw_polyline(PackedVector2Array([corners[0], corners[2]]), Color(Palette.NEAR_BLACK, 0.4), 1.5)
+		draw_set_transform(lift, _travelled * 6.0)
+		ArtCatalog.paint(self, "bale_stack", Rect2(-size, -size, size * 2, size * 2))
+		draw_set_transform(Vector2.ZERO)
 	else:
 		var tail := Iso.ground_velocity(direction, 1.0).normalized() * -size * 3.0
 		draw_line(lift, lift + tail, Color(color, 0.45), size * 0.8, true)

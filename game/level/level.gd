@@ -1,8 +1,7 @@
 class_name Level
 extends Node2D
 ## Builds a playable level from a text map (data/levels/*.txt): floor, depth-sorted buildings and
-## props, Lattice lamps, collision, the Operator and the camera. Placeholder shapes in the brief's
-## palette at image 10's camera angle and scale.
+## painted props, Lattice lamps, collision, the Operator and the camera at the brief's angle and scale.
 
 signal player_spawned(player: Operator)
 signal enemy_died(enemy: Enemy)
@@ -431,7 +430,7 @@ func _build_cells() -> void:
 		match ch:
 			"L":
 				var lamp := LampPost.new()
-				lamp.setup(cell)
+				lamp.setup(cell, look)
 				world.add_child(lamp)
 			"=":
 				var rail := _prop(cell, StaticProp.Kind.RAILING)

@@ -69,22 +69,9 @@ func _ring_look() -> RingPainter.Look:
 
 
 func _draw() -> void:
-	var hw := Iso.HALF_W * 0.85
-	var hh := Iso.HALF_H * 0.85
-	var h := 58.0
-	var top := Vector2(0, -hh)
-	var right := Vector2(hw, 0)
-	var bottom := Vector2(0, hh)
-	var left := Vector2(-hw, 0)
-	var up := Vector2(0, -h)
-	draw_colored_polygon(PackedVector2Array([left, bottom, bottom + up, left + up]), Palette.STONE_OLD.darkened(0.2))
-	draw_colored_polygon(PackedVector2Array([bottom, right, right + up, bottom + up]), Palette.STONE_OLD)
-	draw_colored_polygon(PackedVector2Array([top + up, right + up, bottom + up, left + up]), Palette.STONE_OLD.lightened(0.15))
-	# The canonical ring inlaid in the lid, laid flat onto it. Lit while the Steward listens; muted, the
-	# thin grey ring without a centre.
-	var c := up
-	draw_set_transform(c, 0.0, Vector2(1.0, Iso.SQUASH))
-	RingPainter.paint(self, Vector2.ZERO, hw * 0.4, _ring_look())
+	ArtCatalog.paint(self, "reliquary", Rect2(-55, -90, 110, 121))
+	draw_set_transform(Vector2(0, -58), 0.0, Vector2(1.0, Iso.SQUASH))
+	RingPainter.paint(self, Vector2.ZERO, Iso.HALF_W * 0.34, _ring_look())
 	draw_set_transform(Vector2.ZERO)
 	if opened or _revisit():
-		draw_colored_polygon(PackedVector2Array([c + Vector2(-hw * 0.3, 0), c + Vector2(0, -hh * 0.3), c + Vector2(hw * 0.3, 0), c + Vector2(0, hh * 0.3)]), Palette.NEAR_BLACK)
+		ArtCatalog.paint(self, "hatch", Rect2(-20, -67, 40, 18))
