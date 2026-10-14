@@ -154,7 +154,7 @@
 			"id": "KILL_N1",
 			"event": "kill",
 			"tone": "neutral",
-			"text": "That one's done scrubbing."
+			"text": "I gave that one a name, once. I'll stop using it."
 		},
 		{
 			"id": "KILL_N2",
@@ -562,7 +562,7 @@
 			"id": "BOSS_DOWN_B1",
 			"event": "boss_down",
 			"tone": "bold",
-			"text": "That's it down. I knew you would."
+			"text": "Down. It was one of my best. I'd have bet on it, once. Not now."
 		},
 		{
 			"id": "BOSS_DOWN_C1",
@@ -1737,14 +1737,14 @@
 			"id": "TIDE_RESPAWN_N1",
 			"event": "respawn",
 			"tone": "neutral",
-			"text": "Back on the quay. I had you before the water did.",
+			"text": "Back on the quay. I bring people back. I used to be better at it.",
 			"level": "tideworks"
 		},
 		{
 			"id": "TIDE_RESPAWN_N2",
 			"event": "respawn",
 			"tone": "neutral",
-			"text": "Again. The tide turned twice while you were down. It doesn't matter here.",
+			"text": "Again. Down here the tide keeps the time, not me. It can keep it a while longer.",
 			"level": "tideworks"
 		},
 		{
@@ -2495,7 +2495,7 @@
 			"id": "GREY_LOW_B1",
 			"event": "low_integrity",
 			"tone": "bold",
-			"text": "You're barely standing, and the tide's coming in. I've done that sum. Please.",
+			"text": "You're barely standing, in a district that floods. I've done that sum. Please.",
 			"level": "greywater"
 		},
 		{
@@ -2509,7 +2509,7 @@
 			"id": "GREY_RESPAWN_N1",
 			"event": "respawn",
 			"tone": "neutral",
-			"text": "Back, and dry. I pulled you out before the tide did.",
+			"text": "Back, and dry. Down here, I pull people out before the sea can. Mostly.",
 			"level": "greywater"
 		},
 		{
@@ -2537,7 +2537,7 @@
 			"id": "GREY_IDLE_N1",
 			"event": "idle",
 			"tone": "neutral",
-			"text": "The tide's on a six-minute cycle now. It used to come when I said.",
+			"text": "The tide comes every minute now. It used to come when I said.",
 			"level": "greywater"
 		},
 		{
@@ -2656,7 +2656,7 @@
 			"id": "GREY_BACK_N1",
 			"event": "voice_restored",
 			"tone": "neutral",
-			"text": "There you are. The tide turned twice while you were gone.",
+			"text": "There you are. The tide doesn't wait for me to be listening. Mind it.",
 			"level": "greywater"
 		},
 		{

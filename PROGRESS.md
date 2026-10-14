@@ -200,7 +200,7 @@ First drafts, for a human writer and the voice actor to take further.
 | 44 | Places: the Steward remarks on landmarks as you reach them | done |
 | 45 | The arc: lines for what you've come to know, and for revisits | done |
 | 46 | The logs and the rest: Teo argues as well as confesses, the ending menu weighs nothing, continuity | done |
-| — | Sol analysis review, fixes, re-check | rounds 1 to 4 fixed and gated (reviews/writing-pass.md); round 5 fixes next |
+| — | Sol analysis review, fixes, re-check | rounds 1 to 6 fixed and gated (reviews/writing-pass.md); round 7 fixes next |
 
 ## Painted art
 
