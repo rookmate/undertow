@@ -184,16 +184,10 @@ func _physics_process(delta: float) -> void:
 
 func _draw() -> void:
 	draw_shadow(16.0, 8.0)
-	var head := Vector2(0, -LEG_HEIGHT)
-	var flash := hit_flash()
-	# Three thin legs, a lamp head: Lattice hardware, iron and lens.
-	for k: int in 3:
-		var a := TAU * k / 3.0 + 0.4
-		var foot := Vector2(cos(a) * 18.0, sin(a) * 9.0)
-		draw_line(foot, head + Vector2(0, 18), Palette.IRON_DARK.lerp(Palette.IVORY, flash), 3.0, true)
-	draw_circle(head, 15.0, Palette.IRON_DARK, true, -1.0, true)
+	paint_body("lamplighter", 127.0)
+	var head := body_anchor("lamplighter", "lens", 127.0)
 	var lens := Palette.STEWARD_GOLD_HOT if state != State.DEAD else Palette.GREY_DEEP
-	draw_circle(head, 10.0, lens, true, -1.0, true)
+	draw_circle(head, 5.0, lens, true, -1.0, true)
 	if hunting and state == State.WINDUP:
 		draw_windup_ring(HOOK_RANGE * 0.25)
 		draw_arc(head, 22.0 + windup_progress() * 10.0, 0.0, TAU, 24, Palette.DANGER, 2.0, true)

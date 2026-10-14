@@ -71,25 +71,11 @@ func _process(_delta: float) -> void:
 
 func _draw() -> void:
 	var hw := Iso.HALF_W * 0.9
-	var hh := Iso.HALF_H * 0.9
-	var h := 92.0
-	# The door frame in the partition.
-	for p: Vector2 in [Vector2(-hw, 0), Vector2(hw, 0)]:
-		draw_rect(Rect2(p + Vector2(-4, -h), Vector2(8, h)), Palette.WARD_WALL_SHADE.darkened(0.2))
-	draw_line(Vector2(-hw, -h), Vector2(hw, -h), Palette.WARD_WALL_SHADE.darkened(0.2), 6.0, true)
-	# The leaf slides aside as it's cranked open.
-	var slide := _open_amount * hw * 1.6
-	var a := Vector2(-hw + slide, -hh * 0.0)
-	var b := Vector2(hw, 0.0)
-	if a.x < b.x - 2.0:
-		draw_colored_polygon(PackedVector2Array([a + Vector2(0, -6), b + Vector2(0, -6), b + Vector2(0, -h + 6), a + Vector2(0, -h + 6)]), Color(Palette.WARD_WALL, 0.92))
-		draw_colored_polygon(PackedVector2Array([a + Vector2(6, -46), b + Vector2(-6, -46), b + Vector2(-6, -80), a + Vector2(6, -80)]), Color(Palette.WARD_GLASS, 0.35))
+	ArtCatalog.door(self, "ward_seal", Rect2(-hw, -92, hw * 2, 92), _open_amount)
 	if not sealed:
 		return
-	# The seal: the Steward's, a gold bar across the door while it listens; the crank, ivory, by hand.
 	if Steward.voice_on:
 		draw_line(Vector2(-hw, -50), Vector2(hw, -50), Palette.STEWARD_GOLD_HOT, 4.0, true)
 		draw_circle(Vector2(0, -50), 7.0, Palette.STEWARD_GOLD, true, -1.0, true)
 	else:
-		draw_circle(Vector2(hw - 10, -40), 9.0, Palette.IVORY_DIM, false, 3.0, true)
-		draw_line(Vector2(hw - 10, -40), Vector2(hw - 2, -50), Palette.IVORY_DIM, 3.0, true)
+		ArtCatalog.paint(self, "valve_wheel", Rect2(hw - 19, -49, 18, 18))

@@ -96,13 +96,9 @@ func _draw() -> void:
 	var side := 1.0 if (player == null or Iso.grid_to_world(player.facing_ground).x >= 0.0) else -1.0
 	var c := Vector2(-side * 44.0, -150.0 + sin(_bob * 3.0) * 4.0)
 	draw_colored_polygon(_ellipse(Vector2(c.x, 4.0), 14.0, 6.0), Color(Palette.NEAR_BLACK, 0.3))
-	draw_colored_polygon(_ellipse(c, 20.0, 8.0), Palette.IRON_DARK)
-	draw_colored_polygon(_ellipse(c + Vector2(0, -4), 14.0, 6.0), Palette.CUSTODIAN_PANEL.darkened(0.4))
-	for k: int in 2:
-		var r := c + Vector2(-22.0 + k * 44.0, -6.0)
-		draw_line(r + Vector2(-10, 0), r + Vector2(10, 0), Color(Palette.GREY_COLD, 0.6), 2.0)
+	ArtCatalog.paint(self, "drone", Rect2(c + Vector2(-29, -16), Vector2(58, 30)))
 	var lamp := Palette.DANGER if is_overheated() else WeaponGlow.hot(is_tuned())
-	draw_circle(c + Vector2(0, 3), 4.0, lamp, true, -1.0, true)
+	draw_circle(c + Vector2(0, 3), 3.0, lamp, true, -1.0, true)
 
 
 static func _ellipse(c: Vector2, rx: float, ry: float) -> PackedVector2Array:

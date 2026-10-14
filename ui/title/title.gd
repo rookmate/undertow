@@ -68,7 +68,7 @@ func _ready() -> void:
 	add_child(_quiet)
 
 	var footer := Label.new()
-	footer.text = "v%s · placeholder art" % ProjectSettings.get_setting("application/config/version", "")
+	footer.text = "v%s" % ProjectSettings.get_setting("application/config/version", "")
 	footer.add_theme_font_override(&"font", UiFonts.mono())
 	footer.add_theme_font_size_override(&"font_size", 16)
 	footer.add_theme_color_override(&"font_color", Palette.IVORY_DIM)

@@ -4,6 +4,8 @@ extends RefCounted
 ## city's rules (gold is the Steward's, cream is human, red-orange is danger); this is what differs
 ## between them (world bible, "The districts"). Colours come from Palette; looks only choose among them.
 
+var district_id: String = "vellum"
+
 var ground_a: Color = Palette.COBBLE_A
 var ground_b: Color = Palette.COBBLE_B
 var ground_wet: Color = Palette.COBBLE_WET
@@ -35,6 +37,19 @@ var void_fog: Color = Color(Palette.FOG, 0.0)
 var rain: bool = true
 ## Walls of black glass (the Spire): dark mirror panes and cold veins, no windows.
 var black_glass: bool = false
+## Painted base materials, selected by district. Lights remain on their own canvas layers.
+var cobble_texture: Texture2D
+var paving_texture: Texture2D
+var lawn_texture: Texture2D
+var wall_texture: Texture2D
+var roof_texture: Texture2D
+var window_texture: Texture2D
+var door_texture: Texture2D
+var balcony_texture: Texture2D
+var railing_texture: Texture2D
+var hedge_texture: Texture2D
+var planter_texture: Texture2D
+var lamp_texture: Texture2D
 ## CanvasModulate for the world, voice on and muted.
 var ambient_on: Color = Palette.AMBIENT_VOICE_ON
 var ambient_muted: Color = Palette.AMBIENT_MUTED
@@ -43,6 +58,20 @@ var ambient_muted: Color = Palette.AMBIENT_MUTED
 ## The look of a district (or the Ark) by id. Unknown ids get the Vellum's look, the city's default.
 static func for_district(id: String) -> DistrictLook:
 	var look := DistrictLook.new()
+	look.district_id = id if ArtBindings.WALL.has(id) else "vellum"
+	look.wall_texture = ArtCatalog.texture(ArtBindings.WALL.get(id, "mat_brick"))
+	look.roof_texture = ArtCatalog.texture("mat_slate" if id in ["kestrel", "vellum", "ark"] else "mat_steel")
+	look.window_texture = preload("res://assets/art/kestrel/window_ornament.tres")
+	look.door_texture = preload("res://assets/art/kestrel/door_ornament.tres")
+	look.balcony_texture = preload("res://assets/art/kestrel/balcony.tres")
+	look.railing_texture = preload("res://assets/art/kestrel/railing.tres")
+	look.lamp_texture = preload("res://assets/art/kestrel/lamp_housing.tres")
+	if id == "mercy":
+		look.window_texture = ArtCatalog.texture("hospital_frame")
+	elif id == "greywater":
+		look.window_texture = ArtCatalog.texture("pump_frame")
+	elif id == "harbor":
+		look.window_texture = ArtCatalog.texture("boat_frame")
 	match id:
 		"kestrel":
 			# The blue hour (the only one in the city): pale stone terraces under a violet sky with a rose
@@ -60,6 +89,18 @@ static func for_district(id: String) -> DistrictLook:
 			look.horizon = Color(Palette.SUNSET_ROSE, 0.55)
 			look.ambient_on = Palette.AMBIENT_DUSK_ON
 			look.ambient_muted = Palette.AMBIENT_DUSK_MUTED
+			look.cobble_texture = preload("res://assets/art/kestrel/wet_stone.png")
+			look.paving_texture = preload("res://assets/art/kestrel/paving.png")
+			look.lawn_texture = preload("res://assets/art/kestrel/lawn.png")
+			look.wall_texture = preload("res://assets/art/kestrel/limestone_wall.png")
+			look.roof_texture = preload("res://assets/art/kestrel/slate_roof.png")
+			look.window_texture = preload("res://assets/art/kestrel/window_ornament.tres")
+			look.door_texture = preload("res://assets/art/kestrel/door_ornament.tres")
+			look.balcony_texture = preload("res://assets/art/kestrel/balcony.tres")
+			look.railing_texture = preload("res://assets/art/kestrel/railing.tres")
+			look.hedge_texture = preload("res://assets/art/kestrel/hedge.tres")
+			look.planter_texture = preload("res://assets/art/kestrel/planter.tres")
+			look.lamp_texture = preload("res://assets/art/kestrel/lamp_housing.tres")
 		"loop":
 			# Rail ribbons in fog, high above black water and roofs; carriages in faded livery.
 			look.ground_a = Palette.LOOP_CONCRETE.darkened(0.15)

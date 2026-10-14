@@ -897,3 +897,49 @@ Asked of the user on 2026-10-09 and answered the same day.
      looking at that you couldn't have known ("Gate 4. I held it three seconds once, for a man running
      for the 07:20. He made his train." "Somebody drew these arrows the first night. They all point to
      the yard."). Muted, or off its Lattice, it says nothing; come back and it may.
+
+194. **Painted art starts in Kestrel Heights.** The approved local city block, hillside houses and
+     character lineup guide the first six runtime PNGs in `assets/art/`, generated with the built-in
+     image_gen tool; the prompts are kept beside them. Material UVs follow the existing 128 by 72
+     diamonds, and building faces remain separate so adjoining cells still hide their joined walls.
+     DistrictLook selects the five Kestrel materials explicitly. The painted Operator's front and rear
+     still poses keep their foot pivot, mirroring and procedural motion; directional animation is a
+     later pass. Gold is drawn separately, including the earpiece, so muting can extinguish it. Mipmaps
+     and matching filtering keep the downscaled paint stable. This starts the art pack; ornate facades,
+     props, enemies and other districts remain to be painted.
+195. **Kestrel's painted details keep live lighting.** Six transparent assets add carved window and
+     door surrounds, balcony ironwork, trimmed hedges, blossom urns and unlit lamp housings. Tight
+     AtlasTexture crops preserve the generated PNGs; a single balcony section also supplies the
+     connected terrace railings. Polygon UVs account for atlas regions. Buildings draw window light,
+     then shaded ornaments, then the switchable gilt, so light shines through the openings and gold
+     remains over the ironwork. The lamp aperture maps to its existing lens center at 150 px above
+     ground. DistrictLook selects these details only for Kestrel. Maps and collision remain as built.
+
+196. **Painted coverage reaches every district and physical render owner.** The full inventory has
+     30 physical terrain kinds (VOID remains empty space; BUILDING is painted by its sorted node),
+     23 scenery kinds, 18 facades, all actors, six enemy families, six bosses and their moving parts,
+     fixtures, pickups, tools, illustrations, backgrounds and navigation map. The built-in image_gen
+     tool produced 24 new sheets, guided by the local concepts; all prompts and original PNGs are
+     preserved. ArtCatalog caches 162 named frames and source anchors; missing bindings fail loudly.
+     Atlas crops and material UVs preserve existing ground diamonds, joined faces and depth sorting.
+     Lamps, windows, gilt, the canonical ring, path, weather and combat effects stay live. Carrying
+     has painted front/rear poses, remains visible during a dodge, and stows equipped tool graphics.
+     The map keeps industrial districts and rectangular black-glass towers; the Council Chamber
+     descends into its foundation. Runtime catalog JSON is included explicitly in exported packs.
+197. **Retired fittings and headless captures cannot block the gate.** A retired weak point clears its
+     collision layer and mask even if it was already dead, so the Operator can cross its cell after
+     the fight. This resolves Harbor's baseline relay obstruction. Screenshot requests return directly
+     with a headless display rather than waiting for a frame that cannot arrive. Movement through the
+     retired relay and headless screenshot completion have regression checks.
+198. **Painted previews use a separate save slot.** The art stage selects a scratch save directory
+     and settings path before preparing synthetic runs or opening levels. The initial stage omitted
+     this and wrote preview data into the normal local save and its rotating backup; no earlier copy
+     was found. Those affected files are preserved in the ignored validation reports. A complete
+     native preview now leaves the normal save files unchanged. Panorama drift clamps within its
+     overscan without wrapping, and dead kiosk and desk screens retain the canonical ring afterimage
+     projected into their painted monitor planes.
+199. **Art imports run serially.** Two parallel empty-cache imports crashed while Godot 4.7.2 saved
+     the existing Fraunces italic font. Retry imports passed. Font-only and unchanged-HEAD cold
+     imports did not reproduce the crash, so its baseline cause remains unproven. A full fresh copy
+     passed with serial imports, then a second fresh copy passed with the same setting in
+     project.godot. This editor setting avoids the observed import failure without changing play.

@@ -61,15 +61,9 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
-	draw_colored_polygon(PackedVector2Array([Vector2(-34, 0), Vector2(0, 14), Vector2(34, 0), Vector2(0, -14)]), Color(Palette.NEAR_BLACK, 0.45))
-	if staying:
-		# Sitting up against the fence, her lantern lit: staying.
-		draw_colored_polygon(PackedVector2Array([Vector2(-20, -2), Vector2(20, -2), Vector2(8, -90), Vector2(-8, -90)]), Palette.COVERALL)
-		draw_circle(Vector2(0, -100), 12.0, Palette.SKIN_SHADOW.darkened(0.2), true, -1.0, true)
-	else:
-		# Down: the long coat on the ground.
-		draw_colored_polygon(PackedVector2Array([Vector2(-44, -6), Vector2(30, 10), Vector2(36, -6), Vector2(-38, -20)]), Palette.COVERALL)
-		draw_circle(Vector2(-48, -16), 11.0, Palette.SKIN_SHADOW.darkened(0.2), true, -1.0, true)
-	var flicker := 0.85 + sin(_t * 7.0) * 0.1
-	draw_rect(Rect2(34, -24, 14, 22), Palette.IRON_DARK)
-	draw_rect(Rect2(36, -21, 10, 15), Color(Palette.TRUTH_CYAN_HOT, flicker))
+	draw_colored_polygon(Fx.ground_ellipse(0.5, 18, false), Color(Palette.NEAR_BLACK, 0.4))
+	var key := "noor_seated" if staying else "noor_downed"
+	var h := 112.0 if staying else 48.0
+	ArtCatalog.actor(self, key, h, Vector2(0, 8))
+	var lantern := ArtCatalog.actor_anchor(key, "lantern", h, Vector2(0, 8))
+	draw_circle(lantern, 3.0, Color(Palette.TRUTH_CYAN_HOT, 0.85 + sin(_t * 7.0) * 0.1), true, -1.0, true)

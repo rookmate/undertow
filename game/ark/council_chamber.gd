@@ -18,14 +18,7 @@ func setup(corner: Vector2i, with_rewrite: bool) -> void:
 func _draw() -> void:
 	var rx := Iso.HALF_W * 1.7
 	var ry := Iso.HALF_H * 1.7
-	draw_colored_polygon(_ellipse(Vector2.ZERO, rx, ry), Palette.STONE_OLD.darkened(0.25))
-	# Steps down, ring by ring, to the floor.
-	for k: int in 4:
-		var f := 1.0 - (k + 1) * 0.17
-		draw_colored_polygon(_ellipse(Vector2(0, k * 3.0), rx * f, ry * f), Palette.STONE_OLD.darkened(0.35 + k * 0.1))
-		draw_polyline(_ellipse(Vector2(0, k * 3.0), rx * f, ry * f, true), Color(Palette.NEAR_BLACK, 0.5), 1.5, true)
-	draw_polyline(_ellipse(Vector2.ZERO, rx, ry, true), Palette.STONE_OLD.lightened(0.1), 2.0, true)
-	# The doors on the far rim: the Steward's, the plain one, and the third only if it's there.
+	ArtCatalog.paint(self, "council", Rect2(-rx, -ry, rx * 2, ry * 2))
 	_door(Vector2(-rx * 0.55, -ry * 0.62), Palette.STEWARD_GOLD)
 	_door(Vector2(0, -ry * 0.92), Palette.GREY_COLD)
 	if rewrite_open:
@@ -33,15 +26,9 @@ func _draw() -> void:
 
 
 func _door(foot: Vector2, col: Color) -> void:
-	var w := 26.0
-	var h := 70.0
-	var frame := PackedVector2Array([foot + Vector2(-w * 0.5, 0), foot + Vector2(w * 0.5, 0), foot + Vector2(w * 0.5, -h), foot + Vector2(-w * 0.5, -h)])
-	draw_colored_polygon(frame, Palette.NEAR_BLACK)
-	var inner := PackedVector2Array([foot + Vector2(-w * 0.32, -2), foot + Vector2(w * 0.32, -2), foot + Vector2(w * 0.32, -h + 8), foot + Vector2(-w * 0.32, -h + 8)])
-	draw_colored_polygon(inner, Color(col, 0.75))
-	draw_circle(foot + Vector2(0, -h * 0.5), 26.0, Color(col, 0.08), true, -1.0, true)
-	frame.append(frame[0])
-	draw_polyline(frame, Palette.IRON_DARK, 2.0, true)
+	ArtCatalog.paint(self, "civic_door", Rect2(foot + Vector2(-15, -70), Vector2(30, 70)))
+	draw_line(foot + Vector2(-8, -5), foot + Vector2(-8, -59), Color(col, 0.7), 2.0, true)
+	draw_circle(foot + Vector2(0, -35), 26.0, Color(col, 0.08), true, -1.0, true)
 
 
 static func _ellipse(c: Vector2, rx: float, ry: float, closed: bool = false) -> PackedVector2Array:

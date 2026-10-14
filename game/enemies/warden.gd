@@ -152,7 +152,6 @@ func _walk_beat(delta: float) -> Vector2:
 
 func _draw() -> void:
 	draw_shadow(22.0, 10.0)
-	# Its eye's reach, faint on the ground while it walks its beat: you can see what it can.
 	if not hunting and state != State.STUNNED:
 		var pts := PackedVector2Array([Vector2.ZERO])
 		var half := deg_to_rad(SIGHT_DEG * 0.5)
@@ -161,23 +160,11 @@ func _draw() -> void:
 			pts.append(Iso.grid_to_world(Vector2.from_angle(a) * SIGHT_TILES * 0.55))
 		draw_colored_polygon(pts, Color(Palette.DANGER, 0.06))
 	draw_windup_ring(REACH)
-	var flash := hit_flash()
-	var body := Palette.IRON_DARK.lightened(0.12).lerp(Palette.IVORY, flash)
 	var bob := sin(Time.get_ticks_msec() / 300.0 + float(get_instance_id() % 7)) * 3.0
-	var y := -64.0 + bob
-	# A riot drone: a squat hull on stub legs, a shield plate, the baton.
-	draw_colored_polygon(PackedVector2Array([Vector2(-20, y + 30), Vector2(20, y + 30), Vector2(16, y - 6), Vector2(-16, y - 6)]), body)
-	draw_line(Vector2(-12, y + 30), Vector2(-14, 0), Palette.IRON_DARK, 4.0)
-	draw_line(Vector2(12, y + 30), Vector2(14, 0), Palette.IRON_DARK, 4.0)
-	draw_rect(Rect2(-18, y + 6, 36, 6), Palette.CLERK_SHELL.darkened(0.3))
-	var baton_up := 18.0 if state == State.WINDUP else 0.0
-	draw_line(Vector2(22, y + 22), Vector2(34, y - 4 - baton_up), Palette.IRON_DARK, 4.0, true)
+	paint_body("warden", 90.0, Vector2(0, bob))
 	if state == State.WINDUP:
-		draw_circle(Vector2(34, y - 4 - baton_up), 4.0 + 3.0 * windup_progress(), Palette.DANGER, true, -1.0, true)
-	# The red eye: brighter once it has you.
+		draw_circle(body_anchor("warden", "baton", 90.0, Vector2(0, bob)), 4.0 + 3.0 * windup_progress(), Palette.DANGER, true, -1.0, true)
 	var eye := Palette.DANGER_HOT if hunting else Palette.DANGER
 	if state == State.STUNNED:
 		eye = Palette.GREY_DEEP
-	var gaze := Iso.grid_to_world(facing_ground).normalized() * 5.0
-	draw_circle(Vector2(0, y + 2) + gaze, 6.0, Palette.BLACK_MIRROR, true, -1.0, true)
-	draw_circle(Vector2(0, y + 2) + gaze, 3.5, eye, true, -1.0, true)
+	draw_circle(body_anchor("warden", "eye", 90.0, Vector2(0, bob)), 2.5, eye, true, -1.0, true)

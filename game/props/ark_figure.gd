@@ -131,50 +131,22 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
-	var shadow := PackedVector2Array()
-	for i: int in 14:
-		var a := TAU * i / 14.0
-		shadow.append(Vector2(cos(a) * 26.0, sin(a) * 11.0))
-	draw_colored_polygon(shadow, Color(Palette.NEAR_BLACK, 0.45))
+	draw_colored_polygon(Fx.ground_ellipse(0.4, 18, false), Color(Palette.NEAR_BLACK, 0.4))
+	var key: String = ["noor", "teo", "survivor", "wardfolk"][who]
+	var h: float = [197.0, 158.0, 147.0, 163.0][who]
+	ArtCatalog.actor(self, key, h)
 	match who:
-		Who.NOOR:
-			# A tall triangle in a long patched coat, carrying a cyan hand lantern.
-			draw_colored_polygon(PackedVector2Array([Vector2(-30, -2), Vector2(30, -2), Vector2(6, -168), Vector2(-6, -168)]), Palette.COVERALL)
-			draw_rect(Rect2(-14, -96, 14, 18), Palette.COVERALL_LIGHT)
-			draw_rect(Rect2(4, -60, 12, 16), Palette.COVERALL_LIGHT)
-			draw_circle(Vector2(0, -180), 13.0, Palette.SKIN_SHADOW.darkened(0.2), true, -1.0, true)
-			draw_arc(Vector2(0, -182), 15.0, PI * 0.9, TAU * 1.05, 14, Palette.GREY_DEEP, 8.0, true)
-			var swing := sin(_t * 1.4) * 2.0
-			draw_line(Vector2(22, -96), Vector2(30 + swing, -62), Palette.IRON_DARK, 3.0)
-			draw_circle(Vector2(30 + swing, -48), 22.0, Color(Palette.TRUTH_CYAN, 0.18), true, -1.0, true)
-			draw_rect(Rect2(21 + swing, -64, 18, 30), Palette.IRON_DARK)
-			draw_rect(Rect2(24 + swing, -60, 12, 22), Palette.TRUTH_CYAN_HOT)
+		Who.NOOR, Who.WARDFOLK:
+			var lamp := ArtCatalog.actor_anchor(key, "lantern", h)
+			var col := Palette.TRUTH_CYAN_HOT if who == Who.NOOR else Palette.WARD_CYAN_HOT
+			draw_circle(lamp, 14.0, Color(col, 0.12), true, -1.0, true)
+			draw_circle(lamp, 3.6, col, true, -1.0, true)
 		Who.TEO:
-			# Narrow and hunched, lit from the chest by a tablet; amber in his glasses, eyes never seen.
-			draw_colored_polygon(PackedVector2Array([Vector2(-16, -2), Vector2(16, -2), Vector2(18, -120), Vector2(-10, -132)]), Palette.COVERALL)
-			draw_circle(Vector2(4, -146), 12.0, Palette.SKIN_SHADOW.darkened(0.2), true, -1.0, true)
-			draw_circle(Vector2(8, -96), 26.0, Color(Palette.STEWARD_GOLD, 0.14), true, -1.0, true)
-			draw_rect(Rect2(-6, -104, 28, 20), Palette.BLACK_MIRROR)
-			draw_rect(Rect2(-3, -101, 22, 14), Color(Palette.STEWARD_GOLD, 0.9))
-			draw_line(Vector2(-4, -148), Vector2(14, -148), Palette.STEWARD_GOLD_HOT, 4.0)
+			var tablet := ArtCatalog.actor_anchor(key, "tablet", h)
+			draw_circle(tablet, 18.0, Color(Palette.STEWARD_GOLD, 0.13), true, -1.0, true)
+			draw_line(tablet - Vector2(6, 0), tablet + Vector2(6, 0), Palette.STEWARD_GOLD, 2.0)
 		Who.SURVIVOR:
-			# Brought to the Ark: lit by human warmth now, not grey.
-			var body := Palette.HUMAN_CREAM.darkened(0.45)
-			draw_colored_polygon(PackedVector2Array([Vector2(-18, -4), Vector2(18, -4), Vector2(15, -118), Vector2(-15, -118)]), body)
-			draw_circle(Vector2(0, -134), 13.0, body.darkened(0.1), true, -1.0, true)
 			if lit:
-				# Living in the Commons: a light of their own, a hand lamp in human warmth.
-				draw_line(Vector2(14, -70), Vector2(20, -46), Palette.IRON_DARK, 2.0)
-				draw_circle(Vector2(20, -36), 16.0, Color(Palette.HUMAN_CREAM, 0.16), true, -1.0, true)
-				draw_rect(Rect2(14, -46, 12, 16), Palette.IRON_DARK)
-				draw_rect(Rect2(16, -44, 8, 12), Palette.HUMAN_CREAM)
-		Who.WARDFOLK:
-			# Over from the Ward: an oilskin hood and a long coat, never a Lanyard, a cyan lantern on a pole.
-			draw_colored_polygon(PackedVector2Array([Vector2(-22, -2), Vector2(22, -2), Vector2(12, -128), Vector2(-12, -128)]), Palette.BOATHOUSE)
-			draw_circle(Vector2(0, -140), 13.0, Palette.SKIN_SHADOW.darkened(0.2), true, -1.0, true)
-			draw_arc(Vector2(0, -142), 16.0, PI * 0.95, TAU * 1.03, 14, Palette.BOATHOUSE.darkened(0.3), 9.0, true)
-			draw_line(Vector2(18, -2), Vector2(18, -112), Palette.IRON_DARK, 3.0)
-			draw_line(Vector2(18, -112), Vector2(32, -104), Palette.IRON_DARK, 2.0)
-			draw_circle(Vector2(32, -86), 20.0, Color(Palette.WARD_CYAN, 0.16), true, -1.0, true)
-			draw_rect(Rect2(26, -102, 12, 18), Palette.IRON_DARK)
-			draw_rect(Rect2(28, -100, 8, 13), Palette.WARD_CYAN_HOT)
+				var hand := ArtCatalog.actor_anchor(key, "hand", h)
+				ArtCatalog.paint(self, "lantern_housing", Rect2(hand - Vector2(6, 2), Vector2(12, 22)))
+				draw_circle(hand + Vector2(0, 9), 3.0, Palette.HUMAN_CREAM, true, -1.0, true)

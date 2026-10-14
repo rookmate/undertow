@@ -53,3 +53,13 @@ func test_a_prepared_run_is_only_what_the_districts_before_it_gave() -> void:
 	check_false(run.weapons_owned.has(WeaponDefs.DEFIB), "the Gauntlet is the Vellum's own to find")
 	check_eq(run.location, "loadout:vellum")
 	GameState.new_run()
+
+
+func test_headless_screenshots_do_not_wait_for_a_render_frame() -> void:
+	if DisplayServer.get_name() != "headless":
+		return
+	var before := Autopilot.shots_dir
+	Autopilot.shots_dir = "user://headless_capture_regression"
+	await Autopilot.snap("no_render_frame")
+	Autopilot.shots_dir = before
+	check_false(FileAccess.file_exists("user://headless_capture_regression/no_render_frame.png"), "headless capture returns without a framebuffer")
