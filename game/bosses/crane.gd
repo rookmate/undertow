@@ -270,30 +270,24 @@ func _physics_process(delta: float) -> void:
 
 func _draw() -> void:
 	draw_shadow(54.0, 26.0)
-	var flash := hit_flash()
-	var iron := Palette.RUST.lerp(Palette.IVORY, flash)
+	var tint := Color.WHITE * (1.0 + hit_flash())
 	var h := 280.0
-	# The tower and its machinery house; the cab lowers when it rests or stalls.
-	draw_rect(Rect2(-14, -h, 28, h), iron.darkened(0.2))
+	ArtCatalog.paint(self, "crane_tower", Rect2(-48, -h, 96, h + 24), tint)
 	var cab_y := -h * 0.35 if is_vulnerable() else -h + 30.0
-	draw_rect(Rect2(-30, cab_y, 60, 46), iron)
-	draw_rect(Rect2(-22, cab_y + 8, 44, 16), Palette.BLACK_MIRROR)
+	ArtCatalog.paint(self, "crane_cab", Rect2(-30, cab_y, 60, 46), tint)
 	if is_vulnerable():
 		draw_circle(Vector2(0, cab_y + 30), 12.0, Palette.STEWARD_GOLD_HOT, true, -1.0, true)
-	# The jib out to the load, the cable down to it.
 	var to := load_at - global_position
 	var jib_tip := to + Vector2(0, -h)
-	draw_line(Vector2(0, -h), jib_tip, iron, 7.0, true)
+	ArtCatalog.link(self, "crane_jib", Vector2(0, -h), jib_tip, 14.0, tint)
 	draw_line(Vector2(0, -h + 2), jib_tip + Vector2(0, 2), Palette.STEWARD_GOLD.darkened(0.3), 1.5, true)
 	var load_pos := to + Vector2(0, -load_height)
-	draw_line(jib_tip, load_pos + Vector2(0, -40), Palette.IRON_DARK, 1.5, true)
-	draw_rect(Rect2(load_pos + Vector2(-34, -40), Vector2(68, 40)), Palette.CONTAINER_TEAL)
-	# The second load (from stage 2), beside the first across the jib on its own cable: it hangs, falls and
-	# lands with the first, so you see what's about to hit you.
+	ArtCatalog.link(self, "pipe", jib_tip, load_pos + Vector2(0, -40), 2.0)
+	ArtCatalog.paint(self, "crane_load", Rect2(load_pos + Vector2(-34, -40), Vector2(68, 40)))
 	if second_load_shown():
 		var second := second_load_at() - global_position + Vector2(0, -load_height)
-		draw_line(jib_tip, second + Vector2(0, -40), Palette.IRON_DARK, 1.5, true)
-		draw_rect(Rect2(second + Vector2(-34, -40), Vector2(68, 40)), Palette.CONTAINER_TEAL.darkened(0.2))
+		ArtCatalog.link(self, "pipe", jib_tip, second + Vector2(0, -40), 2.0)
+		ArtCatalog.paint(self, "crane_load", Rect2(second + Vector2(-34, -40), Vector2(68, 40)))
 	# Danger marks: the drop's spot (two from stage 2), the swing's ring, the line it falls along
 	# (red-orange: danger and nothing else).
 	if phase == Phase.AIM:
@@ -309,7 +303,7 @@ func _draw() -> void:
 		draw_polyline(strip, Color(Palette.DANGER, 0.9), 3.0, true)
 	if fallen:
 		# The jib down across the pier.
-		draw_line(Vector2.ZERO, Iso.grid_to_world(fall_dir * FALL_LENGTH), iron.darkened(0.3), 12.0, true)
+		ArtCatalog.link(self, "crane_jib", Vector2.ZERO, Iso.grid_to_world(fall_dir * FALL_LENGTH), 12.0, tint)
 	if phase == Phase.SWING_WARN or phase == Phase.SWING:
 		_ring(Vector2.ZERO, SWING_INNER, Color(Palette.DANGER, 0.5))
 		_ring(Vector2.ZERO, SWING_OUTER, Color(Palette.DANGER, 0.85))

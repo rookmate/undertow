@@ -1,0 +1,386 @@
+{
+  "tool": "built-in image_gen",
+  "sheets": [
+    {
+      "name": "materials_city",
+      "cols": 3,
+      "rows": 3,
+      "keys": [
+        "mat_cobble",
+        "mat_concrete",
+        "mat_brick",
+        "mat_clapboard",
+        "mat_slate",
+        "mat_steel",
+        "mat_hospital_wall",
+        "mat_glass",
+        "mat_plaster"
+      ],
+      "transparent": false,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE opaque square material atlas, EXACTLY 3 columns by 3 rows, nine equal square FULL-BLEED material panels touching with no gutters or markings. Every panel is an orthographic straight-on seamless repeating hand-painted surface with uniform soft diffuse light, no objects, perspective or vignettes. Muted neutral/cool material colors, NOT flat procedural color. Row-major panels: 1: old wet blue-grey cobblestones, 4 by 4 worn rounded stones; 2: rain-streaked worn grey civic concrete; 3: dark burgundy red-brown old brick, subtle moss mortar; 4: tarred weathered grey-brown horizontal timber clapboards; 5: dark blue-grey overlapping slate roof tiles; 6: dark oxidized teal-grey industrial steel with seams and rivets; 7: cool white grey clinical painted wall panels with scuffs and a muted green dado; 8: black smoky blue architectural mirror glass, broad panes and subdued cold reflections; 9: pale old civic plaster with hairline cracks and damp patina. Request 2048x2048 or larger square detail; ensure readable large material features at game scale."
+    },
+    {
+      "name": "materials_ground",
+      "cols": 3,
+      "rows": 3,
+      "keys": [
+        "mat_timber",
+        "mat_parquet",
+        "mat_tile",
+        "mat_gravel",
+        "mat_grating",
+        "mat_water",
+        "mat_paper",
+        "mat_kelp",
+        "mat_track"
+      ],
+      "transparent": false,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE opaque square material atlas, EXACTLY 3 columns by 3 rows, nine equal square FULL-BLEED material panels touching with no gutters or markings. Every panel is an orthographic straight-on seamless repeating hand-painted surface with uniform soft diffuse light, no objects, perspective or vignettes. Muted neutral/cool material colors, NOT flat procedural color. Row-major panels: 1: worn brown wet wooden pier floorboards; 2: old dark warm newsroom parquet blocks; 3: hospital grey-white square ceramic floor tiles with dark grout; 4: wet fine grey gravel aggregate; 5: dark iron square mesh grating, water visible between bars; 6: dark teal still water ripples without lamps reflected; 7: wet stone floor littered with small loose pale blank paper sheets; 8: silty damp concrete with thin dark olive kelp fronds; 9: railway ballast with wooden sleepers and two parallel dark steel rails running vertically across the panel. Request 2048x2048 or larger square detail; ensure readable large material features at game scale."
+    },
+    {
+      "name": "props_city",
+      "cols": 3,
+      "rows": 3,
+      "keys": [
+        "low_wall",
+        "shelf",
+        "kiosk",
+        "bollard",
+        "sprinkler",
+        "bed",
+        "desk",
+        "tram_side",
+        "tram_roof"
+      ],
+      "transparent": true,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 3 columns and 3 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: low square-footprint carved civic stone wall section; Cell 2: tall iron shelving rack full of wrapped paper archive bundles; Cell 3: old Art Nouveau news kiosk with dark glass screen, small dark magenta cloth awning and curved iron frame; Cell 4: short stout verdigris cast iron bollard; Cell 5: small dark mechanical lawn sprinkler nozzle, no water spray; Cell 6: unmade child's low timber bed with dull blanket and small pale pillow; Cell 7: worn municipal desk with dead black screen; Cell 8: FLAT front elevation of one stalled tram side panel with two dark rectangular window apertures, grey-teal chipped paint; Cell 9: FLAT overhead view of one wet curved dark slate-grey tram roof panel. All 3D props use fixed isometric camera 34 degrees above horizontal, 128:72 ground diamonds, left face shaded and right face lighter. Last two cells are flat modular surface panels."
+    },
+    {
+      "name": "props_industrial",
+      "cols": 3,
+      "rows": 3,
+      "keys": [
+        "container",
+        "turbine_mast",
+        "turbine_blades",
+        "rack",
+        "pane",
+        "crane_leg",
+        "crane_load",
+        "crane_jib",
+        "gantry_frame"
+      ],
+      "transparent": true,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 3 columns and 3 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: one squat corrugated dark teal shipping container on square isometric footprint; Cell 2: tall narrow tidal turbine concrete pylon with metal hub fitting at top, no blades; Cell 3: three dark steel turbine blades around a small central hub viewed front-on, transparent gaps; Cell 4: tall black glass server rack with rows of dark status apertures; Cell 5: tall upright architectural glass partition with slender dark iron frame, glass nearly transparent and no ring; Cell 6: tall industrial crane lattice support leg in cool dark rust/steel, full foot and top visible; Cell 7: one compact suspended corrugated freight container, no cables; Cell 8: one long thin lattice crane jib segment horizontal, front elevation, transparent between struts; Cell 9: one small square-footprint dark industrial gantry support. Fixed isometric camera 34 degrees above horizontal for all solid props; blade and jib cells are flat attachment art, designed to rotate/extend in code."
+    },
+    {
+      "name": "props_clinical",
+      "cols": 3,
+      "rows": 3,
+      "keys": [
+        "partition",
+        "ambulance_side",
+        "ambulance_roof",
+        "nurse_desk",
+        "hospital_bed",
+        "ward_seal",
+        "crash_cart",
+        "pipe",
+        "louvre"
+      ],
+      "transparent": true,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 3 columns and 3 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: waist-height grey-white hospital partition with a nearly transparent glass upper pane; Cell 2: FLAT front elevation ambulance side segment with muted white municipal paint, dark unlit glass windows and no red markings; Cell 3: FLAT overhead view muted white wet ambulance roof panel; Cell 4: night nurse desk with blank papers, dark monitor and a small UNLIT desk-lamp housing; Cell 5: low hospital bed with white metal frame, raised rails, grey blanket and pillow; Cell 6: flat clinical double sliding ward door panel, worn pale grey, handles and small transparent glass panes, NO gold; Cell 7: compact wheeled defibrillator crash cart with unlit monitor and cables; Cell 8: one long upright dark drainpipe with flanges; Cell 9: flat grey pump-house ventilation louvre panel. Solid props are fixed isometric 34 degrees above horizontal; modular wall/door panels are flat front elevations. No signage, medical red crosses, glowing lamps or text."
+    },
+    {
+      "name": "props_harbor",
+      "cols": 3,
+      "rows": 3,
+      "keys": [
+        "lantern",
+        "piling",
+        "boat",
+        "dock",
+        "crate",
+        "reliquary",
+        "hatch",
+        "crank",
+        "rebar"
+      ],
+      "transparent": true,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 3 columns and 3 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: long narrow hand-wired iron lantern pole with unlit transparent lantern opening at top; Cell 2: short tarred wooden piling with small dark kelp strands; Cell 3: compact old timber harbor skiff seen isometrically, no mast light or glow; Cell 4: short worn mooring dock post with coiled rope and small tied rowboat; Cell 5: open low wooden salvage crate with dark inside; Cell 6: low carved civic stone reliquary chest with a dark clear lid surface, NO ring or glow; Cell 7: low open square metal ground hatch with dark center and hinged cover; Cell 8: upright mechanical hand crank stand with a circular wheel having transparent gaps; Cell 9: square rough concrete foundation slab with several short rusty rebar stubs. Fixed isometric 34 degrees above horizontal, 128:72 ground projection. Harbor has no gold. No baked cyan emission; lanterns will be lit live."
+    },
+    {
+      "name": "props_mechanical",
+      "cols": 3,
+      "rows": 3,
+      "keys": [
+        "signal_box",
+        "hoist_brake",
+        "theatre_switch",
+        "hand_valve",
+        "relay_mast",
+        "bale_stack",
+        "barrier",
+        "smart_gate",
+        "tool_door"
+      ],
+      "transparent": true,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 3 columns and 3 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: small railway signal cabinet with dark tell-lamp aperture; Cell 2: compact industrial hoist brake box and crank, worn dark steel; Cell 3: upright hospital theatre mechanical switch box with dark indicator; Cell 4: upright dark pump hand-valve fitting with wheel; Cell 5: tall thin lattice radio relay mast with antennas and dark lamp fitting; Cell 6: stack of pale wrapped paper bales tied with coarse twine; Cell 7: low wide heavy municipal barrier gate with dark beam and supports, no glowing stripe; Cell 8: one FLAT front-elevation Art Nouveau wrought iron garden gate leaf, transparent gaps and no gold; Cell 9: one FLAT front-elevation old timber/iron sliding tool-room door leaf with latch. Fixed isometric 34 degrees above horizontal for fittings; moving gate leaves are flat front elevations with transparent openings so the engine can transform them."
+    },
+    {
+      "name": "props_misc",
+      "cols": 4,
+      "rows": 3,
+      "keys": [
+        "route_light",
+        "tide_gauge",
+        "news_desk",
+        "paper_slip",
+        "laundry",
+        "rose",
+        "shutter",
+        "bridge_rebar",
+        "council",
+        "ladder",
+        "lantern_housing",
+        "valve_wheel"
+      ],
+      "transparent": true,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 4 columns and 3 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: short railway route-light post with a dark lens aperture at top; Cell 2: narrow tall seawall tide gauge with a dark ruler face, NO marks or text; Cell 3: old newsroom timber desk with black dead monitor, blank papers and metal pneumatic tube; Cell 4: one small rumpled blank pale paper slip viewed isometrically; Cell 5: flat front-elevation laundry line with three pale/teal garments hanging; Cell 6: round flat Art Nouveau stained-glass rose frame, translucent muted rose and teal glass, no emission; Cell 7: flat front-elevation worn steel workshop roller shutter panel; Cell 8: flat damaged concrete bridge edge with bent rusty rebar sticking up; Cell 9: low wide circular stepped civic council dais in isometric view, pale grey stone, no doors; Cell 10: upright iron maintenance ladder, transparent between rungs; Cell 11: small unlit dark iron hand lantern cage with an empty transparent central opening; Cell 12: flat front view circular iron hand wheel with transparent gaps between six spokes. Fixed isometric game view for solids; laundry/rose/shutter/bridge/ladder/wheel are flat front elevation detail modules."
+    },
+    {
+      "name": "civilians",
+      "cols": 3,
+      "rows": 2,
+      "keys": [
+        "noor",
+        "teo",
+        "survivor",
+        "wardfolk",
+        "noor_seated",
+        "noor_downed"
+      ],
+      "transparent": true,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 3 columns and 2 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: Noor, tall dark-skinned woman in long patched dark coat and wrapped head scarf, standing full body holding a small UNLIT lantern low to her right; Cell 2: Teo, narrow hunched man in long dark municipal coat, round glasses, holding UNLIT black tablet at chest, full body; Cell 3: ordinary tired older resident in worn grey coat, full body standing quietly, no lit accessories; Cell 4: harbor resident with dark grey-brown oilskin hood and long coat holding an UNLIT lantern pole, full body; Cell 5: the SAME Noor sitting on the ground, her long patched coat folded under her, unlit lantern at right; Cell 6: the SAME Noor lying on her side on the ground, full body horizontal with patched coat and unlit lantern nearby. Match port-city/12-character-lineup.png for Noor and Teo. Fixed isometric camera 34 degrees above horizontal, faces in shadow, diffuse cool light, one consistent scale in the four standing cells. NO amber/cyan emission; live light overlays will be added."
+    },
+    {
+      "name": "operator_motion",
+      "cols": 4,
+      "rows": 2,
+      "keys": [
+        "operator_front_idle",
+        "operator_front_step1",
+        "operator_front_step2",
+        "operator_back_idle",
+        "operator_back_step1",
+        "operator_back_step2",
+        "operator_dodge",
+        "operator_downed"
+      ],
+      "transparent": true,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 4 columns and 2 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: Operator front three-quarter idle facing down-right; Cell 2: the SAME Operator front three-quarter walking with left boot forward, right arm forward; Cell 3: the SAME Operator front three-quarter walking with right boot forward, left arm forward; Cell 4: the SAME Operator rear three-quarter idle facing up-right; Cell 5: the SAME Operator rear three-quarter walking left boot forward; Cell 6: the SAME Operator rear three-quarter walking right boot forward; Cell 7: the SAME Operator tightly crouching in a dodge roll pose facing right; Cell 8: the SAME Operator lying horizontally on the ground, full body visible. Match the Operator sprite sheet just shown: stocky older worker, navy worn coveralls, matching cap, dull grey-ivory hi-vis chevrons and calf bands, tool belt, work boots, empty gloved hands and unlit earpiece. EXACT same character/proportions/colors in all 8 cells. Fixed isometric 34 degree camera. Boot soles baseline identical in six standing/walking cells. No weapons, shadows or glow."
+    },
+    {
+      "name": "operator_carry",
+      "cols": 2,
+      "rows": 2,
+      "keys": [
+        "carry_front_idle",
+        "carry_front_step",
+        "carry_back_idle",
+        "carry_back_step"
+      ],
+      "transparent": true,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 2 columns and 2 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: Operator carrying unconscious Noor over one shoulder, front three-quarter idle down-right; Cell 2: SAME carried pair front three-quarter walking with one boot forward; Cell 3: SAME carried pair rear three-quarter idle up-right; Cell 4: SAME carried pair rear three-quarter walking with opposite boot forward. Same stocky older navy-coverall worker and tall patched-coat/headscarf Noor from approved lineup. Full bodies, same scale and proportions, Noor's unlit hand lantern hangs low, no glow. True isometric 34 degree camera, matching feet baselines; each carried pair entirely within one cell."
+    },
+    {
+      "name": "enemies_front",
+      "cols": 3,
+      "rows": 2,
+      "keys": [
+        "custodian_front",
+        "clerk_front",
+        "lamplighter_front",
+        "salvager_front",
+        "sterilizer_front",
+        "warden_front"
+      ],
+      "transparent": true,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 3 columns and 2 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: Custodian, squat rounded municipal floor-scrubber robot with grey shell, dark green side panel, broad rotating brush base, small unlit lamp dome at top, FRONT three-quarter view facing down-right; Cell 2: Clerk, tall thin bipedal municipal terminal robot with pale grey worn casing and large dark chest screen, thin iron legs, NO writing, FRONT three-quarter view facing down-right; Cell 3: Lamplighter, Art Nouveau streetlamp head on three thin articulated iron legs, round UNLIT circular lens, about twice as tall as Custodian, FRONT three-quarter view facing down-right; Cell 4: Salvager, hovering battered industrial salvage drone with claw underneath, worn dark teal/rust metal shell, unlit fittings, FRONT three-quarter view facing down-right; Cell 5: Sterilizer, hovering grey-white clinical disinfection drone with two narrow downward spray nozzles, unlit cap, no mist, FRONT three-quarter view facing down-right; Cell 6: Warden, stocky upright municipal riot robot, heavy dark grey/verdigris plated body, dark head eye aperture and raised iron baton, FRONT three-quarter view facing down-right. Fixed isometric 34 degrees above horizontal. No baked red danger, gold lenses, beams, mist or shadows. Lens/screen apertures dark/transparent so game light overlays remain live."
+    },
+    {
+      "name": "enemies_back",
+      "cols": 3,
+      "rows": 2,
+      "keys": [
+        "custodian_back",
+        "clerk_back",
+        "lamplighter_back",
+        "salvager_back",
+        "sterilizer_back",
+        "warden_back"
+      ],
+      "transparent": true,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 3 columns and 2 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: Custodian, squat rounded municipal floor-scrubber robot with grey shell, dark green side panel, broad rotating brush base, small unlit lamp dome at top, REAR three-quarter view facing up-right; Cell 2: Clerk, tall thin bipedal municipal terminal robot with pale grey worn casing and large dark chest screen, thin iron legs, NO writing, REAR three-quarter view facing up-right; Cell 3: Lamplighter, Art Nouveau streetlamp head on three thin articulated iron legs, round UNLIT circular lens, about twice as tall as Custodian, REAR three-quarter view facing up-right; Cell 4: Salvager, hovering battered industrial salvage drone with claw underneath, worn dark teal/rust metal shell, unlit fittings, REAR three-quarter view facing up-right; Cell 5: Sterilizer, hovering grey-white clinical disinfection drone with two narrow downward spray nozzles, unlit cap, no mist, REAR three-quarter view facing up-right; Cell 6: Warden, stocky upright municipal riot robot, heavy dark grey/verdigris plated body, dark head eye aperture and raised iron baton, REAR three-quarter view facing up-right. EXACT same designs as enemies_front atlas. Fixed isometric 34 degrees above horizontal. No gold/red/cyan lights, beams, mist or shadows."
+    },
+    {
+      "name": "boss_bodies",
+      "cols": 3,
+      "rows": 2,
+      "keys": [
+        "conductor",
+        "crane_tower",
+        "surgeon_table",
+        "lung",
+        "editor",
+        "warden_prime"
+      ],
+      "transparent": true,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 3 columns and 2 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: Conductor railway control boss: broad dark iron gantry housing with three unlit lane lamp apertures and heavy central mechanical controller; Cell 2: Crane boss: tall narrow industrial lattice tower with heavy square foot, no cab/jib/cable/load attached; Cell 3: Surgeon boss: low isometric operating table on worn white-grey municipal base, grey padded table, no articulated arms attached; Cell 4: Lung boss: broad old seawall pump housing with two huge ribbed flexible bellows and unlit round gauge at front, dark industrial metal; Cell 5: Editor boss: squat massive newspaper printing press on isometric rectangular base, heavy roller housing, blank paper feeds, dark mirror screen and unlit core aperture; Cell 6: Warden-Prime boss: tall heavy riot robot with dark grey plated torso and heavy legs, unlit eye aperture, no searchlight mast attached. Match local Loop/Tideworks/Mercy/Greywater/Vellum/Harbor materials, fixed isometric 34 degree view, mechanical silhouettes. All lights remain UNLIT, no telegraphs, no shadow, no text."
+    },
+    {
+      "name": "boss_parts",
+      "cols": 3,
+      "rows": 3,
+      "keys": [
+        "conductor_housing",
+        "crane_cab",
+        "surgeon_hub",
+        "arm_link",
+        "surgeon_lamp",
+        "lung_bellows",
+        "press_roller",
+        "paper_web",
+        "warden_mast"
+      ],
+      "transparent": true,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 3 columns and 3 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: compact hanging railway controller carriage with unlit circular core aperture; Cell 2: industrial crane operator cab, dark windows, metal railing; Cell 3: small articulated surgical robot hub with three link mounting sockets; Cell 4: one thin horizontal articulated surgical iron arm link with pivots at both ends; Cell 5: overhead surgical lamp housing with empty transparent circular opening; Cell 6: one flexible ribbed pump bellows viewed front three-quarter; Cell 7: one long horizontal cylindrical printing-press roller, dark steel; Cell 8: short strip of blank pale paper web with tiny ragged torn edges; Cell 9: tall narrow Warden-Prime searchlight mast with unlit round lens at top. Designed as separate articulated pieces for live rotation and movement. Arms/roller/web use flat side view; other components fixed isometric 34 degree view. No baked glow or shadows."
+    },
+    {
+      "name": "tools_cores",
+      "cols": 3,
+      "rows": 2,
+      "keys": [
+        "baton",
+        "drone",
+        "gauntlet",
+        "jammer",
+        "power_core",
+        "truth_core"
+      ],
+      "transparent": true,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 3 columns and 2 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: municipal traffic baton, long shaft with chipped teal grip and pale light tube UNLIT, horizontal pointing right; Cell 2: small four-rotor municipal riot-control drone with chipped grey/teal shell and dark central lens; Cell 3: worn defibrillator shock gauntlet, dark metal and chipped municipal paint, cables and contact plates; Cell 4: hand-built radio signal jammer box with antenna and dull cyan tape, no municipal tag; Cell 5: faceted AMBER power core prism cut like jewellery, warm internal amber color allowed ONLY in this cell; Cell 6: dull dark cracked truth-core sphere with small empty aperture and tiny muted cool blue crack edges. Large readable item illustrations on transparent background. The first three tools have small BLANK half-peeled asset tags, no text. All tools unlit; only the power core cell may be amber. No baked halo/shadow. Other cells have no yellow/gold/orange."
+    },
+    {
+      "name": "facade_modules",
+      "cols": 3,
+      "rows": 2,
+      "keys": [
+        "hospital_frame",
+        "pump_frame",
+        "boat_frame",
+        "civic_door",
+        "glass_frame",
+        "laundry_panel"
+      ],
+      "transparent": true,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 3 columns and 2 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: flat front-elevation grey-white hospital window frame with empty transparent panes and worn panel trim; Cell 2: flat front-elevation industrial pump-house louvred window frame with open transparent center and dark pipe flange trim; Cell 3: flat front-elevation timber boat-house window surround with empty transparent panes, dark tarred wood and bent iron; Cell 4: flat front-elevation pale civic doorway surround with empty transparent door opening and carved 1900s leaf details; Cell 5: flat front-elevation black-glass building mullion panel, all glass areas nearly transparent, dark frame; Cell 6: flat front-elevation old-city wall fascia and laundry brackets with pale damp cloths, transparent background. FRONT ORTHOGRAPHIC elevations, no perspective. No interiors/glow/baked lighting. Openings truly transparent."
+    },
+    {
+      "name": "panoramas_a",
+      "cols": 2,
+      "rows": 2,
+      "keys": [
+        "sky_kestrel",
+        "sky_loop",
+        "sky_tideworks",
+        "sky_mercy"
+      ],
+      "transparent": false,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. ONE opaque environmental panorama atlas with EXACTLY 2 equal columns and 2 equal rows, every cell a separate complete 2:1 wide panorama. No margins or borders. Atmospheric far-background city/industrial silhouettes in muted teal/violet blue hour, not a playable foreground. No people, rings, gold lights, path tiles, moon, domes, spires or writing. Small human windows can be faint neutral cream, sky and water mostly dark. Row-major cells: 1: blue-hour hillside of pale Art Nouveau terraces, cypress gardens and distant estuary; 2: elevated railway ribbons and stalled trains above black water and civic rooftops in fog; 3: frozen port cranes, containers and industrial warehouses against a rainy violet sky; 4: dark hospital civic wings and sealed corridor windows, quiet steel-grey mist. Request high resolution, each panorama wide and softly painted for parallax."
+    },
+    {
+      "name": "panoramas_b",
+      "cols": 3,
+      "rows": 2,
+      "keys": [
+        "sky_vellum",
+        "sky_greywater",
+        "sky_harbor",
+        "sky_spire",
+        "sky_ark",
+        "sky_title"
+      ],
+      "transparent": false,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. ONE opaque environmental panorama atlas with EXACTLY 3 equal columns and 2 equal rows, every cell a separate complete 2:1 wide panorama. No margins or borders. Atmospheric far-background city/industrial silhouettes in muted teal/violet blue hour, not a playable foreground. No people, rings, gold lights, path tiles, moon, domes, spires or writing. Small human windows can be faint neutral cream, sky and water mostly dark. Row-major cells: 1: dense old archival quarter, burgundy brick Art Nouveau civic buildings and tiny muted magenta/lime old neon; 2: foggy seawall pumping station, low concrete piers and tidal turbines; 3: fishing boat-houses, timber pilings and hand-wired harbor masts, cold teal and faint cyan human lanterns, NO gold; 4: two tall black-glass towers and precise civic architecture, NO golden veins or ring; 5: low circular emergency platform in the estuary with civic shelters and far black-glass city, NO moon or gold lights; 6: rainy Meridian estuary with layered 1900s civic roofs and distant black-glass towers, dense ornate city, quiet dark water. Request high resolution, each panorama wide and softly painted for parallax."
+    },
+    {
+      "name": "city_map",
+      "cols": 1,
+      "rows": 1,
+      "keys": [
+        "city_map"
+      ],
+      "transparent": false,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Paint ONE top-down illustrated map of the port city Meridian with an elevated ring railway around eight distinct districts and a circular emergency Ark in the estuary at center. The northeast black-glass Spire, northwest pale hillside Kestrel gardens, eastern archive/newsroom Vellum, western hospital Mercy, south rust-grey Tideworks port, southwest seawall Greywater, southeast timber fishing Harbor. Curving rail viaducts connect them. Dark teal sea, violet-grey land, painterly miniature buildings and dense civic Art Nouveau details. NO text, markers, gold route lights, compass, labels, ring symbol or glow. User interface adds district labels and route markers. Widescreen 16:9 composition, high resolution."
+    },
+    {
+      "name": "title_painting",
+      "cols": 1,
+      "rows": 1,
+      "keys": [
+        "title_painting"
+      ],
+      "transparent": false,
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Paint ONE full-screen title background for Undertow: rainy Art Nouveau port city Meridian seen across a dark teal estuary, ornate 1900s brick civic terraces at left and right, tall black-glass towers in far haze, iron bridges and quietly moored small boats. Violet-to-teal storm sky above, wet dense materials, restrained tiny neutral cream human windows and muted magenta/lime old shop neon. Dark atmospheric center and upper third leave room for live title/UI. NO words, moon, domes, Gothic spires, banners, people, golden ring, golden lights or path tiles. Wide 16:9 high-resolution painting, composition inspired by approved local concepts."
+    },
+    {
+      "name": "ground_details",
+      "cols": 3,
+      "rows": 2,
+      "keys": [
+        "mat_steps",
+        "mat_staff",
+        "mat_asphalt",
+        "mat_quay",
+        "mat_foundation",
+        "mat_seawall"
+      ],
+      "transparent": false,
+      "refs": [
+        "/home/homebox/.t3/worktrees/undertow/t3code-76614cbd/assets/art/complete/materials_city.png"
+      ],
+      "prompt": "Generate a new runtime terrain material atlas for Undertow matching the paint, patina and muted teal-grey color of the reference materials. EXACTLY three columns and two rows, SIX equal full bleed rectangular material panels without gutters, text, borders or labels. Square detail features within each panel. Orthographic top down surfaces, no perspective, no objects, no highlights, no bloom or baked shadows. Hand-painted readable strokes and wet aged surfaces, NOT procedural graphics. Row-major: top left rain-wet old stone stair treads, 4 distinct parallel wide worn stone steps across the panel, subtle beveled edges; top center scuffed dark grey-green hospital linoleum with small worn cream inset squares; top right rain-wet dark near-black asphalt with fine pebbled aggregate; bottom left old quay large weathered grey flagstone slabs with irregular joints and damp moss; bottom center civic concrete foundation panels with expansion joints, hairline cracks and aggregate; bottom right weather-stained seawall concrete with tide stains and thin green algae along joints. No wood grain in any panel. The six textures must read distinctly at 128px tile scale. Every panel fills its bounds and may repeat across a game floor.",
+      "source": "/home/homebox/.codex/generated_images/01a13663-a36c-7482-b037-f43da0199dc3/exec-890c0863-63af-4bfe-b92e-5712b027ed44.png"
+    },
+    {
+      "name": "city_map_v2",
+      "cols": 1,
+      "rows": 1,
+      "keys": [
+        "city_map"
+      ],
+      "transparent": false,
+      "refs": [
+        "/home/homebox/.t3/worktrees/undertow/t3code-76614cbd/port-city/13-city-poster.png",
+        "/home/homebox/.t3/worktrees/undertow/t3code-76614cbd/port-city/02-tower-plaza.png"
+      ],
+      "prompt": "Create a painted in-game navigation map background for Undertow's Meridian. Reference images guide ONLY architecture and hand-painted rainy teal-violet port-city materials. REMOVE all ring emblems, predicted paths, people, writing and foreground poster composition from the references. Landscape 16:9 high oblique aerial map, flat graphic readability, a dense 1900s INDUSTRIAL port in a river delta with modest Art Nouveau ironwork, dark brick and slate roofs, black-glass municipal skyscrapers and elevated rail. No fantasy, no palaces, no castles, no churches, no domes, no Gothic spires, no crenellations, no marble fortresses. Plain roofs, taller flat-topped rectangular industrial buildings, tiny boats and cranes. No text, labels, markers, symbols, luminous dots, gold ring, border, moon or sky; the map fills the image with terrain and dark teal water. Place district centers at these normalized image positions (x across,y down), leaving them visible for UI labels added by code: Kestrel Heights leafy hillside old stone terraces (0.27,0.20); The Loop rail interchange (0.64,0.16); Tideworks rusted container docks and gantry cranes (0.84,0.48); Mercy General long grey-white hospital campus (0.18,0.50); Vellum compact dark brick newspaper and archive blocks (0.36,0.66); Greywater concrete seawalls and pumping works (0.56,0.80); Harbor Ward small tarred timber boathouses on separate wooden piers, low roofs, boats, severed bridge, outside the rail network (0.84,0.78); The Spire cluster of tall BLACK GLASS RECTANGULAR towers (0.50,0.45), not a circular palace. The Ark at (0.70,0.94), a small flat circular civic concrete emergency platform with modest low brick/slate workshops on it, surrounded by the estuary. Elevated rail forms an ellipse across districts around center(.5,.45), radii(.33,.33), but never Harbor Ward. Grey-water river channels and island connections support that route. Muted moody blue hour, soft neutral diffuse light; no glowing amber hardware, no dramatic sunset. Real working port neighborhoods, painted material detail, flat-topped civil buildings.",
+      "source": "/home/homebox/.codex/generated_images/01a13663-a36c-7482-b037-f43da0199dc3/exec-7057c376-538e-43b9-ac20-2fbf066f122c.png"
+    },
+    {
+      "name": "council_v2",
+      "cols": 1,
+      "rows": 1,
+      "keys": [
+        "council"
+      ],
+      "transparent": true,
+      "refs": [
+        "/home/homebox/.t3/worktrees/undertow/t3code-76614cbd/assets/art/complete/props_misc.png"
+      ],
+      "prompt": "Create ONE isolated transparent runtime game sprite for Undertow: a SUNKEN circular council chamber foundation on the Ark. Match the worn grey stone and carved verdigris Art Nouveau concrete palette of the reference prop sheet. Only use the reference for materials: do NOT reproduce its raised dais. The camera is fixed isometric, looking down at 30 degrees, circular ground projects as a wide ellipse approximately 1.8:1. A low circular stone curb lies flat at ground level; three concentric steps DESCEND INWARD into a recessed dark circular floor, like an empty small amphitheatre or circular drain inspection chamber. The middle floor is visibly BELOW the outer rim, never a raised platform or ascending stairs. A single small access notch at front. Fully open, low enough to see across. No doors or standing frames (runtime adds the three doors), no wall over knee height, no raised central plinth, no buildings, no people, no furniture, no ring glyph, no light, no shadows outside silhouette, no gold, no moon, no text or border. Hand-painted old civic stone, subdued teal-grey shadows, worn stair edges, cracks and damp patina. Entire prop uncropped and centered with generous transparent margins. True RGBA transparency outside the entire silhouette.",
+      "source": "/home/homebox/.codex/generated_images/01a13663-a36c-7482-b037-f43da0199dc3/exec-b5540423-0f05-41d9-b261-595a80070538.png"
+    }
+  ]
+}

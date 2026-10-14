@@ -71,18 +71,9 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
-	# A crate the cache sits on.
-	draw_colored_polygon(PackedVector2Array([Vector2(-34, -2), Vector2(0, 18), Vector2(34, -2), Vector2(34, -40), Vector2(0, -20), Vector2(-34, -40)]), Palette.STONE_OLD.darkened(0.2))
-	draw_colored_polygon(PackedVector2Array([Vector2(-34, -40), Vector2(0, -60), Vector2(34, -40), Vector2(0, -20)]), Palette.STONE_OLD)
+	ArtCatalog.paint(self, "crate", Rect2(-34, -60, 68, 78))
 	if taken:
 		return
-	var c := Vector2(0, -72)
-	draw_circle(c, 22.0, Palette.GREY_DEEP, true, -1.0, true)
-	draw_arc(c, 22.0, 0.0, TAU, 28, Palette.GREY_COLD.darkened(0.3), 2.0, true)
-	for crack: PackedVector2Array in [
-		PackedVector2Array([c + Vector2(-14, -12), c + Vector2(-4, -2), c + Vector2(-10, 10)]),
-		PackedVector2Array([c + Vector2(8, -18), c + Vector2(4, -6), c + Vector2(15, 4)]),
-	]:
-		draw_polyline(crack, Palette.NEAR_BLACK, 2.0, true)
+	ArtCatalog.paint(self, "truth_core", Rect2(-22, -94, 44, 44))
 	var blink := 0.35 + 0.65 * maxf(0.0, sin(_blink * 2.4))
-	draw_circle(c + Vector2(2, 2), 5.0, Color(Palette.TRUTH_CYAN_HOT, blink), true, -1.0, true)
+	draw_circle(Vector2(2, -70), 3.0, Color(Palette.TRUTH_CYAN_HOT, blink), true, -1.0, true)

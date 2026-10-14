@@ -121,17 +121,7 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
-	var shadow := PackedVector2Array()
-	for i: int in 14:
-		var a := TAU * i / 14.0
-		shadow.append(Vector2(cos(a) * 24.0, sin(a) * 10.0))
-	draw_colored_polygon(shadow, Color(Palette.NEAR_BLACK, 0.4))
-	# Woken: lit by human warmth. Waiting: grey and unlit.
-	var body := Palette.HUMAN_CREAM.darkened(0.45) if woken else Palette.WAITING_GREY
-	draw_colored_polygon(PackedVector2Array([Vector2(-18, -4), Vector2(18, -4), Vector2(15, -118), Vector2(-15, -118)]), body)
-	draw_circle(Vector2(0, -134), 13.0, body.darkened(0.1), true, -1.0, true)
-	draw_rect(Rect2(-24, -112, 8, 54), body.darkened(0.15))
-	draw_rect(Rect2(16, -112, 8, 54), body.darkened(0.15))
-	# The Lanyard: a sliver of the Steward at the ear. Dark once they've been woken.
-	var lanyard := Palette.GREY_DEEP if woken else Color(Palette.STEWARD_GOLD, 0.8)
-	draw_circle(Vector2(-11, -134), 3.0, lanyard, true, -1.0, true)
+	draw_colored_polygon(Fx.ground_ellipse(0.36, 18, false), Color(Palette.NEAR_BLACK, 0.4))
+	ArtCatalog.actor(self, "survivor", 147.0, Vector2.ZERO, 0.0, Color.WHITE if woken else Color(0.67, 0.73, 0.79))
+	var ear := ArtCatalog.actor_anchor("survivor", "ear", 147.0)
+	draw_circle(ear, 2.5, Palette.GREY_DEEP if woken else Palette.STEWARD_GOLD, true, -1.0, true)
