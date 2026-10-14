@@ -200,26 +200,24 @@ func _physics_process(delta: float) -> void:
 func _draw() -> void:
 	draw_shadow(46.0, 22.0)
 	var flash := hit_flash()
-	var iron := Palette.IRON_DARK.lerp(Palette.IVORY, flash)
-	var h := 150.0
-	# Two legs and a crossbar: a signal gantry over the junction.
-	for x: float in [-46.0, 46.0]:
-		draw_rect(Rect2(x - 6, -h, 12, h), iron)
-	draw_rect(Rect2(-56, -h - 14, 112, 18), iron)
-	# Three lamps, one per lane; the warned lane's burns red-orange (danger).
+	var gantry := Rect2(-78, -164, 156, 164)
+	# The housing travels between the painted pillars. Keep the fixed centre clear.
+	ArtCatalog.slice(self, "conductor", Rect2(-78, -164, 41, 164), Rect2(0, 0, 0.26, 1))
+	ArtCatalog.slice(self, "conductor", Rect2(39, -164, 39, 164), Rect2(0.75, 0, 0.25, 1))
+	ArtCatalog.slice(self, "conductor", Rect2(-37, -164, 76, 61), Rect2(0.26, 0, 0.49, 0.37))
 	for i: int in 3:
-		var lamp_pos := Vector2(-34 + i * 34, -h - 5)
+		var anchor_id: String = ["signal_left", "signal_middle", "signal_right"][i]
+		var lamp_pos := ArtCatalog.anchor("conductor", anchor_id, gantry)
 		var lit := phase == Phase.WARN and i < lanes.size() and _running.has(lanes[i])
-		draw_circle(lamp_pos, 7.0, Palette.DANGER if lit else Palette.GREY_DEEP, true, -1.0, true)
-	# The shunting arm and its housing: the core shows when it vents or stalls.
+		draw_circle(lamp_pos, 5.0, Palette.DANGER if lit else Palette.GREY_DEEP, true, -1.0, true)
 	var drop := 60.0 if is_vulnerable() else 0.0
-	var body := Rect2(-30, -h + 20 + drop, 60, 54)
-	draw_rect(body, iron.lightened(0.08))
-	var core := body.get_center()
+	var body := Rect2(-30, -130 + drop, 60, 54)
+	var core := ArtCatalog.anchor("conductor_housing", "lens", body)
 	if is_vulnerable():
-		draw_circle(core, 14.0, Palette.STEWARD_GOLD_HOT, true, -1.0, true)
+		draw_circle(core, 6.0, Palette.STEWARD_GOLD_HOT, true, -1.0, true)
 		for k: int in 5:
 			var a := TAU * k / 5.0 + _phase_time * 3.0
 			draw_circle(core + Vector2(cos(a), sin(a)) * 30.0 + Vector2(0, -20), 9.0, Color(Palette.FOG, 0.35), true, -1.0, true)
 	else:
-		draw_circle(core, 10.0, Palette.STEWARD_GOLD.darkened(0.4), true, -1.0, true)
+		draw_circle(core, 5.0, Palette.STEWARD_GOLD.darkened(0.4), true, -1.0, true)
+	ArtCatalog.paint(self, "conductor_housing", body, Color.WHITE * (1.0 + flash))

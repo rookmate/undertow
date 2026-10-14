@@ -1,0 +1,428 @@
+{
+  "terrain": {
+    "COBBLE": "mat_cobble",
+    "PAVEMENT": "mat_concrete",
+    "OLD_QUAY": "mat_quay",
+    "STACKS": "mat_paper",
+    "STAIRS": "mat_steps",
+    "WATER": "mat_water",
+    "RAILING": "mat_concrete",
+    "LOW_WALL": "mat_concrete",
+    "CONCRETE": "mat_concrete",
+    "FOUNDATION": "mat_foundation",
+    "LAWN": "kestrel_lawn",
+    "STEPS": "mat_steps",
+    "TIMBER": "mat_timber",
+    "GRAVEL": "mat_gravel",
+    "TRACK": "mat_track",
+    "CARRIAGE": "mat_steel",
+    "GANTRY": "mat_grating",
+    "CAB": "mat_steel",
+    "TILE": "mat_tile",
+    "ASPHALT": "mat_asphalt",
+    "STAFF": "mat_staff",
+    "SEAWALL": "mat_seawall",
+    "LOW_STREET": "mat_seawall",
+    "KELP": "mat_kelp",
+    "GRATING": "mat_grating",
+    "PARQUET": "mat_parquet",
+    "PIER": "mat_timber",
+    "WARD_STONE": "mat_cobble",
+    "GLASS": "mat_glass",
+    "CULVERT": "mat_brick"
+  },
+  "terrain_exceptions": {
+    "VOID": "Empty space with live fog",
+    "BUILDING": "Painted and depth sorted by BuildingCell"
+  },
+  "scenery": {
+    "LOW_WALL": [
+      "low_wall"
+    ],
+    "SHELF": [
+      "shelf"
+    ],
+    "KIOSK": [
+      "kiosk"
+    ],
+    "BOLLARD": [
+      "bollard"
+    ],
+    "HEDGE": [
+      "kestrel_hedge"
+    ],
+    "PLANTER": [
+      "kestrel_planter"
+    ],
+    "SPRINKLER": [
+      "sprinkler"
+    ],
+    "BED": [
+      "bed"
+    ],
+    "DESK": [
+      "desk"
+    ],
+    "CONTAINER": [
+      "container"
+    ],
+    "PARTITION": [
+      "partition"
+    ],
+    "NURSE_DESK": [
+      "nurse_desk"
+    ],
+    "HOSPITAL_BED": [
+      "hospital_bed"
+    ],
+    "TURBINE": [
+      "turbine_mast",
+      "turbine_blades"
+    ],
+    "NEWS_DESK": [
+      "news_desk"
+    ],
+    "LANTERN": [
+      "lantern"
+    ],
+    "PILING": [
+      "piling"
+    ],
+    "RACK": [
+      "rack"
+    ],
+    "PANE": [
+      "pane"
+    ],
+    "RAILING": [
+      "kestrel_railing"
+    ],
+    "TRAM": [
+      "tram_side",
+      "tram_roof"
+    ],
+    "AMBULANCE": [
+      "ambulance_side",
+      "ambulance_roof"
+    ],
+    "CARRIAGE_SIDE": [
+      "tram_side",
+      "tram_roof"
+    ]
+  },
+  "facades": {
+    "PLAIN": [
+      "kestrel_window",
+      "kestrel_balcony"
+    ],
+    "DOOR": [
+      "kestrel_door"
+    ],
+    "NEON_MAGENTA": [
+      "kestrel_window",
+      "kestrel_balcony"
+    ],
+    "NEON_LIME": [
+      "kestrel_window",
+      "kestrel_balcony"
+    ],
+    "ARCHIVE": [
+      "rose",
+      "kestrel_window"
+    ],
+    "LAUNDRY": [
+      "laundry",
+      "kestrel_window"
+    ],
+    "SIGNAL_ROOM": [
+      "relay_mast",
+      "kestrel_window"
+    ],
+    "WORKSHOP": [
+      "shutter",
+      "kestrel_window"
+    ],
+    "HOSPITAL": [
+      "hospital_frame"
+    ],
+    "HOSPITAL_DOOR": [
+      "ward_seal"
+    ],
+    "CLINIC": [
+      "kestrel_window",
+      "kestrel_balcony"
+    ],
+    "PUMPING_STATION": [
+      "louvre",
+      "pipe"
+    ],
+    "PUMPING_STATION_DOOR": [
+      "louvre",
+      "pipe",
+      "tool_door"
+    ],
+    "PUMPHOUSE": [
+      "pipe",
+      "kestrel_window"
+    ],
+    "BOATHOUSE": [
+      "boat_frame"
+    ],
+    "BOATHOUSE_DOOR": [
+      "boat_frame",
+      "kestrel_door"
+    ],
+    "BRIDGE_STUB": [
+      "bridge_rebar"
+    ],
+    "COMMONS": [
+      "kestrel_window",
+      "kestrel_balcony"
+    ]
+  },
+  "owners": {
+    "OperatorBody": [
+      "operator_front_idle",
+      "operator_front_step1",
+      "operator_front_step2",
+      "operator_back_idle",
+      "operator_back_step1",
+      "operator_back_step2",
+      "operator_dodge",
+      "operator_downed",
+      "carry_front_idle",
+      "carry_front_step",
+      "carry_back_idle",
+      "carry_back_step"
+    ],
+    "ArkFigure": [
+      "noor",
+      "teo",
+      "survivor",
+      "wardfolk",
+      "lantern_housing"
+    ],
+    "TheWaiting": [
+      "survivor"
+    ],
+    "NoorDown": [
+      "noor_seated",
+      "noor_downed"
+    ],
+    "TruthCache": [
+      "crate",
+      "truth_core"
+    ],
+    "Reliquary": [
+      "reliquary",
+      "hatch"
+    ],
+    "WeaponFind": [
+      "drone",
+      "gauntlet",
+      "jammer",
+      "rack",
+      "crash_cart",
+      "crate"
+    ],
+    "UnindexedLog": [
+      "paper_slip"
+    ],
+    "ArkFixture": [
+      "dock"
+    ],
+    "Hold": [
+      "crank",
+      "valve_wheel"
+    ],
+    "Passage": [
+      "hatch",
+      "ladder"
+    ],
+    "ToolDoor": [
+      "tool_door"
+    ],
+    "WardBoat": [
+      "boat",
+      "lantern_housing"
+    ],
+    "LampPost": [
+      "kestrel_lamp"
+    ],
+    "SmartGate": [
+      "smart_gate"
+    ],
+    "WardSeal": [
+      "ward_seal",
+      "valve_wheel"
+    ],
+    "CraneLeg": [
+      "crane_leg"
+    ],
+    "HangingContainer": [
+      "container",
+      "pipe"
+    ],
+    "TideGauge": [
+      "tide_gauge"
+    ],
+    "RouteLight": [
+      "route_light"
+    ],
+    "UnbuiltPlot": [
+      "mat_concrete",
+      "rebar"
+    ],
+    "CouncilChamber": [
+      "council",
+      "civic_door"
+    ],
+    "Conductor": [
+      "conductor",
+      "conductor_housing"
+    ],
+    "Crane": [
+      "crane_tower",
+      "crane_cab",
+      "crane_jib",
+      "crane_load",
+      "pipe"
+    ],
+    "Surgeon": [
+      "surgeon_table",
+      "surgeon_hub",
+      "surgeon_lamp",
+      "arm_link"
+    ],
+    "Lung": [
+      "lung",
+      "lung_bellows"
+    ],
+    "Editor": [
+      "editor",
+      "press_roller",
+      "paper_web",
+      "paper_slip"
+    ],
+    "WardenPrime": [
+      "warden_prime",
+      "warden_mast"
+    ],
+    "SignalBox": [
+      "signal_box"
+    ],
+    "HoistBrake": [
+      "hoist_brake"
+    ],
+    "TheatreSwitch": [
+      "theatre_switch"
+    ],
+    "HandValve": [
+      "hand_valve"
+    ],
+    "RelayMast": [
+      "relay_mast"
+    ],
+    "BaleStack": [
+      "bale_stack"
+    ],
+    "BossBarrier": [
+      "barrier"
+    ],
+    "ShuntLane": [
+      "tram_side",
+      "tram_roof"
+    ],
+    "PressRollers": [
+      "press_roller"
+    ],
+    "TrafficBaton": [
+      "baton"
+    ],
+    "RiotDrone": [
+      "drone"
+    ],
+    "DefibGauntlet": [
+      "gauntlet"
+    ],
+    "SignalJammer": [
+      "jammer"
+    ],
+    "Projectile": [
+      "bale_stack"
+    ],
+    "WeaponIcon": [
+      "baton",
+      "drone",
+      "gauntlet",
+      "jammer"
+    ],
+    "CoreArt": [
+      "truth_core",
+      "power_core"
+    ],
+    "CityMap": [
+      "city_map"
+    ],
+    "TitleBackdrop": [
+      "title_painting"
+    ],
+    "SkyBackdrop": [
+      "sky_kestrel",
+      "sky_loop",
+      "sky_tideworks",
+      "sky_mercy",
+      "sky_vellum",
+      "sky_greywater",
+      "sky_harbor",
+      "sky_spire",
+      "sky_ark"
+    ],
+    "Custodian": [
+      "custodian_front",
+      "custodian_back"
+    ],
+    "Clerk": [
+      "clerk_front",
+      "clerk_back"
+    ],
+    "Lamplighter": [
+      "lamplighter_front",
+      "lamplighter_back"
+    ],
+    "Salvager": [
+      "salvager_front",
+      "salvager_back"
+    ],
+    "Sterilizer": [
+      "sterilizer_front",
+      "sterilizer_back"
+    ],
+    "Warden": [
+      "warden_front",
+      "warden_back"
+    ]
+  },
+  "districts": [
+    "sky_kestrel",
+    "sky_loop",
+    "sky_tideworks",
+    "sky_mercy",
+    "sky_vellum",
+    "sky_greywater",
+    "sky_harbor",
+    "sky_spire",
+    "sky_ark"
+  ],
+  "live_code": [
+    "canonical Steward ring",
+    "predicted path",
+    "lights and glowing glass",
+    "shadows",
+    "telegraphs and beams",
+    "weather, water level, fog and reflections",
+    "particles and pellet trails",
+    "UI text, markers and controls",
+    "confession text"
+  ]
+}

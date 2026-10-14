@@ -329,7 +329,7 @@ func tap(action: StringName) -> void:
 
 
 func snap(shot_name: String) -> void:
-	if shots_dir == "":
+	if shots_dir == "" or DisplayServer.get_name() == "headless":
 		return
 	await RenderingServer.frame_post_draw
 	var img := get_viewport().get_texture().get_image()

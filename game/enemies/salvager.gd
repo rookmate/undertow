@@ -93,17 +93,8 @@ func _die() -> void:
 func _draw() -> void:
 	var lift := -46.0 + sin(_hover) * 4.0
 	draw_shadow(14.0, 7.0)
-	var flash := hit_flash()
-	var body := Palette.CONTAINER_GREY.lerp(Palette.IVORY, flash)
-	draw_colored_polygon(PackedVector2Array([Vector2(-18, lift), Vector2(0, lift + 9), Vector2(18, lift), Vector2(0, lift - 9)]), body)
-	for x: float in [-22.0, 22.0]:
-		draw_line(Vector2(0, lift), Vector2(x, lift - 6), Palette.IRON_DARK, 2.0, true)
-		draw_circle(Vector2(x, lift - 6), 7.0, Palette.IRON_DARK, false, 1.5, true)
-	# Its claw, and anything in it.
-	draw_line(Vector2(0, lift + 9), Vector2(0, lift + 22), Palette.IRON_DARK, 2.0, true)
-	if loot.has("id"):
-		draw_rect(Rect2(-10, lift + 22, 20, 8), Palette.GREY_COLD)
-	elif loot.has("scrap"):
-		draw_circle(Vector2(0, lift + 26), 5.0, Palette.GREY_COLD, true, -1.0, true)
+	paint_body("salvager", 56.0, Vector2(0, lift + 26.0))
+	if not loot.is_empty():
+		ArtCatalog.paint(self, "crate", Rect2(-10, lift + 20, 20, 12))
 	if state == State.WINDUP:
 		draw_windup_ring(SNATCH_REACH)

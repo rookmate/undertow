@@ -350,37 +350,27 @@ func _g(x: float, y: float, up: float = 0.0) -> Vector2:
 
 func _draw() -> void:
 	draw_shadow(78.0, 34.0)
-	var flash := hit_flash()
-	var body := Palette.NEWS_DESK.lightened(0.18).lerp(Palette.IVORY, flash)
+	var tint := Color.WHITE * (1.0 + hit_flash())
 	var open := is_vulnerable()
 	var h := 92.0
 	var ex := 1.0
 	var ey := 0.55
-	# The press: a long iron body along the hall's width.
-	draw_colored_polygon(PackedVector2Array([_g(-ex, ey), _g(ex, ey), _g(ex, ey, h), _g(-ex, ey, h)]), body.darkened(0.25))
-	draw_colored_polygon(PackedVector2Array([_g(ex, -ey), _g(ex, ey), _g(ex, ey, h), _g(ex, -ey, h)]), body.darkened(0.45))
-	draw_colored_polygon(PackedVector2Array([_g(-ex, -ey, h), _g(ex, -ey, h), _g(ex, ey, h), _g(-ex, ey, h)]), body)
-	# Its rollers on top: inked black, lifted clear while it re-inks.
+	ArtCatalog.paint(self, "editor", Rect2(-100, -148, 200, 204), tint)
 	var lift := 16.0 if open else 0.0
 	for y: float in [-0.22, 0.22]:
-		var a := _g(-ex * 0.9, y, h + 12.0 + lift)
-		var b := _g(ex * 0.9, y, h + 12.0 + lift)
-		draw_line(a, b, Palette.BLACK_MIRROR, 20.0, true)
-		draw_line(a + Vector2(0, -7), b + Vector2(0, -7), Palette.IRON_DARK.lightened(0.3), 3.0, true)
-	# The page running out of it, down its face to the floor.
-	var web_top := _g(-0.35, ey, h)
-	var web_low := _g(0.35, ey, h)
-	draw_colored_polygon(PackedVector2Array([web_top, web_low, _g(0.35, ey + 0.6), _g(-0.35, ey + 0.6)]), Palette.PAPER)
-	for k: int in 3:
-		var t := 0.25 + k * 0.2
-		draw_line(web_top.lerp(_g(-0.35, ey + 0.6), t) + Vector2(6, 0), web_low.lerp(_g(0.35, ey + 0.6), t) - Vector2(6, 0), Color(Palette.NEAR_BLACK, 0.5), 2.0, true)
+		ArtCatalog.link(self, "press_roller", _g(-ex * 0.9, y, h + 12.0 + lift), _g(ex * 0.9, y, h + 12.0 + lift), 20.0)
+	ArtCatalog.mapped(self, "paper_web", PackedVector2Array([_g(-0.35, ey, h), _g(0.35, ey, h), _g(0.35, ey + 0.6), _g(-0.35, ey + 0.6)]))
 	# Its screen, on the near face: the Feed, whitening as it turns it on you.
-	var screen_col := Palette.BLACK_MIRROR
+	var screen_col := Color(Palette.FEED_WHITE, 0.0)
 	if phase == Phase.FEED_WARN:
-		screen_col = Palette.BLACK_MIRROR.lerp(Palette.FEED_WHITE, clampf(_phase_time / FEED_WARN_SECONDS, 0.0, 1.0))
+		screen_col.a = clampf(_phase_time / FEED_WARN_SECONDS, 0.0, 1.0)
 	elif phase == Phase.FEED:
 		screen_col = Palette.FEED_WHITE
-	draw_colored_polygon(PackedVector2Array([_g(-0.9, ey, 24.0), _g(-0.45, ey, 24.0), _g(-0.45, ey, 76.0), _g(-0.9, ey, 76.0)]), screen_col)
+	if screen_col.a > 0.0:
+		var screen := PackedVector2Array()
+		for anchor_id: String in ["screen_tl", "screen_tr", "screen_br", "screen_bl"]:
+			screen.append(ArtCatalog.anchor("editor", anchor_id, Rect2(-100, -148, 200, 204)))
+		draw_colored_polygon(screen, screen_col)
 	# Its editorial core, on the far face: the Steward's (gold); open, it burns hot.
 	draw_circle(_g(ex, 0.0, 52.0), 9.0, Palette.IRON_DARK, true, -1.0, true)
 	draw_circle(_g(ex, 0.0, 52.0), 5.5, Palette.STEWARD_GOLD_HOT if open else Palette.STEWARD_GOLD, true, -1.0, true)
@@ -388,4 +378,4 @@ func _draw() -> void:
 		# Shreds of the page going into the pulper (or stuck in it).
 		for k: int in 4:
 			var at := _g(-ex - 0.2, -0.3 + k * 0.15, 30.0 + float(k * 7) - fmod(_phase_time * 40.0, 20.0))
-			draw_rect(Rect2(at, Vector2(8, 5)), Palette.PAPER)
+			ArtCatalog.paint(self, "paper_slip", Rect2(at, Vector2(8, 5)))

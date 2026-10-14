@@ -127,6 +127,8 @@ func status() -> String:
 
 
 func _draw() -> void:
+	var side := 1.0 if player == null or Iso.grid_to_world(player.facing_ground).x >= 0.0 else -1.0
+	ArtCatalog.fit(self, "jammer", Rect2(side * 26.0 - 14, -91, 28, 34))
 	if charge < 0.0:
 		return
 	var k := charge / CHARGE_FULL

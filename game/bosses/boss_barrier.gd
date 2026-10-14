@@ -34,9 +34,5 @@ func open_up() -> void:
 
 
 func _draw() -> void:
-	# A buffer stop: iron frame, hazard bar (red-orange: danger).
-	var hw := Iso.HALF_W * 0.7
-	draw_rect(Rect2(-hw, -54, hw * 2.0, 10), Palette.DANGER.darkened(0.2))
-	for x: float in [-hw, hw - 10.0]:
-		draw_rect(Rect2(x, -54, 10, 54), Palette.IRON_DARK)
-	draw_rect(Rect2(-hw, -30, hw * 2.0, 8), Palette.IRON_DARK)
+	ArtCatalog.paint(self, "barrier", Rect2(-Iso.HALF_W * 0.7, -54, Iso.W * 0.7, 54))
+	draw_line(Vector2(-Iso.HALF_W * 0.6, -48), Vector2(Iso.HALF_W * 0.6, -48), Color(Palette.DANGER, 0.6), 2.0, true)

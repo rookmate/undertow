@@ -28,19 +28,8 @@ func _process(delta: float) -> void:
 
 func _draw() -> void:
 	var sway := sin(_t * 0.6) * 6.0
-	# Its shadow on the wet quay.
-	draw_colored_polygon(PackedVector2Array([Vector2(-48, 0), Vector2(0, 24), Vector2(48, 0), Vector2(0, -24)]), Color(Palette.NEAR_BLACK, 0.35))
+	draw_colored_polygon(Fx.ground_ellipse(0.75, 20, false), Color(Palette.NEAR_BLACK, 0.35))
 	var base := Vector2(sway, -HEIGHT)
-	var w := 52.0
-	var h := 50.0
-	var front := PackedVector2Array([base + Vector2(-w, 0), base + Vector2(0, 26), base + Vector2(0, 26 - h), base + Vector2(-w, -h)])
-	var side := PackedVector2Array([base + Vector2(0, 26), base + Vector2(w, 0), base + Vector2(w, -h), base + Vector2(0, 26 - h)])
-	var top := PackedVector2Array([base + Vector2(-w, -h), base + Vector2(0, 26 - h), base + Vector2(w, -h), base + Vector2(0, -26 - h)])
-	draw_colored_polygon(front, _colour.darkened(0.2))
-	draw_colored_polygon(side, _colour)
-	draw_colored_polygon(top, _colour.lightened(0.1))
-	for k: int in 6:
-		var u := (k + 0.5) / 6.0
-		draw_line(front[0].lerp(front[1], u), front[3].lerp(front[2], u), Color(Palette.NEAR_BLACK, 0.25), 1.5)
-	for c: Vector2 in [top[0], top[2]]:
-		draw_line(c, Vector2(c.x * 0.5, -HEIGHT - 260.0), Palette.IRON_DARK, 1.5, true)
+	for x: float in [-48.0, 48.0]:
+		ArtCatalog.link(self, "pipe", base + Vector2(x, -56), Vector2(x * 0.5, -HEIGHT - 260), 2.0)
+	ArtCatalog.paint(self, "container", Rect2(base + Vector2(-52, -76), Vector2(104, 102)), _colour.lightened(0.55))

@@ -18,12 +18,7 @@ func _process(_delta: float) -> void:
 
 
 func _draw() -> void:
-	var h := 92.0
-	draw_rect(Rect2(-6, -h, 12, h), Palette.IRON_DARK)
-	# The marks: a hand-painted scale in cream (people put it there), the high-water line thicker.
-	for k: int in 6:
-		var y := -10.0 - k * 14.0
-		draw_line(Vector2(-6, y), Vector2(6 if k % 2 == 0 else 2, y), Palette.HUMAN_CREAM, 3.0 if k == 4 else 1.5)
+	ArtCatalog.paint(self, "tide_gauge", Rect2(-8, -92, 16, 92))
 	var level := tide.water_level() if tide != null else 0.0
 	if level > 0.01:
 		var y := -10.0 - level * 56.0

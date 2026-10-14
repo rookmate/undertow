@@ -39,38 +39,13 @@ func _process(_delta: float) -> void:
 
 
 func _draw() -> void:
-	draw_colored_polygon(PackedVector2Array([Vector2(-26, 0), Vector2(0, 13), Vector2(26, 0), Vector2(0, -13)]), Color(Palette.NEAR_BLACK, 0.4))
+	draw_colored_polygon(Fx.ground_ellipse(0.4, 18, false), Color(Palette.NEAR_BLACK, 0.4))
 	if weapon_id == WeaponDefs.DEFIB:
-		_crash_cart()
-		return
-	if weapon_id == WeaponDefs.SIGNAL_JAMMER:
-		_jammer_on_a_crate()
-		return
-	# A Warden's drone on a rack, chipped municipal paint, its asset tag half peeled.
-	draw_rect(Rect2(-18, -34, 36, 6), Palette.IRON_DARK)
-	draw_circle(Vector2(0, -44), 13.0, Palette.GREY_COLD.darkened(0.3), true, -1.0, true)
-	for x: float in [-22.0, 22.0]:
-		draw_line(Vector2(0, -44), Vector2(x, -50), Palette.IRON_DARK, 3.0, true)
-		draw_circle(Vector2(x, -50), 6.0, Palette.IRON_DARK, false, 2.0, true)
-	draw_rect(Rect2(4, -40, 10, 5), Palette.PAPER)
-
-
-## Noor's jammer on an upturned crate on her porch: a hand-built box, cyan tape, an antenna.
-func _jammer_on_a_crate() -> void:
-	draw_rect(Rect2(-16, -26, 32, 26), Palette.PIER_PLANK_B)
-	draw_line(Vector2(-16, -13), Vector2(16, -13), Palette.BOATHOUSE_SHADE, 2.0)
-	draw_rect(Rect2(-12, -42, 24, 16), Palette.IRON_DARK)
-	draw_line(Vector2(-12, -36), Vector2(12, -36), Palette.WARD_CYAN, 3.0)
-	draw_line(Vector2(6, -42), Vector2(12, -62), Palette.GREY_COLD, 2.0, true)
-
-
-## A crash cart with the Gauntlet on top: paddles' cables coiled, its asset tag half peeled.
-func _crash_cart() -> void:
-	draw_rect(Rect2(-16, -40, 32, 40), Palette.AMBULANCE_WHITE.darkened(0.35))
-	for k: int in 3:
-		draw_line(Vector2(-16, -10 - k * 10), Vector2(16, -10 - k * 10), Palette.GREY_DEEP, 1.5)
-	draw_rect(Rect2(-14, -54, 28, 12), Palette.IRON_DARK)
-	draw_circle(Vector2(6, -58), 7.0, Palette.GREY_COLD.darkened(0.2), true, -1.0, true)
-	draw_arc(Vector2(-6, -50), 9.0, PI * 0.2, PI * 1.6, 12, Palette.IRON_DARK.lightened(0.2), 2.0, true)
-	draw_rect(Rect2(-12, -36, 10, 5), Palette.PAPER)
-
+		ArtCatalog.paint(self, "crash_cart", Rect2(-20, -65, 40, 65))
+		ArtCatalog.fit(self, "gauntlet", Rect2(-15, -73, 30, 24))
+	elif weapon_id == WeaponDefs.SIGNAL_JAMMER:
+		ArtCatalog.paint(self, "crate", Rect2(-20, -29, 40, 39))
+		ArtCatalog.fit(self, "jammer", Rect2(-14, -62, 28, 38))
+	else:
+		ArtCatalog.paint(self, "rack", Rect2(-20, -40, 40, 44))
+		ArtCatalog.fit(self, "drone", Rect2(-30, -64, 60, 32))

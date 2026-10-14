@@ -202,9 +202,41 @@ First drafts, for a human writer and the voice actor to take further.
 | 46 | The logs and the rest: Teo argues as well as confesses, the ending menu weighs nothing, continuity | |
 | — | Sol analysis review, fixes, re-check | |
 
+## Painted art
+
+Complete painted coverage is integrated across the eight districts and the Ark: 162 named frames
+from 24 new generated sheets plus Kestrel's original painted materials and carved details. All 30
+physical floor kinds, 23 scenery kinds, 18 facades, the Operator and carrying states, NPCs, six enemy
+families, six bosses and their moving parts, fixtures, pickups, tools, item illustrations, backgrounds,
+title and navigation map use imported paintings. Code retains live light, the canonical ring, path,
+weather, fog, shadows, telegraphs, particles, text and controls. Source pixels and full prompts are
+preserved in `assets/art/`; its README and coverage manifest describe the bindings.
+
+The earlier Kestrel passes and their reviews remain in `reviews/painted-art-first-pass.md` and
+`reviews/painted-art-details.md`. The complete pass also fixes two validation problems: retired boss
+weak points stop colliding (the relay no longer blocks the Harbor route), and headless screenshot
+requests return without waiting for a render frame. An exported pack was launched and toured Mercy
+General, confirming that the runtime catalog ships.
+
+Validation is complete: the final gate passes all 523 tests, the 310-check campaign, smoke gameplay,
+all three endings, revisit, the tool door and all eight district tours. All eight native tours passed;
+the native atlas and assembled boss/Ark/carrying captures were inspected. The updated export pack
+passes a 40-second Mercy tour, and `reports/art-complete/final/painted-gameplay.mp4` records native
+gameplay. A fresh import passes with serial imports enabled to avoid the observed Godot 4.7.2
+parallel font-import crash. Rendered evidence is under `reports/art-complete/final/`; the latest
+full gate and export checks, after rebasing onto main's narration commits, are under
+`reports/art-complete/pr/`.
+
+Sol's complete review found three issues: preview save isolation, panorama wrapping and missing
+screen afterimages. All were fixed and checked. The follow-up review was unavailable at model
+capacity; `reviews/painted-art-complete.md` distinguishes Sol's findings from the primary agent's
+verification. The initial preview had overwritten the normal local save and rotating backup with
+synthetic data. No earlier copy was found; the affected files are archived in the ignored reports.
+The preview now uses its own save/settings paths, and a full native run leaves normal files unchanged.
+
 ## Later milestones (planned)
 
-- The art pack (painted sprites in place of the code-drawn placeholders), the voice actor, the writing,
+- Animation and artistic polish, the voice actor, the writing,
   GodotSteam (achievements, cloud saves), signed release builds, and testing on real hardware.
 
 ## How to run

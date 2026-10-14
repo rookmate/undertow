@@ -31,14 +31,5 @@ var gilt_lit: bool = true:
 
 
 func _draw() -> void:
-	draw_colored_polygon(PackedVector2Array([Vector2(-16, 0), Vector2(0, 8), Vector2(16, 0), Vector2(0, -8)]), Color(Palette.NEAR_BLACK, 0.45))
-	for x: float in [-15.0, 15.0]:
-		draw_line(Vector2(x, 0), Vector2(x * 0.6, -HEIGHT), look.wall_shade, 8.0, true)
-	var y := -18.0
-	var flip := false
-	while y > -HEIGHT + 20.0:
-		var a := Vector2(-15.0 * (1.0 + y / HEIGHT * 0.4), y)
-		var b := Vector2(15.0 * (1.0 + (y - 22.0) / HEIGHT * 0.4), y - 22.0)
-		draw_line(a if not flip else Vector2(-a.x, a.y), b if not flip else Vector2(-b.x, b.y), look.wall, 3.0, true)
-		y -= 22.0
-		flip = not flip
+	draw_colored_polygon(Fx.ground_ellipse(0.26, 18, false), Color(Palette.NEAR_BLACK, 0.4))
+	ArtCatalog.paint(self, "crane_leg", Rect2(-29, -HEIGHT, 58, HEIGHT + 9))
