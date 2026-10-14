@@ -63,13 +63,7 @@ func _area(along: Vector2, run: Vector2, fill: Color, edge: Color) -> void:
 ## leading edge on the ground in red-orange (it hurts).
 func _roller(along: Vector2, run: float) -> void:
 	var r := Editor.ROLLER_HALF * 0.8
-	var base := PackedVector2Array([_pt(along.x, run - r), _pt(along.y, run - r), _pt(along.y, run + r), _pt(along.x, run + r)])
-	draw_colored_polygon(base, Palette.BLACK_MIRROR)
-	var top := PackedVector2Array()
-	for p: Vector2 in base:
-		top.append(p + Vector2(0, -22))
-	draw_colored_polygon(top, Palette.IRON_DARK.lightened(0.2))
-	draw_line(_pt(along.x, run) + Vector2(0, -24), _pt(along.y, run) + Vector2(0, -24), Palette.IRON_DARK.lightened(0.55), 4.0, true)
+	ArtCatalog.link(self, "press_roller", _pt(along.x, run) + Vector2(0, -18), _pt(along.y, run) + Vector2(0, -18), 38.0)
 	var ahead := editor.run_span()
 	var front := run + r * signf(ahead.y - ahead.x)
 	draw_line(_pt(along.x, front), _pt(along.y, front), Palette.DANGER, 3.0, true)

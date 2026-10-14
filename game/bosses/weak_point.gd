@@ -17,6 +17,8 @@ func _ready() -> void:
 
 ## The boss is down: nothing to strike any more.
 func retire() -> void:
+	collision_layer = 0
+	collision_mask = 0
 	if state == State.DEAD:
 		return
 	state = State.DEAD

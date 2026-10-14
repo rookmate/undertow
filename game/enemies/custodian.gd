@@ -75,26 +75,10 @@ func _think(delta: float) -> Vector2:
 func _draw() -> void:
 	draw_shadow(34.0, 15.0)
 	draw_windup_ring(REACH)
-	var flash := hit_flash()
-	var shell := Palette.CUSTODIAN_SHELL.lerp(Palette.IVORY, flash)
-	var side := 1.0 if Iso.grid_to_world(facing_ground).x >= 0.0 else -1.0
-	# Brush disc and splash.
-	var spin := _scrub * 3.0
 	draw_polyline(Fx.ground_ellipse(0.42, 20), Color(Palette.FOG, 0.18), 2.0, true)
-	draw_colored_polygon(_ellipse(Vector2(0, -6), 30.0, 12.0), Palette.IRON_DARK)
-	for k: int in 6:
-		var a := spin + k * TAU / 6.0
-		draw_line(Vector2(0, -6), Vector2(cos(a) * 28.0, -6.0 + sin(a) * 11.0), Palette.GREY_DEEP, 2.0)
-	# Body: a rounded box with a green side panel.
-	var body := PackedVector2Array([Vector2(-30, -16), Vector2(30, -16), Vector2(28, -58), Vector2(16, -70), Vector2(-16, -70), Vector2(-28, -58)])
-	draw_colored_polygon(body, shell)
-	draw_colored_polygon(PackedVector2Array([Vector2(6 * side, -20), Vector2(26 * side, -20), Vector2(24 * side, -54), Vector2(6 * side, -54)]), Palette.CUSTODIAN_PANEL)
-	draw_line(Vector2(-30, -16), Vector2(30, -16), Palette.GREY_DEEP, 3.0)
-	# Lamp dome: the Steward's light; red-orange while it winds up to strike.
-	var dome := Vector2(0, -76)
-	draw_colored_polygon(_ellipse(dome + Vector2(0, 4), 12.0, 5.0), Palette.GREY_DEEP)
+	paint_body("custodian", 84.0)
 	var lamp := Palette.DANGER if state == State.WINDUP or state == State.ATTACK else Palette.STEWARD_GOLD
-	draw_circle(dome, 8.0, Color(lamp.r * 1.5, lamp.g * 1.5, lamp.b * 1.5), true, -1.0, true)
+	draw_circle(body_anchor("custodian", "lamp", 84.0), 4.0, Color(lamp.r * 1.5, lamp.g * 1.5, lamp.b * 1.5), true, -1.0, true)
 
 
 static func _ellipse(c: Vector2, rx: float, ry: float) -> PackedVector2Array:
