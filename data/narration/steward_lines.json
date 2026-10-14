@@ -1779,7 +1779,7 @@
 			"id": "TIDE_IDLE_N1",
 			"event": "idle",
 			"tone": "neutral",
-			"text": "That container's been over the path for nine days. I keep meaning to put it down.",
+			"text": "The containers have hung where they stopped for nine days. I keep meaning to put them down.",
 			"level": "tideworks"
 		},
 		{

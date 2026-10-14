@@ -485,8 +485,7 @@ func advance_to(level: Level, player: Operator, cell: Vector2i, timeout: float, 
 	var frame := 0
 	var route: Array[Vector2i] = []
 	var repath := 0.0
-	var stuck_for := 0.0
-	var last_at := player.global_position
+	var wedge := {}
 	while true:
 		if stale(gen) or not is_instance_valid(player):
 			release_all()
@@ -523,15 +522,7 @@ func advance_to(level: Level, player: Operator, cell: Vector2i, timeout: float, 
 			if route.size() > 1 and Iso.ground_distance(player.global_position, target) > 1.2:
 				next = Iso.cell_center(route[0])
 			press_move(input_for_ground(Iso.ground_dir_between(player.global_position, next)))
-			# Wedged (between a lamp post and a wall, say): roll out toward where you're going.
-			if Iso.ground_distance(player.global_position, last_at) < 0.02:
-				stuck_for += get_physics_process_delta_time()
-			else:
-				stuck_for = 0.0
-				last_at = player.global_position
-			if stuck_for > 1.5 and player.dodge.can_start():
-				stuck_for = 0.0
-				tap(&"dodge")
+			unstick(wedge, level, player, target, get_physics_process_delta_time())
 		await get_tree().physics_frame
 		spent += get_physics_process_delta_time()
 		if spent > timeout:
@@ -595,6 +586,32 @@ func fight(player: Operator, threat: Enemy, frame: int) -> void:
 		Input.action_press(&"attack_secondary")
 	else:
 		Input.action_release(&"attack_secondary")
+
+
+## Wedged (between a lamp post and a wall, at a fence's end) while walking toward `target`: if the
+## Operator hasn't got 0.4 tiles from where it stood 2 s ago, it rolls out, toward the next cell of its
+## path and then to either side of that, in turn. Sliding along a wall counts as stuck; standing still on
+## purpose doesn't happen here (call it only while walking). `state` is the caller's, one per walk.
+func unstick(state: Dictionary, level: Level, player: Operator, target: Vector2, delta: float) -> void:
+	var here := player.global_position
+	if not state.has("at") or Iso.ground_distance(here, state["at"] as Vector2) > 0.4:
+		state["at"] = here
+		state["for"] = 0.0
+		return
+	state["for"] = float(state["for"]) + delta
+	if float(state["for"]) < 2.0 or not player.dodge.can_start():
+		return
+	state["for"] = 0.0
+	var tries := int(state.get("tries", 0))
+	state["tries"] = tries + 1
+	var to := Iso.ground_dir_between(here, target)
+	for c: Vector2i in level.enemy_nav.path(_standing_cell(level, player), Iso.world_to_cell(target)):
+		if c != player.cell():
+			to = Iso.ground_dir_between(here, Iso.cell_center(c))
+			break
+	var side := Vector2(-to.y, to.x)
+	press_move(input_for_ground([to, side, -side][tries % 3] as Vector2))
+	tap(&"dodge")
 
 
 ## Walks toward `target` (world): straight there if nothing solid is in the way, otherwise along the

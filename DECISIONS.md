@@ -984,3 +984,9 @@ Asked of the user on 2026-10-09 and answered the same day.
      except a district's one revisit greeting. Two kills at once are "close" or "far" only if both were.
      A kill also knows what died (a Custodian, a Salvager, a Clerk, a Sterilizer), so a line about a
      machine's job ("It was mopping a street the sea had already taken.") is said only for that machine.
+204. **The gate's bot rolls out of wedges by progress** (reviews/writing-pass.md, after round 13). Walking
+     somewhere, if the autopilot hasn't got 0.4 tiles from where it stood 2 s ago, it rolls toward the
+     next cell of its path, then to either side (`Autopilot.unstick`; used by `advance_to` and the
+     Warden-Prime tactic). The old check only caught standing perfectly still, and the bot sliding along
+     a wall stalled two windowed campaigns. The gate's runs are line-buffered so a run cut off by its
+     timeout keeps its last lines. Bot and tooling only: no game behaviour or check changed.

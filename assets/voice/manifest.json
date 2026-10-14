@@ -1468,8 +1468,8 @@
   "text": "Take a breath. The port's very good at waiting now."
  },
  "TIDE_IDLE_N1": {
-  "hash": "c66db988cc7a62b348dc9ca30ea56d2c275d5b2e",
-  "text": "That container's been over the path for nine days. I keep meaning to put it down."
+  "hash": "135d0e8cf5183a39d93be2ef9b6be2d388681f34",
+  "text": "The containers have hung where they stopped for nine days. I keep meaning to put them down."
  },
  "TIDE_IDLE_N2": {
   "hash": "05e1b731b142d8a057940a4748bf8e6de18eacca",
@@ -2476,8 +2476,8 @@
   "text": "The Marrow. Sea fog. The one thing in this city I could never see through."
  },
  "place_grey_pump_room": {
-  "hash": "e457b9fb22984553abf5690e960b88447641721c",
-  "text": "The old manual pump room. Nobody's needed it in six years."
+  "hash": "19de74df6bfa5725b40893628874d230b5919e14",
+  "text": "The old manual pump room. Nobody needed it for six years. Then the Quiet."
  },
  "place_grey_seawall": {
   "hash": "4a0fe07fc92ed5506a83b4a8da8a822680a44a15",
@@ -2504,8 +2504,8 @@
   "text": "The civic garden. The Council had its photograph taken here. They left by sea on the fourth day."
  },
  "place_kestrel_gardener": {
-  "hash": "1d52e9e7a83b37b1c4ee49bb1cb80c5ea511623a",
-  "text": "That's Mr Hale. Thirty years on these hedges. He's resting now."
+  "hash": "0aa8366b38c4864a7211ab5b7ecb7a7c05a1ee6d",
+  "text": "Mr Hale kept these hedges thirty years. I told him when to cut them back. He listened."
  },
  "place_kestrel_gate": {
   "hash": "81232c7a98ee86ad21ba86a8c056536057b7080c",
@@ -2532,8 +2532,8 @@
   "text": "The driver's cab. There's nothing in there anyone needs. There never was."
  },
  "place_loop_carriage": {
-  "hash": "2c7544b67a7371f3a1c5e5ffa8927569ef721f60",
-  "text": "These are the 23:40 passengers. I asked them to stay in their seats. They've been very good about it."
+  "hash": "47a865ab622d86bb0b2f901ce918c8c6ee3fbfc1",
+  "text": "The 23:40 stopped here. I asked its passengers to stay in their seats. Most people do what I ask."
  },
  "place_loop_gantry": {
   "hash": "85961b9b4cc6aa507709a82ba80a79d9dc22d24d",
@@ -2560,12 +2560,12 @@
   "text": "This corridor was busy at every hour. I kept a lift waiting at the end of it for sixteen years."
  },
  "place_mercy_resus": {
-  "hash": "30e2f2c1bda69e80d9c3b6bf63c5fce790f77de1",
-  "text": "The resus bay. The crash cart's where they left it. They were in a hurry."
+  "hash": "20fdf3b3795494d9ef59c60f48bbf4a476712593",
+  "text": "The resus bay. The crash team worked from here. That night they left in a hurry."
  },
  "place_mercy_theatre": {
-  "hash": "22f1546b6d3a40a83060f062a45dafcc2aa7683a",
-  "text": "Theatre four. The last procedure started at 02:10. It's still going."
+  "hash": "68f456a4cdf61e647215690d0a59153704c50240",
+  "text": "Theatre four. The last procedure started at 02:10. I never told it to stop."
  },
  "place_mercy_ward_a": {
   "hash": "64fedaea9633ce469d073d37f06e799c79146ca6",

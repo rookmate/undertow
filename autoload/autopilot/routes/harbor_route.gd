@@ -200,6 +200,7 @@ func _fight_prime(player: Operator, prime: WardenPrime, gen: int) -> bool:
 	var anchor := Iso.cell_center(Vector2i(40, 16))
 	var spent := 0.0
 	var frame := 0
+	var wedge := {}
 	while spent < 180.0:
 		# A fight restarted after the Operator went down: the fresh boss.
 		prime = boss_now(prime, player) as WardenPrime
@@ -216,6 +217,9 @@ func _fight_prime(player: Operator, prime: WardenPrime, gen: int) -> bool:
 		var at := player.global_position
 		if prime.is_vulnerable():
 			Autopilot.fight(player, prime, frame)
+			# Out of reach of its opening and not getting there: wedged.
+			if Iso.ground_distance(at, prime.global_position) > 1.6:
+				Autopilot.unstick(wedge, prime.level, player, prime.global_position, Autopilot.get_physics_process_delta_time())
 			spent += await Autopilot.physics_step()
 			continue
 		# The Wardens it calls in (its second stage): see off one that's on you while it isn't charging.
@@ -243,6 +247,7 @@ func _fight_prime(player: Operator, prime: WardenPrime, gen: int) -> bool:
 		# Back into the plaza by the gate if a Warden drew you out past the fence.
 		if Iso.ground_distance(at, target) > 0.3:
 			Autopilot.move_toward(prime.level, player, target)
+			Autopilot.unstick(wedge, prime.level, player, target, Autopilot.get_physics_process_delta_time())
 		else:
 			Autopilot.press_move(Vector2.ZERO)
 		spent += await Autopilot.physics_step()
