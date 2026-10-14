@@ -15,8 +15,9 @@ const PLACE_TILES := 2.5
 
 var level: Level
 var _last_kill_at: float = -INF
-## How near the last kill was ("close", "far" or "").
+## How near the last kill was ("close", "far" or ""), and what it was ("custodian", "salvager"...).
 var _last_kill_reach: String = ""
+var _last_kill_kind: String = ""
 var _clock: float = 0.0
 var _idle: float = 0.0
 var _was_indexed: bool = true
@@ -148,14 +149,28 @@ func _on_enemy_died(e: Enemy) -> void:
 		_record(&"kill_at_range")
 	if p.integrity.ratio() < 0.35:
 		_record(&"kill_low_health")
-	# Up close or at range, its lines can say so; in between, they don't say. Two at once: only if both were.
+	# A boss's end is its own line (boss_down), and no part of a pair.
+	if e is Boss:
+		return
+	# Up close or at range, its lines can say so; in between, they don't say. What it was (a Custodian, a
+	# Salvager), for the lines about its job. Two at once: each only if both were.
 	var reach := "close" if close else ("far" if dist >= 3.0 else "")
+	var kind := String(e.get_script().get_global_name()).to_lower()
+	var seen := {}
 	if _clock - _last_kill_at <= MULTI_KILL_WINDOW:
 		# Two quick kills only read as risk when they were up close.
 		if close:
 			_record(&"multi_kill")
-		_say(&"multi_kill", {"reach": reach} if reach != "" and reach == _last_kill_reach else {})
+		if reach != "" and reach == _last_kill_reach:
+			seen["reach"] = reach
+		if kind == _last_kill_kind:
+			seen["kind"] = kind
+		_say(&"multi_kill", seen)
 	else:
-		_say(&"kill", {"reach": reach} if reach != "" else {})
+		seen["kind"] = kind
+		if reach != "":
+			seen["reach"] = reach
+		_say(&"kill", seen)
 	_last_kill_at = _clock
 	_last_kill_reach = reach
+	_last_kill_kind = kind

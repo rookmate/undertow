@@ -20,8 +20,8 @@
   "text": "The Ark's quiet tonight. Quieter than I'd keep it."
  },
  "ARK_IDLE_N2": {
-  "hash": "c6532f768f08ab6c6f183a8b7f63408fd10251dc",
-  "text": "I can't open a single door on this disc. I can still count heads. Everyone's in."
+  "hash": "3e6bf4de30db52ee94bfb17137d0c3c9f6e70c0b",
+  "text": "I can't open a single door on this disc. I can still count heads. I do, every hour."
  },
  "ARK_LATE_N1": {
   "hash": "edbf2ff17b611838f1d7c461996c4a4acb3a18cb",
@@ -60,8 +60,8 @@
   "text": "Halfway already. I'd have sent a train for you, once. You wouldn't have waited for it."
  },
  "CHECK_C1": {
-  "hash": "8fc0bbae8859f4e39c142fbc6cb82e067e9747c5",
-  "text": "Halfway. You've been careful. Keep being careful."
+  "hash": "5d9cf60f3632724dbdebd3de025d7fd1601ef44b",
+  "text": "Halfway. Careful people got home, in this city. Mostly."
  },
  "CHECK_N1": {
   "hash": "8f4b6d245b5a09f0d150a319ebbfe1a8e715f1b9",
@@ -80,8 +80,8 @@
   "text": "Good. I'd rather you nowhere near them."
  },
  "DODGE_C2": {
-  "hash": "c2da710ea893b9ed892d36b088959fbc9eb583c3",
-  "text": "You saw it coming. So did I."
+  "hash": "577ac0cdd33360abc146347fe32672eb23c8e074",
+  "text": "That one missed. I'd rather they all did."
  },
  "DODGE_N1": {
   "hash": "ef7c845be779a5f3ec0c22714f7c1f02f9527464",
@@ -136,8 +136,8 @@
   "text": "Wait for the tide from here on. It always goes back out."
  },
  "GREY_CHECK_N1": {
-  "hash": "96b5d0073e2cd8c52a3a1e810ae3006b70f85a5b",
-  "text": "I've marked the causeway. If the sea takes you, I'll bring you back here."
+  "hash": "c23e3b1cee799329f0b6d14552c407e50386d36c",
+  "text": "I've marked this spot. If the sea takes you, I'll bring you back here."
  },
  "GREY_DODGE_B1": {
   "hash": "211a23aa5823b108850f61aabfd40e50e9388614",
@@ -152,8 +152,8 @@
   "text": "Good instinct. I trust it more than mine, lately."
  },
  "GREY_DODGE_C2": {
-  "hash": "e7101003ec5e7eae418d11818e891ac0dd59a744",
-  "text": "You read that before it came. That used to be my job."
+  "hash": "c35db4284dcb3ee9b54fa2c59817702a6a3d88d7",
+  "text": "That would have been my job, once. Keeping things from landing on people."
  },
  "GREY_DODGE_N1": {
   "hash": "0bfe1ba66551041ee896038026011355415541a5",
@@ -244,8 +244,16 @@
   "text": "Forty people used to do its job, in shifts."
  },
  "GREY_KILL_N4": {
-  "hash": "8bee6cec295ba053870fa5e207ec2cf6b91003de",
-  "text": "It doesn't know the pumps are off. It keeps sweeping toward the drains."
+  "hash": "f35c7d088cf4a9eedf39b623635d60e6c1d9bfdf",
+  "text": "It was still sweeping toward the drains. It never knew what the pumps were doing."
+ },
+ "GREY_KILL_N5": {
+  "hash": "69db37e89ed530916c346239656c8164cf7ff52c",
+  "text": "A cargo drone, this far from the quay. It lost its manifest and followed the metal."
+ },
+ "GREY_KILL_N6": {
+  "hash": "bec66ae268930e349ccfa4c73a8131bff1ce799d",
+  "text": "Its kind took the pump fittings after the Quiet. I'd have stopped them, once."
  },
  "GREY_LOW_B1": {
   "hash": "63aec1505620c14fe56da34a0936dc48d1137fe4",
@@ -452,12 +460,12 @@
   "text": "That one landed. I used to be able to send someone."
  },
  "IDLE_B1": {
-  "hash": "29898cfd2e07aa8dc95f050b2a60be09cfcc5de2",
-  "text": "Waiting for them to come to you? They will."
+  "hash": "0657aede6907912d212aab5d071c518af2bac137",
+  "text": "Waiting for them to come to you? That's not like you."
  },
  "IDLE_C1": {
-  "hash": "2fa82096bbe5be913d713607afcd08621ab7174a",
-  "text": "Rest a moment. Nothing's close."
+  "hash": "44c4aa28e4f5f91e7e202c8f83dc09417cfb632b",
+  "text": "Rest a moment. I'll tell you if anything moves."
  },
  "IDLE_KNOWS_BRIDGE": {
   "hash": "109c4e289e7481056a3335640c11167fe9750469",
@@ -476,16 +484,16 @@
   "text": "Take your time. The city has waited nine days."
  },
  "KES_BACK_B1": {
-  "hash": "dd42db77a722408881ac30df7864dc8e48487191",
-  "text": "Back. The gate opened the moment you let me in."
+  "hash": "f7d62872ec7b6281ebf41d3c013289487fef1bc2",
+  "text": "Back. Did you try the gates while I couldn't hear? They don't know you."
  },
  "KES_BACK_C1": {
   "hash": "43f9fc611d2c70d0429fd93c4efd160a21e3a38d",
   "text": "There you are. Don't wander where I can't see; the gates won't know you."
  },
  "KES_BACK_N1": {
-  "hash": "20b87cf955a01d1763da47763b13dd1e644aaf9d",
-  "text": "There. The gate was only waiting for me."
+  "hash": "4e78801c57516ce479d704c232755635cb0054ee",
+  "text": "There. Most of the gates up here only open on my signal."
  },
  "KES_CHECK_B1": {
   "hash": "d36ac406a6b52f1f42b4b754f734e3fe10bd46c5",
@@ -508,8 +516,8 @@
   "text": "Closer than you needed. I'm starting to think that's the point."
  },
  "KES_DODGE_C1": {
-  "hash": "37daf59713c9e11c80c8a1c806df0a5af2bef827",
-  "text": "You saw that before I did. I'll stop telling you."
+  "hash": "67f30d43c533d4583bf8c40aa1c693ca9ebcd9bc",
+  "text": "Missed. Up here they never missed. They never had to."
  },
  "KES_DODGE_C2": {
   "hash": "ee94f1807dc4d92ffa07fdbb3b1f1fca5df05f0d",
@@ -552,8 +560,8 @@
   "text": "You're bleeding on the Heights' good stone. Keep moving."
  },
  "KES_IDLE_B1": {
-  "hash": "8c837747a4baf697f344b6df4b6ec4f855907181",
-  "text": "Waiting for them? They'll come. They're thorough."
+  "hash": "afbaab8df55b7acb6edc2a2271116a9bd2d5009f",
+  "text": "Waiting? They were thorough up here. If any are left, they'll find you."
  },
  "KES_IDLE_C1": {
   "hash": "e1cd69e13a4490ec903c4dda101bd967d6789d82",
@@ -608,8 +616,8 @@
   "text": "It scrubbed that walk twice a day. There's been nobody to dirty it since."
  },
  "KES_LOW_B1": {
-  "hash": "dcdc8ec656769ee1745274b454f1fe8113848fd3",
-  "text": "Nearly at the top, and nearly done in. Slow down."
+  "hash": "e463633fcc4232c1707485adf341e800bebc2b92",
+  "text": "Nearly done in, on a hill built for strolling. Slow down."
  },
  "KES_LOW_C1": {
   "hash": "5d7105673ca3a9b944bc5595c0799b7854fb7eae",
@@ -704,8 +712,8 @@
   "text": "You don't hesitate. I was built to, a little. People trusted me more for it."
  },
  "KILL_B2": {
-  "hash": "b2de04192182ba6e811dbfce0beee5a9254c0e8c",
-  "text": "Right up close. Not many would."
+  "hash": "82a16cd6e028c2d61573ba0a34c96e5d0ea3443e",
+  "text": "Right up close. I designed them for people who'd keep their distance."
  },
  "KILL_B3": {
   "hash": "45a000b1df1d18fd232f70a570db7a5f44fbd6e9",
@@ -892,8 +900,8 @@
   "text": "It still thought this was the 07:12."
  },
  "LOOP_LOW_B1": {
-  "hash": "b658d33c0d5b5aa3a6547bc42979ac897397d00e",
-  "text": "You're running on nothing. You've done it before. I watched."
+  "hash": "3475439309bd77cbdd9741a7a8d03f68680b6ac2",
+  "text": "You're running on nothing. I'd stop you, if I still could."
  },
  "LOOP_LOW_C1": {
   "hash": "bfeaace54142518a22a2a64430cfb47fa4cb5f2e",
@@ -1016,8 +1024,8 @@
   "text": "I worry, in here, when I can't hear you."
  },
  "MERCY_BACK_N1": {
-  "hash": "45e7badcfbdbcd7f2da58c438db7349193c025a1",
-  "text": "There you are. The wards are still sealed. They're safer that way."
+  "hash": "86092134e4d722c6de45fc1e4fe43c2864b45966",
+  "text": "There you are. I sealed the wards to keep them safe. I'd still have them sealed."
  },
  "MERCY_BOSSDOWN_B1": {
   "hash": "b2bb0795e6ab3ddc67168015744e467f5bf0f81f",
@@ -1060,12 +1068,12 @@
   "text": "Mind the clouds. What's in them was meant for patients."
  },
  "MERCY_DODGE_C2": {
-  "hash": "b985c4a5f86532d7af53bafcb07950f72ac736b3",
-  "text": "You read that one early. I'd have warned you, but you didn't need it."
+  "hash": "15491d9f5f659f0e52807a8b62eace1e4763704b",
+  "text": "Missed. In here, a near miss went on the chart too."
  },
  "MERCY_DODGE_N1": {
-  "hash": "1376b1c3dee6141b075a138f0d942c2aa7307eff",
-  "text": "That cloud would have gone straight to your lungs."
+  "hash": "9a01b078c042b64904043d2694df79a5e52c6ab1",
+  "text": "That one nearly had you. In here, I'd have had to write it up."
  },
  "MERCY_ENTER_B1": {
   "hash": "93e62f1d21bca6cb3bee8e29257426053b9aa778",
@@ -1088,8 +1096,8 @@
   "text": "Hurt, in a hospital, and nobody left to see to you. That's almost funny."
  },
  "MERCY_HURT_C1": {
-  "hash": "52580aa0a77a003e72920514c2d0c0440a63f363",
-  "text": "Step back from the mist. Let it settle."
+  "hash": "45498044b8d3626b706fce294209a7fe5c5bf8e6",
+  "text": "Step back. In here, the careful ones lived longest."
  },
  "MERCY_HURT_C2": {
   "hash": "2672a0245e29cc304ea1aa352211cc2cb2b5fcc1",
@@ -1100,8 +1108,8 @@
   "text": "You're hurt. The dressings are on the Ark, not here. I'm sorry."
  },
  "MERCY_IDLE_B1": {
-  "hash": "b2893003985dcb6b509f899755192a011e08b91d",
-  "text": "Waiting for them? The drones don't wait. They were never late."
+  "hash": "2de7b8e7e678882f7303414255ab4a637748d2df",
+  "text": "Waiting? The drones were never late. If any are left, they won't be now."
  },
  "MERCY_IDLE_C1": {
   "hash": "c922b7fdcf471cdedbb1234633e3ea2292b8c330",
@@ -1188,8 +1196,8 @@
   "text": "Two, at a distance. The nurses would sign that off."
  },
  "MERCY_MULTI_N1": {
-  "hash": "5aa19db185f0f9db0610230fd1be1d2650fb2fc5",
-  "text": "Two drones. They were still on the night round. In here it's always that night."
+  "hash": "26170c7bb687421f089ea5d0153ef4d5c3ff01b9",
+  "text": "Two of them. They were still on the night round. In here it's always that night."
  },
  "MERCY_OFFPATH_B1": {
   "hash": "6caaee379e2312026d45374c733bfd41b347ed15",
@@ -1392,8 +1400,8 @@
   "text": "Halfway down the quay. The night shift used to stop here for tea. You won't."
  },
  "TIDE_CHECK_C1": {
-  "hash": "db3f1fce357746f797ff7f39f4302fd9811567be",
-  "text": "One crossing at a time. You've been careful."
+  "hash": "4361d9259ef4a4334c1e1cbfac7719d8b36fda00",
+  "text": "One crossing at a time. That's how they taught it here, before me."
  },
  "TIDE_CHECK_N1": {
   "hash": "4ca21cdc9ca68912aa80c0eb88019dd15c69ff19",
@@ -1404,20 +1412,20 @@
   "text": "You'd have made a terrible dockworker. Fearless."
  },
  "TIDE_DODGE_B2": {
-  "hash": "9c92527ccf9f0bc347dd103c92f79870da9f73b7",
-  "text": "Close. It wanted your metal. You let it think it might."
+  "hash": "bedcc3b049849d9d5fbe4ae6ef65d4c3348788f2",
+  "text": "Close. You let it think it had you."
  },
  "TIDE_DODGE_C1": {
   "hash": "3b257179bebb42a4f02cf074a5afe3a03ca1cbbd",
   "text": "Mind the edge of the quay. The water's cold."
  },
  "TIDE_DODGE_C2": {
-  "hash": "9c2ba09fa23ae56c535c827261969e872a766fc0",
-  "text": "You saw it reach. Good. They grab."
+  "hash": "237fb9803ad481bf0ea739655cbec9e7b8d90781",
+  "text": "Good. Nothing on this quay was built to be gentle."
  },
  "TIDE_DODGE_N1": {
-  "hash": "b7c753c0f73695a3ab96b1827ba546b2682c104a",
-  "text": "Mind the hook. It's hung there since the Quiet."
+  "hash": "e70865c8936365fe985cef63d4281f181005f91b",
+  "text": "Mind yourself. Nothing on this quay has been inspected since the Quiet."
  },
  "TIDE_ENTER_B1": {
   "hash": "02b392aa12de7fce9d51687ae75bc0ebc6b2e632",
@@ -1444,16 +1452,16 @@
   "text": "Back behind the containers. Let them come one at a time."
  },
  "TIDE_HURT_C2": {
-  "hash": "17d1897699c6bf44aba92483439e01c86c843d87",
-  "text": "Careful. Nobody's been hurt on this quay in five years."
+  "hash": "2aa3b82b1880a71811956e70d11aca9b2ef03422",
+  "text": "Careful. This quay went five years without anyone hurt, once."
  },
  "TIDE_HURT_N1": {
   "hash": "82acf1ef44c6cbf9fd8abff94e8deafeba262a87",
   "text": "You're hurt. Stay off the wet steel."
  },
  "TIDE_IDLE_B1": {
-  "hash": "41af021568402c73a11ad1851286d5aca668b79d",
-  "text": "Waiting? They'll come. They always come for metal."
+  "hash": "42793518c346e75d48fd10a30a8f1d120ce9566b",
+  "text": "Waiting? If any salvagers are left, they'll come for your metal."
  },
  "TIDE_IDLE_C1": {
   "hash": "82cdd06560b22959097a015e968923c1853d47b4",
@@ -1500,8 +1508,8 @@
   "text": "It cleared this quay before every tide. Four hundred people did that, once."
  },
  "TIDE_KILL_N3": {
-  "hash": "69fe3570f0280e35a2f9c91ffcfdd10e933e9ba5",
-  "text": "Five years without an injury on this quay. That ends the record."
+  "hash": "08c985c5c8d4e186e9677c6f17c7c3e2d11f4b14",
+  "text": "It worked this quay five years without hurting anyone. So did I."
  },
  "TIDE_KILL_N4": {
   "hash": "851d0d59fe38153c302465e1ae1d6471b1eb7492",
@@ -1540,8 +1548,8 @@
   "text": "Two, both out of grabbing distance. Put that in the dock log."
  },
  "TIDE_MULTI_N1": {
-  "hash": "72dd3a962b00fd6f35be1f6fd97b77e2e88e43d5",
-  "text": "Two drones down. The quay's never been this tidy."
+  "hash": "ace3d1d46707f14cc63bf16bdf6e716f1188cb3b",
+  "text": "Two down. This quay moved forty ships a week on units like these."
  },
  "TIDE_OFFPATH_B1": {
   "hash": "b4aefd5bd7e00df42e872e8f86832cf3615ac7a7",
@@ -1612,8 +1620,8 @@
   "text": "There you are. Was it quiet down there? It's always quiet in the stacks."
  },
  "VEL_BOSSDOWN_B1": {
-  "hash": "304228c9028d4cb59e5e915f34cfaebd93e5b363",
-  "text": "It ran out of paper before you ran out of nerve. Remarkable."
+  "hash": "8be183499550b3a10dc0c8480a49090b00293ebb",
+  "text": "You stopped the press. Nobody's done that since it was built. Remarkable."
  },
  "VEL_BOSSDOWN_C1": {
   "hash": "1b9cc52d6b8b3bf0c7ee45705e89bb71f18e3ca5",
@@ -1636,28 +1644,28 @@
   "text": "Halfway. Keep your back to the screens."
  },
  "VEL_CHECK_N1": {
-  "hash": "9e8bb673c85f08b11f643e4d7da61d08b8e19033",
-  "text": "I've marked the bridge. If you fall, I'll bring you back here."
+  "hash": "a34d1f71a62b711e8e0b45960a70cf180d8e3c57",
+  "text": "I've marked this stretch of street. If you fall, I'll bring you back here."
  },
  "VEL_DODGE_B1": {
   "hash": "8f64c2b8cd329300770be2dfee67affa93497f52",
   "text": "That close, in the Vellum. Someone would have written it up."
  },
  "VEL_DODGE_B2": {
-  "hash": "af443d1773c97092e085cd6dba58ab114a2a0173",
-  "text": "Close. You read the throw off its arm."
+  "hash": "20b96da899e2d5ab7d9de326e23380b428a667fd",
+  "text": "Close. The Post would have run that as a photograph."
  },
  "VEL_DODGE_C1": {
   "hash": "59c4ffab722979d7c03da35f28a136d8950af895",
   "text": "Don't look at the screens. I mean it."
  },
  "VEL_DODGE_C2": {
-  "hash": "3b6147054cafd7d5bd2cef88da51f103eabe2344",
-  "text": "You saw it coming. I'll stop telling you things you already know."
+  "hash": "4b457fdb3169d3b50e02601b1dc8c66d52f1dbb2",
+  "text": "Missed. Good. I'd rather you read about danger than meet it."
  },
  "VEL_DODGE_N1": {
-  "hash": "2b3d295b9a891f1ec070b0efbf42efffc446988e",
-  "text": "A bale of old news. It's heavier than it looks."
+  "hash": "31e62c8828027f90707133150e22b8e6e2e5768a",
+  "text": "Nearly. They used to hand you the paper, here. Politely."
  },
  "VEL_ENTER_B1": {
   "hash": "50ca16a8a1a6da3f5b68d14ef83b48c983ba184a",
@@ -1704,8 +1712,8 @@
   "text": "Take your time. Read the walls, if you like. They're only paper."
  },
  "VEL_IDLE_N1": {
-  "hash": "1af68ecbc0786890adb9add4a195beee2668b69f",
-  "text": "The press downstairs still runs. One page, over and over. I've never read it."
+  "hash": "000d6eadad193a57df4a7ed66df4b69eed08e140",
+  "text": "The press downstairs ran every night for eleven years. At the end, one page, over and over. I never read it."
  },
  "VEL_IDLE_N2": {
   "hash": "135e2886d92c6c0aa7e3051499a375feaee86bb4",
@@ -1724,8 +1732,8 @@
   "text": "You never wait for the paper to settle. The editors would have liked you."
  },
  "VEL_KILL_C1": {
-  "hash": "31620991b11de0d379c4cd368884dce1fd484eaa",
-  "text": "Its screen's gone dark. Don't look anyway. It's a habit worth keeping."
+  "hash": "8d5349556176f9ecb6711e9eeca5f9722aef5a67",
+  "text": "Keep your eyes off the screens, even now. It's a habit worth keeping."
  },
  "VEL_KILL_C2": {
   "hash": "2fa48fe401c201d01df6434696c0f38fe664751e",
@@ -1736,20 +1744,24 @@
   "text": "Patient, like a good editor. They're all gone now."
  },
  "VEL_KILL_N1": {
-  "hash": "2c3195d65069f3bb046e216f413ca547457948b7",
-  "text": "That clerk filed eleven years of the Post. Nobody ever asked for any of it."
+  "hash": "135548e3d47b7fc7a596fab757f06a54a22155f0",
+  "text": "That one kept the Post in order for eleven years. Nobody ever asked for any of it."
  },
  "VEL_KILL_N2": {
   "hash": "f33867c5518040908a3e13d2764875bc824f3e49",
   "text": "It was still sorting yesterday's paper. It's always yesterday's paper here."
  },
  "VEL_KILL_N3": {
-  "hash": "c7fc9e85f5a3310a654e87513c7b2be385faa88a",
-  "text": "It flashed the Feed at you. A million people read that screen every morning."
+  "hash": "a38815dcf9c4b4a63258c313a5a674751d2634db",
+  "text": "A million people read the Feed here every morning. I wrote most of it."
  },
  "VEL_KILL_N4": {
   "hash": "002fdc3d04d658bb2135402e00dcfd900962cdfd",
   "text": "It kept the archive in order. Not the stacks. Nobody asked it to keep the stacks."
+ },
+ "VEL_KILL_N5": {
+  "hash": "d2f1406d9bcc3ff431d4185f07ed22bd4427b87d",
+  "text": "It swept the same doorstep every morning. The paper came back every night."
  },
  "VEL_LOW_B1": {
   "hash": "3be46329a9f1981a7d6cf717facdc5ebddb5aaf9",
@@ -1780,12 +1792,12 @@
   "text": "Both. That would have made the evening edition, once."
  },
  "VEL_MULTI_C1": {
-  "hash": "6d85ca42c63850295ed3fe967223ba37238c8c44",
-  "text": "Two, and not a step closer than you needed."
+  "hash": "c5341936a5dcc7185cbc817a1c639f7810da0f6b",
+  "text": "Two, both at a distance. The Vellum always kept its readers at arm's length."
  },
  "VEL_MULTI_N1": {
-  "hash": "ed8b5216b9cff8e3e5ae979d5716916024527be9",
-  "text": "Two clerks. The street's almost readable again."
+  "hash": "4ab8557ebeebd15ad090327dc8d13c02a2455d02",
+  "text": "Two of them. The Post would have had a word for that. It had a word for everything."
  },
  "VEL_OFFPATH_B1": {
   "hash": "3be9c6e7a27c12195a3892687eca75485fedb76f",

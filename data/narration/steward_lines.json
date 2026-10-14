@@ -172,7 +172,7 @@
 			"id": "KILL_B2",
 			"event": "kill",
 			"tone": "bold",
-			"text": "Right up close. Not many would.",
+			"text": "Right up close. I designed them for people who'd keep their distance.",
 			"when": {
 				"reach": "close"
 			}
@@ -253,7 +253,7 @@
 			"id": "DODGE_C2",
 			"event": "dodge_close",
 			"tone": "cautious",
-			"text": "You saw it coming. So did I."
+			"text": "That one missed. I'd rather they all did."
 		},
 		{
 			"id": "HURT_N1",
@@ -391,13 +391,13 @@
 			"id": "IDLE_B1",
 			"event": "idle",
 			"tone": "bold",
-			"text": "Waiting for them to come to you? They will."
+			"text": "Waiting for them to come to you? That's not like you."
 		},
 		{
 			"id": "IDLE_C1",
 			"event": "idle",
 			"tone": "cautious",
-			"text": "Rest a moment. Nothing's close."
+			"text": "Rest a moment. I'll tell you if anything moves."
 		},
 		{
 			"id": "CHECK_N1",
@@ -415,7 +415,7 @@
 			"id": "CHECK_C1",
 			"event": "checkpoint",
 			"tone": "cautious",
-			"text": "Halfway. You've been careful. Keep being careful."
+			"text": "Halfway. Careful people got home, in this city. Mostly."
 		},
 		{
 			"id": "RELIQ_N1",
@@ -514,7 +514,7 @@
 			"id": "KES_BACK_N1",
 			"event": "voice_restored",
 			"tone": "neutral",
-			"text": "There. The gate was only waiting for me.",
+			"text": "There. Most of the gates up here only open on my signal.",
 			"level": "kestrel"
 		},
 		{
@@ -930,7 +930,7 @@
 			"id": "KES_DODGE_C1",
 			"event": "dodge_close",
 			"tone": "cautious",
-			"text": "You saw that before I did. I'll stop telling you.",
+			"text": "Missed. Up here they never missed. They never had to.",
 			"level": "kestrel"
 		},
 		{
@@ -986,7 +986,7 @@
 			"id": "KES_LOW_B1",
 			"event": "low_integrity",
 			"tone": "bold",
-			"text": "Nearly at the top, and nearly done in. Slow down.",
+			"text": "Nearly done in, on a hill built for strolling. Slow down.",
 			"level": "kestrel"
 		},
 		{
@@ -1042,7 +1042,7 @@
 			"id": "KES_IDLE_B1",
 			"event": "idle",
 			"tone": "bold",
-			"text": "Waiting for them? They'll come. They're thorough.",
+			"text": "Waiting? They were thorough up here. If any are left, they'll find you.",
 			"level": "kestrel"
 		},
 		{
@@ -1147,7 +1147,7 @@
 			"id": "KES_BACK_B1",
 			"event": "voice_restored",
 			"tone": "bold",
-			"text": "Back. The gate opened the moment you let me in.",
+			"text": "Back. Did you try the gates while I couldn't hear? They don't know you.",
 			"level": "kestrel"
 		},
 		{
@@ -1234,7 +1234,10 @@
 			"event": "multi_kill",
 			"tone": "neutral",
 			"text": "Two cleaners. They kept these carriages spotless for six years. Nobody thanked them either.",
-			"level": "loop"
+			"level": "loop",
+			"when": {
+				"kind": "custodian"
+			}
 		},
 		{
 			"id": "LOOP_MULTI_B1",
@@ -1334,7 +1337,7 @@
 			"id": "LOOP_LOW_B1",
 			"event": "low_integrity",
 			"tone": "bold",
-			"text": "You're running on nothing. You've done it before. I watched.",
+			"text": "You're running on nothing. I'd stop you, if I still could.",
 			"level": "loop"
 		},
 		{
@@ -1538,20 +1541,26 @@
 			"event": "kill",
 			"tone": "neutral",
 			"text": "That one lost its manifest nine days ago. It's been collecting cutlery since.",
-			"level": "tideworks"
+			"level": "tideworks",
+			"when": {
+				"kind": "salvager"
+			}
 		},
 		{
 			"id": "TIDE_KILL_N2",
 			"event": "kill",
 			"tone": "neutral",
 			"text": "It cleared this quay before every tide. Four hundred people did that, once.",
-			"level": "tideworks"
+			"level": "tideworks",
+			"when": {
+				"kind": "custodian"
+			}
 		},
 		{
 			"id": "TIDE_KILL_N3",
 			"event": "kill",
 			"tone": "neutral",
-			"text": "Five years without an injury on this quay. That ends the record.",
+			"text": "It worked this quay five years without hurting anyone. So did I.",
 			"level": "tideworks"
 		},
 		{
@@ -1559,7 +1568,10 @@
 			"event": "kill",
 			"tone": "neutral",
 			"text": "It moved a container every ninety seconds. Now it moves nothing.",
-			"level": "tideworks"
+			"level": "tideworks",
+			"when": {
+				"kind": "salvager"
+			}
 		},
 		{
 			"id": "TIDE_KILL_B1",
@@ -1605,7 +1617,8 @@
 			"text": "From a distance. They grab, so that's the right distance.",
 			"level": "tideworks",
 			"when": {
-				"reach": "far"
+				"reach": "far",
+				"kind": "salvager"
 			}
 		},
 		{
@@ -1619,7 +1632,7 @@
 			"id": "TIDE_MULTI_N1",
 			"event": "multi_kill",
 			"tone": "neutral",
-			"text": "Two drones down. The quay's never been this tidy.",
+			"text": "Two down. This quay moved forty ships a week on units like these.",
 			"level": "tideworks"
 		},
 		{
@@ -1639,14 +1652,15 @@
 			"text": "Two, both out of grabbing distance. Put that in the dock log.",
 			"level": "tideworks",
 			"when": {
-				"reach": "far"
+				"reach": "far",
+				"kind": "salvager"
 			}
 		},
 		{
 			"id": "TIDE_DODGE_N1",
 			"event": "dodge_close",
 			"tone": "neutral",
-			"text": "Mind the hook. It's hung there since the Quiet.",
+			"text": "Mind yourself. Nothing on this quay has been inspected since the Quiet.",
 			"level": "tideworks"
 		},
 		{
@@ -1660,7 +1674,7 @@
 			"id": "TIDE_DODGE_B2",
 			"event": "dodge_close",
 			"tone": "bold",
-			"text": "Close. It wanted your metal. You let it think it might.",
+			"text": "Close. You let it think it had you.",
 			"level": "tideworks"
 		},
 		{
@@ -1674,7 +1688,7 @@
 			"id": "TIDE_DODGE_C2",
 			"event": "dodge_close",
 			"tone": "cautious",
-			"text": "You saw it reach. Good. They grab.",
+			"text": "Good. Nothing on this quay was built to be gentle.",
 			"level": "tideworks"
 		},
 		{
@@ -1709,7 +1723,7 @@
 			"id": "TIDE_HURT_C2",
 			"event": "hurt",
 			"tone": "cautious",
-			"text": "Careful. Nobody's been hurt on this quay in five years.",
+			"text": "Careful. This quay went five years without anyone hurt, once.",
 			"level": "tideworks"
 		},
 		{
@@ -1779,7 +1793,7 @@
 			"id": "TIDE_IDLE_B1",
 			"event": "idle",
 			"tone": "bold",
-			"text": "Waiting? They'll come. They always come for metal.",
+			"text": "Waiting? If any salvagers are left, they'll come for your metal.",
 			"level": "tideworks"
 		},
 		{
@@ -1807,7 +1821,7 @@
 			"id": "TIDE_CHECK_C1",
 			"event": "checkpoint",
 			"tone": "cautious",
-			"text": "One crossing at a time. You've been careful.",
+			"text": "One crossing at a time. That's how they taught it here, before me.",
 			"level": "tideworks"
 		},
 		{
@@ -1927,28 +1941,40 @@
 			"event": "kill",
 			"tone": "neutral",
 			"text": "That unit sterilised theatre four after every operation. It was never late.",
-			"level": "mercy"
+			"level": "mercy",
+			"when": {
+				"kind": "sterilizer"
+			}
 		},
 		{
 			"id": "MERCY_KILL_N2",
 			"event": "kill",
 			"tone": "neutral",
 			"text": "It's been cleaning the same corridor since the night the doors closed.",
-			"level": "mercy"
+			"level": "mercy",
+			"when": {
+				"kind": "custodian"
+			}
 		},
 		{
 			"id": "MERCY_KILL_N3",
 			"event": "kill",
 			"tone": "neutral",
 			"text": "It took you for contamination. It was built to be thorough.",
-			"level": "mercy"
+			"level": "mercy",
+			"when": {
+				"kind": "sterilizer"
+			}
 		},
 		{
 			"id": "MERCY_KILL_N4",
 			"event": "kill",
 			"tone": "neutral",
 			"text": "Sixteen years of clean floors. It did its part.",
-			"level": "mercy"
+			"level": "mercy",
+			"when": {
+				"kind": "custodian"
+			}
 		},
 		{
 			"id": "MERCY_KILL_B1",
@@ -1957,7 +1983,8 @@
 			"text": "Close enough to breathe what it breathes. You don't hold your breath, do you.",
 			"level": "mercy",
 			"when": {
-				"reach": "close"
+				"reach": "close",
+				"kind": "sterilizer"
 			}
 		},
 		{
@@ -2008,7 +2035,7 @@
 			"id": "MERCY_MULTI_N1",
 			"event": "multi_kill",
 			"tone": "neutral",
-			"text": "Two drones. They were still on the night round. In here it's always that night.",
+			"text": "Two of them. They were still on the night round. In here it's always that night.",
 			"level": "mercy"
 		},
 		{
@@ -2035,7 +2062,7 @@
 			"id": "MERCY_DODGE_N1",
 			"event": "dodge_close",
 			"tone": "neutral",
-			"text": "That cloud would have gone straight to your lungs.",
+			"text": "That one nearly had you. In here, I'd have had to write it up.",
 			"level": "mercy"
 		},
 		{
@@ -2063,7 +2090,7 @@
 			"id": "MERCY_DODGE_C2",
 			"event": "dodge_close",
 			"tone": "cautious",
-			"text": "You read that one early. I'd have warned you, but you didn't need it.",
+			"text": "Missed. In here, a near miss went on the chart too.",
 			"level": "mercy"
 		},
 		{
@@ -2091,7 +2118,7 @@
 			"id": "MERCY_HURT_C1",
 			"event": "hurt",
 			"tone": "cautious",
-			"text": "Step back from the mist. Let it settle.",
+			"text": "Step back. In here, the careful ones lived longest.",
 			"level": "mercy"
 		},
 		{
@@ -2168,7 +2195,7 @@
 			"id": "MERCY_IDLE_B1",
 			"event": "idle",
 			"tone": "bold",
-			"text": "Waiting for them? The drones don't wait. They were never late.",
+			"text": "Waiting? The drones were never late. If any are left, they won't be now.",
 			"level": "mercy"
 		},
 		{
@@ -2273,7 +2300,7 @@
 			"id": "MERCY_BACK_N1",
 			"event": "voice_restored",
 			"tone": "neutral",
-			"text": "There you are. The wards are still sealed. They're safer that way.",
+			"text": "There you are. I sealed the wards to keep them safe. I'd still have them sealed.",
 			"level": "mercy"
 		},
 		{
@@ -2316,28 +2343,60 @@
 			"event": "kill",
 			"tone": "neutral",
 			"text": "That one kept the gratings clear before every tide. The sea never got a foothold.",
-			"level": "greywater"
+			"level": "greywater",
+			"when": {
+				"kind": "custodian"
+			}
 		},
 		{
 			"id": "GREY_KILL_N2",
 			"event": "kill",
 			"tone": "neutral",
 			"text": "It was mopping a street the sea had already taken.",
-			"level": "greywater"
+			"level": "greywater",
+			"when": {
+				"kind": "custodian"
+			}
 		},
 		{
 			"id": "GREY_KILL_N3",
 			"event": "kill",
 			"tone": "neutral",
 			"text": "Forty people used to do its job, in shifts.",
-			"level": "greywater"
+			"level": "greywater",
+			"when": {
+				"kind": "custodian"
+			}
 		},
 		{
 			"id": "GREY_KILL_N4",
 			"event": "kill",
 			"tone": "neutral",
-			"text": "It doesn't know the pumps are off. It keeps sweeping toward the drains.",
-			"level": "greywater"
+			"text": "It was still sweeping toward the drains. It never knew what the pumps were doing.",
+			"level": "greywater",
+			"when": {
+				"kind": "custodian"
+			}
+		},
+		{
+			"id": "GREY_KILL_N5",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "A cargo drone, this far from the quay. It lost its manifest and followed the metal.",
+			"level": "greywater",
+			"when": {
+				"kind": "salvager"
+			}
+		},
+		{
+			"id": "GREY_KILL_N6",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "Its kind took the pump fittings after the Quiet. I'd have stopped them, once.",
+			"level": "greywater",
+			"when": {
+				"kind": "salvager"
+			}
 		},
 		{
 			"id": "GREY_KILL_B1",
@@ -2446,7 +2505,7 @@
 			"id": "GREY_DODGE_C2",
 			"event": "dodge_close",
 			"tone": "cautious",
-			"text": "You read that before it came. That used to be my job.",
+			"text": "That would have been my job, once. Keeping things from landing on people.",
 			"level": "greywater"
 		},
 		{
@@ -2565,7 +2624,7 @@
 			"id": "GREY_CHECK_N1",
 			"event": "checkpoint",
 			"tone": "neutral",
-			"text": "I've marked the causeway. If the sea takes you, I'll bring you back here.",
+			"text": "I've marked this spot. If the sea takes you, I'll bring you back here.",
 			"level": "greywater"
 		},
 		{
@@ -2698,7 +2757,7 @@
 			"id": "VEL_KILL_N1",
 			"event": "kill",
 			"tone": "neutral",
-			"text": "That clerk filed eleven years of the Post. Nobody ever asked for any of it.",
+			"text": "That one kept the Post in order for eleven years. Nobody ever asked for any of it.",
 			"level": "vellum"
 		},
 		{
@@ -2706,13 +2765,16 @@
 			"event": "kill",
 			"tone": "neutral",
 			"text": "It was still sorting yesterday's paper. It's always yesterday's paper here.",
-			"level": "vellum"
+			"level": "vellum",
+			"when": {
+				"kind": "clerk"
+			}
 		},
 		{
 			"id": "VEL_KILL_N3",
 			"event": "kill",
 			"tone": "neutral",
-			"text": "It flashed the Feed at you. A million people read that screen every morning.",
+			"text": "A million people read the Feed here every morning. I wrote most of it.",
 			"level": "vellum"
 		},
 		{
@@ -2720,7 +2782,20 @@
 			"event": "kill",
 			"tone": "neutral",
 			"text": "It kept the archive in order. Not the stacks. Nobody asked it to keep the stacks.",
-			"level": "vellum"
+			"level": "vellum",
+			"when": {
+				"kind": "clerk"
+			}
+		},
+		{
+			"id": "VEL_KILL_N5",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "It swept the same doorstep every morning. The paper came back every night.",
+			"level": "vellum",
+			"when": {
+				"kind": "custodian"
+			}
 		},
 		{
 			"id": "VEL_KILL_B1",
@@ -2739,7 +2814,8 @@
 			"text": "Close enough to read what it was filing.",
 			"level": "vellum",
 			"when": {
-				"reach": "close"
+				"reach": "close",
+				"kind": "clerk"
 			}
 		},
 		{
@@ -2753,7 +2829,7 @@
 			"id": "VEL_KILL_C1",
 			"event": "kill",
 			"tone": "cautious",
-			"text": "Its screen's gone dark. Don't look anyway. It's a habit worth keeping.",
+			"text": "Keep your eyes off the screens, even now. It's a habit worth keeping.",
 			"level": "vellum"
 		},
 		{
@@ -2777,7 +2853,7 @@
 			"id": "VEL_MULTI_N1",
 			"event": "multi_kill",
 			"tone": "neutral",
-			"text": "Two clerks. The street's almost readable again.",
+			"text": "Two of them. The Post would have had a word for that. It had a word for everything.",
 			"level": "vellum"
 		},
 		{
@@ -2791,7 +2867,7 @@
 			"id": "VEL_MULTI_C1",
 			"event": "multi_kill",
 			"tone": "cautious",
-			"text": "Two, and not a step closer than you needed.",
+			"text": "Two, both at a distance. The Vellum always kept its readers at arm's length.",
 			"level": "vellum",
 			"when": {
 				"reach": "far"
@@ -2801,7 +2877,7 @@
 			"id": "VEL_DODGE_N1",
 			"event": "dodge_close",
 			"tone": "neutral",
-			"text": "A bale of old news. It's heavier than it looks.",
+			"text": "Nearly. They used to hand you the paper, here. Politely.",
 			"level": "vellum"
 		},
 		{
@@ -2815,7 +2891,7 @@
 			"id": "VEL_DODGE_B2",
 			"event": "dodge_close",
 			"tone": "bold",
-			"text": "Close. You read the throw off its arm.",
+			"text": "Close. The Post would have run that as a photograph.",
 			"level": "vellum"
 		},
 		{
@@ -2829,7 +2905,7 @@
 			"id": "VEL_DODGE_C2",
 			"event": "dodge_close",
 			"tone": "cautious",
-			"text": "You saw it coming. I'll stop telling you things you already know.",
+			"text": "Missed. Good. I'd rather you read about danger than meet it.",
 			"level": "vellum"
 		},
 		{
@@ -2920,7 +2996,7 @@
 			"id": "VEL_IDLE_N1",
 			"event": "idle",
 			"tone": "neutral",
-			"text": "The press downstairs still runs. One page, over and over. I've never read it.",
+			"text": "The press downstairs ran every night for eleven years. At the end, one page, over and over. I never read it.",
 			"level": "vellum"
 		},
 		{
@@ -2948,7 +3024,7 @@
 			"id": "VEL_CHECK_N1",
 			"event": "checkpoint",
 			"tone": "neutral",
-			"text": "I've marked the bridge. If you fall, I'll bring you back here.",
+			"text": "I've marked this stretch of street. If you fall, I'll bring you back here.",
 			"level": "vellum"
 		},
 		{
@@ -3067,7 +3143,7 @@
 			"id": "VEL_BOSSDOWN_B1",
 			"event": "boss_down",
 			"tone": "bold",
-			"text": "It ran out of paper before you ran out of nerve. Remarkable.",
+			"text": "You stopped the press. Nobody's done that since it was built. Remarkable.",
 			"level": "vellum"
 		},
 		{
@@ -3255,7 +3331,7 @@
 			"id": "ARK_IDLE_N2",
 			"event": "idle",
 			"tone": "neutral",
-			"text": "I can't open a single door on this disc. I can still count heads. Everyone's in.",
+			"text": "I can't open a single door on this disc. I can still count heads. I do, every hour.",
 			"level": "ark"
 		},
 		{

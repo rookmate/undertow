@@ -12,7 +12,9 @@ const FACT := &"fact"
 const WARNING := &"warning"
 const PRAISE := &"praise"
 const PURPOSES: Array[StringName] = [FACT, WARNING, PRAISE]
-const WHEN_KEYS: Array[String] = ["revisit", "truths_at_least", "knows", "reach"]
+const WHEN_KEYS: Array[String] = ["revisit", "truths_at_least", "knows", "reach", "kind"]
+## What a line about a kill can say it was (an enemy's class, lower case).
+const KINDS: Array[String] = ["custodian", "salvager", "clerk", "sterilizer", "lamplighter", "warden"]
 
 class Line:
 	var id: String
@@ -25,7 +27,8 @@ class Line:
 	var purpose: StringName = &""
 	## When it can be said (empty: any time). "revisit": back in a district you've done (or not);
 	## "truths_at_least": truth cores carried; "knows": a memory log you've read; "reach": how near the
-	## thing it's about was when it saw it ("close" or "far": a kill up close, or at range).
+	## thing it's about was when it saw it ("close" or "far": a kill up close, or at range); "kind": what
+	## it killed ("custodian", "salvager"...), for a line about that machine's job.
 	var when: Dictionary = {}
 
 var lines_by_event: Dictionary[StringName, Array] = {}
@@ -82,6 +85,8 @@ func load_data(data: Dictionary) -> void:
 				errors.append("line %s: unknown 'when' %s" % [line.id, key])
 		if line.when.has("reach") and not ["close", "far"].has(str(line.when["reach"])):
 			errors.append("line %s: 'reach' is close or far, not %s" % [line.id, line.when["reach"]])
+		if line.when.has("kind") and not KINDS.has(str(line.when["kind"])):
+			errors.append("line %s: unknown 'kind' %s" % [line.id, line.when["kind"]])
 		if line.id == "" or line.text == "" or line.event == &"":
 			errors.append("line %s is missing id, event or text" % line.id)
 			continue
@@ -216,9 +221,12 @@ static func is_beat(line: Line) -> bool:
 
 
 ## Whether a line can be said now (`context`: "revisit" bool, "truths" int, "knows" the logs read,
-## "reach" what it saw: "close", "far" or nothing). A line about how near it was needs to have seen it.
+## "reach" what it saw: "close", "far" or nothing; "kind" what it killed). A line about how near it was,
+## or what it was, needs to have seen it.
 static func fits(line: Line, context: Dictionary) -> bool:
 	if line.when.has("reach") and str(context.get("reach", "")) != str(line.when["reach"]):
+		return false
+	if line.when.has("kind") and str(context.get("kind", "")) != str(line.when["kind"]):
 		return false
 	if line.when.has("revisit") and bool(line.when["revisit"]) != bool(context.get("revisit", false)):
 		return false
