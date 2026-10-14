@@ -41,7 +41,7 @@ front/rear carrying and carrying through a dodge were captured in the actual Har
 
 ## Validation
 
-- The updated suite passes all 515 tests. Frame bounds, anchors, actual alpha, mipmaps and every
+- The updated suite passes all 523 tests. Frame bounds, anchors, actual alpha, mipmaps and every
   enum/owner binding are checked, alongside gameplay tests.
 - The complete gate passes import, tests, smoke gameplay, the 310-check campaign, all three
   endings, revisit, the tool door and all eight district tours.
@@ -63,6 +63,7 @@ Retired boss fittings now clear their collision layer and mask, resolving the in
 reproduced Harbor relay obstruction. Headless screenshots return without awaiting a render frame.
 Both have regressions. The full campaign reaches its ending after those fixes.
 
-Evidence is in the ignored `reports/art-complete/` directory, with final checks in `final/`.
+Evidence is in the ignored `reports/art-complete/` directory. Rendered checks are in `final/`;
+the 523-test full gate and export check after rebasing onto main's narration commits are in `pr/`.
 Headless scenarios use fixed 60-fps simulation; rendered captures and the recording use the native
 Vulkan renderer. Hardware checks listed in `PROGRESS.md` remain pending.

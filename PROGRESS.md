@@ -218,12 +218,14 @@ weak points stop colliding (the relay no longer blocks the Harbor route), and he
 requests return without waiting for a render frame. An exported pack was launched and toured Mercy
 General, confirming that the runtime catalog ships.
 
-Validation is complete: the final gate passes all 515 tests, the 310-check campaign, smoke gameplay,
+Validation is complete: the final gate passes all 523 tests, the 310-check campaign, smoke gameplay,
 all three endings, revisit, the tool door and all eight district tours. All eight native tours passed;
 the native atlas and assembled boss/Ark/carrying captures were inspected. The updated export pack
 passes a 40-second Mercy tour, and `reports/art-complete/final/painted-gameplay.mp4` records native
 gameplay. A fresh import passes with serial imports enabled to avoid the observed Godot 4.7.2
-parallel font-import crash. Evidence is under `reports/art-complete/final/`.
+parallel font-import crash. Rendered evidence is under `reports/art-complete/final/`; the latest
+full gate and export checks, after rebasing onto main's narration commits, are under
+`reports/art-complete/pr/`.
 
 Sol's complete review found three issues: preview save isolation, panorama wrapping and missing
 screen afterimages. All were fixed and checked. The follow-up review was unavailable at model
