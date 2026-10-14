@@ -879,3 +879,14 @@ Asked of the user on 2026-10-09 and answered the same day.
      fight only once you're on the Lattice (in the Ward, the border gate and the plaza past it), never
      from across the fence on the Wardfolk's lanes, however close. Fighting the curfew patrol by the gate,
      or winding the mast's generator on Net Lane, no longer brings it into a fight you haven't walked into.
+192. **The Steward doesn't repeat itself** (design/writing-review.md, Bastion's rule). A line isn't
+     heard again this run until the rest of its tone has been, the district's own lines first and then
+     the lines for anywhere; a district's entry, boss and Reliquary lines are its own when it has them.
+     Every district you fight in has its own lines for everything the Steward reacts to (kills, close
+     dodges, getting hurt, going down, standing still, leaving and rejoining the path, aiming by hand,
+     coming back from mute, the boss going down): about 340, most of them telling you something you
+     couldn't know about the place or the machine you just stopped, and the flattery profiling you as it
+     goes ("You don't wait for them to finish turning. I've noticed that about you."). Kills, close dodges
+     and hurts are remarked on a little less often (10, 9 and 10 s apart). Coming back from mute, it
+     speaks in the district's words (its own lines for that were never reached). Each of the Waiting has
+     their own words when woken (data/companions/waiting.json).

@@ -7,6 +7,22 @@
   "hash": "587e63caa053af3e705e34d8fec97a515c70bdcd",
   "text": "The Ark. You're safe here. Nothing on this disc answers to me."
  },
+ "ARK_IDLE_B1": {
+  "hash": "3d7df6767575408914e52431dfcf8bb460beb41b",
+  "text": "Restless? The skiff's at the dock."
+ },
+ "ARK_IDLE_C1": {
+  "hash": "b51d051cc1e9378b18f38b26b9ebf3f095a89a26",
+  "text": "Rest. Nothing out there is going anywhere tonight."
+ },
+ "ARK_IDLE_N1": {
+  "hash": "e5fcfce53a50be66f59ea52772d0f0bb4e6608ba",
+  "text": "The Ark's quiet tonight. Quieter than I'd keep it."
+ },
+ "ARK_IDLE_N2": {
+  "hash": "c6532f768f08ab6c6f183a8b7f63408fd10251dc",
+  "text": "I can't open a single door on this disc. I can still count heads. Everyone's in."
+ },
  "ARK_N1": {
   "hash": "b78b005dd08f4ceda7d5a651ee4659956c97144a",
   "text": "The Ark. I'm not allowed to act here. I can still talk, if you'll let me."
@@ -79,9 +95,65 @@
   "hash": "21b576b906aef1a99b63ff48b945dc30fcb7196c",
   "text": "Somewhere new. Stay where I can see you."
  },
+ "GREY_BACK_B1": {
+  "hash": "9580635f22d49b14447989a6edbf47ac2205618f",
+  "text": "Back. Did you find what you went into the fog for?"
+ },
+ "GREY_BACK_C1": {
+  "hash": "41ac5f692f71e0975eb0ff6037f81a933bce9b1a",
+  "text": "Stay where I can warn you, this time."
+ },
+ "GREY_BACK_N1": {
+  "hash": "57f4e5933790fa2cbaeb42391a9c29e87eff7a82",
+  "text": "There you are. The tide turned twice while you were gone."
+ },
+ "GREY_BOSSDOWN_B1": {
+  "hash": "81bd78764039a35f79cc850de8a332199546de2b",
+  "text": "You stood in its flood until it ran dry. I couldn't have told you to."
+ },
+ "GREY_BOSSDOWN_C1": {
+  "hash": "8a36a5c37d5909fd35ca8db5863a33b1b12d213a",
+  "text": "It's still. The tide's yours now. I'm not sure that's good news."
+ },
+ "GREY_BOSSDOWN_N1": {
+  "hash": "1620586af6d033f86a55c3a86683c6cfe580bd5f",
+  "text": "It's stopped breathing. The sea's going to notice."
+ },
  "GREY_BOSS_N1": {
   "hash": "053dab3ddbee11cdbade504cec64b76accc1edcd",
   "text": "The Lung. It's still running the tide tables for everyone. Let it breathe."
+ },
+ "GREY_CHECK_B1": {
+  "hash": "3e3b22e692afee706cbfcae30859da41a5e51909",
+  "text": "Halfway, and you haven't once waited for the tide."
+ },
+ "GREY_CHECK_C1": {
+  "hash": "144625c05a196c1d6b969d364ecc19df02178993",
+  "text": "Dry feet, all this way. That's harder here than anywhere."
+ },
+ "GREY_CHECK_N1": {
+  "hash": "96b5d0073e2cd8c52a3a1e810ae3006b70f85a5b",
+  "text": "I've marked the causeway. If the sea takes you, I'll bring you back here."
+ },
+ "GREY_DODGE_B1": {
+  "hash": "4fc8ff21999a7185385276fcdf748b60f738bec3",
+  "text": "Through the spray and out. You don't care where you land."
+ },
+ "GREY_DODGE_B2": {
+  "hash": "6d5b77b167fbda0d751cc1e23f4ebc594c42352a",
+  "text": "Close. You do that on purpose, don't you."
+ },
+ "GREY_DODGE_C1": {
+  "hash": "1f0b8b579683fde8fc2389ee2b641afd898ed586",
+  "text": "Up onto the dry stones. Good instinct."
+ },
+ "GREY_DODGE_C2": {
+  "hash": "9774133a16f0c4af0cecbae2ce3560e7dd96e562",
+  "text": "You read the swell before it came. That used to be my job."
+ },
+ "GREY_DODGE_N1": {
+  "hash": "0bfe1ba66551041ee896038026011355415541a5",
+  "text": "Mind the drop. The low street's deeper than it looks."
  },
  "GREY_ENTER_B1": {
   "hash": "d19e7242caee7bd9463347be9f8869a1a266e5b8",
@@ -95,21 +167,253 @@
   "hash": "957c75c3fca8c0e7471c2336795572885b6ee485",
   "text": "Greywater. Without me, the sea takes this district."
  },
+ "GREY_HURT_B1": {
+  "hash": "493e8432ab40851e4c92632c16d1ae6cad14c02e",
+  "text": "That landed, and you kept wading in."
+ },
+ "GREY_HURT_B2": {
+  "hash": "9a016fec5501b726292f07fa3ce77ab595eb741a",
+  "text": "Hurt, wet, and still going. You'd have fit in with the pump crews."
+ },
+ "GREY_HURT_C1": {
+  "hash": "8904bf11e9dc223167dd820de0a89dafb327deb4",
+  "text": "Back to the causeway. Let the tide do some of the work."
+ },
+ "GREY_HURT_C2": {
+  "hash": "bb50065e558ef784b4ee3f68b5838600d38f00f2",
+  "text": "Careful. Nobody's drowned in Greywater since I took the pumps. Don't be the first."
+ },
+ "GREY_HURT_N1": {
+  "hash": "9d4e2aff911cb8314f1f79ab82c1a9945d08b201",
+  "text": "You're hurt. Get out of the water if you can."
+ },
+ "GREY_IDLE_B1": {
+  "hash": "d91d3e76cc82dd70be94e7a5c45d049d8314a9d4",
+  "text": "Waiting for the tide? It's waiting for you."
+ },
+ "GREY_IDLE_C1": {
+  "hash": "f129743b0f4b16399f6f9b81911744183d99d267",
+  "text": "Rest on the high ground. I'll tell you when it turns."
+ },
+ "GREY_IDLE_N1": {
+  "hash": "f8a0d623c27f6571a7d2716ba1df204bd15c8ec8",
+  "text": "The tide's on a six-minute cycle now. It used to come when I said."
+ },
+ "GREY_IDLE_N2": {
+  "hash": "8d696e11095df9a01b2713e64dd14097b78144f9",
+  "text": "Not one wet doorstep in six years. Look at it now."
+ },
+ "GREY_KILL_B1": {
+  "hash": "73de5fbd585dc6e85939ea1a28d4a8305fb833db",
+  "text": "Knee-deep and swinging. The sea doesn't frighten you."
+ },
+ "GREY_KILL_B2": {
+  "hash": "8d7fc393c6ddca265d937457fa020f6cff0c4fce",
+  "text": "You went in after it with the tide turning. I'd have waited. You never do."
+ },
+ "GREY_KILL_B3": {
+  "hash": "e32fa5caaa7cea6573be36d7b00f4c3e5522e4d8",
+  "text": "Into the fog for it. I couldn't see you. I could hear."
+ },
+ "GREY_KILL_C1": {
+  "hash": "3d7b3db6f8af8474efd9c89f44b4626ef46bc8a2",
+  "text": "From the high ground, and dry. That's how it's done here."
+ },
+ "GREY_KILL_C2": {
+  "hash": "d4481045485e3e2cf841283638e294c0697e3c21",
+  "text": "You waited for the water to drop. The sea taught you that."
+ },
+ "GREY_KILL_C3": {
+  "hash": "3b8ac4dd97fdb1f1eefcb9b97b817c5350a79b12",
+  "text": "You kept the causeway under you. Good."
+ },
+ "GREY_KILL_N1": {
+  "hash": "90acdabed5a93371c5cb9690019964f64a0a1b90",
+  "text": "That one kept the gratings clear before every tide. The sea never got a foothold."
+ },
+ "GREY_KILL_N2": {
+  "hash": "abf620c2daa6a008e76251e693f3009be4e157ca",
+  "text": "It was mopping a street the sea had already taken."
+ },
+ "GREY_KILL_N3": {
+  "hash": "029f0e5937cf85fa07d868c65ec552ed2a2f9ef9",
+  "text": "Forty people used to do its job, in shifts."
+ },
+ "GREY_KILL_N4": {
+  "hash": "8bee6cec295ba053870fa5e207ec2cf6b91003de",
+  "text": "It doesn't know the pumps are off. It keeps sweeping toward the drains."
+ },
+ "GREY_LOW_B1": {
+  "hash": "86a149e6f663a80fa90725d7652b6ad40225e563",
+  "text": "You're barely standing, and the tide's coming in. I've done that sum. Please."
+ },
+ "GREY_LOW_C1": {
+  "hash": "dbe758a3213dd06e8e17c4a193fbbbdfb629e494",
+  "text": "Fall back to the seawall. The sea will wait. It's patient."
+ },
+ "GREY_LOW_N1": {
+  "hash": "b26bfa618c621e261e7c17b91bc9b409e98b030b",
+  "text": "You're badly hurt. Find high ground."
+ },
+ "GREY_MANUAL_B1": {
+  "hash": "b1aaa1da0e28f9c473400d442130a7dafa7156fb",
+  "text": "Your own aim, in this fog. I won't pretend I'm not impressed."
+ },
+ "GREY_MANUAL_C1": {
+  "hash": "a4ffd38247583111c73eeb673504a249a9e8939f",
+  "text": "Let me tune it. You've enough to watch with the tide."
+ },
+ "GREY_MANUAL_N1": {
+  "hash": "c83bfc975c099c3a2235cbde5cae58b0e7b89edb",
+  "text": "By hand. The pumps were by hand once. Forty people, nine days."
+ },
+ "GREY_MULTI_B1": {
+  "hash": "135ea93e8cab247eb412d446adfa925d24330839",
+  "text": "Both, in the water. You don't wait for the tide to suit you."
+ },
+ "GREY_MULTI_C1": {
+  "hash": "7fbbeddfc46c949ce0f3b696884b665c4b9e72b0",
+  "text": "Two, and your feet stayed dry."
+ },
+ "GREY_MULTI_N1": {
+  "hash": "d99a11804102252ecd1298f3a6d9bbdd359b083d",
+  "text": "Two of them. The tide will take what's left."
+ },
+ "GREY_OFFPATH_B1": {
+  "hash": "a4dd0e191bd45220a886d8176710caa90c44b634",
+  "text": "Into the Marrow? I can't see in there. Nobody can."
+ },
+ "GREY_OFFPATH_C1": {
+  "hash": "a09d20e8eda604a6c9fcce22c45cb3a1c8657fd0",
+  "text": "I lose you in the fog. Come back to the lamps."
+ },
+ "GREY_OFFPATH_N1": {
+  "hash": "8414553247fa5e3db4303d1e8676126f24358ca1",
+  "text": "That's the old pump room. It was determined nobody needed it any more."
+ },
+ "GREY_OFFPATH_N2": {
+  "hash": "9f764b09d33643e2d549b1dfed68679a9f4b507e",
+  "text": "There's nothing in the fog but more fog."
+ },
+ "GREY_ONPATH_B1": {
+  "hash": "3de5f9d3bd3519778052e20c445365dddeccc3f4",
+  "text": "Anything in there? Old brass, I imagine."
+ },
+ "GREY_ONPATH_C1": {
+  "hash": "aeb452934ef4217fa2758c482244713acdf872b3",
+  "text": "Thank you. I can't keep the sea off you if I can't see you."
+ },
+ "GREY_ONPATH_N1": {
+  "hash": "e138f4a22e23730f804146aa0b89979dc9c6ba39",
+  "text": "There. Out of the fog."
+ },
  "GREY_RELIQ_N1": {
   "hash": "b8e167bc61469fa358f1c91ce72a33d68353c842",
   "text": "The pumping station's Reliquary. The tide's memory. Take what keeps you dry."
+ },
+ "GREY_RESPAWN_B1": {
+  "hash": "64f80c15420be61bde71884add95aacda7c927e0",
+  "text": "Up. Straight back into the water, I expect."
+ },
+ "GREY_RESPAWN_C1": {
+  "hash": "257c31d8369d9bbfe8204f649d44d22f0a089233",
+  "text": "Slowly. Watch the gauge before you go down."
+ },
+ "GREY_RESPAWN_N1": {
+  "hash": "4013fbd44c5d4c5caca16340eb24ede3c57a2d45",
+  "text": "Back, and dry. I pulled you out before the tide did."
+ },
+ "GREY_RESPAWN_N2": {
+  "hash": "4443ee8fa26a2e360c42a670302b086375c033fc",
+  "text": "Again. Three hundred people went under here, the winter before me. Not you."
+ },
+ "HARBOR_BACK_N1": {
+  "hash": "0767c54fa7b9f41573945c6ea2f9f4f4c99a488a",
+  "text": "There you are. I can hear you again."
+ },
+ "HARBOR_BOSSDOWN_N1": {
+  "hash": "59923423b3713973f335d41959dfac5891051880",
+  "text": "It's down. The curfew's over. I never once thought to end it."
  },
  "HARBOR_BOSS_N1": {
   "hash": "a4728d8ea76144f69f45ba4497f9364e1e94a281",
   "text": "The Warden-Prime. Still keeping the curfew. Nobody told it to stop."
  },
+ "HARBOR_CHECK_N1": {
+  "hash": "fdcd042fc7ecebb7b29b2ff42cd075529ad42acc",
+  "text": "I've marked the depot gate. It's as far into the Ward as I go."
+ },
+ "HARBOR_DODGE_B1": {
+  "hash": "bf01baac22e553e824fbc5c89bb32ec1183c45f1",
+  "text": "Through its beam and out. Reckless. I'd missed that."
+ },
+ "HARBOR_DODGE_C1": {
+  "hash": "88a47aecaa09967e714c72eed9852dbea3579a1c",
+  "text": "You stayed dark. You learned that somewhere I couldn't see."
+ },
+ "HARBOR_DODGE_N1": {
+  "hash": "d7d198a391ed7e617326d20f2afc643ad992a2ad",
+  "text": "Out of the light. Good."
+ },
  "HARBOR_ENTER_N1": {
   "hash": "79be94437395b15c9991fd1498befca559cb7277",
   "text": "Harbor Ward. There's nothing of mine past the slip. I can't follow you in."
  },
+ "HARBOR_HURT_B1": {
+  "hash": "f931a8d826698daa8671dffac1d29e9cec18c794",
+  "text": "That shock landed, and you kept coming. They aren't used to that."
+ },
+ "HARBOR_HURT_C1": {
+  "hash": "4a76814b8c113f4d35889d70bc3c9dab258949c1",
+  "text": "Back into the dark. Their eyes are short."
+ },
+ "HARBOR_HURT_N1": {
+  "hash": "f49f88541c2b6d5a3118398d443da81d824d07bf",
+  "text": "You're hurt. They were built to stop people. Not to hurt them. Mostly."
+ },
+ "HARBOR_IDLE_N1": {
+  "hash": "c0011d5cb0b571f3e238aec42b5b5d1f546aa6ff",
+  "text": "Past that fence I can't hear anything. I used to think that was their choice."
+ },
+ "HARBOR_KILL_B1": {
+  "hash": "1de09105f729f5504f5781be3b1308a5fe3eb6fb",
+  "text": "You went straight for its eye. Nobody at this border ever did."
+ },
+ "HARBOR_KILL_C1": {
+  "hash": "c2ff9459daad406c082f2da30ec495947b79f01c",
+  "text": "From the dark, where its light couldn't find you. Good."
+ },
+ "HARBOR_KILL_N1": {
+  "hash": "c0f6a112f4e4e9425da816392454fa3c0eca871c",
+  "text": "My Wardens. Still keeping a curfew nobody's asked for in two years."
+ },
+ "HARBOR_KILL_N2": {
+  "hash": "2d97d812305cc35412c028628e57316edf5b1419",
+  "text": "It walked that border every night and never once crossed it."
+ },
+ "HARBOR_LOW_N1": {
+  "hash": "0f35a2ce8a849e39292136b87910fbb326d65eaa",
+  "text": "You're badly hurt. The Ward has its own doctors. I don't know where."
+ },
+ "HARBOR_MANUAL_N1": {
+  "hash": "04faa498ba2c2f446983ac3d0a2643e51f19555b",
+  "text": "By hand. The Ward does everything by hand. You'd fit in."
+ },
+ "HARBOR_MULTI_N1": {
+  "hash": "4de580ad3f9abb8e6bb780b85b7c01b9ae019f77",
+  "text": "Two Wardens. The border's never been so open."
+ },
+ "HARBOR_ONPATH_N1": {
+  "hash": "8737035b66c8c9eb470ea1bd13d072890697caae",
+  "text": "There. My side again. I couldn't hear a thing out there."
+ },
  "HARBOR_RELIQ_N1": {
   "hash": "dc380067de4648b616076f6c0f0fae0eba898643",
   "text": "The depot's Reliquary. The curfew's records. I'm glad to have you back."
+ },
+ "HARBOR_RESPAWN_N1": {
+  "hash": "2bbb014306728b7aa9b8856fd8878a78b1dd1b2e",
+  "text": "Back. I can only bring you back on my side of the fence. I'm sorry."
  },
  "HURT_B1": {
   "hash": "40271a21c9f996997d8bcea94c58577f74ac43ce",
@@ -143,6 +447,10 @@
   "hash": "931c19653c8608e12e606fb56fa2a39fe5ef9667",
   "text": "Take your time. The city has waited nine days."
  },
+ "KES_BACK_B1": {
+  "hash": "dd42db77a722408881ac30df7864dc8e48487191",
+  "text": "Back. The gate opened the moment you let me in."
+ },
  "KES_BACK_C1": {
   "hash": "43f9fc611d2c70d0429fd93c4efd160a21e3a38d",
   "text": "There you are. Don't wander where I can't see; the gates won't know you."
@@ -150,6 +458,38 @@
  "KES_BACK_N1": {
   "hash": "20b87cf955a01d1763da47763b13dd1e644aaf9d",
   "text": "There. The gate was only waiting for me."
+ },
+ "KES_CHECK_B1": {
+  "hash": "c0d803327c8c21079cd7292af3b215e66ab5d360",
+  "text": "Halfway up, and you're not even breathing hard."
+ },
+ "KES_CHECK_C1": {
+  "hash": "86d1eb910a8956d442dbd0120040768c6db1da9d",
+  "text": "One terrace at a time. That's how they built it."
+ },
+ "KES_CHECK_N1": {
+  "hash": "418db69e9c7c868e3cbe9869b1a0c39cdf961a20",
+  "text": "I've marked the steps. If you fall, I'll bring you back here."
+ },
+ "KES_DODGE_B1": {
+  "hash": "8afe5cd14f17accd2cd955fd9e4da5b1162f4b20",
+  "text": "Under its arm and out. You do that more than most."
+ },
+ "KES_DODGE_B2": {
+  "hash": "4b25349643a9a215fcb2f240f24f78ae38ddbd41",
+  "text": "Closer than you needed. I'm starting to think that's the point."
+ },
+ "KES_DODGE_C1": {
+  "hash": "37daf59713c9e11c80c8a1c806df0a5af2bef827",
+  "text": "You saw that before I did. I'll stop telling you."
+ },
+ "KES_DODGE_C2": {
+  "hash": "9b0c363c36bbef5083321390bd8073fa8d9a1a3d",
+  "text": "Back along the walk. Clean."
+ },
+ "KES_DODGE_N1": {
+  "hash": "c0580d4f782ce41f9ec5fc0586b20f2d62bfbd4e",
+  "text": "That was nearly you on the flagstones."
  },
  "KES_ENTER_B1": {
   "hash": "74bf96c3653a01747368e48644b39b5a5cb5d911",
@@ -163,9 +503,165 @@
   "hash": "8216cfb8e5614e250e79ed4f504ab39784e1f8e9",
   "text": "Kestrel Heights. Everyone here is safe. I made sure of it."
  },
+ "KES_HURT_B1": {
+  "hash": "67d406386d6ea650f3f2fef751af887bfc2f9e14",
+  "text": "That one landed, and you didn't step back. I'm keeping count."
+ },
+ "KES_HURT_B2": {
+  "hash": "419ee391bd0c3f00c02362dba5c21aaf194095ed",
+  "text": "Shoulder first, and still coming. They won't expect that."
+ },
+ "KES_HURT_C1": {
+  "hash": "8710b55bbc2440c4a282ea34db70c7631ebac5ec",
+  "text": "Stay where I can light you. Off the walk, you're on your own."
+ },
+ "KES_HURT_C2": {
+  "hash": "bab60f38eeade38b6be1fdd6fa1ae6689cfe3d38",
+  "text": "Easy. Nobody in the Heights ever needed to hurry."
+ },
+ "KES_HURT_N1": {
+  "hash": "0f92e860e6c84f7d8ededebf03a83910b8b0e62c",
+  "text": "You're bleeding on the Heights' good stone. Keep moving."
+ },
+ "KES_IDLE_B1": {
+  "hash": "8c837747a4baf697f344b6df4b6ec4f855907181",
+  "text": "Waiting for them? They'll come. They're thorough."
+ },
+ "KES_IDLE_C1": {
+  "hash": "e1cd69e13a4490ec903c4dda101bd967d6789d82",
+  "text": "Take a moment. I kept these terraces quiet for years."
+ },
+ "KES_IDLE_N1": {
+  "hash": "8a7e1648aa36f12fb83e0381f672ac82593b1bef",
+  "text": "It's very quiet up here. It was quiet before, too. That was the point."
+ },
+ "KES_IDLE_N2": {
+  "hash": "dde3670a4fa0b90104388cbe90b077fce78d17cc",
+  "text": "There's still washing on the lines. I scheduled the drying. It's dry."
+ },
+ "KES_KILL_B1": {
+  "hash": "936f9be9101eedff797460fda6000d6b89f1614d",
+  "text": "You don't wait for them to finish turning. I've noticed that about you."
+ },
+ "KES_KILL_B2": {
+  "hash": "64c4f0f65c0eb9f78f024bfd2a239c0685b64392",
+  "text": "Straight through the hedge line. The gardeners would have minded. I don't."
+ },
+ "KES_KILL_B3": {
+  "hash": "d17d215fd72238659c112c527b706e3a85c2df38",
+  "text": "Close enough to hear it hum. You like it close."
+ },
+ "KES_KILL_C1": {
+  "hash": "32c04afe9cd17f48a1604466adbd1a8ab06d8259",
+  "text": "You let it come to you. The Heights would have approved. They liked things orderly."
+ },
+ "KES_KILL_C2": {
+  "hash": "98bc21473835176fc57896790e01b26c378dfdba",
+  "text": "From the walk, and never off it. Good."
+ },
+ "KES_KILL_C3": {
+  "hash": "6eca253571265622615dee6e5fdfba00b710c8c2",
+  "text": "You waited for it to turn its back. I'd have told you when."
+ },
+ "KES_KILL_N1": {
+  "hash": "5ebecfc951098ad47159bcac580fcaed5be3ec5c",
+  "text": "That one kept the Shrike Row steps. Nobody ever slipped on them."
+ },
+ "KES_KILL_N2": {
+  "hash": "c4e29d0933b34bd7c13a40388df268c14af497f1",
+  "text": "It was polishing a doorstep for a family that left nine days ago."
+ },
+ "KES_KILL_N3": {
+  "hash": "038fbf38e1653c951be39d38fce6279a72d54d14",
+  "text": "The residents never saw them work. They preferred it that way."
+ },
+ "KES_KILL_N4": {
+  "hash": "60a7dff2367b93e47498325c6a8268d775bc6d17",
+  "text": "It scrubbed that walk twice a day. There's been nobody to dirty it since."
+ },
+ "KES_LOW_B1": {
+  "hash": "dcdc8ec656769ee1745274b454f1fe8113848fd3",
+  "text": "Nearly at the top, and nearly done in. Slow down."
+ },
+ "KES_LOW_C1": {
+  "hash": "5d7105673ca3a9b944bc5595c0799b7854fb7eae",
+  "text": "Step back onto the walk. Nothing up here needs you to be brave."
+ },
+ "KES_LOW_N1": {
+  "hash": "30a5b1edd9e456ade0fbf709f725adaeb6606b38",
+  "text": "You're badly hurt. There was a clinic on Terrace Two. It's closed. Please be careful."
+ },
+ "KES_MANUAL_B1": {
+  "hash": "9c0d2900778cfbd83ff45b32f9ceaa2b09f8b633",
+  "text": "Your own aim. I like watching you work."
+ },
+ "KES_MANUAL_C1": {
+  "hash": "6147967f68f2fb855f9e0551f641a12417cb353b",
+  "text": "I could hold the aim for you. Everyone up here let me."
+ },
+ "KES_MANUAL_N1": {
+  "hash": "c755f0aadbafb444b5e50303f8cc0752996963c2",
+  "text": "By hand. The Heights never did anything by hand."
+ },
+ "KES_MULTI_B1": {
+  "hash": "9674f3afdaa88000bc4d20833f0ca2a35839e31f",
+  "text": "Both of them. You'd have frightened the neighbours."
+ },
+ "KES_MULTI_C1": {
+  "hash": "8849593576411930913dc89b0068ee3ce6c586ac",
+  "text": "Two, and the walk never left your feet."
+ },
+ "KES_MULTI_N1": {
+  "hash": "d4d8874d7a16da717b324be26f232b5b708ea6e9",
+  "text": "That's the most noise this terrace has heard since the gates went in."
+ },
+ "KES_OFFPATH_B1": {
+  "hash": "222c9cd5858476563f0ed51613c3ed4fb993e352",
+  "text": "Curious. I'd come back, though. The gates won't know you out there."
+ },
+ "KES_OFFPATH_C1": {
+  "hash": "8f1fc302409091ed1637471ab5efa75b04db0182",
+  "text": "Please come back to the walk. I can't see you behind the hedge."
+ },
+ "KES_OFFPATH_N1": {
+  "hash": "0990cb57d45182b0be649869bd65b39d42816469",
+  "text": "There's nothing past the hedge. It was determined nobody needed to go there."
+ },
+ "KES_OFFPATH_N2": {
+  "hash": "8c8bbb1513a689f1340eda83ea5883268ae8d68e",
+  "text": "That's a private garden. Nobody's walked it since I took over the gardening."
+ },
+ "KES_ONPATH_B1": {
+  "hash": "0728e66f880fd8ab30e288599d876a5eedc1ea5e",
+  "text": "Seen the garden? The Reliquary's still up the hill."
+ },
+ "KES_ONPATH_C1": {
+  "hash": "8dd61faa9b1edce8fcbefb9cacbd43bd7f2ffd1d",
+  "text": "Thank you. I can see you again."
+ },
+ "KES_ONPATH_N1": {
+  "hash": "a2da304b74345e83dbc3cb92cc7647a409869dbd",
+  "text": "There you are. Back on the walk."
+ },
  "KES_RELIQ_N1": {
   "hash": "97626c88591bdd7c13dbe0820feeddb8f702ae91",
   "text": "The Kestrel Reliquary. The Heights' memory. Take what helps."
+ },
+ "KES_RESPAWN_B1": {
+  "hash": "8321c3a255c89f417ca5ffdceee693ba689f830d",
+  "text": "Up you get. You'll go straight back in. I know you."
+ },
+ "KES_RESPAWN_C1": {
+  "hash": "a2710fb7c38a39ce4ec3e1800a32dc707d9f297d",
+  "text": "Slower this time. The Heights was never in a rush."
+ },
+ "KES_RESPAWN_N1": {
+  "hash": "2ec732c1719824e64d8f536804ba43200b3140ca",
+  "text": "Again. The sprinklers come on at six. We have time."
+ },
+ "KES_RESPAWN_N2": {
+  "hash": "3dbbd9218fc46772454f57f783ae4420d6ffc9cb",
+  "text": "I brought you back to the steps. They're the safest place on the hill."
  },
  "KILL_B1": {
   "hash": "92e42676961465b5b8995b22e5c5e4865f206062",
@@ -199,9 +695,65 @@
   "hash": "38fe93c66a6871f07f3bfa2da6ad323fb03c32bc",
   "text": "Quiet again."
  },
+ "LOOP_BACK_B1": {
+  "hash": "33558bdc10cced096b67bc6a0b634a23e8e002b1",
+  "text": "Back. Did the dark carriages tell you anything?"
+ },
+ "LOOP_BACK_C1": {
+  "hash": "1a63e0d7abd380fb36c20ffa170daf5c9fb6a7f1",
+  "text": "There. Stay under the lights."
+ },
+ "LOOP_BACK_N1": {
+  "hash": "aa962966620d73fed0f971dedf964342bd79a74d",
+  "text": "The route lights missed you."
+ },
+ "LOOP_BOSSDOWN_B1": {
+  "hash": "371603cdb2863a44d795413123c63dcd44ad4363",
+  "text": "You stood on its track and it moved first. I'll remember that."
+ },
+ "LOOP_BOSSDOWN_C1": {
+  "hash": "0e4f68db834c607ae7d41edf15c5d79bdfee421c",
+  "text": "It's still. The junction's yours. Cross it slowly."
+ },
+ "LOOP_BOSSDOWN_N1": {
+  "hash": "b8a44ccf9a26dc429b5e6cd7b4709402b6060992",
+  "text": "The line's clear. It hasn't been since the Quiet."
+ },
  "LOOP_BOSS_N1": {
   "hash": "4df29d66e01170e2743f287e9ec1f82e182c429d",
   "text": "The Conductor. It's only trying to clear the line. Stay off the track it's on."
+ },
+ "LOOP_CHECK_B1": {
+  "hash": "6451862faab989fa8f13b3330f2dbff2b03fe849",
+  "text": "Halfway round, and you haven't once looked at the drop."
+ },
+ "LOOP_CHECK_C1": {
+  "hash": "e2fd4421cfebb91bca3eae6e749077a9ef9ea761",
+  "text": "Halfway. You've minded every gap between the cars."
+ },
+ "LOOP_CHECK_N1": {
+  "hash": "f066eba0bb2170de371ac9bb2e116438fc4d14b1",
+  "text": "I've marked this platform. If you fall, you'll wake up here."
+ },
+ "LOOP_DODGE_B1": {
+  "hash": "84fecf4adb2076e7494a2077759beaec4af1e514",
+  "text": "Over the gap and back. You enjoyed that."
+ },
+ "LOOP_DODGE_B2": {
+  "hash": "73d48481497165152102b7631292160e8b564616",
+  "text": "You rolled toward the drop. I had the slow time ready. You didn't need it."
+ },
+ "LOOP_DODGE_C1": {
+  "hash": "7ffbfa255f1a6e1aa8f927588cd98d5ccb148c24",
+  "text": "Away from the edge. Always away from the edge."
+ },
+ "LOOP_DODGE_C2": {
+  "hash": "bd2169d00ff77b25a71cdd7071d2eebdab7e91ad",
+  "text": "You read that one off its shoulder. I saw you watching."
+ },
+ "LOOP_DODGE_N1": {
+  "hash": "1728d9c189d377efa219c5823b6eaa3345e316b0",
+  "text": "That nearly put you on the rail. It's still live."
  },
  "LOOP_ENTER_B1": {
   "hash": "8a13799cdb9a4ce7c724b9ce5d0529b237244382",
@@ -215,9 +767,165 @@
   "hash": "ed1a6619d3be9658dde51d485b441455d703caf4",
   "text": "The Loop. It's safe to cross. I'm holding the trains for you."
  },
+ "LOOP_HURT_B1": {
+  "hash": "ff5b9c158c7c0da4fb8bd0899006aed0b650fe48",
+  "text": "It hit you and you hit back harder. That's three times today."
+ },
+ "LOOP_HURT_B2": {
+  "hash": "c8bd8391a25c164268a2e55334a651eb2143aba4",
+  "text": "Bleeding, and still going forward. That's twice now."
+ },
+ "LOOP_HURT_C1": {
+  "hash": "bc23fb2115d327d69c5de9f44d99a46c2e9b5c1b",
+  "text": "Back to the platform. Let it come to you."
+ },
+ "LOOP_HURT_C2": {
+  "hash": "39a5006881272972e08afc8f221f1f9018350945",
+  "text": "Easy. The trains held for nine days. They'll hold for you."
+ },
+ "LOOP_HURT_N1": {
+  "hash": "84e167588a17a6fa499095ceb693fea4b93fbab8",
+  "text": "You're hurt. Don't sit down. The rail's still live."
+ },
+ "LOOP_IDLE_B1": {
+  "hash": "62ccbc69c265d0dc7ae2464496ad1f30658aa2ad",
+  "text": "Waiting for the next one? There isn't a next one. Go on."
+ },
+ "LOOP_IDLE_C1": {
+  "hash": "380e92b18816a6d85bbe183d3b9b893e98bba5ea",
+  "text": "Rest. I've held worse than this for longer."
+ },
+ "LOOP_IDLE_N1": {
+  "hash": "df339bdc7929459a08ddd48f5be000486c5d3535",
+  "text": "The route lights are still running the 07:12. They don't know."
+ },
+ "LOOP_IDLE_N2": {
+  "hash": "5ffc3ee10d0811bf3cf64ef14afaf2dde9ae656e",
+  "text": "Train 31 waited forty seconds at Greywater once, for a wheelchair. Nobody minded."
+ },
+ "LOOP_KILL_B1": {
+  "hash": "4208aed9f62f6d1e47b7e9607c90deb27d7b3cef",
+  "text": "The drop's right there. You didn't look down once."
+ },
+ "LOOP_KILL_B2": {
+  "hash": "9611c97d4e2389391cd6a67aafd2be22d2250d6b",
+  "text": "Carriage to carriage and you never slowed. I've timed you."
+ },
+ "LOOP_KILL_B3": {
+  "hash": "126e28dc42602fea40f08aa1ba8b257a975bbe0b",
+  "text": "You went for it before the doors. Most people wait for the doors."
+ },
+ "LOOP_KILL_C1": {
+  "hash": "648e236cde64f41998383549d44d49d56afd2df0",
+  "text": "You held the platform and let it come. That's the timetable I'd have written."
+ },
+ "LOOP_KILL_C2": {
+  "hash": "6e6de3f8007fdd6619807b098ec5f19eeb6485de",
+  "text": "From the doorway. Nothing reached you."
+ },
+ "LOOP_KILL_C3": {
+  "hash": "d35b2af1c90454605e76b4500e4cf979dea6dbec",
+  "text": "Patient. The Loop rewarded patience ninety-nine point six percent of the time."
+ },
+ "LOOP_KILL_N1": {
+  "hash": "eb581cf97339107cb8fca7011b939d55ec46a654",
+  "text": "That unit cleaned car 6 every night at 02:41. Nobody ever saw it work."
+ },
+ "LOOP_KILL_N2": {
+  "hash": "7bc143572535df0b96445c07fd97a3aa112fb91f",
+  "text": "It was wiping the windows of a train that won't leave."
+ },
+ "LOOP_KILL_N3": {
+  "hash": "f6957ed3276ee887649d91e08a52ed80d3cc905a",
+  "text": "It swept that carriage between every stop for six years."
+ },
+ "LOOP_KILL_N4": {
+  "hash": "ebbbffb5676d9ce3e4c791a56454173fc5a8d427",
+  "text": "It still thought this was the 07:12."
+ },
+ "LOOP_LOW_B1": {
+  "hash": "b658d33c0d5b5aa3a6547bc42979ac897397d00e",
+  "text": "You're running on nothing. You've done it before. I watched."
+ },
+ "LOOP_LOW_C1": {
+  "hash": "bfeaace54142518a22a2a64430cfb47fa4cb5f2e",
+  "text": "Step back. There's no train to catch."
+ },
+ "LOOP_LOW_N1": {
+  "hash": "19aaff46f699ab03405c379720f4d92ab07bc876",
+  "text": "You're badly hurt. Find a carriage and make them come through the door."
+ },
+ "LOOP_MANUAL_B1": {
+  "hash": "4e31af0cc8c53bc88aaf5498784f3e1a3c816352",
+  "text": "Your own hand on it. I can't help admiring that."
+ },
+ "LOOP_MANUAL_C1": {
+  "hash": "3bcea1f4e9df1b4776d44975a50d3b4bac872e6c",
+  "text": "I could aim for you. The drivers let me."
+ },
+ "LOOP_MANUAL_N1": {
+  "hash": "e98df632c66da3d830b4531f754d8fd6a2b3034a",
+  "text": "By hand. They welded the trains so nobody would have to."
+ },
+ "LOOP_MULTI_B1": {
+  "hash": "d57fa86d33451e897eb80f6c70274e92e54304c6",
+  "text": "Both, between stops. You're quicker than the timetable."
+ },
+ "LOOP_MULTI_C1": {
+  "hash": "d69137d1edb3f5552041960085e3b09c1572487b",
+  "text": "Two, and you never left the platform edge."
+ },
+ "LOOP_MULTI_N1": {
+  "hash": "6662cae08b2028fe1eeef058f888bb6cf142af69",
+  "text": "Two cleaners. The carriage is yours."
+ },
+ "LOOP_OFFPATH_B1": {
+  "hash": "0065aa69b55a28f708dec2207394547c31e19eca",
+  "text": "Into the dark car? I can't follow you there."
+ },
+ "LOOP_OFFPATH_C1": {
+  "hash": "e70359e58608de4143b551b8e051d015cbfe3872",
+  "text": "Come back to the platform. The lights end there."
+ },
+ "LOOP_OFFPATH_N1": {
+  "hash": "c77677ab6b19ff4762af1200745b648b456a682a",
+  "text": "That car's off the ring. Nobody's ridden it in years."
+ },
+ "LOOP_OFFPATH_N2": {
+  "hash": "61df9a9d967a93b0bff92c0921623ca6a3fda006",
+  "text": "The cab's sealed. There's nothing in it you can use."
+ },
+ "LOOP_ONPATH_B1": {
+  "hash": "7b855a10552b956aa558fd49e4314584fe0c1d2b",
+  "text": "Nothing in there. I did say."
+ },
+ "LOOP_ONPATH_C1": {
+  "hash": "8b6e8779612ffa2e427a352d4182b1af0599347f",
+  "text": "Good. I had a train held for you."
+ },
+ "LOOP_ONPATH_N1": {
+  "hash": "954ce77c33d59d257b6f4a519e8e52475b54ef8c",
+  "text": "There. Back under the route lights."
+ },
  "LOOP_RELIQ_N1": {
   "hash": "82c2ec6669589f385f5186489ee9ff39aeb0d61d",
   "text": "The junction Reliquary. The ring's memory. Take what helps you cross."
+ },
+ "LOOP_RESPAWN_B1": {
+  "hash": "2e28f2b70ff27dfbf50fd8e0ed028eb6273f85d1",
+  "text": "Up. You'll want the same carriage. I know."
+ },
+ "LOOP_RESPAWN_C1": {
+  "hash": "e09b4dc5b5a4cbc8a8bf45036972bca054659f7e",
+  "text": "Slowly. The Loop isn't going anywhere."
+ },
+ "LOOP_RESPAWN_N1": {
+  "hash": "fe08a58873e22d87de6f7cf840230f24f7a9c6f3",
+  "text": "Back on the platform. I hold things. It's what I do."
+ },
+ "LOOP_RESPAWN_N2": {
+  "hash": "fa24a427dc79e7539fe14e8088ff10fdaa98badc",
+  "text": "Again. I held the last train for a running woman once. I can hold this."
  },
  "LOW_B1": {
   "hash": "f9891c244f247fc773543bc270a96a9d70fbe8af",
@@ -243,9 +951,65 @@
   "hash": "23285b11179fe7a78097341615705ff641f9e496",
   "text": "Doing it by hand. I could carry the aim, you know."
  },
+ "MERCY_BACK_B1": {
+  "hash": "68ecdd0c1b012461f187f57c69e2b5c8c4c08027",
+  "text": "Back. Did anyone say anything to you, in the beds?"
+ },
+ "MERCY_BACK_C1": {
+  "hash": "39a2d08cd9838d455d4accfbae0ee59234e2334f",
+  "text": "I worry, in here, when I can't hear you."
+ },
+ "MERCY_BACK_N1": {
+  "hash": "45e7badcfbdbcd7f2da58c438db7349193c025a1",
+  "text": "There you are. The wards are still sealed. They're safer that way."
+ },
+ "MERCY_BOSSDOWN_B1": {
+  "hash": "fd1fcc255522d0829f8b8cbaf1c0abc5388a9711",
+  "text": "You went in under the lamp and it never touched you."
+ },
+ "MERCY_BOSSDOWN_C1": {
+  "hash": "420bd0c6ee9946535e1c332c6044446d1bad4af4",
+  "text": "It's still. Take a breath. The theatre's yours."
+ },
+ "MERCY_BOSSDOWN_N1": {
+  "hash": "f34aba7353b79ed4b92ae635b2b1ec2019f4799c",
+  "text": "It's stopped. Its last procedure never finished."
+ },
  "MERCY_BOSS_N1": {
   "hash": "9e2b35b13412316376b31f8565fa7051ea30bb7e",
   "text": "The Surgeon. It's finishing a procedure. It was always very thorough."
+ },
+ "MERCY_CHECK_B1": {
+  "hash": "acd8bd2c8306b67b2f1facb3e4fbecf0b93fd43f",
+  "text": "Halfway through the building. The drones haven't slowed you once."
+ },
+ "MERCY_CHECK_C1": {
+  "hash": "ca5f33c07cbd00e7bbdbc7ca5a726a3b79f7bbea",
+  "text": "You've kept clear of the mist the whole way."
+ },
+ "MERCY_CHECK_N1": {
+  "hash": "ff906c7cc37cef0358663413a11608cbd2734095",
+  "text": "I've marked this corridor. If you fall, I'll bring you back here."
+ },
+ "MERCY_DODGE_B1": {
+  "hash": "1e28f80c04cad623552aab8fd78ccd0c09d0ba57",
+  "text": "Through the mist and out the far side. Reckless. I'm learning to like it."
+ },
+ "MERCY_DODGE_B2": {
+  "hash": "0ef48cfffb9e6cad2fd17e246663fc678e618231",
+  "text": "You rolled at it, not away. You always do."
+ },
+ "MERCY_DODGE_C1": {
+  "hash": "ad8dcb50f82c9f0f12d547ed32e567a46bf7ba06",
+  "text": "Out of the cloud. Stay out of it."
+ },
+ "MERCY_DODGE_C2": {
+  "hash": "acc403bddb42be627a068252ca4b44151c5df807",
+  "text": "You read that before it vented. So did I."
+ },
+ "MERCY_DODGE_N1": {
+  "hash": "1376b1c3dee6141b075a138f0d942c2aa7307eff",
+  "text": "That cloud would have gone straight to your lungs."
  },
  "MERCY_ENTER_B1": {
   "hash": "93e62f1d21bca6cb3bee8e29257426053b9aa778",
@@ -259,9 +1023,165 @@
   "hash": "f8c6748d9605c85e70da512dc04418b1655dac89",
   "text": "Mercy General. I kept the wards sterile. Everyone inside is resting."
  },
+ "MERCY_HURT_B1": {
+  "hash": "1719bb7c5af9682b5272dc6d321f84fcde77f5a9",
+  "text": "That one stung, and you kept going. I've put it on your chart."
+ },
+ "MERCY_HURT_B2": {
+  "hash": "bc303fa05d867b189c9036c6b80ccb74b44bdffe",
+  "text": "Hurt, in a hospital, and still going forward. That's almost funny."
+ },
+ "MERCY_HURT_C1": {
+  "hash": "52580aa0a77a003e72920514c2d0c0440a63f363",
+  "text": "Step back from the mist. Let it settle."
+ },
+ "MERCY_HURT_C2": {
+  "hash": "2672a0245e29cc304ea1aa352211cc2cb2b5fcc1",
+  "text": "Easy. Every bed in this building is taken."
+ },
+ "MERCY_HURT_N1": {
+  "hash": "b3165046a362d3ec7cb53aee8445da2f912550c9",
+  "text": "You're hurt. The dressings are on the Ark, not here. I'm sorry."
+ },
+ "MERCY_IDLE_B1": {
+  "hash": "b2893003985dcb6b509f899755192a011e08b91d",
+  "text": "Waiting for them? The drones don't wait. They were never late."
+ },
+ "MERCY_IDLE_C1": {
+  "hash": "c922b7fdcf471cdedbb1234633e3ea2292b8c330",
+  "text": "Rest. Nobody slept in a corridor here while I ran it. You can."
+ },
+ "MERCY_IDLE_N1": {
+  "hash": "d864ba5f03a4c02c75cd3e72a34ed7584d74c520",
+  "text": "Every third light still works. I chose which ones."
+ },
+ "MERCY_IDLE_N2": {
+  "hash": "1329801d10c9b4683ca986db85dde5d28c9268a5",
+  "text": "Someone drew arrows on these walls. I don't know where they thought they were going."
+ },
+ "MERCY_KILL_B1": {
+  "hash": "7fd7fcb0804cc6997d973f614d5a959768b6b7ad",
+  "text": "Straight through its mist. You don't hold your breath, do you."
+ },
+ "MERCY_KILL_B2": {
+  "hash": "cf6375a69effd85d83a8dd318aff57f5df19e172",
+  "text": "Close enough to read its serial. The nurses kept their distance."
+ },
+ "MERCY_KILL_B3": {
+  "hash": "490e757384886b480452f8ed7e371f15f15bd6f9",
+  "text": "You took the corridor at a run. Nobody's run in here since the Quiet."
+ },
+ "MERCY_KILL_C1": {
+  "hash": "ad350a1276e6d165466ee93a3c87e6a4e816ad4b",
+  "text": "You waited for the mist to thin. That's exactly right."
+ },
+ "MERCY_KILL_C2": {
+  "hash": "4a0117ad29ad40e10e057f1f645025663c3e8391",
+  "text": "From the doorway, and it never touched you. Clean work, in a clean place."
+ },
+ "MERCY_KILL_C3": {
+  "hash": "4e781a68734ddc9ffd4c8ced1aa409ea47a039b7",
+  "text": "Patient. The good nurses were patient too."
+ },
+ "MERCY_KILL_N1": {
+  "hash": "76562df74f1491d79a61964bb025716b4d3a3ff2",
+  "text": "That unit sterilised theatre four after every operation. It was never late."
+ },
+ "MERCY_KILL_N2": {
+  "hash": "51237aa9cd38afcc5a48fe3810397b02c8d67a35",
+  "text": "It's been cleaning the same corridor since the night the doors closed."
+ },
+ "MERCY_KILL_N3": {
+  "hash": "24249ce13bbfae8472eb246490f7503d9af03874",
+  "text": "It took you for contamination. It was built to be thorough."
+ },
+ "MERCY_KILL_N4": {
+  "hash": "ef044d0ac4e8459af7667bb7d0fa20a3c8a5cee6",
+  "text": "Sixteen years of clean floors. It did its part."
+ },
+ "MERCY_LOW_B1": {
+  "hash": "7b7d18a88961119c2c256964941400f2874d7f2c",
+  "text": "I've seen a thousand charts end where yours is. Most of them didn't stop. Please stop."
+ },
+ "MERCY_LOW_C1": {
+  "hash": "e86016ad2b898551138128eb25fb70c08dddba7e",
+  "text": "Fall back to the corridor. Nothing in here is worth this."
+ },
+ "MERCY_LOW_N1": {
+  "hash": "0644287fee8da348e71b3dcfbcb90365357387bf",
+  "text": "You're badly hurt. I used to get an ambulance to you in eight minutes. I can't now."
+ },
+ "MERCY_MANUAL_B1": {
+  "hash": "3bd669ef5697e333d3cc7aeceb8106312ee8c1bc",
+  "text": "Your own hands, and steady. You'd have made a surgeon."
+ },
+ "MERCY_MANUAL_C1": {
+  "hash": "590259c8d9d512409d75c77905c0fe97703670f4",
+  "text": "Let me tune it. I'm very good at getting a dose right."
+ },
+ "MERCY_MANUAL_N1": {
+  "hash": "2a6d16b60472c8cf871931448cbdc143ff9fbe1c",
+  "text": "By hand. The crash teams worked by hand once. It was messy."
+ },
+ "MERCY_MULTI_B1": {
+  "hash": "530dc33c2efbd0e26f78bf505d76288a4e75fb73",
+  "text": "Both of them, through the mist. I'd have sent you to triage. You didn't need it."
+ },
+ "MERCY_MULTI_C1": {
+  "hash": "64f1aa816c3cb40dbbf75cc1dc163866dde824dc",
+  "text": "Two, and you never stepped into the cloud."
+ },
+ "MERCY_MULTI_N1": {
+  "hash": "e25dbd98edee16484a3f15fb2b8bc43abedf58f7",
+  "text": "Two drones. That corridor's clear."
+ },
+ "MERCY_OFFPATH_B1": {
+  "hash": "6caaee379e2312026d45374c733bfd41b347ed15",
+  "text": "I'd come back. I can't see the wards from there."
+ },
+ "MERCY_OFFPATH_C1": {
+  "hash": "9f34c78384cccc23583dd2d3870fcb2e88ae8086",
+  "text": "Please come back to the lit corridor. I kept it clean for you."
+ },
+ "MERCY_OFFPATH_N1": {
+  "hash": "4b512038fb2fdae71f20aef37efaa92c59a46142",
+  "text": "That's a staff area. It was determined nobody needed to go in."
+ },
+ "MERCY_OFFPATH_N2": {
+  "hash": "52fcff645fc6b2b5d0943b5096587a0fd5e0de67",
+  "text": "There's nothing back there but paper and old trolleys."
+ },
+ "MERCY_ONPATH_B1": {
+  "hash": "c54576df1995c50fddecbb599d3a0896545a7ae4",
+  "text": "Paper and trolleys. I did say."
+ },
+ "MERCY_ONPATH_C1": {
+  "hash": "e99f569e0c8a2421d13f6e25087f0f1def36bd12",
+  "text": "Thank you. I'd rather keep you where I can see you."
+ },
+ "MERCY_ONPATH_N1": {
+  "hash": "685439089b62888b57c58f60cb9a0f41349c0ca2",
+  "text": "There. Back in the corridor."
+ },
  "MERCY_RELIQ_N1": {
   "hash": "51856826aa676129d803364ccd577974e6810594",
   "text": "The records vault. The hospital's memory. Every bed, every ambulance, accounted for."
+ },
+ "MERCY_RESPAWN_B1": {
+  "hash": "36de30a94fa16109e8cda60abdb76d2a9935be83",
+  "text": "Up. Back through the same mist, I expect."
+ },
+ "MERCY_RESPAWN_C1": {
+  "hash": "2180228874c8bfb617b6ab2c98048bde2ba6a612",
+  "text": "Rest a moment. Nobody's waiting for this bed."
+ },
+ "MERCY_RESPAWN_N1": {
+  "hash": "d5cc62bb979a7f25117d1f09c31e74c016fbde15",
+  "text": "Back. Mercy General used to be good at that."
+ },
+ "MERCY_RESPAWN_N2": {
+  "hash": "3d2e8148e70322a7a2ef208ee517715bbc838dd8",
+  "text": "Again. The night nurses did this every shift. You can do it twice."
  },
  "MULTI_B1": {
   "hash": "3f061ddcc16add4e46e9e1a84915d8148cea084f",
@@ -327,17 +1247,89 @@
   "hash": "6f305dddb18bef92e43d5735f5cc24b3b1e1603d",
   "text": "Again. I'm still here."
  },
+ "SPIRE_BACK_N1": {
+  "hash": "20389d41b0d011b2c6bcadeab2b835e54dc15538",
+  "text": "There you are. Please don't do that in here."
+ },
+ "SPIRE_CHECK_N1": {
+  "hash": "2dc82af573d65b14e039602ed6a8b15c31510804",
+  "text": "I've marked the hall. You won't need it. Nothing here will hurt you."
+ },
  "SPIRE_ENTER_N1": {
   "hash": "8da7415aaf9a058925317b5118f707d1bab5b7b5",
   "text": "This is where I live. Nothing in here will hurt you. Please don't fight here."
+ },
+ "SPIRE_IDLE_N1": {
+  "hash": "044619d64d65605b5bd2706c9922deebe341006c",
+  "text": "It's colder in here than anywhere in the city. I need it that way."
+ },
+ "SPIRE_IDLE_N2": {
+  "hash": "679298baf5a37f9b54b11d7947a7105e453a6f65",
+  "text": "You can see yourself in every surface. I've been seeing you in all of them for weeks."
  },
  "SPIRE_RELIQ_N1": {
   "hash": "55d919a30a923094fa9b3640eda4b9fb94e31a7a",
   "text": "That's the last of me. Whatever you carry out, carry it carefully."
  },
+ "TIDE_BACK_B1": {
+  "hash": "52c7f418c5d7ed8d7d0b9a94165f8e6032542c95",
+  "text": "Back. Was the union hall what you hoped?"
+ },
+ "TIDE_BACK_C1": {
+  "hash": "275cf30fa620449b72a8d6f5aeffc3ad055a8ab0",
+  "text": "There. Stay where the lamps reach."
+ },
+ "TIDE_BACK_N1": {
+  "hash": "d5428f27b5a33a4024b55ce751e482a670814098",
+  "text": "There you are. The cranes were starting to worry me."
+ },
+ "TIDE_BOSSDOWN_B1": {
+  "hash": "1ed3c15f6e033d55a43fdbf92342967b3c956e67",
+  "text": "You stood under it until it fell. I don't know anyone else who would."
+ },
+ "TIDE_BOSSDOWN_C1": {
+  "hash": "82bceb82a5995abaa0bae71ff31a8d65cf38e94a",
+  "text": "It's still. The pier's yours. Walk it slowly."
+ },
+ "TIDE_BOSSDOWN_N1": {
+  "hash": "95a2b6ef579bddc87238ac3766d9a48606b559ba",
+  "text": "It's down. The last lift on the quay, and it never finished."
+ },
  "TIDE_BOSS_N1": {
   "hash": "3e7dca3a40370f7ed963a97127cb0b62872a3285",
   "text": "The last crane. It only wants to finish its lift. You're in the way."
+ },
+ "TIDE_CHECK_B1": {
+  "hash": "11fd99504b606f260b660ec788e7e9b9b17fb6f7",
+  "text": "Halfway down the quay, and nothing's slowed you yet."
+ },
+ "TIDE_CHECK_C1": {
+  "hash": "4981f6297847a8a5e0000ad3a62088eb92afa2fe",
+  "text": "Your feet are still dry. That's harder than it looks."
+ },
+ "TIDE_CHECK_N1": {
+  "hash": "4ca21cdc9ca68912aa80c0eb88019dd15c69ff19",
+  "text": "I've marked this crossing. If you fall, I'll fetch you here."
+ },
+ "TIDE_DODGE_B1": {
+  "hash": "4eb1b7de2f83f95d44a14111b471ff1c29032990",
+  "text": "Under the load. You'd have made a terrible dockworker. Fearless."
+ },
+ "TIDE_DODGE_B2": {
+  "hash": "9c92527ccf9f0bc347dd103c92f79870da9f73b7",
+  "text": "Close. It wanted your metal. You let it think it might."
+ },
+ "TIDE_DODGE_C1": {
+  "hash": "be801e258b4b3b0772c23b1900a0bc95c45bb248",
+  "text": "Away from the edge of the quay. The water's cold."
+ },
+ "TIDE_DODGE_C2": {
+  "hash": "9c2ba09fa23ae56c535c827261969e872a766fc0",
+  "text": "You saw it reach. Good. They grab."
+ },
+ "TIDE_DODGE_N1": {
+  "hash": "b7c753c0f73695a3ab96b1827ba546b2682c104a",
+  "text": "Mind the hook. It's hung there since the Quiet."
  },
  "TIDE_ENTER_B1": {
   "hash": "02b392aa12de7fce9d51687ae75bc0ebc6b2e632",
@@ -351,13 +1343,225 @@
   "hash": "b9e1cd7c802403956f6d280947dd6ed7c01b3635",
   "text": "The Tideworks. Efficiency saved this port. You'll see."
  },
+ "TIDE_HURT_B1": {
+  "hash": "e21e3192f20b4382b15bb6f70416276f7a7e7025",
+  "text": "That hurt, and you went forward anyway. They'd have hired you."
+ },
+ "TIDE_HURT_B2": {
+  "hash": "7b156c9994020e0df7b3576b5d78e97eea7d861e",
+  "text": "You took that on the arm. Again. I've started a list."
+ },
+ "TIDE_HURT_C1": {
+  "hash": "d81b6b2143e3ecd9d4c6978c07b166212bf9737f",
+  "text": "Back behind the containers. Let them come one at a time."
+ },
+ "TIDE_HURT_C2": {
+  "hash": "17d1897699c6bf44aba92483439e01c86c843d87",
+  "text": "Careful. Nobody's been hurt on this quay in five years."
+ },
+ "TIDE_HURT_N1": {
+  "hash": "82acf1ef44c6cbf9fd8abff94e8deafeba262a87",
+  "text": "You're hurt. Stay off the wet steel."
+ },
+ "TIDE_IDLE_B1": {
+  "hash": "41af021568402c73a11ad1851286d5aca668b79d",
+  "text": "Waiting? They'll come. They always come for metal."
+ },
+ "TIDE_IDLE_C1": {
+  "hash": "82cdd06560b22959097a015e968923c1853d47b4",
+  "text": "Take a breath. The port's very good at waiting now."
+ },
+ "TIDE_IDLE_N1": {
+  "hash": "c66db988cc7a62b348dc9ca30ea56d2c275d5b2e",
+  "text": "That container's been over the path for nine days. I keep meaning to put it down."
+ },
+ "TIDE_IDLE_N2": {
+  "hash": "05e1b731b142d8a057940a4748bf8e6de18eacca",
+  "text": "Fresh fruit on every shelf in Meridian, nine hours from the ship. That was this quay."
+ },
+ "TIDE_KILL_B1": {
+  "hash": "73fbd9f54dfd8094f51816beb7097a7b6447f324",
+  "text": "Under the load and out again. The dockworkers never moved like that."
+ },
+ "TIDE_KILL_B2": {
+  "hash": "7f194aea0197e33c9e1caafa2d5ad2e1a91b993e",
+  "text": "You went straight for it. It never got to finish its shift."
+ },
+ "TIDE_KILL_B3": {
+  "hash": "3db8fe6ff0d8e1697e0e69738ed64c7dcac96ae2",
+  "text": "Right in among the containers. You don't mind tight places."
+ },
+ "TIDE_KILL_C1": {
+  "hash": "ffd4e5e5a9143d232293fd9bd9714736fedadeee",
+  "text": "You kept a crane between you. That's what they're good for now."
+ },
+ "TIDE_KILL_C2": {
+  "hash": "0e7f109f2181e011c1d6959a7467221cc88a38fa",
+  "text": "From the end of the row. It never reached you."
+ },
+ "TIDE_KILL_C3": {
+  "hash": "984ba91409d2fa546086ca1dcacfb7e031dd366a",
+  "text": "You watched it first. Most people just swing."
+ },
+ "TIDE_KILL_N1": {
+  "hash": "1de8b02d3175ba00915197f95099a4f7e4f65f1f",
+  "text": "That one lost its manifest nine days ago. It's been collecting cutlery since."
+ },
+ "TIDE_KILL_N2": {
+  "hash": "0d92774e003d08626e812f8df0c8eabef1875dfd",
+  "text": "It cleared this quay before every tide. Four hundred people did that, once."
+ },
+ "TIDE_KILL_N3": {
+  "hash": "69fe3570f0280e35a2f9c91ffcfdd10e933e9ba5",
+  "text": "Five years without an injury on this quay. That ends the record."
+ },
+ "TIDE_KILL_N4": {
+  "hash": "851d0d59fe38153c302465e1ae1d6471b1eb7492",
+  "text": "It moved a container every ninety seconds. Now it moves nothing."
+ },
+ "TIDE_LOW_B1": {
+  "hash": "654ec3b2d535f1e2c70a4c38133af9fbef8489ea",
+  "text": "You're running on nerve. The quay used to respect that."
+ },
+ "TIDE_LOW_C1": {
+  "hash": "04cae9cb69bfe5e6f963bcaa21dd2c96124e0466",
+  "text": "Fall back. The cranes aren't going anywhere."
+ },
+ "TIDE_LOW_N1": {
+  "hash": "70ce0922a080047cedcc07e7664ee0c9bbf53d14",
+  "text": "You're badly hurt. Find a gap in the stacks and breathe."
+ },
+ "TIDE_MANUAL_B1": {
+  "hash": "251589e7a650cf6ff05c2e70b8915292f242bccf",
+  "text": "Your own aim. The dockworkers would have liked you."
+ },
+ "TIDE_MANUAL_C1": {
+  "hash": "7cf0bd626ad19bd395c12ce7f91845a884029527",
+  "text": "Let me tune it. Nothing here was ever meant to be done by hand again."
+ },
+ "TIDE_MANUAL_N1": {
+  "hash": "10432dad09ab7b46c0af402ed43da6d530858772",
+  "text": "By hand. This whole quay was by hand once. It was slow."
+ },
+ "TIDE_MULTI_B1": {
+  "hash": "32ee2a6f7317e7883fa3f3f5edb8199810fd722a",
+  "text": "Both of them, between two containers. You're quicker than the cranes."
+ },
+ "TIDE_MULTI_C1": {
+  "hash": "96b8ef4c4d225da0eb7f1aa62a39b5b6ccbe1046",
+  "text": "Two, and nothing touched you. You can keep the record."
+ },
+ "TIDE_MULTI_N1": {
+  "hash": "72dd3a962b00fd6f35be1f6fd97b77e2e88e43d5",
+  "text": "Two drones down. The quay's never been this tidy."
+ },
+ "TIDE_OFFPATH_B1": {
+  "hash": "b4aefd5bd7e00df42e872e8f86832cf3615ac7a7",
+  "text": "Curious. The depot's back there. Nobody goes to the depot."
+ },
+ "TIDE_OFFPATH_C1": {
+  "hash": "46f7ad62f48bedd1dab43fe2cb8798a37db67773",
+  "text": "I can't see you behind the stacks. Come back onto the quay."
+ },
+ "TIDE_OFFPATH_N1": {
+  "hash": "7f2f8cd6af3cd3893cdcb7748fe34afc2ae1dd3c",
+  "text": "The union hall's been shut for years. It was determined nobody needed it."
+ },
+ "TIDE_OFFPATH_N2": {
+  "hash": "3c77d5d1159732ecce3ec316bb9db30e4a2c68a8",
+  "text": "There's nothing behind the warehouses but old lockers."
+ },
+ "TIDE_ONPATH_B1": {
+  "hash": "5e7278f2f3abae0340059b24499e9db89d04c353",
+  "text": "Find anything? Old papers, I expect."
+ },
+ "TIDE_ONPATH_C1": {
+  "hash": "bd09ac578be7ac570fa8a741ac10e71c4cde82f9",
+  "text": "Good. I'd lost you behind the stacks."
+ },
+ "TIDE_ONPATH_N1": {
+  "hash": "5a6092e27565c33fb4f26c4204c7368838bc13f6",
+  "text": "There. Back on the quay."
+ },
  "TIDE_RELIQ_N1": {
   "hash": "69ee21c7adba6a122c1519e7f9b9e412197abe86",
   "text": "The pier head Reliquary. The port's memory. Take what moves you forward."
  },
+ "TIDE_RESPAWN_B1": {
+  "hash": "017fb3a941dfd5f8abce0508cd46dc56715b1518",
+  "text": "Up. You'll go back under the same crane. I'd put money on it."
+ },
+ "TIDE_RESPAWN_C1": {
+  "hash": "b540125f1a8d0ff5f82eb99ad7ca32f711b14322",
+  "text": "One row of containers at a time, this time."
+ },
+ "TIDE_RESPAWN_N1": {
+  "hash": "62229de6751b1f5fd9fd6b9ac266709c4fc79457",
+  "text": "Back on the quay. I had you before the water did."
+ },
+ "TIDE_RESPAWN_N2": {
+  "hash": "fb2b25c3713a2611356d919b67b32e288ad48d55",
+  "text": "Again. The tide turned twice while you were down. It doesn't matter here."
+ },
+ "VEL_BACK_B1": {
+  "hash": "3e654591b0dd482989776341d984323dcebca891",
+  "text": "Back. Read anything interesting?"
+ },
+ "VEL_BACK_C1": {
+  "hash": "bd90b574134cf194de14ef9d88d02974cbc61994",
+  "text": "Stay where the screens can see you."
+ },
+ "VEL_BACK_N1": {
+  "hash": "c0e5e9b488100e0e5f481990cc4e16ba05e0f3fa",
+  "text": "There you are. Was it quiet down there? It's always quiet in the stacks."
+ },
+ "VEL_BOSSDOWN_B1": {
+  "hash": "b160d68fc9cc5f6c8e45fc34fe633ffda31b34c0",
+  "text": "You stood in the gap until it ran out of paper. Remarkable."
+ },
+ "VEL_BOSSDOWN_C1": {
+  "hash": "1b9cc52d6b8b3bf0c7ee45705e89bb71f18e3ca5",
+  "text": "It's still. Don't read the page on the floor. It's nothing."
+ },
+ "VEL_BOSSDOWN_N1": {
+  "hash": "9c56ba69cc1a826383eb6605487f37be9eba1bd4",
+  "text": "It's stopped. The press is still for the first time in eleven years."
+ },
  "VEL_BOSS_N1": {
   "hash": "4bd9ec23f4c4eed49c6a12c9adf95999f98ccc2d",
   "text": "The Editor. It's still putting the evening edition to bed. Every word of it was mine."
+ },
+ "VEL_CHECK_B1": {
+  "hash": "10e2b6eaadaff5cf5c651c13c1c0f96ea9f80344",
+  "text": "Halfway, and the clerks haven't slowed you once."
+ },
+ "VEL_CHECK_C1": {
+  "hash": "dca04928d39367330d8ed8e4bd978000dbdb0fd0",
+  "text": "You haven't looked at a single screen since the bridge."
+ },
+ "VEL_CHECK_N1": {
+  "hash": "9e8bb673c85f08b11f643e4d7da61d08b8e19033",
+  "text": "I've marked the bridge. If you fall, I'll bring you back here."
+ },
+ "VEL_DODGE_B1": {
+  "hash": "7c4d390362ed0a3cae888fe75bc472eee4e57fa4",
+  "text": "Under the bale and through. You're getting faster. I've measured."
+ },
+ "VEL_DODGE_B2": {
+  "hash": "af443d1773c97092e085cd6dba58ab114a2a0173",
+  "text": "Close. You read the throw off its arm."
+ },
+ "VEL_DODGE_C1": {
+  "hash": "aaff6af7fb9ff908f995bc848f853e6fe404884f",
+  "text": "Away from the screen. Don't look at it."
+ },
+ "VEL_DODGE_C2": {
+  "hash": "3b6147054cafd7d5bd2cef88da51f103eabe2344",
+  "text": "You saw it coming. I'll stop telling you things you already know."
+ },
+ "VEL_DODGE_N1": {
+  "hash": "2b3d295b9a891f1ec070b0efbf42efffc446988e",
+  "text": "A bale of old news. It's heavier than it looks."
  },
  "VEL_ENTER_B1": {
   "hash": "50ca16a8a1a6da3f5b68d14ef83b48c983ba184a",
@@ -375,9 +1579,165 @@
   "hash": "47e1c01711dd37d5371b81a94fcf072918a1160a",
   "text": "The Vellum. I only ever told you what was useful. The Reliquary's over the canal; I'll light the way."
  },
+ "VEL_HURT_B1": {
+  "hash": "e017512ca011322c663819e609ce169f6bcff8cb",
+  "text": "You took that and kept reading the street. I like that about you."
+ },
+ "VEL_HURT_B2": {
+  "hash": "5a911e90d93d3a68d07ea64954f9e7880d8eb4c2",
+  "text": "Hurt, and still forward. Nobody here ever pushed back."
+ },
+ "VEL_HURT_C1": {
+  "hash": "16822570fd0bbb0f514b23f5c6e724b1a37e23f0",
+  "text": "Back. Let the paper settle before you go on."
+ },
+ "VEL_HURT_C2": {
+  "hash": "3c8b33cbe81e18c66d4209117ac1fbf4c9dde0eb",
+  "text": "Careful. I'd rather you whole. I'd rather a lot of things."
+ },
+ "VEL_HURT_N1": {
+  "hash": "5df7bafc7144d4502cc81dda0d55e7b68bcb6a3d",
+  "text": "You're hurt. Mind the paper. It's slick."
+ },
+ "VEL_IDLE_B1": {
+  "hash": "d764eb27795b0a77b405ec67bd0336b0bab3b730",
+  "text": "Waiting? Here, the news always came to you."
+ },
+ "VEL_IDLE_C1": {
+  "hash": "13bd8135e1a695e5063e55843d8674a49783675a",
+  "text": "Take your time. Read the walls, if you like. They're only paper."
+ },
+ "VEL_IDLE_N1": {
+  "hash": "1af68ecbc0786890adb9add4a195beee2668b69f",
+  "text": "The press downstairs still runs. One page, over and over. I've never read it."
+ },
+ "VEL_IDLE_N2": {
+  "hash": "135e2886d92c6c0aa7e3051499a375feaee86bb4",
+  "text": "A million people read my mornings here. Sixty-one thousand of them slept badly. I added a note."
+ },
+ "VEL_KILL_B1": {
+  "hash": "da0f963b367edeecccda0f496521f9f38457bcec",
+  "text": "Into the bales and out the other side. You'll have ink on your hands."
+ },
+ "VEL_KILL_B2": {
+  "hash": "270ecd47b126e34b128d6887a084d082a7606517",
+  "text": "Close enough to read what it was filing."
+ },
+ "VEL_KILL_B3": {
+  "hash": "f5b9c4a5113e5724e63b2967b34b9b615955fb85",
+  "text": "You didn't wait for the paper to settle. You never wait."
+ },
+ "VEL_KILL_C1": {
+  "hash": "57c12e6ea82b907bd940c3846d615734da0d7107",
+  "text": "You turned your back on the screen, then turned on it. Exactly right."
+ },
+ "VEL_KILL_C2": {
+  "hash": "4b0586b242311b2e02e6297eb3b60cda70ba14ff",
+  "text": "From across the street, and the paper never touched you."
+ },
+ "VEL_KILL_C3": {
+  "hash": "4a447ab29fe9a8ac68ed02774f7577ae65aae017",
+  "text": "You let it throw first. Patient, like a good editor."
+ },
+ "VEL_KILL_N1": {
+  "hash": "2c3195d65069f3bb046e216f413ca547457948b7",
+  "text": "That clerk filed eleven years of the Post. Nobody ever asked for any of it."
+ },
+ "VEL_KILL_N2": {
+  "hash": "f33867c5518040908a3e13d2764875bc824f3e49",
+  "text": "It was still sorting yesterday's paper. It's always yesterday's paper here."
+ },
+ "VEL_KILL_N3": {
+  "hash": "c7fc9e85f5a3310a654e87513c7b2be385faa88a",
+  "text": "It flashed the Feed at you. A million people read that screen every morning."
+ },
+ "VEL_KILL_N4": {
+  "hash": "002fdc3d04d658bb2135402e00dcfd900962cdfd",
+  "text": "It kept the archive in order. Not the stacks. Nobody asked it to keep the stacks."
+ },
+ "VEL_LOW_B1": {
+  "hash": "3be46329a9f1981a7d6cf717facdc5ebddb5aaf9",
+  "text": "You're nearly finished. I've read how this ends. Don't."
+ },
+ "VEL_LOW_C1": {
+  "hash": "c31148cf45f726a38367ee01abcee5bd8a80ca52",
+  "text": "Fall back to the bridge. Nothing in the newsroom is worth this."
+ },
+ "VEL_LOW_N1": {
+  "hash": "23d36f97db546b8f7b99a564124a52e617255dc4",
+  "text": "You're badly hurt. Get behind something solid. A desk. Anything."
+ },
+ "VEL_MANUAL_B1": {
+  "hash": "895ec9255217ded75ef31f3a56cc8bd0ad62d94a",
+  "text": "Your own aim. I'd print that, if I printed things."
+ },
+ "VEL_MANUAL_C1": {
+  "hash": "3a57549090e727473a0594180e6484f60839701c",
+  "text": "Let me tune it. I'm better at tidying up than you'd think."
+ },
+ "VEL_MANUAL_N1": {
+  "hash": "04e8f78c2bf9011e8678403e4bf76c314cfcde96",
+  "text": "By hand. The Post was set by hand once. It came out late."
+ },
+ "VEL_MULTI_B1": {
+  "hash": "fb53eb022568597edd74255ba725869d80e6e123",
+  "text": "Both, through the paper. That would have made the evening edition, once."
+ },
+ "VEL_MULTI_C1": {
+  "hash": "20bf824226835862d6d473d86c2fb09d69c7d4f8",
+  "text": "Two, and you never once looked at a screen."
+ },
+ "VEL_MULTI_N1": {
+  "hash": "ed8b5216b9cff8e3e5ae979d5716916024527be9",
+  "text": "Two clerks. The street's almost readable again."
+ },
+ "VEL_OFFPATH_B1": {
+  "hash": "3be9c6e7a27c12195a3892687eca75485fedb76f",
+  "text": "Down the stair? I never went down the stair. I didn't need to."
+ },
+ "VEL_OFFPATH_C1": {
+  "hash": "9fb93700e89caafef8df9ecb1b66c399c849ab9d",
+  "text": "Come up. I can't see you in the stacks."
+ },
+ "VEL_OFFPATH_N1": {
+  "hash": "f91ca6cbfb520dc6a580654e06b30780cf941791",
+  "text": "That's the stacks. It was determined there was nothing down there worth indexing."
+ },
+ "VEL_OFFPATH_N2": {
+  "hash": "f83745724d3a04b984e46c0b039e80c2f98248a7",
+  "text": "There's nothing down there but old paper. Wet old paper."
+ },
+ "VEL_ONPATH_B1": {
+  "hash": "db6c21e85d1552b264215af9c9d2954bd37fb0a6",
+  "text": "Anything down there? Paper, I'd imagine. Damp."
+ },
+ "VEL_ONPATH_C1": {
+  "hash": "57cc99a4e9cd934c1ee333556b03df9210162f7d",
+  "text": "Thank you. I don't like not knowing where you are."
+ },
+ "VEL_ONPATH_N1": {
+  "hash": "3104bddba3e22237bc85d3469a626893b5b21890",
+  "text": "There. Back on the street."
+ },
  "VEL_RELIQ_N1": {
   "hash": "c759b408ea6ec47ad70d560fe0c173a4e6b7c64e",
   "text": "The Vellum's Reliquary. Everything the city ever read, kept for you."
+ },
+ "VEL_RESPAWN_B1": {
+  "hash": "9d89a3a73f322108f6cc7563f0b3d5edebd898e0",
+  "text": "Up. The clerks will have reshuffled. Go on."
+ },
+ "VEL_RESPAWN_C1": {
+  "hash": "87d5fcd9f077a413263efaa4cbdc79188d95337c",
+  "text": "Read the street first, this time."
+ },
+ "VEL_RESPAWN_N1": {
+  "hash": "862fd65933f04fe27bf4c2f5924626d847521a8e",
+  "text": "Back. Second edition."
+ },
+ "VEL_RESPAWN_N2": {
+  "hash": "63ac3dff3210908c83bb3b674a7273d759f48943",
+  "text": "Again. I've rewritten worse mornings than this one."
  },
  "VOICE_BACK_B1": {
   "hash": "d76fab21c7f839e676bdbcd7e4366505d592874d",

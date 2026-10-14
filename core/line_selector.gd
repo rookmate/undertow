@@ -3,7 +3,8 @@ extends RefCounted
 ## Picks the Steward's next line for an event (brief, "Adaptive narration"): lines live in tagged pools
 ## (event × tone) and the playstyle profile's lean decides which tone is likely. It drifts toward the
 ## voice the player most wants to hear: risk-takers get praise for boldness, the careful get praise for
-## care. Recent lines aren't repeated.
+## care. A line isn't heard again until the rest of its tone has been (Bastion's rule: a repeat breaks
+## the spell), and a district's own lines come first.
 
 const TONES: Array[StringName] = [&"bold", &"cautious", &"neutral"]
 ## What a line is for. Signed orders silence by purpose (Narrator.allows()).
@@ -11,7 +12,6 @@ const FACT := &"fact"
 const WARNING := &"warning"
 const PRAISE := &"praise"
 const PURPOSES: Array[StringName] = [FACT, WARNING, PRAISE]
-const RECENT_MEMORY := 8
 
 class Line:
 	var id: String
@@ -23,6 +23,7 @@ class Line:
 
 var lines_by_event: Dictionary[StringName, Array] = {}
 var event_rules: Dictionary[StringName, Dictionary] = {}
+## Every line heard this run, the most recent last (a line heard again moves to the end).
 var recent: Array[String] = []
 var errors: PackedStringArray = []
 
@@ -89,6 +90,12 @@ func is_priority(event: StringName) -> bool:
 	return bool(event_rules.get(event, {}).get("priority", false))
 
 
+## Whether a district's own lines for this event are the only ones it hears (its entry, boss and
+## Reliquary lines: who it is there). Otherwise its own lines come first and the lines for anywhere follow.
+func own_only(event: StringName) -> bool:
+	return bool(event_rules.get(event, {}).get("own_only", false))
+
+
 ## How likely each tone is for a given lean (-1 all caution .. +1 all risk). At 0 the Steward is mostly
 ## neutral; as the profile leans, the matching flattery takes over.
 static func tone_weights(lean: float) -> Dictionary[StringName, float]:
@@ -101,20 +108,18 @@ static func tone_weights(lean: float) -> Dictionary[StringName, float]:
 
 
 ## The next line for `event`, or null if there is none. The tone is chosen first (by the profile's
-## lean); inside that tone the least recently heard line is used, so lines don't repeat back to back
-## while the drift toward the flattering tone stays strong even with small pools. A district's own lines
-## win: if it has any for this event, only those are used (its entry line is its lie, and is heard);
-## the lines for anywhere are for districts that have none.
+## lean); inside that tone, a line not heard yet this run, the district's own before the lines for
+## anywhere; once the tone is heard out, the one heard longest ago. For an own_only event (a district's
+## entry, boss and Reliquary lines) a district with lines of its own uses only those.
 func pick(event: StringName, lean: float, rng: RandomNumberGenerator, level: String = "", only_tone: StringName = &"") -> Line:
-	var pool: Array = []
+	var anywhere: Array = []
 	var own: Array = []
 	for l: Line in lines_by_event.get(event, []):
 		if l.level == "":
-			pool.append(l)
+			anywhere.append(l)
 		elif l.level == level:
 			own.append(l)
-	if not own.is_empty():
-		pool = own
+	var pool: Array = own if not own.is_empty() and own_only(event) else own + anywhere
 	if only_tone != &"" and pool.any(func(l: Line) -> bool: return l.tone == only_tone):
 		pool = pool.filter(func(l: Line) -> bool: return l.tone == only_tone)
 	if pool.is_empty():
@@ -135,15 +140,20 @@ func pick(event: StringName, lean: float, rng: RandomNumberGenerator, level: Str
 			chosen_tone = tone
 			break
 	var options: Array = by_tone[chosen_tone]
+	var fresh_own: Array[Line] = []
 	var fresh: Array[Line] = []
 	for l: Line in options:
 		if not recent.has(l.id):
 			fresh.append(l)
+			if l.level != "":
+				fresh_own.append(l)
 	var line: Line
-	if not fresh.is_empty():
+	if not fresh_own.is_empty():
+		line = fresh_own[rng.randi() % fresh_own.size()]
+	elif not fresh.is_empty():
 		line = fresh[rng.randi() % fresh.size()]
 	else:
-		# Every line of this tone was heard recently: take the one heard longest ago.
+		# Every line of this tone has been heard: the one heard longest ago.
 		line = options[0]
 		var oldest := recent.size()
 		for l: Line in options:
@@ -153,8 +163,6 @@ func pick(event: StringName, lean: float, rng: RandomNumberGenerator, level: Str
 				line = l
 	recent.erase(line.id)
 	recent.append(line.id)
-	while recent.size() > RECENT_MEMORY:
-		recent.remove_at(0)
 	return line
 
 

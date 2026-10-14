@@ -1,0 +1,28 @@
+{
+	"version": 1,
+	"notes": "What each of the Waiting says when you wake them (TheWaiting): their own words, by the id on their map's '@' line. People talking: plain type. Placeholder writing.",
+	"waiting": {
+		"kestrel_waiting_gardener": "The roses want cutting back. It always told me when. It's late this year.",
+		"loop_waiting_carriage_1": "Is this the 07:12? It doesn't feel like the 07:12.",
+		"loop_waiting_carriage_2": "It said it was holding the train for me. That's a long time to hold a train.",
+		"loop_waiting_carriage_3": "My stop was Exchange Four. Have we passed it?",
+		"loop_waiting_carriage_4": "I didn't want to lose my seat by the window. It kept it for me every morning.",
+		"loop_waiting_in_the_tunnels": "The crew carried me down here, then went back for the others. Are they back?",
+		"tideworks_waiting_foreman": "I've kept the hall key nine years. Nobody ever asked for it back.",
+		"tideworks_waiting_in_the_hold": "Forty crates. Did somebody write it down? Somebody has to write it down.",
+		"mercy_waiting_ward_a_window": "I watched the ambulance bay from this window. Nothing came.",
+		"mercy_waiting_ward_a_door": "They said the door was for our safety. I believed it until it got dark.",
+		"mercy_waiting_ward_b": "Is my bed still mine? I don't want to lose my bed.",
+		"mercy_waiting_night_nurse": "Rosa? No. Sorry. Has anyone seen Rosa? She was on nights with me.",
+		"mercy_waiting_in_the_morgue": "I wrote their names in the book. Did you read them? Somebody should.",
+		"greywater_waiting_pump_hand": "Is it my shift? I've lost the rota. It used to just tell me.",
+		"greywater_waiting_valve_keeper": "Somebody has to watch the valve. Has anybody been watching the valve?",
+		"greywater_waiting_in_the_marrow": "I couldn't see the lamps, so I stood still like it said. Then it stopped saying.",
+		"greywater_waiting_last_shift": "My gran turned these pumps in the Blackout Winter. I never thought I'd have to.",
+		"greywater_waiting_in_the_sump": "The water came up to here. I kept my Lanyard dry. Why did I do that?",
+		"vellum_waiting_doorway": "I was going in to read the paper. There hasn't been a paper in years. I keep going in.",
+		"vellum_waiting_stacks": "Prem said to wait down here. Is she back yet?",
+		"vellum_waiting_audit_office": "Has the audit been filed? She said she'd file it in the morning.",
+		"vellum_waiting_sorting_floor": "I sort whatever comes down the chute. Nothing's come down for days."
+	}
+}
