@@ -76,7 +76,7 @@ func notify(event: StringName, level: String = "") -> String:
 		return ""
 	# "Stop praising me": and no drift toward the voice you like to hear.
 	var plain := GameState.has_override(Overrides.NO_PRAISE)
-	var line := selector.pick(event, 0.0 if plain else GameState.run.playstyle_profile.lean(), _rng, level, &"neutral" if plain else &"")
+	var line := selector.pick(event, 0.0 if plain else GameState.run.playstyle_profile.lean(), _rng, level, &"neutral" if plain else &"", context_for(level))
 	if line == null:
 		return ""
 	_last_event_at[event] = _clock
@@ -101,6 +101,13 @@ func say_place(line_id: String) -> bool:
 		return false
 	selector.recent.append(line_id)
 	return true
+
+
+## What the Steward's lines can know about now: whether you're back in a district you've done, how many
+## truth cores you carry, which memory logs you've read.
+func context_for(level: String) -> Dictionary:
+	var r := GameState.run
+	return {"revisit": level != "" and r.levels_completed.has(level), "truths": r.cores_truth(), "knows": r.logs_unlocked}
 
 
 ## Whether the Steward may say a line with this purpose now: it's listening and reaches you, and no

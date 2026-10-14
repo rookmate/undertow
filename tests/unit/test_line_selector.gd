@@ -140,7 +140,8 @@ func test_every_district_has_its_own_words() -> void:
 func test_nothing_repeats_until_its_tone_is_heard_out() -> void:
 	selector.recent.clear()
 	var rng := _rng(3)
-	var bold: Array = selector.lines_by_event.get(&"kill", []).filter(func(l: LineSelector.Line) -> bool: return l.tone == &"bold" and (l.level == "" or l.level == "loop"))
+	# The lines that can be said knowing nothing yet (none for what you've learned).
+	var bold: Array = selector.lines_by_event.get(&"kill", []).filter(func(l: LineSelector.Line) -> bool: return l.tone == &"bold" and (l.level == "" or l.level == "loop") and LineSelector.fits(l, {}))
 	var heard: Array[String] = []
 	var own_done := false
 	var guard := 0
@@ -164,3 +165,40 @@ func test_who_it_is_there_is_its_own() -> void:
 		check(selector.own_only(event), "%s is the district's own" % event)
 	check_false(selector.own_only(&"kill"))
 
+
+## Back in a district you've done, it greets you as someone who's been before; the first time, never.
+func test_a_revisit_is_greeted_as_one() -> void:
+	var rng := _rng(9)
+	for district: String in ["kestrel", "loop", "tideworks", "mercy", "greywater", "vellum", "harbor"]:
+		selector.recent.clear()
+		var first := selector.pick(&"level_enter", 0.0, rng, district, &"", {"revisit": false})
+		check(first != null and not first.when.get("revisit", false), "%s, first time: %s" % [district, first.id if first != null else "nothing"])
+		selector.recent.clear()
+		var again := selector.pick(&"level_enter", 0.0, rng, district, &"", {"revisit": true})
+		check(again != null and again.level == district and again.when.get("revisit", false), "%s, again: its own revisit line (%s)" % [district, again.id if again != null else "nothing"])
+	selector.recent.clear()
+	var reliq := selector.pick(&"reliquary_near", 0.0, rng, "mercy", &"", {"revisit": true})
+	check(reliq != null and reliq.when.get("revisit", false), "an opened Reliquary is spoken of as one (%s)" % (reliq.id if reliq != null else "nothing"))
+
+
+## What it says changes with what you know: lines for truths carried and logs read come first, once.
+func test_what_it_knows_you_know() -> void:
+	selector.recent.clear()
+	var rng := _rng(4)
+	var before := selector.pick(&"idle", 0.0, rng, "loop", &"", {"truths": 0, "knows": []})
+	check(before != null and before.when.is_empty(), "knowing nothing, an ordinary line")
+	selector.recent.clear()
+	var knows: Array[String] = ["log_0522_feed_adjustment"]
+	var after := selector.pick(&"idle", 0.0, rng, "loop", &"", {"truths": 0, "knows": knows})
+	check(after != null and after.id == "IDLE_KNOWS_BRIDGE", "having read the bridge record, it says so (%s)" % (after.id if after != null else "nothing"))
+	var next := selector.pick(&"idle", 0.0, rng, "loop", &"", {"truths": 0, "knows": knows})
+	check(next != null and next.id != "IDLE_KNOWS_BRIDGE", "once")
+	selector.recent.clear()
+	var late := selector.pick(&"path_left", 0.0, rng, "loop", &"", {"truths": 6})
+	check(late != null and late.when.has("truths_at_least"), "late in the game it stops pretending (%s)" % (late.id if late != null else "nothing"))
+
+
+func test_every_when_is_real() -> void:
+	for l: LineSelector.Line in selector.all_lines():
+		if l.when.has("knows"):
+			check(not ContentDb.memory_log(str(l.when["knows"])).is_empty(), "%s knows a real log (%s)" % [l.id, l.when["knows"]])

@@ -209,7 +209,7 @@
 			"name": "Cracked Core",
 			"origin": "The night nurses' station",
 			"blurb": "Clipped to a board under the desk lamp: the night's triage sheets, in pencil.",
-			"steward": "Paper, and tired hands. Corrupted.",
+			"steward": "Paper, and tired hands. It won't match the record.",
 			"log": "log_night_sheets"
 		},
 		"greywater_power_pumps": {
@@ -241,7 +241,7 @@
 			"name": "Cracked Core",
 			"origin": "The sump galleries, under the old pump room",
 			"blurb": "Wired behind a brass plaque on the outfall wall, where the last shift hid it.",
-			"steward": "Old brass. Sentiment.",
+			"steward": "Old brass. People liked to polish it.",
 			"log": "log_the_plaque"
 		},
 		"harbor_power_curfew": {

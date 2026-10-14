@@ -240,8 +240,9 @@ func _fight_prime(player: Operator, prime: WardenPrime, gen: int) -> bool:
 					Autopilot.tap(&"dodge")
 					spent += await Autopilot.physics_step()
 					continue
+		# Back into the plaza by the gate if a Warden drew you out past the fence.
 		if Iso.ground_distance(at, target) > 0.3:
-			Autopilot.press_move(Autopilot.input_for_ground(Iso.ground_dir_between(at, target)))
+			Autopilot.move_toward(prime.level, player, target)
 		else:
 			Autopilot.press_move(Vector2.ZERO)
 		spent += await Autopilot.physics_step()

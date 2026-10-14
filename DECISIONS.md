@@ -897,3 +897,24 @@ Asked of the user on 2026-10-09 and answered the same day.
      looking at that you couldn't have known ("Gate 4. I held it three seconds once, for a man running
      for the 07:20. He made his train." "Somebody drew these arrows the first night. They all point to
      the yard."). Muted, or off its Lattice, it says nothing; come back and it may.
+199. **The Steward changes as you learn.** A line can carry a condition ('when': back in a district
+     you've done or not, a number of truth cores carried, a memory log read). A line whose condition is
+     about something you've come to know is said before the others, once. So it greets a revisit as one
+     ("Kestrel Heights again. Still very tidy."), with a line of its own if you've read that district's
+     worst ("You know who went down the hill first now. It's still a pretty street."); a first visit's
+     greeting and Reliquary line are never said on a revisit, and an opened Reliquary is spoken of as one.
+     As you carry truths it stops pretending ("Off the path again. I've stopped telling you there's
+     nothing there."), and once you've read the bridge record, Prem's last note or the Council's order,
+     it has something to say about each when you stand still. The full campaign run's time limit goes
+     to 2700 s (from 2100): the campaign now takes 30 to 31 minutes, and one slow Warden-Prime fight ran it
+     past the old limit.
+200. **The logs, the menu and continuity** (design/writing-review.md). Teo argues as well as confesses:
+     ten of his lines now defend the Steward where it was right (the welded cabs, the paper backups it
+     asked for, the fever doors, the transmitter rule), so most of his forty-four aren't confessions (a
+     test keeps it under a quarter), and in two logs Noor and Teo agree. Fewer stock moves ("Somebody…",
+     "That isn't nothing", "I signed off", "I was in the room"), and no line of the Steward's reactive
+     narration says the same words as another (a test). The ending choices no longer pass judgement:
+     Reboot "The lamps come back, and the city runs again tomorrow"; Unplug "Whatever happens next, people
+     decide"; Rewrite "people who can tell it no". Continuity: the Quiet was at 02:14 in every record; the
+     signal box's register runs after it, the Council on the phone; one Rosa (the night nurse; the child
+     who drew the map is Lila) and the running man at Gate 4 is M. Ferris.
