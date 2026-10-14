@@ -117,3 +117,50 @@ func test_a_districts_own_lines_win() -> void:
 		check(line != null and line.level == "loop", "the Loop greets you in its own words, not the generic ones (%s)" % (line.id if line != null else "none"))
 	var elsewhere := sel.pick(&"level_enter", 0.0, rng, "nowhere_built_yet")
 	check(elsewhere != null and elsewhere.level == "", "a district with no lines of its own still gets one for anywhere")
+
+
+const DISTRICTS: Array[String] = ["kestrel", "loop", "tideworks", "mercy", "greywater", "vellum"]
+const REACTIVE: Array[StringName] = [&"kill", &"multi_kill", &"dodge_close", &"hurt", &"low_integrity", &"respawn", &"idle", &"checkpoint", &"path_left", &"path_returned", &"weapon_manual", &"voice_restored"]
+
+
+## Every district you fight in has its own words for what you do there (not a generic pool): for each
+## reactive event, and a deep pool for what you do most.
+func test_every_district_has_its_own_words() -> void:
+	for district: String in DISTRICTS:
+		for event: StringName in REACTIVE:
+			var own: Array = selector.lines_by_event.get(event, []).filter(func(l: LineSelector.Line) -> bool: return l.level == district)
+			check(not own.is_empty(), "%s has its own %s lines" % [district, event])
+		var kills: Array = selector.lines_by_event.get(&"kill", []).filter(func(l: LineSelector.Line) -> bool: return l.level == district)
+		for tone: StringName in LineSelector.TONES:
+			check(kills.filter(func(l: LineSelector.Line) -> bool: return l.tone == tone).size() >= 3, "%s: three kill lines or more for %s" % [district, tone])
+
+
+## No line is heard twice until every line of its tone has been: the district's own first, then the
+## lines for anywhere.
+func test_nothing_repeats_until_its_tone_is_heard_out() -> void:
+	selector.recent.clear()
+	var rng := _rng(3)
+	var bold: Array = selector.lines_by_event.get(&"kill", []).filter(func(l: LineSelector.Line) -> bool: return l.tone == &"bold" and (l.level == "" or l.level == "loop"))
+	var heard: Array[String] = []
+	var own_done := false
+	var guard := 0
+	while heard.size() < bold.size() and guard < 400:
+		guard += 1
+		var l := selector.pick(&"kill", 1.0, rng, "loop")
+		if l.tone != &"bold":
+			continue
+		check_false(heard.has(l.id), "%s heard again before the rest of the bold lines" % l.id)
+		if l.level == "":
+			own_done = true
+		else:
+			check_false(own_done, "the Loop's own lines come before the lines for anywhere (%s)" % l.id)
+		heard.append(l.id)
+	check_eq(heard.size(), bold.size(), "every bold kill line heard once")
+
+
+## A district's entry, boss and Reliquary lines are its own when it has them, every time.
+func test_who_it_is_there_is_its_own() -> void:
+	for event: StringName in [&"level_enter", &"boss_engaged", &"reliquary_near"]:
+		check(selector.own_only(event), "%s is the district's own" % event)
+	check_false(selector.own_only(&"kill"))
+

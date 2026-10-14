@@ -188,6 +188,20 @@ Plan: `design/deeper-districts.md`.
 | 42 | Rewrite's truth threshold re-tuned against the new count | done |
 | — | Sol analysis review (reviews/deeper-districts.md), fixes, re-check: closed after 7 rounds | done |
 
+## Milestone 6: the writing pass (in progress)
+
+The Steward written the way Bastion's narrator was (design/writing-review.md): what it says adds what you
+couldn't know, it doesn't repeat itself, it knows where you are, and it changes as you learn what it did.
+First drafts, for a human writer and the voice actor to take further.
+
+| Step | What | Status |
+|---|---|---|
+| 43 | No repeats: deep district pools for everything the Steward reacts to (about 340 new lines); each of the Waiting their own words | done |
+| 44 | Places: the Steward remarks on landmarks as you reach them | next |
+| 45 | The arc: lines for what you've come to know, and for revisits | |
+| 46 | The logs and the rest: Teo argues as well as confesses, the ending menu weighs nothing, continuity | |
+| — | Sol analysis review, fixes, re-check | |
+
 ## Later milestones (planned)
 
 - The art pack (painted sprites in place of the code-drawn placeholders), the voice actor, the writing,

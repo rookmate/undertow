@@ -4,11 +4,16 @@ extends Interactable
 ## Steward says they're resting and to leave them. Muted, the Operator can wake them by speaking to them;
 ## they walk off toward the Ark and count as a survivor. Grey and unlit until woken.
 
+## Their own words, woken (data/companions/waiting.json, by id).
+const LINES_PATH := "res://data/companions/waiting.json"
+## Said by anyone the file doesn't name (a test arena's).
 const WOKEN_LINES: Array[String] = [
 	"…What day is it? It stopped telling me.",
 	"I was waiting for it to say I could go.",
 	"Who are you? You're not in my Day.",
 ]
+
+static var _own_lines: Dictionary = {}
 
 var survivor_id: String = ""
 var woken: bool = false
@@ -17,12 +22,26 @@ var _line: String = ""
 var _body: StaticBody2D
 
 
+## What they say when woken: their own line, or one of the general ones if the file has none for them.
+static func woken_line(id: String) -> String:
+	if _own_lines.is_empty():
+		var json := JSON.new()
+		if json.parse(FileAccess.get_file_as_string(LINES_PATH)) == OK and json.data is Dictionary:
+			var waiting: Variant = (json.data as Dictionary).get("waiting")
+			if waiting is Dictionary:
+				_own_lines = waiting
+		if _own_lines.is_empty():
+			Diagnostics.error("TheWaiting: %s is missing or malformed" % LINES_PATH)
+	var own: Variant = _own_lines.get(id)
+	return str(own) if own is String and str(own) != "" else WOKEN_LINES[absi(hash(id)) % WOKEN_LINES.size()]
+
+
 func setup(owner_level: Level, cell: Vector2i, id: String, is_off_path: bool) -> void:
 	level = owner_level
 	survivor_id = id
 	off_path = is_off_path
 	position = Iso.cell_center(cell)
-	_line = WOKEN_LINES[absi(hash(id)) % WOKEN_LINES.size()]
+	_line = woken_line(id)
 	if GameState.run.survivor_ids.has(id):
 		woken = true
 		visible = false

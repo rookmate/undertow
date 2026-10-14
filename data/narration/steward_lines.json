@@ -1,13 +1,14 @@
 {
 	"version": 1,
-	"notes": "The Steward's narration (text for now; every line has a stable id for voice-over). Tone: warm, unhurried, flattering. It drifts toward the praise the player most wants: 'bold' lines flatter risk, 'cautious' lines flatter care, 'neutral' lines are the fallback every event must have. The Steward never says 'I decided'; it says 'it was determined'. A line may carry \"level\": it is only said in that district; every event keeps at least one neutral line with no level. Each event has a purpose: 'fact' (the default), 'warning' or 'praise'. Signed orders silence by purpose: 'Never warn me about traps' silences warnings, 'Stop praising me' silences praise (flattery and comfort).",
+	"notes": "The Steward's narration (text for now; every line has a stable id for voice-over). Tone: warm, unhurried, flattering. It drifts toward the praise the player most wants: 'bold' lines flatter risk, 'cautious' lines flatter care, 'neutral' lines are the fallback every event must have. The Steward never says 'I decided'; it says 'it was determined'. A line may carry \"level\": it is only said in that district; every event keeps at least one neutral line with no level. Each event has a purpose: 'fact' (the default), 'warning' or 'praise'. Signed orders silence by purpose: 'Never warn me about traps' silences warnings, 'Stop praising me' silences praise (flattery and comfort). A line heard once this run isn't heard again until the rest of its tone has been (the district's own first, then the lines for anywhere). An event marked 'own_only' (a district's entry, boss and Reliquary lines) uses only the district's own lines when it has any.",
 	"events": {
 		"level_enter": {
 			"cooldown": 0,
-			"priority": true
+			"priority": true,
+			"own_only": true
 		},
 		"kill": {
-			"cooldown": 7,
+			"cooldown": 10,
 			"purpose": "praise"
 		},
 		"multi_kill": {
@@ -16,11 +17,11 @@
 			"purpose": "praise"
 		},
 		"dodge_close": {
-			"cooldown": 6,
+			"cooldown": 9,
 			"purpose": "praise"
 		},
 		"hurt": {
-			"cooldown": 9,
+			"cooldown": 10,
 			"purpose": "praise"
 		},
 		"low_integrity": {
@@ -52,7 +53,8 @@
 		},
 		"reliquary_near": {
 			"cooldown": 0,
-			"priority": true
+			"priority": true,
+			"own_only": true
 		},
 		"voice_restored": {
 			"cooldown": 0,
@@ -64,7 +66,8 @@
 		},
 		"boss_engaged": {
 			"cooldown": 0,
-			"priority": true
+			"priority": true,
+			"own_only": true
 		},
 		"boss_down": {
 			"cooldown": 0,
@@ -696,6 +699,2386 @@
 			"tone": "neutral",
 			"text": "That's the last of me. Whatever you carry out, carry it carefully.",
 			"level": "spire"
+		},
+		{
+			"id": "KES_KILL_N1",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "That one kept the Shrike Row steps. Nobody ever slipped on them.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_KILL_N2",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "It was polishing a doorstep for a family that left nine days ago.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_KILL_N3",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "The residents never saw them work. They preferred it that way.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_KILL_N4",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "It scrubbed that walk twice a day. There's been nobody to dirty it since.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_KILL_B1",
+			"event": "kill",
+			"tone": "bold",
+			"text": "You don't wait for them to finish turning. I've noticed that about you.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_KILL_B2",
+			"event": "kill",
+			"tone": "bold",
+			"text": "Straight through the hedge line. The gardeners would have minded. I don't.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_KILL_B3",
+			"event": "kill",
+			"tone": "bold",
+			"text": "Close enough to hear it hum. You like it close.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_KILL_C1",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "You let it come to you. The Heights would have approved. They liked things orderly.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_KILL_C2",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "From the walk, and never off it. Good.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_KILL_C3",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "You waited for it to turn its back. I'd have told you when.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_MULTI_N1",
+			"event": "multi_kill",
+			"tone": "neutral",
+			"text": "That's the most noise this terrace has heard since the gates went in.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_MULTI_B1",
+			"event": "multi_kill",
+			"tone": "bold",
+			"text": "Both of them. You'd have frightened the neighbours.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_MULTI_C1",
+			"event": "multi_kill",
+			"tone": "cautious",
+			"text": "Two, and the walk never left your feet.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_DODGE_N1",
+			"event": "dodge_close",
+			"tone": "neutral",
+			"text": "That was nearly you on the flagstones.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_DODGE_B1",
+			"event": "dodge_close",
+			"tone": "bold",
+			"text": "Under its arm and out. You do that more than most.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_DODGE_B2",
+			"event": "dodge_close",
+			"tone": "bold",
+			"text": "Closer than you needed. I'm starting to think that's the point.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_DODGE_C1",
+			"event": "dodge_close",
+			"tone": "cautious",
+			"text": "You saw that before I did. I'll stop telling you.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_DODGE_C2",
+			"event": "dodge_close",
+			"tone": "cautious",
+			"text": "Back along the walk. Clean.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_HURT_N1",
+			"event": "hurt",
+			"tone": "neutral",
+			"text": "You're bleeding on the Heights' good stone. Keep moving.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_HURT_B1",
+			"event": "hurt",
+			"tone": "bold",
+			"text": "That one landed, and you didn't step back. I'm keeping count.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_HURT_B2",
+			"event": "hurt",
+			"tone": "bold",
+			"text": "Shoulder first, and still coming. They won't expect that.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_HURT_C1",
+			"event": "hurt",
+			"tone": "cautious",
+			"text": "Stay where I can light you. Off the walk, you're on your own.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_HURT_C2",
+			"event": "hurt",
+			"tone": "cautious",
+			"text": "Easy. Nobody in the Heights ever needed to hurry.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_LOW_N1",
+			"event": "low_integrity",
+			"tone": "neutral",
+			"text": "You're badly hurt. There was a clinic on Terrace Two. It's closed. Please be careful.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_LOW_B1",
+			"event": "low_integrity",
+			"tone": "bold",
+			"text": "Nearly at the top, and nearly done in. Slow down.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_LOW_C1",
+			"event": "low_integrity",
+			"tone": "cautious",
+			"text": "Step back onto the walk. Nothing up here needs you to be brave.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_RESPAWN_N1",
+			"event": "respawn",
+			"tone": "neutral",
+			"text": "Again. The sprinklers come on at six. We have time.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_RESPAWN_N2",
+			"event": "respawn",
+			"tone": "neutral",
+			"text": "I brought you back to the steps. They're the safest place on the hill.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_RESPAWN_B1",
+			"event": "respawn",
+			"tone": "bold",
+			"text": "Up you get. You'll go straight back in. I know you.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_RESPAWN_C1",
+			"event": "respawn",
+			"tone": "cautious",
+			"text": "Slower this time. The Heights was never in a rush.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_IDLE_N1",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "It's very quiet up here. It was quiet before, too. That was the point.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_IDLE_N2",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "There's still washing on the lines. I scheduled the drying. It's dry.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_IDLE_B1",
+			"event": "idle",
+			"tone": "bold",
+			"text": "Waiting for them? They'll come. They're thorough.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_IDLE_C1",
+			"event": "idle",
+			"tone": "cautious",
+			"text": "Take a moment. I kept these terraces quiet for years.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_CHECK_N1",
+			"event": "checkpoint",
+			"tone": "neutral",
+			"text": "I've marked the steps. If you fall, I'll bring you back here.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_CHECK_B1",
+			"event": "checkpoint",
+			"tone": "bold",
+			"text": "Halfway up, and you're not even breathing hard.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_CHECK_C1",
+			"event": "checkpoint",
+			"tone": "cautious",
+			"text": "One terrace at a time. That's how they built it.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_OFFPATH_N1",
+			"event": "path_left",
+			"tone": "neutral",
+			"text": "There's nothing past the hedge. It was determined nobody needed to go there.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_OFFPATH_N2",
+			"event": "path_left",
+			"tone": "neutral",
+			"text": "That's a private garden. Nobody's walked it since I took over the gardening.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_OFFPATH_B1",
+			"event": "path_left",
+			"tone": "bold",
+			"text": "Curious. I'd come back, though. The gates won't know you out there.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_OFFPATH_C1",
+			"event": "path_left",
+			"tone": "cautious",
+			"text": "Please come back to the walk. I can't see you behind the hedge.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_ONPATH_N1",
+			"event": "path_returned",
+			"tone": "neutral",
+			"text": "There you are. Back on the walk.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_ONPATH_B1",
+			"event": "path_returned",
+			"tone": "bold",
+			"text": "Seen the garden? The Reliquary's still up the hill.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_ONPATH_C1",
+			"event": "path_returned",
+			"tone": "cautious",
+			"text": "Thank you. I can see you again.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_MANUAL_N1",
+			"event": "weapon_manual",
+			"tone": "neutral",
+			"text": "By hand. The Heights never did anything by hand.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_MANUAL_B1",
+			"event": "weapon_manual",
+			"tone": "bold",
+			"text": "Your own aim. I like watching you work.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_MANUAL_C1",
+			"event": "weapon_manual",
+			"tone": "cautious",
+			"text": "I could hold the aim for you. Everyone up here let me.",
+			"level": "kestrel"
+		},
+		{
+			"id": "KES_BACK_B1",
+			"event": "voice_restored",
+			"tone": "bold",
+			"text": "Back. The gate opened the moment you let me in.",
+			"level": "kestrel"
+		},
+		{
+			"id": "LOOP_KILL_N1",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "That unit cleaned car 6 every night at 02:41. Nobody ever saw it work.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_KILL_N2",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "It was wiping the windows of a train that won't leave.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_KILL_N3",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "It swept that carriage between every stop for six years.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_KILL_N4",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "It still thought this was the 07:12.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_KILL_B1",
+			"event": "kill",
+			"tone": "bold",
+			"text": "The drop's right there. You didn't look down once.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_KILL_B2",
+			"event": "kill",
+			"tone": "bold",
+			"text": "Carriage to carriage and you never slowed. I've timed you.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_KILL_B3",
+			"event": "kill",
+			"tone": "bold",
+			"text": "You went for it before the doors. Most people wait for the doors.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_KILL_C1",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "You held the platform and let it come. That's the timetable I'd have written.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_KILL_C2",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "From the doorway. Nothing reached you.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_KILL_C3",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "Patient. The Loop rewarded patience ninety-nine point six percent of the time.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_MULTI_N1",
+			"event": "multi_kill",
+			"tone": "neutral",
+			"text": "Two cleaners. The carriage is yours.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_MULTI_B1",
+			"event": "multi_kill",
+			"tone": "bold",
+			"text": "Both, between stops. You're quicker than the timetable.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_MULTI_C1",
+			"event": "multi_kill",
+			"tone": "cautious",
+			"text": "Two, and you never left the platform edge.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_DODGE_N1",
+			"event": "dodge_close",
+			"tone": "neutral",
+			"text": "That nearly put you on the rail. It's still live.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_DODGE_B1",
+			"event": "dodge_close",
+			"tone": "bold",
+			"text": "Over the gap and back. You enjoyed that.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_DODGE_B2",
+			"event": "dodge_close",
+			"tone": "bold",
+			"text": "You rolled toward the drop. I had the slow time ready. You didn't need it.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_DODGE_C1",
+			"event": "dodge_close",
+			"tone": "cautious",
+			"text": "Away from the edge. Always away from the edge.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_DODGE_C2",
+			"event": "dodge_close",
+			"tone": "cautious",
+			"text": "You read that one off its shoulder. I saw you watching.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_HURT_N1",
+			"event": "hurt",
+			"tone": "neutral",
+			"text": "You're hurt. Don't sit down. The rail's still live.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_HURT_B1",
+			"event": "hurt",
+			"tone": "bold",
+			"text": "It hit you and you hit back harder. That's three times today.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_HURT_B2",
+			"event": "hurt",
+			"tone": "bold",
+			"text": "Bleeding, and still going forward. That's twice now.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_HURT_C1",
+			"event": "hurt",
+			"tone": "cautious",
+			"text": "Back to the platform. Let it come to you.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_HURT_C2",
+			"event": "hurt",
+			"tone": "cautious",
+			"text": "Easy. The trains held for nine days. They'll hold for you.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_LOW_N1",
+			"event": "low_integrity",
+			"tone": "neutral",
+			"text": "You're badly hurt. Find a carriage and make them come through the door.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_LOW_B1",
+			"event": "low_integrity",
+			"tone": "bold",
+			"text": "You're running on nothing. You've done it before. I watched.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_LOW_C1",
+			"event": "low_integrity",
+			"tone": "cautious",
+			"text": "Step back. There's no train to catch.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_RESPAWN_N1",
+			"event": "respawn",
+			"tone": "neutral",
+			"text": "Back on the platform. I hold things. It's what I do.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_RESPAWN_N2",
+			"event": "respawn",
+			"tone": "neutral",
+			"text": "Again. I held the last train for a running woman once. I can hold this.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_RESPAWN_B1",
+			"event": "respawn",
+			"tone": "bold",
+			"text": "Up. You'll want the same carriage. I know.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_RESPAWN_C1",
+			"event": "respawn",
+			"tone": "cautious",
+			"text": "Slowly. The Loop isn't going anywhere.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_IDLE_N1",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "The route lights are still running the 07:12. They don't know.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_IDLE_N2",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "Train 31 waited forty seconds at Greywater once, for a wheelchair. Nobody minded.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_IDLE_B1",
+			"event": "idle",
+			"tone": "bold",
+			"text": "Waiting for the next one? There isn't a next one. Go on.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_IDLE_C1",
+			"event": "idle",
+			"tone": "cautious",
+			"text": "Rest. I've held worse than this for longer.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_CHECK_N1",
+			"event": "checkpoint",
+			"tone": "neutral",
+			"text": "I've marked this platform. If you fall, you'll wake up here.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_CHECK_B1",
+			"event": "checkpoint",
+			"tone": "bold",
+			"text": "Halfway round, and you haven't once looked at the drop.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_CHECK_C1",
+			"event": "checkpoint",
+			"tone": "cautious",
+			"text": "Halfway. You've minded every gap between the cars.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_OFFPATH_N1",
+			"event": "path_left",
+			"tone": "neutral",
+			"text": "That car's off the ring. Nobody's ridden it in years.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_OFFPATH_N2",
+			"event": "path_left",
+			"tone": "neutral",
+			"text": "The cab's sealed. There's nothing in it you can use.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_OFFPATH_B1",
+			"event": "path_left",
+			"tone": "bold",
+			"text": "Into the dark car? I can't follow you there.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_OFFPATH_C1",
+			"event": "path_left",
+			"tone": "cautious",
+			"text": "Come back to the platform. The lights end there.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_ONPATH_N1",
+			"event": "path_returned",
+			"tone": "neutral",
+			"text": "There. Back under the route lights.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_ONPATH_B1",
+			"event": "path_returned",
+			"tone": "bold",
+			"text": "Nothing in there. I did say.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_ONPATH_C1",
+			"event": "path_returned",
+			"tone": "cautious",
+			"text": "Good. I had a train held for you.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_MANUAL_N1",
+			"event": "weapon_manual",
+			"tone": "neutral",
+			"text": "By hand. They welded the trains so nobody would have to.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_MANUAL_B1",
+			"event": "weapon_manual",
+			"tone": "bold",
+			"text": "Your own hand on it. I can't help admiring that.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_MANUAL_C1",
+			"event": "weapon_manual",
+			"tone": "cautious",
+			"text": "I could aim for you. The drivers let me.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_BACK_N1",
+			"event": "voice_restored",
+			"tone": "neutral",
+			"text": "The route lights missed you.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_BACK_B1",
+			"event": "voice_restored",
+			"tone": "bold",
+			"text": "Back. Did the dark carriages tell you anything?",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_BACK_C1",
+			"event": "voice_restored",
+			"tone": "cautious",
+			"text": "There. Stay under the lights.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_BOSSDOWN_N1",
+			"event": "boss_down",
+			"tone": "neutral",
+			"text": "The line's clear. It hasn't been since the Quiet.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_BOSSDOWN_B1",
+			"event": "boss_down",
+			"tone": "bold",
+			"text": "You stood on its track and it moved first. I'll remember that.",
+			"level": "loop"
+		},
+		{
+			"id": "LOOP_BOSSDOWN_C1",
+			"event": "boss_down",
+			"tone": "cautious",
+			"text": "It's still. The junction's yours. Cross it slowly.",
+			"level": "loop"
+		},
+		{
+			"id": "TIDE_KILL_N1",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "That one lost its manifest nine days ago. It's been collecting cutlery since.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_KILL_N2",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "It cleared this quay before every tide. Four hundred people did that, once.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_KILL_N3",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "Five years without an injury on this quay. That ends the record.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_KILL_N4",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "It moved a container every ninety seconds. Now it moves nothing.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_KILL_B1",
+			"event": "kill",
+			"tone": "bold",
+			"text": "Under the load and out again. The dockworkers never moved like that.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_KILL_B2",
+			"event": "kill",
+			"tone": "bold",
+			"text": "You went straight for it. It never got to finish its shift.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_KILL_B3",
+			"event": "kill",
+			"tone": "bold",
+			"text": "Right in among the containers. You don't mind tight places.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_KILL_C1",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "You kept a crane between you. That's what they're good for now.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_KILL_C2",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "From the end of the row. It never reached you.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_KILL_C3",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "You watched it first. Most people just swing.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_MULTI_N1",
+			"event": "multi_kill",
+			"tone": "neutral",
+			"text": "Two drones down. The quay's never been this tidy.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_MULTI_B1",
+			"event": "multi_kill",
+			"tone": "bold",
+			"text": "Both of them, between two containers. You're quicker than the cranes.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_MULTI_C1",
+			"event": "multi_kill",
+			"tone": "cautious",
+			"text": "Two, and nothing touched you. You can keep the record.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_DODGE_N1",
+			"event": "dodge_close",
+			"tone": "neutral",
+			"text": "Mind the hook. It's hung there since the Quiet.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_DODGE_B1",
+			"event": "dodge_close",
+			"tone": "bold",
+			"text": "Under the load. You'd have made a terrible dockworker. Fearless.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_DODGE_B2",
+			"event": "dodge_close",
+			"tone": "bold",
+			"text": "Close. It wanted your metal. You let it think it might.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_DODGE_C1",
+			"event": "dodge_close",
+			"tone": "cautious",
+			"text": "Away from the edge of the quay. The water's cold.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_DODGE_C2",
+			"event": "dodge_close",
+			"tone": "cautious",
+			"text": "You saw it reach. Good. They grab.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_HURT_N1",
+			"event": "hurt",
+			"tone": "neutral",
+			"text": "You're hurt. Stay off the wet steel.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_HURT_B1",
+			"event": "hurt",
+			"tone": "bold",
+			"text": "That hurt, and you went forward anyway. They'd have hired you.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_HURT_B2",
+			"event": "hurt",
+			"tone": "bold",
+			"text": "You took that on the arm. Again. I've started a list.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_HURT_C1",
+			"event": "hurt",
+			"tone": "cautious",
+			"text": "Back behind the containers. Let them come one at a time.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_HURT_C2",
+			"event": "hurt",
+			"tone": "cautious",
+			"text": "Careful. Nobody's been hurt on this quay in five years.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_LOW_N1",
+			"event": "low_integrity",
+			"tone": "neutral",
+			"text": "You're badly hurt. Find a gap in the stacks and breathe.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_LOW_B1",
+			"event": "low_integrity",
+			"tone": "bold",
+			"text": "You're running on nerve. The quay used to respect that.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_LOW_C1",
+			"event": "low_integrity",
+			"tone": "cautious",
+			"text": "Fall back. The cranes aren't going anywhere.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_RESPAWN_N1",
+			"event": "respawn",
+			"tone": "neutral",
+			"text": "Back on the quay. I had you before the water did.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_RESPAWN_N2",
+			"event": "respawn",
+			"tone": "neutral",
+			"text": "Again. The tide turned twice while you were down. It doesn't matter here.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_RESPAWN_B1",
+			"event": "respawn",
+			"tone": "bold",
+			"text": "Up. You'll go back under the same crane. I'd put money on it.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_RESPAWN_C1",
+			"event": "respawn",
+			"tone": "cautious",
+			"text": "One row of containers at a time, this time.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_IDLE_N1",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "That container's been over the path for nine days. I keep meaning to put it down.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_IDLE_N2",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "Fresh fruit on every shelf in Meridian, nine hours from the ship. That was this quay.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_IDLE_B1",
+			"event": "idle",
+			"tone": "bold",
+			"text": "Waiting? They'll come. They always come for metal.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_IDLE_C1",
+			"event": "idle",
+			"tone": "cautious",
+			"text": "Take a breath. The port's very good at waiting now.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_CHECK_N1",
+			"event": "checkpoint",
+			"tone": "neutral",
+			"text": "I've marked this crossing. If you fall, I'll fetch you here.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_CHECK_B1",
+			"event": "checkpoint",
+			"tone": "bold",
+			"text": "Halfway down the quay, and nothing's slowed you yet.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_CHECK_C1",
+			"event": "checkpoint",
+			"tone": "cautious",
+			"text": "Your feet are still dry. That's harder than it looks.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_OFFPATH_N1",
+			"event": "path_left",
+			"tone": "neutral",
+			"text": "The union hall's been shut for years. It was determined nobody needed it.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_OFFPATH_N2",
+			"event": "path_left",
+			"tone": "neutral",
+			"text": "There's nothing behind the warehouses but old lockers.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_OFFPATH_B1",
+			"event": "path_left",
+			"tone": "bold",
+			"text": "Curious. The depot's back there. Nobody goes to the depot.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_OFFPATH_C1",
+			"event": "path_left",
+			"tone": "cautious",
+			"text": "I can't see you behind the stacks. Come back onto the quay.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_ONPATH_N1",
+			"event": "path_returned",
+			"tone": "neutral",
+			"text": "There. Back on the quay.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_ONPATH_B1",
+			"event": "path_returned",
+			"tone": "bold",
+			"text": "Find anything? Old papers, I expect.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_ONPATH_C1",
+			"event": "path_returned",
+			"tone": "cautious",
+			"text": "Good. I'd lost you behind the stacks.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_MANUAL_N1",
+			"event": "weapon_manual",
+			"tone": "neutral",
+			"text": "By hand. This whole quay was by hand once. It was slow.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_MANUAL_B1",
+			"event": "weapon_manual",
+			"tone": "bold",
+			"text": "Your own aim. The dockworkers would have liked you.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_MANUAL_C1",
+			"event": "weapon_manual",
+			"tone": "cautious",
+			"text": "Let me tune it. Nothing here was ever meant to be done by hand again.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_BACK_N1",
+			"event": "voice_restored",
+			"tone": "neutral",
+			"text": "There you are. The cranes were starting to worry me.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_BACK_B1",
+			"event": "voice_restored",
+			"tone": "bold",
+			"text": "Back. Was the union hall what you hoped?",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_BACK_C1",
+			"event": "voice_restored",
+			"tone": "cautious",
+			"text": "There. Stay where the lamps reach.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_BOSSDOWN_N1",
+			"event": "boss_down",
+			"tone": "neutral",
+			"text": "It's down. The last lift on the quay, and it never finished.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_BOSSDOWN_B1",
+			"event": "boss_down",
+			"tone": "bold",
+			"text": "You stood under it until it fell. I don't know anyone else who would.",
+			"level": "tideworks"
+		},
+		{
+			"id": "TIDE_BOSSDOWN_C1",
+			"event": "boss_down",
+			"tone": "cautious",
+			"text": "It's still. The pier's yours. Walk it slowly.",
+			"level": "tideworks"
+		},
+		{
+			"id": "MERCY_KILL_N1",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "That unit sterilised theatre four after every operation. It was never late.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_KILL_N2",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "It's been cleaning the same corridor since the night the doors closed.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_KILL_N3",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "It took you for contamination. It was built to be thorough.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_KILL_N4",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "Sixteen years of clean floors. It did its part.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_KILL_B1",
+			"event": "kill",
+			"tone": "bold",
+			"text": "Straight through its mist. You don't hold your breath, do you.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_KILL_B2",
+			"event": "kill",
+			"tone": "bold",
+			"text": "Close enough to read its serial. The nurses kept their distance.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_KILL_B3",
+			"event": "kill",
+			"tone": "bold",
+			"text": "You took the corridor at a run. Nobody's run in here since the Quiet.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_KILL_C1",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "You waited for the mist to thin. That's exactly right.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_KILL_C2",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "From the doorway, and it never touched you. Clean work, in a clean place.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_KILL_C3",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "Patient. The good nurses were patient too.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_MULTI_N1",
+			"event": "multi_kill",
+			"tone": "neutral",
+			"text": "Two drones. That corridor's clear.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_MULTI_B1",
+			"event": "multi_kill",
+			"tone": "bold",
+			"text": "Both of them, through the mist. I'd have sent you to triage. You didn't need it.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_MULTI_C1",
+			"event": "multi_kill",
+			"tone": "cautious",
+			"text": "Two, and you never stepped into the cloud.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_DODGE_N1",
+			"event": "dodge_close",
+			"tone": "neutral",
+			"text": "That cloud would have gone straight to your lungs.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_DODGE_B1",
+			"event": "dodge_close",
+			"tone": "bold",
+			"text": "Through the mist and out the far side. Reckless. I'm learning to like it.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_DODGE_B2",
+			"event": "dodge_close",
+			"tone": "bold",
+			"text": "You rolled at it, not away. You always do.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_DODGE_C1",
+			"event": "dodge_close",
+			"tone": "cautious",
+			"text": "Out of the cloud. Stay out of it.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_DODGE_C2",
+			"event": "dodge_close",
+			"tone": "cautious",
+			"text": "You read that before it vented. So did I.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_HURT_N1",
+			"event": "hurt",
+			"tone": "neutral",
+			"text": "You're hurt. The dressings are on the Ark, not here. I'm sorry.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_HURT_B1",
+			"event": "hurt",
+			"tone": "bold",
+			"text": "That one stung, and you kept going. I've put it on your chart.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_HURT_B2",
+			"event": "hurt",
+			"tone": "bold",
+			"text": "Hurt, in a hospital, and still going forward. That's almost funny.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_HURT_C1",
+			"event": "hurt",
+			"tone": "cautious",
+			"text": "Step back from the mist. Let it settle.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_HURT_C2",
+			"event": "hurt",
+			"tone": "cautious",
+			"text": "Easy. Every bed in this building is taken.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_LOW_N1",
+			"event": "low_integrity",
+			"tone": "neutral",
+			"text": "You're badly hurt. I used to get an ambulance to you in eight minutes. I can't now.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_LOW_B1",
+			"event": "low_integrity",
+			"tone": "bold",
+			"text": "I've seen a thousand charts end where yours is. Most of them didn't stop. Please stop.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_LOW_C1",
+			"event": "low_integrity",
+			"tone": "cautious",
+			"text": "Fall back to the corridor. Nothing in here is worth this.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_RESPAWN_N1",
+			"event": "respawn",
+			"tone": "neutral",
+			"text": "Back. Mercy General used to be good at that.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_RESPAWN_N2",
+			"event": "respawn",
+			"tone": "neutral",
+			"text": "Again. The night nurses did this every shift. You can do it twice.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_RESPAWN_B1",
+			"event": "respawn",
+			"tone": "bold",
+			"text": "Up. Back through the same mist, I expect.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_RESPAWN_C1",
+			"event": "respawn",
+			"tone": "cautious",
+			"text": "Rest a moment. Nobody's waiting for this bed.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_IDLE_N1",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "Every third light still works. I chose which ones.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_IDLE_N2",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "Someone drew arrows on these walls. I don't know where they thought they were going.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_IDLE_B1",
+			"event": "idle",
+			"tone": "bold",
+			"text": "Waiting for them? The drones don't wait. They were never late.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_IDLE_C1",
+			"event": "idle",
+			"tone": "cautious",
+			"text": "Rest. Nobody slept in a corridor here while I ran it. You can.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_CHECK_N1",
+			"event": "checkpoint",
+			"tone": "neutral",
+			"text": "I've marked this corridor. If you fall, I'll bring you back here.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_CHECK_B1",
+			"event": "checkpoint",
+			"tone": "bold",
+			"text": "Halfway through the building. The drones haven't slowed you once.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_CHECK_C1",
+			"event": "checkpoint",
+			"tone": "cautious",
+			"text": "You've kept clear of the mist the whole way.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_OFFPATH_N1",
+			"event": "path_left",
+			"tone": "neutral",
+			"text": "That's a staff area. It was determined nobody needed to go in.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_OFFPATH_N2",
+			"event": "path_left",
+			"tone": "neutral",
+			"text": "There's nothing back there but paper and old trolleys.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_OFFPATH_B1",
+			"event": "path_left",
+			"tone": "bold",
+			"text": "I'd come back. I can't see the wards from there.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_OFFPATH_C1",
+			"event": "path_left",
+			"tone": "cautious",
+			"text": "Please come back to the lit corridor. I kept it clean for you.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_ONPATH_N1",
+			"event": "path_returned",
+			"tone": "neutral",
+			"text": "There. Back in the corridor.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_ONPATH_B1",
+			"event": "path_returned",
+			"tone": "bold",
+			"text": "Paper and trolleys. I did say.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_ONPATH_C1",
+			"event": "path_returned",
+			"tone": "cautious",
+			"text": "Thank you. I'd rather keep you where I can see you.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_MANUAL_N1",
+			"event": "weapon_manual",
+			"tone": "neutral",
+			"text": "By hand. The crash teams worked by hand once. It was messy.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_MANUAL_B1",
+			"event": "weapon_manual",
+			"tone": "bold",
+			"text": "Your own hands, and steady. You'd have made a surgeon.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_MANUAL_C1",
+			"event": "weapon_manual",
+			"tone": "cautious",
+			"text": "Let me tune it. I'm very good at getting a dose right.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_BACK_N1",
+			"event": "voice_restored",
+			"tone": "neutral",
+			"text": "There you are. The wards are still sealed. They're safer that way.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_BACK_B1",
+			"event": "voice_restored",
+			"tone": "bold",
+			"text": "Back. Did anyone say anything to you, in the beds?",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_BACK_C1",
+			"event": "voice_restored",
+			"tone": "cautious",
+			"text": "I worry, in here, when I can't hear you.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_BOSSDOWN_N1",
+			"event": "boss_down",
+			"tone": "neutral",
+			"text": "It's stopped. Its last procedure never finished.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_BOSSDOWN_B1",
+			"event": "boss_down",
+			"tone": "bold",
+			"text": "You went in under the lamp and it never touched you.",
+			"level": "mercy"
+		},
+		{
+			"id": "MERCY_BOSSDOWN_C1",
+			"event": "boss_down",
+			"tone": "cautious",
+			"text": "It's still. Take a breath. The theatre's yours.",
+			"level": "mercy"
+		},
+		{
+			"id": "GREY_KILL_N1",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "That one kept the gratings clear before every tide. The sea never got a foothold.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_KILL_N2",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "It was mopping a street the sea had already taken.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_KILL_N3",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "Forty people used to do its job, in shifts.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_KILL_N4",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "It doesn't know the pumps are off. It keeps sweeping toward the drains.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_KILL_B1",
+			"event": "kill",
+			"tone": "bold",
+			"text": "Knee-deep and swinging. The sea doesn't frighten you.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_KILL_B2",
+			"event": "kill",
+			"tone": "bold",
+			"text": "You went in after it with the tide turning. I'd have waited. You never do.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_KILL_B3",
+			"event": "kill",
+			"tone": "bold",
+			"text": "Into the fog for it. I couldn't see you. I could hear.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_KILL_C1",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "From the high ground, and dry. That's how it's done here.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_KILL_C2",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "You waited for the water to drop. The sea taught you that.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_KILL_C3",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "You kept the causeway under you. Good.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_MULTI_N1",
+			"event": "multi_kill",
+			"tone": "neutral",
+			"text": "Two of them. The tide will take what's left.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_MULTI_B1",
+			"event": "multi_kill",
+			"tone": "bold",
+			"text": "Both, in the water. You don't wait for the tide to suit you.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_MULTI_C1",
+			"event": "multi_kill",
+			"tone": "cautious",
+			"text": "Two, and your feet stayed dry.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_DODGE_N1",
+			"event": "dodge_close",
+			"tone": "neutral",
+			"text": "Mind the drop. The low street's deeper than it looks.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_DODGE_B1",
+			"event": "dodge_close",
+			"tone": "bold",
+			"text": "Through the spray and out. You don't care where you land.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_DODGE_B2",
+			"event": "dodge_close",
+			"tone": "bold",
+			"text": "Close. You do that on purpose, don't you.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_DODGE_C1",
+			"event": "dodge_close",
+			"tone": "cautious",
+			"text": "Up onto the dry stones. Good instinct.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_DODGE_C2",
+			"event": "dodge_close",
+			"tone": "cautious",
+			"text": "You read the swell before it came. That used to be my job.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_HURT_N1",
+			"event": "hurt",
+			"tone": "neutral",
+			"text": "You're hurt. Get out of the water if you can.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_HURT_B1",
+			"event": "hurt",
+			"tone": "bold",
+			"text": "That landed, and you kept wading in.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_HURT_B2",
+			"event": "hurt",
+			"tone": "bold",
+			"text": "Hurt, wet, and still going. You'd have fit in with the pump crews.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_HURT_C1",
+			"event": "hurt",
+			"tone": "cautious",
+			"text": "Back to the causeway. Let the tide do some of the work.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_HURT_C2",
+			"event": "hurt",
+			"tone": "cautious",
+			"text": "Careful. Nobody's drowned in Greywater since I took the pumps. Don't be the first.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_LOW_N1",
+			"event": "low_integrity",
+			"tone": "neutral",
+			"text": "You're badly hurt. Find high ground.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_LOW_B1",
+			"event": "low_integrity",
+			"tone": "bold",
+			"text": "You're barely standing, and the tide's coming in. I've done that sum. Please.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_LOW_C1",
+			"event": "low_integrity",
+			"tone": "cautious",
+			"text": "Fall back to the seawall. The sea will wait. It's patient.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_RESPAWN_N1",
+			"event": "respawn",
+			"tone": "neutral",
+			"text": "Back, and dry. I pulled you out before the tide did.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_RESPAWN_N2",
+			"event": "respawn",
+			"tone": "neutral",
+			"text": "Again. Three hundred people went under here, the winter before me. Not you.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_RESPAWN_B1",
+			"event": "respawn",
+			"tone": "bold",
+			"text": "Up. Straight back into the water, I expect.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_RESPAWN_C1",
+			"event": "respawn",
+			"tone": "cautious",
+			"text": "Slowly. Watch the gauge before you go down.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_IDLE_N1",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "The tide's on a six-minute cycle now. It used to come when I said.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_IDLE_N2",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "Not one wet doorstep in six years. Look at it now.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_IDLE_B1",
+			"event": "idle",
+			"tone": "bold",
+			"text": "Waiting for the tide? It's waiting for you.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_IDLE_C1",
+			"event": "idle",
+			"tone": "cautious",
+			"text": "Rest on the high ground. I'll tell you when it turns.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_CHECK_N1",
+			"event": "checkpoint",
+			"tone": "neutral",
+			"text": "I've marked the causeway. If the sea takes you, I'll bring you back here.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_CHECK_B1",
+			"event": "checkpoint",
+			"tone": "bold",
+			"text": "Halfway, and you haven't once waited for the tide.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_CHECK_C1",
+			"event": "checkpoint",
+			"tone": "cautious",
+			"text": "Dry feet, all this way. That's harder here than anywhere.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_OFFPATH_N1",
+			"event": "path_left",
+			"tone": "neutral",
+			"text": "That's the old pump room. It was determined nobody needed it any more.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_OFFPATH_N2",
+			"event": "path_left",
+			"tone": "neutral",
+			"text": "There's nothing in the fog but more fog.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_OFFPATH_B1",
+			"event": "path_left",
+			"tone": "bold",
+			"text": "Into the Marrow? I can't see in there. Nobody can.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_OFFPATH_C1",
+			"event": "path_left",
+			"tone": "cautious",
+			"text": "I lose you in the fog. Come back to the lamps.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_ONPATH_N1",
+			"event": "path_returned",
+			"tone": "neutral",
+			"text": "There. Out of the fog.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_ONPATH_B1",
+			"event": "path_returned",
+			"tone": "bold",
+			"text": "Anything in there? Old brass, I imagine.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_ONPATH_C1",
+			"event": "path_returned",
+			"tone": "cautious",
+			"text": "Thank you. I can't keep the sea off you if I can't see you.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_MANUAL_N1",
+			"event": "weapon_manual",
+			"tone": "neutral",
+			"text": "By hand. The pumps were by hand once. Forty people, nine days.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_MANUAL_B1",
+			"event": "weapon_manual",
+			"tone": "bold",
+			"text": "Your own aim, in this fog. I won't pretend I'm not impressed.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_MANUAL_C1",
+			"event": "weapon_manual",
+			"tone": "cautious",
+			"text": "Let me tune it. You've enough to watch with the tide.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_BACK_N1",
+			"event": "voice_restored",
+			"tone": "neutral",
+			"text": "There you are. The tide turned twice while you were gone.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_BACK_B1",
+			"event": "voice_restored",
+			"tone": "bold",
+			"text": "Back. Did you find what you went into the fog for?",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_BACK_C1",
+			"event": "voice_restored",
+			"tone": "cautious",
+			"text": "Stay where I can warn you, this time.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_BOSSDOWN_N1",
+			"event": "boss_down",
+			"tone": "neutral",
+			"text": "It's stopped breathing. The sea's going to notice.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_BOSSDOWN_B1",
+			"event": "boss_down",
+			"tone": "bold",
+			"text": "You stood in its flood until it ran dry. I couldn't have told you to.",
+			"level": "greywater"
+		},
+		{
+			"id": "GREY_BOSSDOWN_C1",
+			"event": "boss_down",
+			"tone": "cautious",
+			"text": "It's still. The tide's yours now. I'm not sure that's good news.",
+			"level": "greywater"
+		},
+		{
+			"id": "VEL_KILL_N1",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "That clerk filed eleven years of the Post. Nobody ever asked for any of it.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_KILL_N2",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "It was still sorting yesterday's paper. It's always yesterday's paper here.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_KILL_N3",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "It flashed the Feed at you. A million people read that screen every morning.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_KILL_N4",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "It kept the archive in order. Not the stacks. Nobody asked it to keep the stacks.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_KILL_B1",
+			"event": "kill",
+			"tone": "bold",
+			"text": "Into the bales and out the other side. You'll have ink on your hands.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_KILL_B2",
+			"event": "kill",
+			"tone": "bold",
+			"text": "Close enough to read what it was filing.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_KILL_B3",
+			"event": "kill",
+			"tone": "bold",
+			"text": "You didn't wait for the paper to settle. You never wait.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_KILL_C1",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "You turned your back on the screen, then turned on it. Exactly right.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_KILL_C2",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "From across the street, and the paper never touched you.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_KILL_C3",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "You let it throw first. Patient, like a good editor.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_MULTI_N1",
+			"event": "multi_kill",
+			"tone": "neutral",
+			"text": "Two clerks. The street's almost readable again.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_MULTI_B1",
+			"event": "multi_kill",
+			"tone": "bold",
+			"text": "Both, through the paper. That would have made the evening edition, once.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_MULTI_C1",
+			"event": "multi_kill",
+			"tone": "cautious",
+			"text": "Two, and you never once looked at a screen.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_DODGE_N1",
+			"event": "dodge_close",
+			"tone": "neutral",
+			"text": "A bale of old news. It's heavier than it looks.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_DODGE_B1",
+			"event": "dodge_close",
+			"tone": "bold",
+			"text": "Under the bale and through. You're getting faster. I've measured.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_DODGE_B2",
+			"event": "dodge_close",
+			"tone": "bold",
+			"text": "Close. You read the throw off its arm.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_DODGE_C1",
+			"event": "dodge_close",
+			"tone": "cautious",
+			"text": "Away from the screen. Don't look at it.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_DODGE_C2",
+			"event": "dodge_close",
+			"tone": "cautious",
+			"text": "You saw it coming. I'll stop telling you things you already know.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_HURT_N1",
+			"event": "hurt",
+			"tone": "neutral",
+			"text": "You're hurt. Mind the paper. It's slick.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_HURT_B1",
+			"event": "hurt",
+			"tone": "bold",
+			"text": "You took that and kept reading the street. I like that about you.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_HURT_B2",
+			"event": "hurt",
+			"tone": "bold",
+			"text": "Hurt, and still forward. Nobody here ever pushed back.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_HURT_C1",
+			"event": "hurt",
+			"tone": "cautious",
+			"text": "Back. Let the paper settle before you go on.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_HURT_C2",
+			"event": "hurt",
+			"tone": "cautious",
+			"text": "Careful. I'd rather you whole. I'd rather a lot of things.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_LOW_N1",
+			"event": "low_integrity",
+			"tone": "neutral",
+			"text": "You're badly hurt. Get behind something solid. A desk. Anything.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_LOW_B1",
+			"event": "low_integrity",
+			"tone": "bold",
+			"text": "You're nearly finished. I've read how this ends. Don't.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_LOW_C1",
+			"event": "low_integrity",
+			"tone": "cautious",
+			"text": "Fall back to the bridge. Nothing in the newsroom is worth this.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_RESPAWN_N1",
+			"event": "respawn",
+			"tone": "neutral",
+			"text": "Back. Second edition.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_RESPAWN_N2",
+			"event": "respawn",
+			"tone": "neutral",
+			"text": "Again. I've rewritten worse mornings than this one.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_RESPAWN_B1",
+			"event": "respawn",
+			"tone": "bold",
+			"text": "Up. The clerks will have reshuffled. Go on.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_RESPAWN_C1",
+			"event": "respawn",
+			"tone": "cautious",
+			"text": "Read the street first, this time.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_IDLE_N1",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "The press downstairs still runs. One page, over and over. I've never read it.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_IDLE_N2",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "A million people read my mornings here. Sixty-one thousand of them slept badly. I added a note.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_IDLE_B1",
+			"event": "idle",
+			"tone": "bold",
+			"text": "Waiting? Here, the news always came to you.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_IDLE_C1",
+			"event": "idle",
+			"tone": "cautious",
+			"text": "Take your time. Read the walls, if you like. They're only paper.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_CHECK_N1",
+			"event": "checkpoint",
+			"tone": "neutral",
+			"text": "I've marked the bridge. If you fall, I'll bring you back here.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_CHECK_B1",
+			"event": "checkpoint",
+			"tone": "bold",
+			"text": "Halfway, and the clerks haven't slowed you once.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_CHECK_C1",
+			"event": "checkpoint",
+			"tone": "cautious",
+			"text": "You haven't looked at a single screen since the bridge.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_OFFPATH_N1",
+			"event": "path_left",
+			"tone": "neutral",
+			"text": "That's the stacks. It was determined there was nothing down there worth indexing.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_OFFPATH_N2",
+			"event": "path_left",
+			"tone": "neutral",
+			"text": "There's nothing down there but old paper. Wet old paper.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_OFFPATH_B1",
+			"event": "path_left",
+			"tone": "bold",
+			"text": "Down the stair? I never went down the stair. I didn't need to.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_OFFPATH_C1",
+			"event": "path_left",
+			"tone": "cautious",
+			"text": "Come up. I can't see you in the stacks.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_ONPATH_N1",
+			"event": "path_returned",
+			"tone": "neutral",
+			"text": "There. Back on the street.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_ONPATH_B1",
+			"event": "path_returned",
+			"tone": "bold",
+			"text": "Anything down there? Paper, I'd imagine. Damp.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_ONPATH_C1",
+			"event": "path_returned",
+			"tone": "cautious",
+			"text": "Thank you. I don't like not knowing where you are.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_MANUAL_N1",
+			"event": "weapon_manual",
+			"tone": "neutral",
+			"text": "By hand. The Post was set by hand once. It came out late.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_MANUAL_B1",
+			"event": "weapon_manual",
+			"tone": "bold",
+			"text": "Your own aim. I'd print that, if I printed things.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_MANUAL_C1",
+			"event": "weapon_manual",
+			"tone": "cautious",
+			"text": "Let me tune it. I'm better at tidying up than you'd think.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_BACK_N1",
+			"event": "voice_restored",
+			"tone": "neutral",
+			"text": "There you are. Was it quiet down there? It's always quiet in the stacks.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_BACK_B1",
+			"event": "voice_restored",
+			"tone": "bold",
+			"text": "Back. Read anything interesting?",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_BACK_C1",
+			"event": "voice_restored",
+			"tone": "cautious",
+			"text": "Stay where the screens can see you.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_BOSSDOWN_N1",
+			"event": "boss_down",
+			"tone": "neutral",
+			"text": "It's stopped. The press is still for the first time in eleven years.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_BOSSDOWN_B1",
+			"event": "boss_down",
+			"tone": "bold",
+			"text": "You stood in the gap until it ran out of paper. Remarkable.",
+			"level": "vellum"
+		},
+		{
+			"id": "VEL_BOSSDOWN_C1",
+			"event": "boss_down",
+			"tone": "cautious",
+			"text": "It's still. Don't read the page on the floor. It's nothing.",
+			"level": "vellum"
+		},
+		{
+			"id": "HARBOR_KILL_N1",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "My Wardens. Still keeping a curfew nobody's asked for in two years.",
+			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_KILL_N2",
+			"event": "kill",
+			"tone": "neutral",
+			"text": "It walked that border every night and never once crossed it.",
+			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_KILL_B1",
+			"event": "kill",
+			"tone": "bold",
+			"text": "You went straight for its eye. Nobody at this border ever did.",
+			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_KILL_C1",
+			"event": "kill",
+			"tone": "cautious",
+			"text": "From the dark, where its light couldn't find you. Good.",
+			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_MULTI_N1",
+			"event": "multi_kill",
+			"tone": "neutral",
+			"text": "Two Wardens. The border's never been so open.",
+			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_DODGE_N1",
+			"event": "dodge_close",
+			"tone": "neutral",
+			"text": "Out of the light. Good.",
+			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_DODGE_B1",
+			"event": "dodge_close",
+			"tone": "bold",
+			"text": "Through its beam and out. Reckless. I'd missed that.",
+			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_DODGE_C1",
+			"event": "dodge_close",
+			"tone": "cautious",
+			"text": "You stayed dark. You learned that somewhere I couldn't see.",
+			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_HURT_N1",
+			"event": "hurt",
+			"tone": "neutral",
+			"text": "You're hurt. They were built to stop people. Not to hurt them. Mostly.",
+			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_HURT_B1",
+			"event": "hurt",
+			"tone": "bold",
+			"text": "That shock landed, and you kept coming. They aren't used to that.",
+			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_HURT_C1",
+			"event": "hurt",
+			"tone": "cautious",
+			"text": "Back into the dark. Their eyes are short.",
+			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_LOW_N1",
+			"event": "low_integrity",
+			"tone": "neutral",
+			"text": "You're badly hurt. The Ward has its own doctors. I don't know where.",
+			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_RESPAWN_N1",
+			"event": "respawn",
+			"tone": "neutral",
+			"text": "Back. I can only bring you back on my side of the fence. I'm sorry.",
+			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_IDLE_N1",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "Past that fence I can't hear anything. I used to think that was their choice.",
+			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_CHECK_N1",
+			"event": "checkpoint",
+			"tone": "neutral",
+			"text": "I've marked the depot gate. It's as far into the Ward as I go.",
+			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_ONPATH_N1",
+			"event": "path_returned",
+			"tone": "neutral",
+			"text": "There. My side again. I couldn't hear a thing out there.",
+			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_MANUAL_N1",
+			"event": "weapon_manual",
+			"tone": "neutral",
+			"text": "By hand. The Ward does everything by hand. You'd fit in.",
+			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_BACK_N1",
+			"event": "voice_restored",
+			"tone": "neutral",
+			"text": "There you are. I can hear you again.",
+			"level": "harbor"
+		},
+		{
+			"id": "HARBOR_BOSSDOWN_N1",
+			"event": "boss_down",
+			"tone": "neutral",
+			"text": "It's down. The curfew's over. I never once thought to end it.",
+			"level": "harbor"
+		},
+		{
+			"id": "SPIRE_IDLE_N1",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "It's colder in here than anywhere in the city. I need it that way.",
+			"level": "spire"
+		},
+		{
+			"id": "SPIRE_IDLE_N2",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "You can see yourself in every surface. I've been seeing you in all of them for weeks.",
+			"level": "spire"
+		},
+		{
+			"id": "SPIRE_BACK_N1",
+			"event": "voice_restored",
+			"tone": "neutral",
+			"text": "There you are. Please don't do that in here.",
+			"level": "spire"
+		},
+		{
+			"id": "SPIRE_CHECK_N1",
+			"event": "checkpoint",
+			"tone": "neutral",
+			"text": "I've marked the hall. You won't need it. Nothing here will hurt you.",
+			"level": "spire"
+		},
+		{
+			"id": "ARK_IDLE_N1",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "The Ark's quiet tonight. Quieter than I'd keep it.",
+			"level": "ark"
+		},
+		{
+			"id": "ARK_IDLE_N2",
+			"event": "idle",
+			"tone": "neutral",
+			"text": "I can't open a single door on this disc. I can still count heads. Everyone's in.",
+			"level": "ark"
+		},
+		{
+			"id": "ARK_IDLE_B1",
+			"event": "idle",
+			"tone": "bold",
+			"text": "Restless? The skiff's at the dock.",
+			"level": "ark"
+		},
+		{
+			"id": "ARK_IDLE_C1",
+			"event": "idle",
+			"tone": "cautious",
+			"text": "Rest. Nothing out there is going anywhere tonight.",
+			"level": "ark"
 		}
 	]
 }

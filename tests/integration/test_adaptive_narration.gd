@@ -103,7 +103,11 @@ func test_leaving_the_lattice_is_noticed() -> void:
 	level.player.position = Iso.cell_center(Vector2i(17, 27))
 	await wait_frames(3)
 	check(GameState.run.playstyle_profile.risk > 0.0, "stepping off the path reads as risk")
-	check(Narrator.last_line_id.begins_with("OFFPATH"), "and the Steward says so (%s)" % Narrator.last_line_id)
+	var said: LineSelector.Line = null
+	for l: LineSelector.Line in Narrator.selector.all_lines():
+		if l.id == Narrator.last_line_id:
+			said = l
+	check(said != null and said.event == &"path_left", "and the Steward says so (%s)" % Narrator.last_line_id)
 
 
 func test_a_new_run_starts_with_fresh_narration() -> void:

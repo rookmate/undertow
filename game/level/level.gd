@@ -171,7 +171,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _on_voice_changed(on: bool) -> void:
 	if on:
-		Narrator.notify(&"voice_restored")
+		Narrator.notify(&"voice_restored", level_id)
 
 
 func _exit_tree() -> void:
