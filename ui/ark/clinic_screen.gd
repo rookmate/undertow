@@ -116,6 +116,7 @@ func read(id: String) -> void:
 	if not GameState.run.logs_unlocked.has(id):
 		return
 	var def := ContentDb.memory_log(id)
+	GameState.mark_log_read(id)
 	_record.text = "\n".join(def.get("record", []) as Array)
 	var said := Narrator.voice_over(VoiceLines.log_line(id))
 	_reply.text = str(def.get("steward_now", "")) if said else ""

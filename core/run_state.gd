@@ -27,6 +27,12 @@ var truth_core_ids: Array[String] = []
 var survivor_ids: Array[String] = []
 var logs_unlocked: Array[String] = []
 var logs_replayed: Array[String] = []
+## Memory logs you've actually read: replayed in the Archive, or opened at the Clinic. What the Steward's
+## lines can know you know.
+var logs_read: Array[String] = []
+## The Steward's lines heard this run (LineSelector.recent: no line again until its tone is heard out,
+## place lines and beats once), saved so Continue doesn't hear them as new.
+var narration_heard: Array[String] = []
 ## Cores picked up in the current level and not yet chosen at the Reliquary (off-path truth cores).
 var found_core_ids: Array[String] = []
 ## Cores a Reliquary offered that you didn't carry: gone, for good (they aren't there on a revisit).
@@ -144,6 +150,8 @@ func to_dict() -> Dictionary:
 		"survivor_ids": survivor_ids.duplicate(),
 		"logs_unlocked": logs_unlocked.duplicate(),
 		"logs_replayed": logs_replayed.duplicate(),
+		"logs_read": logs_read.duplicate(),
+		"narration_heard": narration_heard.duplicate(),
 		"found_core_ids": found_core_ids.duplicate(),
 		"cores_left": cores_left.duplicate(),
 		"noor_trust": noor_trust,
@@ -189,6 +197,9 @@ static func from_dict(d: Dictionary) -> RunState:
 	s.survivor_ids = _strings(d.get("survivor_ids", []))
 	s.logs_unlocked = _strings(d.get("logs_unlocked", []))
 	s.logs_replayed = _strings(d.get("logs_replayed", []))
+	# A save from before logs_read: what it replayed, it read.
+	s.logs_read = _strings(d.get("logs_read", d.get("logs_replayed", [])))
+	s.narration_heard = _strings(d.get("narration_heard", []))
 	s.found_core_ids = _strings(d.get("found_core_ids", []))
 	# A save from before the run remembered what it left (DECISIONS 190): nothing counts as left, so a
 	# truth you found and left at a Reliquary then can be found again on a revisit. Better that than losing

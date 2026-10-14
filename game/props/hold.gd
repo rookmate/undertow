@@ -48,7 +48,7 @@ func interact(_player: Operator) -> void:
 	Sound.play(&"windup", global_position)
 	var line := Holds.text(hold_id, "steward_start")
 	if line != "":
-		Narrator.say_fixed(line)
+		Narrator.say_story(line)
 
 
 ## Running and you're within reach: it's going.
@@ -109,7 +109,7 @@ func _finish() -> void:
 	Sound.play(&"checkpoint", global_position)
 	var line := Holds.text(hold_id, "steward_done")
 	if line != "":
-		Narrator.say_fixed(line)
+		Narrator.say_story(line)
 
 
 ## You went down while it ran: start over. What it brought out goes back in.

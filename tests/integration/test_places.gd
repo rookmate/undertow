@@ -39,12 +39,13 @@ func test_every_place_is_a_line_on_the_path() -> void:
 		check(n >= 5, "%s has places to remark on (%d)" % [district, n])
 
 
-## Kestrel Heights, its entry line said and over.
+## Kestrel Heights, its entry line said and over, and a breath of silence after it.
 func _open_kestrel() -> void:
 	level = (load(LevelCatalog.scene_of("kestrel")) as PackedScene).instantiate() as Level
 	add_child(level)
 	await wait_seconds(StewardWatch.ENTER_DELAY + Narrator.MIN_GAP + 0.5)
 	Sound.hush()
+	await wait_seconds(Narrator.PLACE_QUIET + 0.1)
 
 
 func _first_place() -> Vector2i:
@@ -66,7 +67,7 @@ func test_it_remarks_once_when_you_come_near() -> void:
 	Sound.hush()
 	level.player.position = Iso.cell_center(level.grid.start_cell())
 	await wait_physics_frames(4)
-	await wait_seconds(Narrator.MIN_GAP + 0.2)
+	await wait_seconds(maxf(Narrator.MIN_GAP, Narrator.PLACE_QUIET) + 0.2)
 	heard.clear()
 	level.player.position = Iso.cell_center(c)
 	await wait_physics_frames(4)
@@ -89,3 +90,31 @@ func test_not_while_muted_and_not_over_another_line() -> void:
 	await wait_seconds(Narrator.MIN_GAP + 0.2)
 	await wait_physics_frames(4)
 	check(Narrator.selector.recent.has("place_kestrel_gate"), "and says it into the silence after")
+
+
+## A long line outlasts the gap it keeps between lines: a place's line still waits for a moment's silence
+## after it ends, not just for the gap since it began.
+func test_it_waits_for_a_silence_after_a_long_line() -> void:
+	await _open_kestrel()
+	var c := _first_place()
+	Narrator.say_fixed("greywater_pumps_done")
+	await wait_seconds(Narrator.MIN_GAP + 0.2)
+	check(Narrator.speaking(), "still saying it, past the gap")
+	Sound.hush()
+	level.player.position = Iso.cell_center(c)
+	await wait_physics_frames(4)
+	check_false(Narrator.selector.recent.has("place_kestrel_gate"), "not the moment it stops")
+	await wait_seconds(Narrator.PLACE_QUIET + 0.2)
+	check(Narrator.selector.recent.has("place_kestrel_gate"), "but after a breath")
+
+
+## A place's line is only a remark on where you are: a reply (one of the Waiting refusing you) still gets
+## said over it, though its other remarks don't.
+func test_a_reply_isnt_held_up_by_a_place() -> void:
+	await _open_kestrel()
+	level.player.position = Iso.cell_center(_first_place())
+	await wait_physics_frames(4)
+	check(Sound.voice_line.begins_with("place_kestrel") and Narrator.story_in_progress(), "a place's line (%s)" % Sound.voice_line)
+	check_eq(Narrator.notify(&"path_left", "kestrel"), "", "a remark waits")
+	check(Narrator.say_fixed("waiting_refusal"), "a reply doesn't")
+	Sound.hush()

@@ -202,3 +202,67 @@ func test_every_when_is_real() -> void:
 	for l: LineSelector.Line in selector.all_lines():
 		if l.when.has("knows"):
 			check(not ContentDb.memory_log(str(l.when["knows"])).is_empty(), "%s knows a real log (%s)" % [l.id, l.when["knows"]])
+
+
+## A line for something you've come to know is said once: heard, it doesn't come round again while
+## there's anything else to say.
+func test_a_beat_is_said_once() -> void:
+	selector.recent.clear()
+	var rng := _rng(2)
+	var knows: Array[String] = ["log_0522_feed_adjustment"]
+	var heard: Array[String] = []
+	for i: int in 12:
+		var l := selector.pick(&"idle", 0.0, rng, "loop", &"neutral", {"knows": knows})
+		heard.append(l.id)
+	check_eq(heard.count("IDLE_KNOWS_BRIDGE"), 1, "the bridge, once in twelve (%s)" % [heard])
+
+
+## Under "Stop praising me" (praise not allowed), its lines for what you know are facts and still said.
+func test_what_it_knows_is_a_fact() -> void:
+	selector.recent.clear()
+	var knows: Array[String] = ["log_0522_feed_adjustment"]
+	var facts: Array[StringName] = [LineSelector.FACT, LineSelector.WARNING]
+	var l := selector.pick(&"idle", 0.0, _rng(5), "loop", &"neutral", {"knows": knows}, facts)
+	check(l != null and l.id == "IDLE_KNOWS_BRIDGE", "the bridge, even with praise silenced (%s)" % (l.id if l != null else "nothing"))
+	var plain := selector.pick(&"idle", 0.0, _rng(6), "loop", &"neutral", {}, facts)
+	check(plain == null, "and no idle flattery")
+
+
+## A beat heard is spent: under "Stop praising me", once the bridge has been said, standing still says
+## nothing rather than the bridge again. A district's only revisit greeting still greets every revisit.
+func test_a_spent_beat_leaves_silence() -> void:
+	selector.recent.clear()
+	var knows: Array[String] = ["log_0522_feed_adjustment"]
+	var facts: Array[StringName] = [LineSelector.FACT, LineSelector.WARNING]
+	var first := selector.pick(&"idle", 0.0, _rng(5), "loop", &"neutral", {"knows": knows}, facts)
+	check(first != null and first.id == "IDLE_KNOWS_BRIDGE", "the bridge, once")
+	for i: int in 4:
+		var again := selector.pick(&"idle", 0.0, _rng(6 + i), "loop", &"neutral", {"knows": knows}, facts)
+		check(again == null, "then nothing (%s)" % (again.id if again != null else ""))
+	for i: int in 3:
+		var hello := selector.pick(&"level_enter", 0.0, _rng(20 + i), "harbor", &"", {"revisit": true})
+		check(hello != null and hello.id == "HARBOR_REVISIT_N1", "the Ward greets a revisit, every time")
+
+
+## A line about how near it was (a kill up close, or at range) is said only when it saw that.
+func test_it_says_how_near_only_when_it_saw() -> void:
+	var close_lines: Array[String] = []
+	var far_lines: Array[String] = []
+	for l: LineSelector.Line in selector.all_lines():
+		match str(l.when.get("reach", "")):
+			"close": close_lines.append(l.id)
+			"far": far_lines.append(l.id)
+	check(close_lines.has("KILL_B2") and far_lines.has("KILL_C2"), "up close and at range are conditions")
+	for seen: Dictionary in [{}, {"reach": "close"}, {"reach": "far"}]:
+		selector.recent.clear()
+		var rng := _rng(3)
+		for i: int in 30:
+			for lean: float in [1.0, -1.0]:
+				for event: StringName in [&"kill", &"multi_kill"]:
+					var l := selector.pick(event, lean, rng, "tideworks", &"", seen)
+					check(l != null, "%s %s says something" % [event, seen])
+					if l == null:
+						continue
+					var reach := str(seen.get("reach", ""))
+					check(reach == "close" or not close_lines.has(l.id), "%s only up close (seen %s)" % [l.id, seen])
+					check(reach == "far" or not far_lines.has(l.id), "%s only at range (seen %s)" % [l.id, seen])

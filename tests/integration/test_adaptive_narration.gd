@@ -131,3 +131,54 @@ func test_the_muted_loadout_has_no_steward_line() -> void:
 	check_false(steward_line, "muted, the Steward says nothing on the loadout")
 	screen.queue_free()
 	Steward.set_voice(true)
+
+
+## Continue keeps what the Steward has said this run: a place's line or a beat heard before saving isn't
+## new again after loading; a new run starts with nothing heard.
+func test_continue_remembers_what_it_said() -> void:
+	GameState.new_run()
+	Narrator.selector.recent.append("place_loop_platform_a")
+	var saved := GameState.run.to_dict()
+	GameState.new_run()
+	check(Narrator.selector.recent.is_empty(), "a new run has heard nothing")
+	GameState.replace_run(RunState.from_dict(saved))
+	check(Narrator.selector.recent.has("place_loop_platform_a"), "a continued one remembers")
+
+
+## It never cuts off one of its story lines with a remark (even one for leaving the path) or a reply;
+## a warning still cuts in.
+func test_it_never_talks_over_its_story() -> void:
+	await _start_run()
+	await wait_seconds(Narrator.MIN_GAP + 0.2)
+	Narrator.say_story("greywater_pumps_done")
+	check(Narrator.story_in_progress(), "saying the pumps line")
+	check_eq(Narrator.notify(&"path_left"), "", "leaving the path doesn't cut it off")
+	check_false(Narrator.say_fixed("waiting_refusal"), "nor a reply (refusing to wake one of the Waiting)")
+	check_eq(Sound.voice_line, "greywater_pumps_done")
+	check(Narrator.say_fixed("tide_swell"), "a warning does")
+	Sound.hush()
+
+
+## "Knows" is what you've read, not just what you've carried.
+func test_it_knows_what_youve_read() -> void:
+	GameState.new_run()
+	GameState.unlock_log("log_0522_feed_adjustment")
+	check_false((Narrator.context_for("loop")["knows"] as Array).has("log_0522_feed_adjustment"), "carried isn't read")
+	ArchiveModel.replay("log_0522_feed_adjustment")
+	check((Narrator.context_for("loop")["knows"] as Array).has("log_0522_feed_adjustment"), "replayed is read")
+
+
+## How near a kill was, it can say; two at once, only if both were.
+func test_two_at_once_are_near_only_if_both_were() -> void:
+	await _start_run()
+	await _kill_at(4)
+	check_eq(Narrator.last_seen, {"reach": "far"}, "a kill at range")
+	await _kill_at(1)
+	check_eq(Narrator.last_seen, {}, "then one up close: two at once, but not both near")
+	await wait_seconds(StewardWatch.MULTI_KILL_WINDOW + 0.2)
+	await _kill_at(1)
+	check_eq(Narrator.last_seen, {"reach": "close"}, "a kill up close")
+	await _kill_at(1)
+	check_eq(Narrator.last_seen, {"reach": "close"}, "and another: both up close")
+	await _kill_at(2)
+	check_eq(Narrator.last_seen, {}, "in between, it doesn't say")
