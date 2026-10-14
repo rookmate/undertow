@@ -59,22 +59,12 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
-	# A hatch in the ground, a ladder's rails going down into it.
-	var hatch := PackedVector2Array([Vector2(-30, 0), Vector2(0, 14), Vector2(30, 0), Vector2(0, -14)])
-	draw_colored_polygon(hatch, Palette.NEAR_BLACK)
-	hatch.append(hatch[0])
-	draw_polyline(hatch, Palette.IRON_DARK.lightened(0.15), 3.0, true)
+	ArtCatalog.paint(self, "hatch", Rect2(-30, -14, 60, 28))
 	if going_down:
-		for k: int in 3:
-			draw_line(Vector2(-12, -6 + k * 6), Vector2(12, -6 + k * 6), Palette.IRON_DARK.lightened(0.25), 2.0, true)
 		if not is_open():
-			# Flooded to the top: water in the hatch, and below it what's still to find, glowing up.
-			draw_colored_polygon(PackedVector2Array([Vector2(-24, 0), Vector2(0, 11), Vector2(24, 0), Vector2(0, -11)]), Color(Palette.WATER_SHEEN, 0.6))
+			var d := PackedVector2Array([Vector2(-24, 0), Vector2(0, 11), Vector2(24, 0), Vector2(0, -11)])
+			draw_colored_polygon(d, Color(Palette.WATER_SHEEN, 0.6))
 			if level != null and level.descent_finds_left() > 0:
-				draw_circle(Vector2(0, 0), 10.0 + sin(_t * 2.0) * 2.0, Color(Palette.TRUTH_CYAN, 0.35), true, -1.0, true)
+				draw_circle(Vector2.ZERO, 10.0 + sin(_t * 2.0) * 2.0, Color(Palette.TRUTH_CYAN, 0.35), true, -1.0, true)
 	else:
-		# The way back up: the ladder rising out of the hatch, the street's light at the top.
-		draw_line(Vector2(-10, 0), Vector2(-10, -70), Palette.IRON_DARK.lightened(0.25), 3.0, true)
-		draw_line(Vector2(10, 0), Vector2(10, -70), Palette.IRON_DARK.lightened(0.25), 3.0, true)
-		for k: int in 5:
-			draw_line(Vector2(-10, -10 - k * 14), Vector2(10, -10 - k * 14), Palette.IRON_DARK.lightened(0.25), 2.0, true)
+		ArtCatalog.paint(self, "ladder", Rect2(-14, -70, 28, 70))

@@ -230,33 +230,26 @@ func _physics_process(delta: float) -> void:
 
 func _draw() -> void:
 	draw_shadow(52.0, 24.0)
-	var flash := hit_flash()
-	var shell := Palette.AMBULANCE_WHITE.darkened(0.2).lerp(Palette.IVORY, flash)
-	# The operating table, and the last procedure under its sheet.
-	var t := PackedVector2Array([Vector2(-56, 0), Vector2(0, 28), Vector2(56, 0), Vector2(0, -28)])
-	for k: int in t.size():
-		t[k] += Vector2(0, -34)
-	draw_colored_polygon(PackedVector2Array([Vector2(-56, -34), Vector2(0, -6), Vector2(0, 0), Vector2(-56, -28)]), Palette.WARD_WALL_SHADE.darkened(0.4))
-	draw_colored_polygon(PackedVector2Array([Vector2(0, -6), Vector2(56, -34), Vector2(56, -28), Vector2(0, 0)]), Palette.WARD_WALL_SHADE.darkened(0.2))
-	draw_colored_polygon(t, Palette.WARD_WALL_SHADE)
-	draw_colored_polygon(PackedVector2Array([Vector2(-34, -40), Vector2(-4, -26), Vector2(30, -44), Vector2(0, -58)]), Palette.AMBULANCE_WHITE.darkened(0.15))
-	# The column from the ceiling, its arms over the table: bent low while it sutures.
+	var tint := Color.WHITE * (1.0 + hit_flash())
+	ArtCatalog.paint(self, "surgeon_table", Rect2(-56, -64, 112, 92), tint)
 	var low := is_vulnerable()
 	var hub := Vector2(0, -ARM_HEIGHT - (40.0 if not low else 0.0))
-	draw_line(Vector2(0, -ARM_HEIGHT - 120.0), hub, shell.darkened(0.25), 10.0, true)
-	draw_circle(hub, 18.0, shell, true, -1.0, true)
+	ArtCatalog.link(self, "arm_link", Vector2(0, -ARM_HEIGHT - 120.0), hub, 10.0, tint)
+	ArtCatalog.paint(self, "surgeon_hub", Rect2(hub - Vector2(18, 18), Vector2(36, 36)), tint)
 	for k: int in 4:
 		var a := TAU * k / 4.0 + 0.4 + (0.0 if phase != Phase.CUT else _phase_time * 4.0)
 		var elbow := hub + Vector2(cos(a) * 46.0, sin(a) * 20.0 + 26.0)
 		var tip := elbow + Vector2(cos(a) * 20.0, (70.0 if low else 44.0))
-		draw_line(hub, elbow, shell, 6.0, true)
-		draw_line(elbow, tip, shell.darkened(0.15), 4.0, true)
+		ArtCatalog.link(self, "arm_link", hub, elbow, 8.0, tint)
+		ArtCatalog.link(self, "arm_link", elbow, tip, 6.0, tint)
 		draw_circle(tip, 4.0, Palette.DANGER if phase == Phase.CUT else Palette.GREY_DEEP, true, -1.0, true)
-	# The operating lamp: the Steward's light (dark while it stalls).
 	var lamp_at := Vector2(0, -ARM_HEIGHT - 150.0)
-	draw_circle(lamp_at, 26.0, Palette.GREY_DEEP, true, -1.0, true)
+	var lamp_bounds := Rect2(lamp_at - Vector2(28, 28), Vector2(56, 56))
 	if phase != Phase.STALLED:
-		draw_circle(lamp_at + Vector2(0, 6), 18.0, Palette.STEWARD_GOLD_HOT, true, -1.0, true)
+		draw_set_transform(ArtCatalog.anchor("surgeon_lamp", "lens", lamp_bounds), 0.0, Vector2(1, 0.5))
+		draw_circle(Vector2.ZERO, 16.0, Palette.STEWARD_GOLD_HOT, true, -1.0, true)
+		draw_set_transform(Vector2.ZERO)
+	ArtCatalog.paint(self, "surgeon_lamp", lamp_bounds)
 	# The guide line it lays for the cut (its own light, gold), and the cut itself (red-orange: danger).
 	var ends: Array[Vector2] = [Iso.ground_velocity(cut_dir, 1.0) * CUT_LENGTH]
 	if crossed():

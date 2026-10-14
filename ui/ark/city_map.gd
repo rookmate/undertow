@@ -225,14 +225,7 @@ class _MapDrawing:
 		return Vector2(u * size.x, v * size.y)
 
 	func _draw() -> void:
-		draw_rect(Rect2(Vector2.ZERO, size), Palette.WATER_DEEP)
-		# The delta: the city's islands, the river Sallow cutting through them.
-		var land := PackedVector2Array([_at(0.02, 0.02), _at(0.98, 0.02), _at(0.98, 0.6), _at(0.9, 0.7),
-			_at(0.95, 0.88), _at(0.74, 0.86), _at(0.62, 0.9), _at(0.44, 0.84), _at(0.3, 0.78), _at(0.12, 0.72), _at(0.02, 0.64)])
-		draw_colored_polygon(land, Palette.GREY_DEEP)
-		draw_polyline(PackedVector2Array([_at(0.0, 0.34), _at(0.2, 0.36), _at(0.34, 0.3), _at(0.46, 0.34), _at(0.6, 0.3), _at(0.75, 0.36), _at(1.0, 0.33)]), Palette.WATER_DEEP, 14.0, true)
-		# Harbor Ward stands apart: no Loop station, and its bridge is down.
-		draw_line(_at(0.84, 0.72), _at(0.8, 0.66), Palette.STONE_OLD, 6.0, true)
+		ArtCatalog.paint(self, "city_map", Rect2(Vector2.ZERO, size))
 		# The Loop: an elevated ring through every district but one, its route lights still blinking.
 		var centre := _at(0.5, 0.45)
 		var radii := Vector2(size.x * 0.33, size.y * 0.33)

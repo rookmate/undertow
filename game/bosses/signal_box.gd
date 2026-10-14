@@ -4,8 +4,6 @@ extends WeakPoint
 
 
 func _draw() -> void:
-	draw_shadow(16.0, 8.0)
-	var flash := hit_flash()
-	draw_rect(Rect2(-12, -46, 24, 46), Palette.IRON_DARK.lerp(Palette.IVORY, flash))
-	draw_rect(Rect2(-12, -46, 24, 6), Palette.IRON_VERDIGRIS)
-	draw_circle(Vector2(0, -32), 4.0, Palette.HUMAN_CREAM if tell_on() else Palette.GREY_DEEP, true, -1.0, true)
+	draw_shadow(14.0, 7.0)
+	ArtCatalog.actor(self, "signal_box", 46.0, Vector2.ZERO, hit_flash())
+	draw_circle(Vector2(0, -32), 3.5, Palette.HUMAN_CREAM if tell_on() else Palette.GREY_DEEP, true, -1.0, true)

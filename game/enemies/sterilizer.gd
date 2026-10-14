@@ -77,16 +77,9 @@ func _release() -> void:
 func _draw() -> void:
 	var lift := -HOVER + sin(_bob) * 4.0
 	draw_shadow(16.0, 7.0)
-	var flash := hit_flash()
-	var shell := Palette.AMBULANCE_WHITE.lerp(Palette.IVORY, flash)
-	# A white capsule body with a ring of nozzles underneath.
-	draw_colored_polygon(PackedVector2Array([Vector2(-20, lift + 2), Vector2(-14, lift + 12), Vector2(14, lift + 12), Vector2(20, lift + 2), Vector2(14, lift - 12), Vector2(-14, lift - 12)]), shell)
-	draw_line(Vector2(-20, lift + 2), Vector2(20, lift + 2), Palette.WARD_WALL_SHADE, 2.0)
-	var hot := state == State.WINDUP
-	for k: int in 4:
-		var x := -12.0 + k * 8.0
-		var nozzle := Vector2(x, lift + 15)
-		draw_circle(nozzle, 3.0, Palette.DANGER if hot else Palette.GREY_DEEP, true, -1.0, true)
-	if hot:
+	paint_body("sterilizer", 45.0, Vector2(0, lift + 18.0))
+	if state == State.WINDUP:
+		for k: int in 4:
+			draw_circle(Vector2(-12.0 + k * 8.0, lift + 15), 3.0, Palette.DANGER, true, -1.0, true)
 		draw_windup_ring(RELEASE_TILES)
 		draw_circle(Vector2(0, lift + 22), 8.0 + windup_progress() * 10.0, Color(Palette.STERILE_MIST, 0.3), true, -1.0, true)

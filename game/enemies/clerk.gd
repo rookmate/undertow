@@ -108,15 +108,7 @@ func _draw() -> void:
 		var reach := Iso.world_to_grid(level.player.global_position) - Iso.world_to_grid(global_position)
 		var k := windup_progress()
 		draw_line(Vector2.ZERO, Iso.grid_to_world(reach), Color(Palette.DANGER, 0.2 + 0.5 * k), 2.0 + 3.0 * k, true)
-	var shell := Palette.CLERK_SHELL.lerp(Palette.IVORY, hit_flash())
-	var legs := Palette.IRON_DARK
-	draw_line(Vector2(-10, -40), Vector2(-14, 0), legs, 5.0)
-	draw_line(Vector2(10, -40), Vector2(14, 0), legs, 5.0)
-	draw_colored_polygon(PackedVector2Array([Vector2(-20, -40), Vector2(20, -40), Vector2(18, -132), Vector2(-18, -132)]), shell)
-	draw_rect(Rect2(-16, -58, 32, 6), Palette.IRON_DARK)
-	var screen := Rect2(-13, -122, 26, 40)
-	var screen_col := Palette.BLACK_MIRROR
+	paint_body("clerk", 138.0)
 	if state == State.WINDUP and flash_next:
-		screen_col = Palette.BLACK_MIRROR.lerp(Palette.FEED_WHITE, windup_progress())
-	draw_rect(screen, screen_col)
-	draw_rect(Rect2(-22, -138, 44, 8), Palette.STONE_OLD)
+		var screen := body_anchor("clerk", "screen", 138.0)
+		draw_rect(Rect2(screen - Vector2(9, 13), Vector2(18, 26)), Color(Palette.FEED_WHITE, windup_progress()))

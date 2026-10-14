@@ -40,6 +40,4 @@ func interact(_player: Operator) -> void:
 
 func _draw() -> void:
 	if kind == Kind.DOCK:
-		# A mooring post and a small skiff.
-		draw_rect(Rect2(-6, -40, 12, 40), Palette.IRON_DARK)
-		draw_colored_polygon(PackedVector2Array([Vector2(10, 18), Vector2(90, 58), Vector2(120, 50), Vector2(44, 10)]), Palette.IRON_VERDIGRIS.darkened(0.3))
+		ArtCatalog.paint(self, "dock", Rect2(-12, -44, 140, 105))

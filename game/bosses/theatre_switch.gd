@@ -5,9 +5,6 @@ extends WeakPoint
 
 
 func _draw() -> void:
-	draw_shadow(12.0, 6.0)
-	var flash := hit_flash()
-	draw_rect(Rect2(-12, -64, 24, 34), Palette.WARD_WALL_SHADE.lerp(Palette.IVORY, flash))
-	draw_rect(Rect2(-12, -30, 24, 30), Palette.WARD_WALL_SHADE.darkened(0.3))
-	draw_line(Vector2(0, -54), Vector2(8, -40), Palette.IRON_DARK, 4.0, true)
+	draw_shadow(14.0, 7.0)
+	ArtCatalog.actor(self, "theatre_switch", 64.0, Vector2.ZERO, hit_flash())
 	draw_circle(Vector2(0, -58), 3.5, Palette.HUMAN_CREAM if tell_on() else Palette.GREY_DEEP, true, -1.0, true)

@@ -16,10 +16,14 @@ var lit: bool = true:
 
 var _light: PointLight2D
 var _lens: Emissive
+var look: DistrictLook = DistrictLook.for_district("vellum")
 
 
-func setup(cell: Vector2i) -> void:
+func setup(cell: Vector2i, district_look: DistrictLook = null) -> void:
 	position = Iso.cell_center(cell)
+	if district_look != null:
+		look = district_look
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	add_to_group(&"lattice_lamps")
 	_light = PointLight2D.new()
 	_light.texture = LightTextures.radial()
@@ -37,21 +41,18 @@ func setup(cell: Vector2i) -> void:
 	_lens = Emissive.new()
 	_lens.layers = [glow]
 	add_child(_lens)
+	if look.lamp_texture != null:
+		var housing := DrawOps.new()
+		# Source aperture center maps to (0, -POST_HEIGHT); the stepped foot extends to y=8.
+		housing.textured_poly(PackedVector2Array([Vector2(-21, 8), Vector2(22, 8), Vector2(22, -193), Vector2(-21, -193)]),
+			PackedVector2Array([Vector2.DOWN, Vector2.ONE, Vector2.RIGHT, Vector2.ZERO]), look.lamp_texture)
+		housing.add_layer(self, &"PaintedHousing")
 	WetReflections.add(self, Vector2.ZERO, POST_HEIGHT, Palette.STEWARD_GOLD, func() -> bool: return lit)
 
 
 func _draw() -> void:
 	draw_colored_polygon(_ellipse(Vector2.ZERO, 16.0, 8.0), Color(Palette.NEAR_BLACK, 0.5))
-	draw_rect(Rect2(-7, -14, 14, 14), Palette.IRON_DARK)
-	draw_line(Vector2(0, -12), Vector2(0, -POST_HEIGHT + 18.0), Palette.IRON_DARK, 5.0, true)
-	draw_line(Vector2(0, -60), Vector2(0, -POST_HEIGHT + 18.0), Palette.IRON_VERDIGRIS, 1.5, true)
-	draw_arc(Vector2(10, -POST_HEIGHT + 22.0), 10.0, PI, TAU * 0.95, 10, Palette.IRON_DARK, 3.0, true)
-	var head := Vector2(0, -POST_HEIGHT)
-	if not lit:
-		draw_circle(head, 14.0, Palette.BLACK_MIRROR, true, -1.0, true)
-		draw_arc(head, 14.0, 0.0, TAU, 20, Palette.GREY_DEEP, 2.0, true)
-	draw_arc(head, 16.0, PI * 1.05, TAU * 0.98, 14, Palette.IRON_DARK, 4.0, true)
-	draw_line(head + Vector2(-12, -14), head + Vector2(12, -14), Palette.IRON_DARK, 4.0, true)
+	draw_circle(Vector2(0, -POST_HEIGHT), 14.0, Palette.BLACK_MIRROR, true, -1.0, true)
 
 
 static func _ellipse(c: Vector2, rx: float, ry: float) -> PackedVector2Array:

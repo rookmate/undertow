@@ -109,8 +109,8 @@ func _draw() -> void:
 	else:
 		angle = PI * 0.5 + signf(screen_dir.x) * -0.4
 	var tip := hand + Vector2.from_angle(angle) * 62.0
-	draw_line(hand, tip, Palette.IRON_DARK, 7.0, true)
-	draw_line(hand.lerp(tip, 0.35), tip, WeaponGlow.hot(is_tuned()), 4.0, true)
+	ArtCatalog.link(self, "baton", hand, tip, 8.0)
+	draw_line(hand.lerp(tip, 0.55), tip, WeaponGlow.hot(is_tuned()), 2.2, true)
 
 
 func player_facing() -> Vector2:

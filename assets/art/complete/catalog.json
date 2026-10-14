@@ -1,0 +1,1752 @@
+{
+  "mat_cobble": {
+    "path": "res://assets/art/complete/materials_city.png",
+    "region": [
+      6,
+      6,
+      406,
+      406
+    ]
+  },
+  "mat_concrete": {
+    "path": "res://assets/art/complete/materials_city.png",
+    "region": [
+      424,
+      6,
+      406,
+      406
+    ]
+  },
+  "mat_brick": {
+    "path": "res://assets/art/complete/materials_city.png",
+    "region": [
+      842,
+      6,
+      406,
+      406
+    ]
+  },
+  "mat_clapboard": {
+    "path": "res://assets/art/complete/materials_city.png",
+    "region": [
+      6,
+      424,
+      406,
+      406
+    ]
+  },
+  "mat_slate": {
+    "path": "res://assets/art/complete/materials_city.png",
+    "region": [
+      424,
+      424,
+      406,
+      406
+    ]
+  },
+  "mat_steel": {
+    "path": "res://assets/art/complete/materials_city.png",
+    "region": [
+      842,
+      424,
+      406,
+      406
+    ]
+  },
+  "mat_hospital_wall": {
+    "path": "res://assets/art/complete/materials_city.png",
+    "region": [
+      6,
+      842,
+      406,
+      406
+    ]
+  },
+  "mat_glass": {
+    "path": "res://assets/art/complete/materials_city.png",
+    "region": [
+      424,
+      842,
+      406,
+      406
+    ]
+  },
+  "mat_plaster": {
+    "path": "res://assets/art/complete/materials_city.png",
+    "region": [
+      842,
+      842,
+      406,
+      406
+    ]
+  },
+  "mat_timber": {
+    "path": "res://assets/art/complete/materials_ground.png",
+    "region": [
+      6,
+      6,
+      406,
+      406
+    ]
+  },
+  "mat_parquet": {
+    "path": "res://assets/art/complete/materials_ground.png",
+    "region": [
+      424,
+      6,
+      406,
+      406
+    ]
+  },
+  "mat_tile": {
+    "path": "res://assets/art/complete/materials_ground.png",
+    "region": [
+      842,
+      6,
+      406,
+      406
+    ]
+  },
+  "mat_gravel": {
+    "path": "res://assets/art/complete/materials_ground.png",
+    "region": [
+      6,
+      424,
+      406,
+      406
+    ]
+  },
+  "mat_grating": {
+    "path": "res://assets/art/complete/materials_ground.png",
+    "region": [
+      424,
+      424,
+      406,
+      406
+    ]
+  },
+  "mat_water": {
+    "path": "res://assets/art/complete/materials_ground.png",
+    "region": [
+      842,
+      424,
+      406,
+      406
+    ]
+  },
+  "mat_paper": {
+    "path": "res://assets/art/complete/materials_ground.png",
+    "region": [
+      6,
+      842,
+      406,
+      406
+    ]
+  },
+  "mat_kelp": {
+    "path": "res://assets/art/complete/materials_ground.png",
+    "region": [
+      424,
+      842,
+      406,
+      406
+    ]
+  },
+  "mat_track": {
+    "path": "res://assets/art/complete/materials_ground.png",
+    "region": [
+      842,
+      842,
+      406,
+      406
+    ]
+  },
+  "low_wall": {
+    "path": "res://assets/art/complete/props_city.png",
+    "region": [
+      63,
+      61,
+      359,
+      326
+    ]
+  },
+  "shelf": {
+    "path": "res://assets/art/complete/props_city.png",
+    "region": [
+      595,
+      2,
+      236,
+      411
+    ]
+  },
+  "kiosk": {
+    "path": "res://assets/art/complete/props_city.png",
+    "region": [
+      1044,
+      6,
+      338,
+      405
+    ],
+    "anchors": {
+      "screen_tl": [
+        1212,
+        215
+      ],
+      "screen_tr": [
+        1271,
+        203
+      ],
+      "screen_bl": [
+        1212,
+        293
+      ]
+    }
+  },
+  "bollard": {
+    "path": "res://assets/art/complete/props_city.png",
+    "region": [
+      140,
+      424,
+      199,
+      295
+    ]
+  },
+  "sprinkler": {
+    "path": "res://assets/art/complete/props_city.png",
+    "region": [
+      628,
+      497,
+      191,
+      182
+    ]
+  },
+  "bed": {
+    "path": "res://assets/art/complete/props_city.png",
+    "region": [
+      1025,
+      420,
+      361,
+      305
+    ]
+  },
+  "desk": {
+    "path": "res://assets/art/complete/props_city.png",
+    "region": [
+      37,
+      743,
+      392,
+      325
+    ],
+    "anchors": {
+      "screen_tl": [
+        175,
+        777
+      ],
+      "screen_tr": [
+        269,
+        760
+      ],
+      "screen_bl": [
+        181,
+        837
+      ]
+    }
+  },
+  "tram_side": {
+    "path": "res://assets/art/complete/props_city.png",
+    "region": [
+      498,
+      771,
+      450,
+      267
+    ]
+  },
+  "tram_roof": {
+    "path": "res://assets/art/complete/props_city.png",
+    "region": [
+      966,
+      779,
+      475,
+      248
+    ]
+  },
+  "container": {
+    "path": "res://assets/art/complete/props_industrial.png",
+    "region": [
+      47,
+      114,
+      297,
+      310
+    ]
+  },
+  "turbine_mast": {
+    "path": "res://assets/art/complete/props_industrial.png",
+    "region": [
+      520,
+      30,
+      178,
+      401
+    ]
+  },
+  "turbine_blades": {
+    "path": "res://assets/art/complete/props_industrial.png",
+    "region": [
+      826,
+      21,
+      391,
+      398
+    ]
+  },
+  "rack": {
+    "path": "res://assets/art/complete/props_industrial.png",
+    "region": [
+      107,
+      474,
+      180,
+      412
+    ]
+  },
+  "pane": {
+    "path": "res://assets/art/complete/props_industrial.png",
+    "region": [
+      515,
+      454,
+      204,
+      449
+    ]
+  },
+  "crane_leg": {
+    "path": "res://assets/art/complete/props_industrial.png",
+    "region": [
+      923,
+      442,
+      231,
+      461
+    ]
+  },
+  "crane_load": {
+    "path": "res://assets/art/complete/props_industrial.png",
+    "region": [
+      74,
+      958,
+      253,
+      268
+    ]
+  },
+  "crane_jib": {
+    "path": "res://assets/art/complete/props_industrial.png",
+    "region": [
+      396,
+      1050,
+      465,
+      97
+    ]
+  },
+  "gantry_frame": {
+    "path": "res://assets/art/complete/props_industrial.png",
+    "region": [
+      924,
+      945,
+      218,
+      300
+    ]
+  },
+  "partition": {
+    "path": "res://assets/art/complete/props_clinical.png",
+    "region": [
+      67,
+      17,
+      281,
+      367
+    ]
+  },
+  "ambulance_side": {
+    "path": "res://assets/art/complete/props_clinical.png",
+    "region": [
+      432,
+      39,
+      398,
+      317
+    ]
+  },
+  "ambulance_roof": {
+    "path": "res://assets/art/complete/props_clinical.png",
+    "region": [
+      897,
+      23,
+      312,
+      374
+    ]
+  },
+  "nurse_desk": {
+    "path": "res://assets/art/complete/props_clinical.png",
+    "region": [
+      31,
+      450,
+      375,
+      325
+    ]
+  },
+  "hospital_bed": {
+    "path": "res://assets/art/complete/props_clinical.png",
+    "region": [
+      456,
+      431,
+      357,
+      350
+    ]
+  },
+  "ward_seal": {
+    "path": "res://assets/art/complete/props_clinical.png",
+    "region": [
+      874,
+      434,
+      344,
+      356
+    ]
+  },
+  "crash_cart": {
+    "path": "res://assets/art/complete/props_clinical.png",
+    "region": [
+      88,
+      823,
+      250,
+      397
+    ]
+  },
+  "pipe": {
+    "path": "res://assets/art/complete/props_clinical.png",
+    "region": [
+      589,
+      807,
+      120,
+      418
+    ]
+  },
+  "louvre": {
+    "path": "res://assets/art/complete/props_clinical.png",
+    "region": [
+      884,
+      892,
+      315,
+      250
+    ]
+  },
+  "lantern": {
+    "path": "res://assets/art/complete/props_harbor.png",
+    "region": [
+      206,
+      5,
+      142,
+      373
+    ]
+  },
+  "piling": {
+    "path": "res://assets/art/complete/props_harbor.png",
+    "region": [
+      647,
+      104,
+      151,
+      274
+    ]
+  },
+  "boat": {
+    "path": "res://assets/art/complete/props_harbor.png",
+    "region": [
+      1047,
+      103,
+      342,
+      274
+    ]
+  },
+  "dock": {
+    "path": "res://assets/art/complete/props_harbor.png",
+    "region": [
+      70,
+      426,
+      373,
+      265
+    ]
+  },
+  "crate": {
+    "path": "res://assets/art/complete/props_harbor.png",
+    "region": [
+      586,
+      452,
+      279,
+      240
+    ]
+  },
+  "reliquary": {
+    "path": "res://assets/art/complete/props_harbor.png",
+    "region": [
+      1027,
+      435,
+      360,
+      260
+    ]
+  },
+  "hatch": {
+    "path": "res://assets/art/complete/props_harbor.png",
+    "region": [
+      86,
+      729,
+      349,
+      328
+    ]
+  },
+  "crank": {
+    "path": "res://assets/art/complete/props_harbor.png",
+    "region": [
+      636,
+      724,
+      256,
+      334
+    ]
+  },
+  "rebar": {
+    "path": "res://assets/art/complete/props_harbor.png",
+    "region": [
+      1030,
+      769,
+      355,
+      288
+    ]
+  },
+  "signal_box": {
+    "path": "res://assets/art/complete/props_mechanical.png",
+    "region": [
+      106,
+      31,
+      238,
+      349
+    ]
+  },
+  "hoist_brake": {
+    "path": "res://assets/art/complete/props_mechanical.png",
+    "region": [
+      471,
+      78,
+      356,
+      282
+    ]
+  },
+  "theatre_switch": {
+    "path": "res://assets/art/complete/props_mechanical.png",
+    "region": [
+      964,
+      21,
+      196,
+      372
+    ]
+  },
+  "hand_valve": {
+    "path": "res://assets/art/complete/props_mechanical.png",
+    "region": [
+      133,
+      407,
+      225,
+      397
+    ]
+  },
+  "relay_mast": {
+    "path": "res://assets/art/complete/props_mechanical.png",
+    "region": [
+      557,
+      355,
+      139,
+      451
+    ]
+  },
+  "bale_stack": {
+    "path": "res://assets/art/complete/props_mechanical.png",
+    "region": [
+      857,
+      483,
+      362,
+      273
+    ]
+  },
+  "barrier": {
+    "path": "res://assets/art/complete/props_mechanical.png",
+    "region": [
+      16,
+      871,
+      418,
+      260
+    ]
+  },
+  "smart_gate": {
+    "path": "res://assets/art/complete/props_mechanical.png",
+    "region": [
+      495,
+      819,
+      268,
+      394
+    ]
+  },
+  "tool_door": {
+    "path": "res://assets/art/complete/props_mechanical.png",
+    "region": [
+      911,
+      805,
+      256,
+      409
+    ]
+  },
+  "route_light": {
+    "path": "res://assets/art/complete/props_misc.png",
+    "region": [
+      156,
+      14,
+      115,
+      363
+    ],
+    "anchors": {
+      "lens": [
+        191,
+        87
+      ]
+    }
+  },
+  "tide_gauge": {
+    "path": "res://assets/art/complete/props_misc.png",
+    "region": [
+      476,
+      15,
+      98,
+      370
+    ]
+  },
+  "news_desk": {
+    "path": "res://assets/art/complete/props_misc.png",
+    "region": [
+      738,
+      24,
+      340,
+      361
+    ],
+    "anchors": {
+      "screen_tl": [
+        884,
+        119
+      ],
+      "screen_tr": [
+        934,
+        136
+      ],
+      "screen_bl": [
+        874,
+        174
+      ]
+    }
+  },
+  "paper_slip": {
+    "path": "res://assets/art/complete/props_misc.png",
+    "region": [
+      1174,
+      148,
+      227,
+      156
+    ]
+  },
+  "laundry": {
+    "path": "res://assets/art/complete/props_misc.png",
+    "region": [
+      16,
+      437,
+      385,
+      242
+    ]
+  },
+  "rose": {
+    "path": "res://assets/art/complete/props_misc.png",
+    "region": [
+      426,
+      404,
+      293,
+      290
+    ]
+  },
+  "shutter": {
+    "path": "res://assets/art/complete/props_misc.png",
+    "region": [
+      761,
+      417,
+      323,
+      270
+    ]
+  },
+  "bridge_rebar": {
+    "path": "res://assets/art/complete/props_misc.png",
+    "region": [
+      1122,
+      427,
+      311,
+      261
+    ]
+  },
+  "council": {
+    "path": "res://assets/art/complete/council_v2.png",
+    "region": [
+      173,
+      159,
+      1338,
+      671
+    ]
+  },
+  "ladder": {
+    "path": "res://assets/art/complete/props_misc.png",
+    "region": [
+      563,
+      706,
+      117,
+      365
+    ]
+  },
+  "lantern_housing": {
+    "path": "res://assets/art/complete/props_misc.png",
+    "region": [
+      867,
+      735,
+      141,
+      311
+    ],
+    "anchors": {
+      "lens": [
+        939,
+        917
+      ]
+    }
+  },
+  "valve_wheel": {
+    "path": "res://assets/art/complete/props_misc.png",
+    "region": [
+      1152,
+      756,
+      265,
+      267
+    ]
+  },
+  "noor": {
+    "path": "res://assets/art/complete/civilians.png",
+    "region": [
+      166,
+      23,
+      220,
+      482
+    ],
+    "anchors": {
+      "lantern": [
+        217,
+        347
+      ]
+    }
+  },
+  "teo": {
+    "path": "res://assets/art/complete/civilians.png",
+    "region": [
+      675,
+      38,
+      178,
+      461
+    ],
+    "anchors": {
+      "tablet": [
+        815,
+        196
+      ],
+      "glasses": [
+        787,
+        97
+      ]
+    }
+  },
+  "survivor": {
+    "path": "res://assets/art/complete/civilians.png",
+    "region": [
+      1153,
+      22,
+      188,
+      475
+    ],
+    "anchors": {
+      "ear": [
+        1218,
+        81
+      ],
+      "hand": [
+        1288,
+        300
+      ]
+    }
+  },
+  "wardfolk": {
+    "path": "res://assets/art/complete/civilians.png",
+    "region": [
+      167,
+      525,
+      253,
+      470
+    ],
+    "anchors": {
+      "lantern": [
+        394,
+        645
+      ]
+    }
+  },
+  "noor_seated": {
+    "path": "res://assets/art/complete/civilians.png",
+    "region": [
+      589,
+      595,
+      358,
+      321
+    ],
+    "anchors": {
+      "lantern": [
+        895,
+        818
+      ]
+    }
+  },
+  "noor_downed": {
+    "path": "res://assets/art/complete/civilians.png",
+    "region": [
+      1042,
+      687,
+      459,
+      229
+    ],
+    "anchors": {
+      "lantern": [
+        1475,
+        817
+      ]
+    }
+  },
+  "operator_front_idle": {
+    "path": "res://assets/art/complete/operator_motion.png",
+    "region": [
+      102,
+      64,
+      191,
+      418
+    ],
+    "anchors": {
+      "ear": [
+        229,
+        156
+      ]
+    }
+  },
+  "operator_front_step1": {
+    "path": "res://assets/art/complete/operator_motion.png",
+    "region": [
+      472,
+      64,
+      232,
+      406
+    ],
+    "anchors": {
+      "ear": [
+        616,
+        145
+      ]
+    }
+  },
+  "operator_front_step2": {
+    "path": "res://assets/art/complete/operator_motion.png",
+    "region": [
+      841,
+      68,
+      235,
+      411
+    ],
+    "anchors": {
+      "ear": [
+        998,
+        145
+      ]
+    }
+  },
+  "operator_back_idle": {
+    "path": "res://assets/art/complete/operator_motion.png",
+    "region": [
+      1254,
+      71,
+      202,
+      411
+    ],
+    "anchors": {
+      "ear": [
+        1410,
+        145
+      ]
+    }
+  },
+  "operator_back_step1": {
+    "path": "res://assets/art/complete/operator_motion.png",
+    "region": [
+      76,
+      556,
+      236,
+      401
+    ],
+    "anchors": {
+      "ear": [
+        239,
+        634
+      ]
+    }
+  },
+  "operator_back_step2": {
+    "path": "res://assets/art/complete/operator_motion.png",
+    "region": [
+      467,
+      556,
+      220,
+      401
+    ],
+    "anchors": {
+      "ear": [
+        619,
+        638
+      ]
+    }
+  },
+  "operator_dodge": {
+    "path": "res://assets/art/complete/operator_motion.png",
+    "region": [
+      807,
+      653,
+      345,
+      231
+    ],
+    "anchors": {
+      "ear": [
+        1004,
+        723
+      ]
+    }
+  },
+  "operator_downed": {
+    "path": "res://assets/art/complete/operator_motion.png",
+    "region": [
+      1127,
+      747,
+      371,
+      144
+    ],
+    "anchors": {
+      "ear": [
+        1429,
+        816
+      ]
+    }
+  },
+  "carry_front_idle": {
+    "path": "res://assets/art/complete/operator_carry.png",
+    "region": [
+      149,
+      29,
+      359,
+      572
+    ],
+    "anchors": {
+      "ear": [
+        369,
+        155
+      ],
+      "lantern": [
+        417,
+        384
+      ]
+    }
+  },
+  "carry_front_step": {
+    "path": "res://assets/art/complete/operator_carry.png",
+    "region": [
+      771,
+      29,
+      362,
+      575
+    ],
+    "anchors": {
+      "ear": [
+        985,
+        155
+      ],
+      "lantern": [
+        1040,
+        383
+      ]
+    }
+  },
+  "carry_back_idle": {
+    "path": "res://assets/art/complete/operator_carry.png",
+    "region": [
+      151,
+      645,
+      336,
+      576
+    ],
+    "anchors": {
+      "ear": [
+        413,
+        726
+      ],
+      "lantern": [
+        208,
+        979
+      ]
+    }
+  },
+  "carry_back_step": {
+    "path": "res://assets/art/complete/operator_carry.png",
+    "region": [
+      779,
+      642,
+      321,
+      605
+    ],
+    "anchors": {
+      "ear": [
+        1026,
+        727
+      ],
+      "lantern": [
+        824,
+        979
+      ]
+    }
+  },
+  "custodian_front": {
+    "path": "res://assets/art/complete/enemies_front.png",
+    "region": [
+      147,
+      81,
+      340,
+      370
+    ],
+    "anchors": {
+      "lamp": [
+        327,
+        116
+      ]
+    }
+  },
+  "clerk_front": {
+    "path": "res://assets/art/complete/enemies_front.png",
+    "region": [
+      692,
+      14,
+      161,
+      470
+    ],
+    "anchors": {
+      "screen": [
+        787,
+        134
+      ]
+    }
+  },
+  "lamplighter_front": {
+    "path": "res://assets/art/complete/enemies_front.png",
+    "region": [
+      1088,
+      12,
+      286,
+      500
+    ],
+    "anchors": {
+      "lens": [
+        1270,
+        81
+      ]
+    }
+  },
+  "salvager_front": {
+    "path": "res://assets/art/complete/enemies_front.png",
+    "region": [
+      84,
+      546,
+      403,
+      379
+    ]
+  },
+  "sterilizer_front": {
+    "path": "res://assets/art/complete/enemies_front.png",
+    "region": [
+      604,
+      553,
+      328,
+      366
+    ]
+  },
+  "warden_front": {
+    "path": "res://assets/art/complete/enemies_front.png",
+    "region": [
+      1088,
+      512,
+      354,
+      492
+    ],
+    "anchors": {
+      "eye": [
+        1356,
+        578
+      ],
+      "baton": [
+        1101,
+        515
+      ]
+    }
+  },
+  "custodian_back": {
+    "path": "res://assets/art/complete/enemies_back.png",
+    "region": [
+      121,
+      124,
+      308,
+      333
+    ],
+    "anchors": {
+      "lamp": [
+        271,
+        146
+      ]
+    }
+  },
+  "clerk_back": {
+    "path": "res://assets/art/complete/enemies_back.png",
+    "region": [
+      684,
+      21,
+      185,
+      476
+    ],
+    "anchors": {
+      "screen": [
+        748,
+        156
+      ]
+    }
+  },
+  "lamplighter_back": {
+    "path": "res://assets/art/complete/enemies_back.png",
+    "region": [
+      1161,
+      16,
+      259,
+      492
+    ],
+    "anchors": {
+      "lens": [
+        1273,
+        80
+      ]
+    }
+  },
+  "salvager_back": {
+    "path": "res://assets/art/complete/enemies_back.png",
+    "region": [
+      60,
+      565,
+      390,
+      373
+    ]
+  },
+  "sterilizer_back": {
+    "path": "res://assets/art/complete/enemies_back.png",
+    "region": [
+      592,
+      576,
+      366,
+      353
+    ]
+  },
+  "warden_back": {
+    "path": "res://assets/art/complete/enemies_back.png",
+    "region": [
+      1114,
+      536,
+      363,
+      474
+    ],
+    "anchors": {
+      "eye": [
+        1298,
+        575
+      ],
+      "baton": [
+        1408,
+        548
+      ]
+    }
+  },
+  "conductor": {
+    "path": "res://assets/art/complete/boss_bodies.png",
+    "region": [
+      35,
+      11,
+      521,
+      476
+    ],
+    "anchors": {
+      "signal_left": [
+        155,
+        129
+      ],
+      "signal_middle": [
+        291,
+        121
+      ],
+      "signal_right": [
+        427,
+        125
+      ]
+    }
+  },
+  "crane_tower": {
+    "path": "res://assets/art/complete/boss_bodies.png",
+    "region": [
+      658,
+      3,
+      232,
+      498
+    ]
+  },
+  "surgeon_table": {
+    "path": "res://assets/art/complete/boss_bodies.png",
+    "region": [
+      1061,
+      108,
+      436,
+      371
+    ]
+  },
+  "lung": {
+    "path": "res://assets/art/complete/boss_bodies.png",
+    "region": [
+      31,
+      526,
+      509,
+      435
+    ]
+  },
+  "editor": {
+    "path": "res://assets/art/complete/boss_bodies.png",
+    "region": [
+      564,
+      521,
+      518,
+      464
+    ],
+    "anchors": {
+      "screen_tl": [
+        898,
+        579
+      ],
+      "screen_tr": [
+        964,
+        636
+      ],
+      "screen_br": [
+        942,
+        692
+      ],
+      "screen_bl": [
+        870,
+        634
+      ]
+    }
+  },
+  "warden_prime": {
+    "path": "res://assets/art/complete/boss_bodies.png",
+    "region": [
+      1104,
+      504,
+      382,
+      495
+    ]
+  },
+  "conductor_housing": {
+    "path": "res://assets/art/complete/boss_parts.png",
+    "region": [
+      48,
+      12,
+      387,
+      381
+    ],
+    "anchors": {
+      "lens": [
+        140,
+        272
+      ]
+    }
+  },
+  "crane_cab": {
+    "path": "res://assets/art/complete/boss_parts.png",
+    "region": [
+      530,
+      0,
+      354,
+      408
+    ]
+  },
+  "surgeon_hub": {
+    "path": "res://assets/art/complete/boss_parts.png",
+    "region": [
+      965,
+      50,
+      365,
+      334
+    ]
+  },
+  "arm_link": {
+    "path": "res://assets/art/complete/boss_parts.png",
+    "region": [
+      36,
+      543,
+      417,
+      103
+    ]
+  },
+  "surgeon_lamp": {
+    "path": "res://assets/art/complete/boss_parts.png",
+    "region": [
+      525,
+      413,
+      356,
+      328
+    ],
+    "anchors": {
+      "lens": [
+        701,
+        655
+      ]
+    }
+  },
+  "lung_bellows": {
+    "path": "res://assets/art/complete/boss_parts.png",
+    "region": [
+      1046,
+      430,
+      222,
+      319
+    ]
+  },
+  "press_roller": {
+    "path": "res://assets/art/complete/boss_parts.png",
+    "region": [
+      24,
+      870,
+      441,
+      149
+    ]
+  },
+  "paper_web": {
+    "path": "res://assets/art/complete/boss_parts.png",
+    "region": [
+      506,
+      872,
+      404,
+      137
+    ]
+  },
+  "warden_mast": {
+    "path": "res://assets/art/complete/boss_parts.png",
+    "region": [
+      1088,
+      746,
+      144,
+      390
+    ],
+    "anchors": {
+      "lens": [
+        1179,
+        808
+      ]
+    }
+  },
+  "baton": {
+    "path": "res://assets/art/complete/tools_cores.png",
+    "region": [
+      21,
+      204,
+      483,
+      220
+    ]
+  },
+  "drone": {
+    "path": "res://assets/art/complete/tools_cores.png",
+    "region": [
+      529,
+      63,
+      478,
+      349
+    ]
+  },
+  "gauntlet": {
+    "path": "res://assets/art/complete/tools_cores.png",
+    "region": [
+      1033,
+      95,
+      480,
+      306
+    ]
+  },
+  "jammer": {
+    "path": "res://assets/art/complete/tools_cores.png",
+    "region": [
+      98,
+      461,
+      310,
+      513
+    ]
+  },
+  "power_core": {
+    "path": "res://assets/art/complete/tools_cores.png",
+    "region": [
+      636,
+      495,
+      246,
+      458
+    ]
+  },
+  "truth_core": {
+    "path": "res://assets/art/complete/tools_cores.png",
+    "region": [
+      1085,
+      556,
+      372,
+      367
+    ]
+  },
+  "hospital_frame": {
+    "path": "res://assets/art/complete/facade_modules.png",
+    "region": [
+      47,
+      10,
+      406,
+      502
+    ]
+  },
+  "pump_frame": {
+    "path": "res://assets/art/complete/facade_modules.png",
+    "region": [
+      546,
+      10,
+      445,
+      466
+    ]
+  },
+  "boat_frame": {
+    "path": "res://assets/art/complete/facade_modules.png",
+    "region": [
+      1076,
+      22,
+      425,
+      458
+    ]
+  },
+  "civic_door": {
+    "path": "res://assets/art/complete/facade_modules.png",
+    "region": [
+      41,
+      512,
+      423,
+      471
+    ]
+  },
+  "glass_frame": {
+    "path": "res://assets/art/complete/facade_modules.png",
+    "region": [
+      551,
+      513,
+      434,
+      470
+    ]
+  },
+  "laundry_panel": {
+    "path": "res://assets/art/complete/facade_modules.png",
+    "region": [
+      1070,
+      519,
+      437,
+      463
+    ]
+  },
+  "sky_kestrel": {
+    "path": "res://assets/art/complete/panoramas_a.png",
+    "region": [
+      1,
+      1,
+      885,
+      442
+    ]
+  },
+  "sky_loop": {
+    "path": "res://assets/art/complete/panoramas_a.png",
+    "region": [
+      888,
+      1,
+      885,
+      442
+    ]
+  },
+  "sky_tideworks": {
+    "path": "res://assets/art/complete/panoramas_a.png",
+    "region": [
+      1,
+      445,
+      885,
+      441
+    ]
+  },
+  "sky_mercy": {
+    "path": "res://assets/art/complete/panoramas_a.png",
+    "region": [
+      888,
+      445,
+      885,
+      441
+    ]
+  },
+  "sky_vellum": {
+    "path": "res://assets/art/complete/panoramas_b.png",
+    "region": [
+      1,
+      1,
+      722,
+      360
+    ]
+  },
+  "sky_greywater": {
+    "path": "res://assets/art/complete/panoramas_b.png",
+    "region": [
+      725,
+      1,
+      722,
+      360
+    ]
+  },
+  "sky_harbor": {
+    "path": "res://assets/art/complete/panoramas_b.png",
+    "region": [
+      1449,
+      1,
+      722,
+      360
+    ]
+  },
+  "sky_spire": {
+    "path": "res://assets/art/complete/panoramas_b.png",
+    "region": [
+      1,
+      363,
+      722,
+      360
+    ]
+  },
+  "sky_ark": {
+    "path": "res://assets/art/complete/panoramas_b.png",
+    "region": [
+      725,
+      363,
+      722,
+      360
+    ]
+  },
+  "sky_title": {
+    "path": "res://assets/art/complete/panoramas_b.png",
+    "region": [
+      1449,
+      363,
+      722,
+      360
+    ]
+  },
+  "city_map": {
+    "path": "res://assets/art/complete/city_map_v2.png",
+    "region": [
+      1,
+      1,
+      1670,
+      939
+    ]
+  },
+  "title_painting": {
+    "path": "res://assets/art/complete/title_painting.png",
+    "region": [
+      1,
+      1,
+      1670,
+      939
+    ]
+  },
+  "mat_steps": {
+    "path": "res://assets/art/complete/ground_details.png",
+    "region": [
+      6,
+      6,
+      406,
+      615
+    ]
+  },
+  "mat_staff": {
+    "path": "res://assets/art/complete/ground_details.png",
+    "region": [
+      424,
+      6,
+      406,
+      615
+    ]
+  },
+  "mat_asphalt": {
+    "path": "res://assets/art/complete/ground_details.png",
+    "region": [
+      842,
+      6,
+      406,
+      615
+    ]
+  },
+  "mat_quay": {
+    "path": "res://assets/art/complete/ground_details.png",
+    "region": [
+      6,
+      633,
+      406,
+      615
+    ]
+  },
+  "mat_foundation": {
+    "path": "res://assets/art/complete/ground_details.png",
+    "region": [
+      424,
+      633,
+      406,
+      615
+    ]
+  },
+  "mat_seawall": {
+    "path": "res://assets/art/complete/ground_details.png",
+    "region": [
+      842,
+      633,
+      406,
+      615
+    ]
+  },
+  "kestrel_lawn": {
+    "path": "res://assets/art/kestrel/lawn.png",
+    "region": [
+      0,
+      0,
+      1254,
+      1254
+    ]
+  },
+  "kestrel_cobble": {
+    "path": "res://assets/art/kestrel/wet_stone.png",
+    "region": [
+      0,
+      0,
+      1254,
+      1254
+    ]
+  },
+  "kestrel_paving": {
+    "path": "res://assets/art/kestrel/paving.png",
+    "region": [
+      0,
+      0,
+      1254,
+      1254
+    ]
+  },
+  "kestrel_wall": {
+    "path": "res://assets/art/kestrel/limestone_wall.png",
+    "region": [
+      0,
+      0,
+      1254,
+      1254
+    ]
+  },
+  "kestrel_roof": {
+    "path": "res://assets/art/kestrel/slate_roof.png",
+    "region": [
+      0,
+      0,
+      1254,
+      1254
+    ]
+  },
+  "kestrel_hedge": {
+    "path": "res://assets/art/kestrel/hedge.png",
+    "region": [
+      121,
+      187,
+      1115,
+      829
+    ]
+  },
+  "kestrel_planter": {
+    "path": "res://assets/art/kestrel/planter.png",
+    "region": [
+      253,
+      224,
+      626,
+      934
+    ]
+  },
+  "kestrel_railing": {
+    "path": "res://assets/art/kestrel/balcony.png",
+    "region": [
+      40,
+      218,
+      582,
+      447
+    ]
+  },
+  "kestrel_window": {
+    "path": "res://assets/art/kestrel/window_ornament.png",
+    "region": [
+      191,
+      71,
+      571,
+      1511
+    ]
+  },
+  "kestrel_door": {
+    "path": "res://assets/art/kestrel/door_ornament.png",
+    "region": [
+      58,
+      26,
+      772,
+      1675
+    ]
+  },
+  "kestrel_balcony": {
+    "path": "res://assets/art/kestrel/balcony.png",
+    "region": [
+      40,
+      218,
+      1698,
+      447
+    ]
+  },
+  "kestrel_lamp": {
+    "path": "res://assets/art/kestrel/lamp_housing.png",
+    "region": [
+      301,
+      34,
+      341,
+      1594
+    ]
+  }
+}
