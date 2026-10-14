@@ -266,3 +266,26 @@ func test_it_says_how_near_only_when_it_saw() -> void:
 					var reach := str(seen.get("reach", ""))
 					check(reach == "close" or not close_lines.has(l.id), "%s only up close (seen %s)" % [l.id, seen])
 					check(reach == "far" or not far_lines.has(l.id), "%s only at range (seen %s)" % [l.id, seen])
+
+
+## A line about a machine's job is said only for that machine: in each district with more than one kind,
+## every kind gets something said, and never another kind's line.
+func test_it_says_what_it_killed_only_when_it_was() -> void:
+	var kinds_of: Dictionary[String, Array] = {
+		"tideworks": ["custodian", "salvager"], "greywater": ["custodian", "salvager"],
+		"vellum": ["custodian", "clerk"], "mercy": ["custodian", "sterilizer"],
+		"loop": ["custodian", ""], "kestrel": ["custodian", ""],
+	}
+	for district: String in kinds_of:
+		for kind: String in kinds_of[district]:
+			selector.recent.clear()
+			var rng := _rng(11)
+			for i: int in 12:
+				for event: StringName in [&"kill", &"multi_kill"]:
+					# "": two of different kinds at once.
+					var seen := {"kind": kind} if kind != "" else {}
+					var l := selector.pick(event, 0.0, rng, district, &"neutral", seen)
+					check(l != null, "%s: something for a %s" % [district, kind])
+					if l != null:
+						var said := str(l.when.get("kind", kind))
+						check_eq(said, kind, "%s: %s is about a %s, not a %s" % [district, l.id, said, kind])

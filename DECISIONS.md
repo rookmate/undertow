@@ -982,3 +982,5 @@ Asked of the user on 2026-10-09 and answered the same day.
      that it happened, not what you did around it, so their lines say what the Steward expects of you or
      what you beat, not where you stood or what you did next. A beat heard leaves silence behind it,
      except a district's one revisit greeting. Two kills at once are "close" or "far" only if both were.
+     A kill also knows what died (a Custodian, a Salvager, a Clerk, a Sterilizer), so a line about a
+     machine's job ("It was mopping a street the sea had already taken.") is said only for that machine.

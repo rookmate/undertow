@@ -38,8 +38,12 @@ func after_each() -> void:
 
 ## Kills a staged Custodian at `tiles` away, the way the baton or drone would.
 func _kill_at(tiles: int) -> void:
-	var c := level.add_enemy(Custodian.new(), level.player.cell() + Vector2i(0, -tiles), Custodian.MAX_INTEGRITY)
-	c.take_hit(1000.0, Vector2(0, -1), 0.0, 0.0)
+	await _kill(Custodian.new(), Custodian.MAX_INTEGRITY, tiles)
+
+
+func _kill(enemy: Enemy, integrity: float, tiles: int) -> void:
+	var e := level.add_enemy(enemy, level.player.cell() + Vector2i(0, -tiles), integrity)
+	e.take_hit(1000.0, Vector2(0, -1), 0.0, 0.0)
 	await wait_frames(1)
 
 
@@ -172,13 +176,51 @@ func test_it_knows_what_youve_read() -> void:
 func test_two_at_once_are_near_only_if_both_were() -> void:
 	await _start_run()
 	await _kill_at(4)
-	check_eq(Narrator.last_seen, {"reach": "far"}, "a kill at range")
+	check_eq(Narrator.last_seen.get("reach", ""), "far", "a kill at range")
 	await _kill_at(1)
-	check_eq(Narrator.last_seen, {}, "then one up close: two at once, but not both near")
+	check_eq(Narrator.last_seen.get("reach", ""), "", "then one up close: two at once, but not both near")
 	await wait_seconds(StewardWatch.MULTI_KILL_WINDOW + 0.2)
 	await _kill_at(1)
-	check_eq(Narrator.last_seen, {"reach": "close"}, "a kill up close")
+	check_eq(Narrator.last_seen.get("reach", ""), "close", "a kill up close")
 	await _kill_at(1)
-	check_eq(Narrator.last_seen, {"reach": "close"}, "and another: both up close")
+	check_eq(Narrator.last_seen.get("reach", ""), "close", "and another: both up close")
 	await _kill_at(2)
-	check_eq(Narrator.last_seen, {}, "in between, it doesn't say")
+	check_eq(Narrator.last_seen.get("reach", ""), "", "in between, it doesn't say")
+
+
+## What it killed, it can say (a line about a Custodian's mopping is for a Custodian); two at once, only
+## if both were the same.
+func test_it_knows_what_it_killed() -> void:
+	await _start_run()
+	await _kill_at(2)
+	check_eq(Narrator.last_seen.get("kind", ""), "custodian", "a Custodian")
+	await _kill(Clerk.new(), Clerk.MAX_INTEGRITY, 2)
+	check_eq(Narrator.last_seen.get("kind", ""), "", "then a Clerk: two at once, not of a kind")
+	await wait_seconds(StewardWatch.MULTI_KILL_WINDOW + 0.2)
+	await _kill(Clerk.new(), Clerk.MAX_INTEGRITY, 2)
+	check_eq(Narrator.last_seen.get("kind", ""), "clerk", "a Clerk")
+	await _kill(Clerk.new(), Clerk.MAX_INTEGRITY, 2)
+	check_eq(Narrator.last_seen.get("kind", ""), "clerk", "two Clerks")
+
+
+## A boss's end is its own (boss_down): a kill just after it isn't "two at once".
+func test_a_boss_is_no_part_of_a_pair() -> void:
+	GameState.new_run()
+	Narrator.reset_session()
+	level = (load("res://game/level/vellum_street.tscn") as PackedScene).instantiate() as Level
+	add_child(level)
+	await wait_frames(3)
+	var boss := level.boss
+	check(boss != null, "the Editor")
+	var said: Array[String] = []
+	var listen := func(id: String, _t: String) -> void: said.append(id)
+	Narrator.line_spoken.connect(listen)
+	boss.call(&"_die")
+	await wait_frames(1)
+	Sound.hush()
+	await _kill_at(2)
+	Narrator.line_spoken.disconnect(listen)
+	check_eq(Narrator.last_seen.get("kind", ""), "custodian", "a Custodian, on its own")
+	for id: String in said:
+		for l: LineSelector.Line in Narrator.selector.all_lines():
+			check(not (l.id == id and l.event == &"multi_kill"), "and nothing about two at once (%s)" % id)

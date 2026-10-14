@@ -431,3 +431,352 @@ I reviewed both requested diffs, the writing criteria and relevant callers witho
 2. **The last play-by-play kill.** KILL_N1 "I gave that one a name, once. I'll stop using it."
 
 Five lines rewritten and voiced.
+
+## Round 7 findings (verbatim from sol_analyst)
+
+Round 6's findings were fixed correctly, but milestone 6 is still not ready to close. Two P2 defects and one P3 writing issue remain. No P0 or P1 findings. These are remaining milestone issues, not regressions introduced by the eight uncommitted rewrites.
+
+1. **P2. Some reactive lines still describe a location or attack the event never establishes.**
+
+   Confirmed: [KES_LOW_B1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:989) says, "Nearly at the top, and nearly done in." [StewardWatch._on_hurt](/home/homebox/Documents/rookmate/undertow/game/level/steward_watch.gd:119) requests `low_integrity` from health alone. Kestrel has Custodians on the [bottom terrace beside the starting area](/home/homebox/Documents/rookmate/undertow/data/levels/kestrel_heights.txt:62), so the line can announce progress up the hill before the player has climbed it.
+
+   Confirmed: [MERCY_DODGE_N1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2038) says, "That cloud would have gone straight to your lungs." However, [SlowMo._threat_near](/home/homebox/Documents/rookmate/undertow/game/level/slow_mo.gd:75) accepts any nearby winding-up enemy. Mercy also contains Custodians, whose [attack is a melee lunge](/home/homebox/Documents/rookmate/undertow/game/enemies/custodian.gd:59). The [dodge notification](/home/homebox/Documents/rookmate/undertow/game/level/steward_watch.gd:35) supplies no attack type.
+
+   Read-only models of the selection branches select `KES_LOW_B1` for a fresh bold Kestrel low-health request and `MERCY_DODGE_N1` for a fresh neutral Mercy dodge request, regardless of those missing observations.
+
+   The inferred consequence is another contradiction between the supposedly attentive voice and the action on screen. Encounter frequency is unmeasured. Rewrite the literal claims or gate them on the observations they need.
+
+2. **P2. The Vellum can say its press still runs after the player stopped it.**
+
+   Confirmed: [VEL_IDLE_N1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2923) says, "The press downstairs still runs. One page, over and over." It has no condition.
+
+   The defeat line explicitly says [the press has stopped](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:3063), and the learned revisit greeting says [it is quiet now](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:3394). On a revisit, [BossEncounter.build](/home/homebox/Documents/rookmate/undertow/game/level/boss_encounter.gd:21) leaves the Editor defeated, but idle requests continue unchanged.
+
+   A read-only selection model with `revisit: true` and `VEL_IDLE_N2` already heard selects `VEL_IDLE_N1` next for the neutral tone. Remembering narration history does not retire this ordinary repeating line.
+
+   The contradiction is confirmed from the content and selection rules. Its frequency in play remains unknown. Make the line valid after the defeat, or restrict it to the state where the press still runs.
+
+3. **P3. A reachable generic kill fallback still provides only observation and stock praise.**
+
+   Confirmed: [KILL_B2](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:175) remains "Right up close. Not many would." Its distance condition now makes the observation accurate, but the line supplies no history, motive or continuing story beyond a generic compliment.
+
+   That fails the pass's [subtext and flattery criteria](/home/homebox/Documents/rookmate/undertow/design/writing-review.md:85). This is a writing judgment against those criteria, not a preference about rhythm.
+
+   It is reachable through the milestone's [generic fallback selection](/home/homebox/Documents/rookmate/undertow/core/line_selector.gd:189). A source-branch model selects it for a close bold Kestrel kill after that district's bold lines and the other eligible generic bold lines have been heard. At the milestone baseline, a district's own kill pool excluded this fallback. Rewrite or retire it.
+
+The round 6 repairs themselves hold. `GREY_LOW_B1` now describes a district that floods without asserting the current phase. `KILL_N1` adds the Steward's attachment to the machine. The additional idle and respawn rewrites remove the erroneous cycle length and unsupported rescue circumstances. Round 5's tide-count and boss-line repairs also remain correct.
+
+All **681 Steward lines** have clips and matching manifest text and settings hashes, with no orphan manifest entries. All eight updated Ogg files changed and decode cleanly. The earlier read-state, Continue, spent-beat, purpose-filtering, pair-distance and story-protection repairs still hold. Gold and serif ownership checks pass in the current test log. I found no weakened assertion or removed gate check.
+
+Low-value nits remain separate: repeated openings and shared district sentence templates are noticeable when reading the pools together, but do not warrant further findings.
+
+I reviewed both requested diffs and the relevant callers without editing anything. Current primary logs confirm clean import, **539 passing tests** and the **30-second native smoke pass**. Both diffs pass `git diff --check`. The current campaign has reached the Tideworks but has no final result; the remaining scenario logs predate these fixes, so the full gate is still unverified on this tree. The selection checks above were source-branch models, not engine reproductions. Real actor delivery and narration density in play remain unverified.
+
+## Round 7 fixes, and an audit of every pool
+
+Each round since round 2 has found two or three more lines of the same kind, so this time every pooled
+line was read against what its event knows (a kill: its distance; a hit or low health: your health; a
+close dodge: that it nearly landed; idle: that you stood still; halfway: that you got there; a boss
+down: which boss), not just the ones named. Sixteen rewritten and voiced:
+
+1. **Sol's.** KES_LOW_B1 "Nearly done in, on a hill built for strolling. Slow down." (not "nearly at
+   the top"); MERCY_DODGE_N1 "That one nearly had you. In here, I'd have had to write it up." (not a
+   cloud: Mercy has Custodians too); VEL_IDLE_N1 "The press downstairs ran every night for eleven years.
+   One page, over and over. I never read it." (true before and after you stop the Editor); KILL_B2
+   "Right up close. I designed them for people who'd keep their distance."
+2. **Dodges that named the attack.** TIDE_DODGE_N1 (a hook), VEL_DODGE_N1 (a bale), VEL_DODGE_B2 (a
+   throw), TIDE_DODGE_C2 (a grab) now say only that it nearly landed.
+3. **Idle.** Standing still knows nothing about what's near or what's left: IDLE_C1 "Rest a moment. I'll
+   tell you if anything moves." (not "Nothing's close"); IDLE_B1, KES_IDLE_B1, TIDE_IDLE_B1 and
+   MERCY_IDLE_B1 no longer promise that enemies will come ("If any are left, they'll find you.").
+4. **The rest.** LOOP_LOW_B1 (not "you've done it before"), MERCY_HURT_C1 (not "the mist"),
+   ARK_IDLE_N2 "I can still count heads. I do, every hour." (not "Everyone's in": Noor may be out in the
+   Ward).
+
+Left as they are, with the reason: the off-path lines name each district's off-path area, which is
+what they were written for; the entry, Reliquary and boss lines are said at those places; the
+voice-back questions are its suspicion of what you did out of its hearing.
+
+## Round 8 findings (verbatim from sol_analyst)
+
+This round was asked to check every pooled line, not a sample.
+
+Round 7’s three named findings were fixed correctly, but milestone 6 is not ready to close. The additional pool audit remains incomplete: `VEL_DODGE_B2` still claims anticipation after its rewrite.
+
+I checked all **465 pooled lines across all 17 events** against their callers, selection conditions and relevant world state. The remaining lines worth fixing are listed below, grouped by cause. No P0 or P1 findings.
+
+1. **P2. Dodge lines still claim anticipation that the event does not establish.**
+
+   | Line | Unsupported claim |
+   |---|---|
+   | [DODGE_C2](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:253) | “You saw it coming.” |
+   | [KES_DODGE_C1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:930) | “You saw that before I did.” |
+   | [MERCY_DODGE_C2](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2063) | “You read that one early.” |
+   | [GREY_DODGE_C2](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2446) | “You read that before it came.” |
+   | [VEL_DODGE_B2](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2815) | “You read it before it moved.” |
+   | [VEL_DODGE_C2](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2829) | “You saw it coming.” |
+
+   Confirmed: [SlowMo](/home/homebox/Documents/rookmate/undertow/game/level/slow_mo.gd:57) can trigger from rolling near a windup, an already moving projectile, or an attack striking existing roll invulnerability. [Operator.take_hit](/home/homebox/Documents/rookmate/undertow/game/player/operator.gd:299) emits `evaded` at that last moment. [StewardWatch](/home/homebox/Documents/rookmate/undertow/game/level/steward_watch.gd:35) then requests `dodge_close` without reporting reaction timing or whether the player anticipated that attack.
+
+   The round 7 rewrite removes the named throw from `VEL_DODGE_B2`, but preserves the unsupported timing claim. An already flying bale is a direct counterexample to “before it moved.” The other listed lines similarly credit foreknowledge that the event cannot distinguish from an incidental evasion.
+
+   Rewrite around the close dodge itself, the Steward’s intervention or its expectations. These are claims about this particular action, rather than broad judgments about the player.
+
+2. **P2. Four Vellum lines assume the enemy’s identity or an attack it performed.**
+
+   | Line | Unsupported claim |
+   |---|---|
+   | [VEL_KILL_N1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2698) | Calls the defeated unit “that clerk.” |
+   | [VEL_KILL_N3](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2712) | “It flashed the Feed at you.” |
+   | [VEL_KILL_C1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2753) | “Its screen’s gone dark.” |
+   | [VEL_MULTI_N1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2777) | Calls both defeated units “two clerks.” |
+
+   Confirmed: the Vellum contains both Custodians and Clerks, and its paper-lift hold also produces mixed waves. [Level._spawn_enemies](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:727) constructs the distinct families. [StewardWatch._on_enemy_died](/home/homebox/Documents/rookmate/undertow/game/level/steward_watch.gd:139) supplies distance, including the pair-distance check, but no enemy family or attack history.
+
+   A Custodian kill can therefore receive any of the three single-kill lines, and two Custodian kills can receive `VEL_MULTI_N1`. Even a genuine Clerk can die before flashing the Feed: [Clerk](/home/homebox/Documents/rookmate/undertow/game/enemies/clerk.gd:25) starts with a bale attack and alternates afterward.
+
+   Gate the identity and attack claims on those observations, or make the wording apply to either family.
+
+3. **P2. Three lines describe machinery without checking whether the stated change or state exists.**
+
+   - [GREY_KILL_N4](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2336) says, “It doesn’t know the pumps are off.” The player can already have completed `greywater_pumps`; on a completed district’s revisit, the restored Pumphouse also runs the pumps. [CoreChoice.apply](/home/homebox/Documents/rookmate/undertow/core/core_choice.gd:53) restores the district’s building, and the [Pumphouse’s own line](/home/homebox/Documents/rookmate/undertow/data/narration/steward_fixed.json:108) explicitly says people run the pumps again. The kill line has no corresponding condition.
+   - [MERCY_BACK_N1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2273) says, “The wards are still sealed.” The player can crank all the seals open while muted and then unmute. [WardSeal.interact](/home/homebox/Documents/rookmate/undertow/game/level/ward_seal.gd:64) leaves each opened door open; restoring the voice does not reseal it.
+   - [KES_BACK_B1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:1147) says, “The gate opened the moment you let me in.” A brief mute can end before the gate’s closing delay, so it never closed. [SmartGate](/home/homebox/Documents/rookmate/undertow/game/level/smart_gate.gd:9) also waits if the player occupies the gate.
+
+   Confirmed: [the unmute caller](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:171) reports only `voice_restored`, and [Narrator.context_for](/home/homebox/Documents/rookmate/undertow/autoload/narrator.gd:143) supplies none of these machinery states or transitions. All three lines remain eligible in the counterexamples above.
+
+4. **P2. Two lines still claim circumstances beyond the reported fight result.**
+
+   - [VEL_MULTI_C1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2791) says, “Two, and not a step closer than you needed.” Its `far` condition establishes the distance at each death. It does not establish the player’s earlier approach or that no closer steps were taken. Fighting near both enemies and retreating before each killing shot satisfies the condition. This retains the journey claim behind round 3’s “never came near” finding.
+   - [VEL_BOSSDOWN_B1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:3067) says, “It ran out of paper before you ran out of nerve.” The Editor dies through damage, not paper exhaustion. [Its bale production](/home/homebox/Documents/rookmate/undertow/game/bosses/editor.gd:310) has no paper supply, and [its death notification](/home/homebox/Documents/rookmate/undertow/game/bosses/editor.gd:341) reports only `boss_down`.
+
+   Confirmed: neither claim has supporting observation state. Rewrite the first around the verified distances and the second around the defeated press.
+
+5. **P2. Two checkpoint lines name a landmark that the checkpoint event does not identify.**
+
+   [GREY_CHECK_N1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2565) says it marked “the causeway”; [VEL_CHECK_N1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2948) says it marked “the bridge.” Both promise to return the player “here.”
+
+   Confirmed: [StewardWatch](/home/homebox/Documents/rookmate/undertow/game/level/steward_watch.gd:91) requests the district’s checkpoint pool on the first checkpoint cell reached, without passing which checkpoint it was. The maps have multiple checkpoints. Greywater’s [checkpoint beside the pump room](/home/homebox/Documents/rookmate/undertow/data/levels/greywater.txt:59) is not the causeway; the Vellum’s [west-street checkpoint](/home/homebox/Documents/rookmate/undertow/data/levels/vellum_street.txt:87) is well away from its footbridge.
+
+   The respawn location itself is correctly updated by [Level._update_checkpoint](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:286). The narration names the wrong place. Use a location-neutral checkpoint line or select wording for the actual checkpoint.
+
+6. **P2. A Tideworks hurt line states that nobody has been hurt immediately after an injury.**
+
+   [TIDE_HURT_C2](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:1709) says, “Careful. Nobody’s been hurt on this quay in five years.”
+
+   Confirmed: this line is requested because the player has just taken damage, and remains eligible after previous injuries too. Unlike a historical statement that the quay *went* five years without an injury, its present-perfect wording says the record remains intact.
+
+   Make the former safety record explicitly historical. This is a contradiction in the reported moment, not a request for another injury counter.
+
+7. **P3. Two checkpoint lines still provide only progress commentary and stock praise.**
+
+   - [CHECK_C1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:415): “Halfway. You’ve been careful. Keep being careful.”
+   - [TIDE_CHECK_C1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:1807): “One crossing at a time. You’ve been careful.”
+
+   Both remain reachable. The generic line follows a district’s fresh cautious line through [the fallback selection](/home/homebox/Documents/rookmate/undertow/core/line_selector.gd:180).
+
+   These add no history, motive or continuing story to the visible progress and compliment. That directly fails [the writing review’s subtext and flattery criteria](/home/homebox/Documents/rookmate/undertow/design/writing-review.md:85). Adding “crossing” does not repair it. This is a narrower writing finding than the observation defects above.
+
+The named round 7 repairs hold. `KES_LOW_B1` no longer invents progress up the hill; `MERCY_DODGE_N1` no longer identifies a cloud; `VEL_IDLE_N1` remains valid after the Editor’s defeat; and `KILL_B2` now adds the Steward’s design intent to its correctly gated distance observation.
+
+The earlier read-state, saved narration history, spent-beat, purpose-filtering, pair-distance and story-protection repairs remain in place. I found no weakened assertion or removed gate check in the reviewed writing changes. The current log confirms the gold ownership checks passed; round 7 changes no colour or font ownership.
+
+Independent checks confirmed **681 Steward lines**, matching manifest text and settings hashes, clips for every line, and no orphan manifest entries. All **sixteen** rewritten texts have changed Ogg files, and all sixteen recordings decode cleanly. Both requested diffs pass `git diff --check`.
+
+Low-value nits remain separate. Repeated openings and shared sentence templates are noticeable together, but are not additional blockers. `TIDE_REVISIT_N1`’s “a hundred times” is imprecise, but does not explicitly say “since you left,” so I would not report it as another confirmed elapsed-time defect. `VEL_IDLE_N1` can read as though the same page ran for eleven years; the bridge-and-auditor chronology makes that interpretation doubtful, but the line does not establish when the page changed. That is an inference and a clarification opportunity, rather than a confirmed chronology finding.
+
+The player-facing contradictions above follow from source and selection eligibility. Their frequency and effect on players are inferred; I did not reproduce them in the engine. Current primary logs confirm clean import, **539 passing tests** and the **30-second native smoke pass**. The current full gate is still running its campaign, so a completed gate on this tree remains unverified. Real actor delivery and narration density in play also remain unverified.
+
+## Round 8 fixes
+
+All of them, and the two nits that were cheap; 22 lines rewritten and voiced.
+
+1. **A close dodge: that it missed, not that you saw it coming.** DODGE_C2 "That one missed. I'd rather
+   they all did."; KES_DODGE_C1 "Missed. Up here they never missed. They never had to."; MERCY_DODGE_C2
+   "Missed. In here, a near miss went on the chart too."; GREY_DODGE_C2 "That would have been my job,
+   once. Keeping things from landing on people."; VEL_DODGE_B2 "Close. The Post would have run that as
+   a photograph."; VEL_DODGE_C2 "Missed. Good. I'd rather you read about danger than meet it."
+2. **The Vellum has Custodians too.** VEL_KILL_N1 "That one kept the Post in order for eleven years.";
+   VEL_KILL_N3 "A million people read the Feed here every morning. I wrote most of it."; VEL_KILL_C1
+   "Keep your eyes off the screens, even now."; VEL_MULTI_N1 "Two of them."
+3. **Machines whose state it isn't told.** GREY_KILL_N4 "It was still sweeping toward the drains. It
+   never knew what the pumps were doing."; MERCY_BACK_N1 "I sealed the wards to keep them safe. I'd
+   still have them sealed."; KES_BACK_B1 "Did you try the gates while I couldn't hear? They don't know
+   you."; and its twin KES_BACK_N1 "There. The Heights don't open a door without me."
+4. **A fight's result, not its course.** VEL_MULTI_C1 "Two, both at a distance. The Vellum always kept
+   its readers at arm's length."; VEL_BOSSDOWN_B1 "You stopped the press. Nobody's done that since it was
+   built. Remarkable."
+5. **Halfway doesn't know which checkpoint.** GREY_CHECK_N1 "I've marked this spot."; VEL_CHECK_N1
+   "I've marked this stretch of street."
+6. **The record is history.** TIDE_HURT_C2 "Careful. This quay went five years without anyone hurt,
+   once."
+7. **Something under halfway.** CHECK_C1 "Halfway. Careful people got home, in this city. Mostly.";
+   TIDE_CHECK_C1 "One crossing at a time. That's how they taught it here, before me."
+
+From the nits: VEL_IDLE_N1 now says the one page ran "at the end", not for eleven years. TIDE_REVISIT_N1's
+"a hundred times" is left (Sol: imprecise, not a claim about since you left).
+
+## Round 9 findings (verbatim from sol_analyst)
+
+Round 8's fixes are mostly correct, but milestone 6 is still not ready to close. Two P2 defects and one P3 writing issue remain. No P0 or P1 findings.
+
+1. **P2. Kill narration still assigns the wrong job to the defeated enemy.**
+
+   The rewritten [GREY_KILL_N4](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2339) removes the unsupported pump state, but retains "It was still sweeping toward the drains."
+
+   Confirmed: Greywater also has [Salvagers](/home/homebox/Documents/rookmate/undertow/data/levels/greywater.txt:71), whose behavior is to steal metal and flee, rather than sweep. [StewardWatch](/home/homebox/Documents/rookmate/undertow/game/level/steward_watch.gd:141) supplies kill distance, without enemy family or activity. This line has no condition excluding a Salvager.
+
+   The same remaining defect affects:
+
+   | Line | Counterexample |
+   |---|---|
+   | [GREY_KILL_N2](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2325), "It was mopping a street…" | A Salvager kill. |
+   | [VEL_KILL_N2](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2708), "It was still sorting yesterday's paper." | A Custodian kill. |
+   | [TIDE_KILL_N4](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:1561), "It moved a container every ninety seconds." | A Custodian kill. |
+
+   These distinctions are explicit in the [world bible's enemy definitions](/home/homebox/Documents/rookmate/undertow/undertow-world-bible.md:144). Custodians appear on the indexed streets in both [Vellum](/home/homebox/Documents/rookmate/undertow/data/levels/vellum_street.txt:83) and [Tideworks](/home/homebox/Documents/rookmate/undertow/data/levels/tideworks.txt:57).
+
+   Source-branch checks confirmed that each line becomes the sole fresh neutral district option after its peers have been heard. They remain reachable ordinary lines. GREY_KILL_N4 is an incomplete round 8 repair; the other three are remaining milestone defects.
+
+   Rewrite these lines so they apply to either family, or supply the family and behavior their wording requires. Selection eligibility and the contradictory enemy roles are confirmed. Encounter frequency and the effect on players remain unmeasured.
+
+2. **P2. The replacement Kestrel unmute line makes a false blanket claim about doors.**
+
+   [KES_BACK_N1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:517) now says, "The Heights don't open a door without me."
+
+   Confirmed: the Kestrel gatehouse opens with the Signal Jammer. [ToolDoor.can_interact](/home/homebox/Documents/rookmate/undertow/game/props/tool_door.gd:52) requires the equipped tool, without requiring the Steward's voice. [Interaction](/home/homebox/Documents/rookmate/undertow/game/props/tool_door.gd:73) opens the door permanently. The player can therefore open it while muted, then unmute and hear this line. Neutral selection chooses KES_BACK_N1 immediately; neither its conditions nor the [unmute caller](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:171) excludes that situation.
+
+   The [gate-list record](/home/homebox/Documents/rookmate/undertow/data/logs/memory_logs.json:865) also explicitly documents a person opening a Kestrel gate by hand.
+
+   The original transition claim is gone, but this replacement overstates the Steward's control. Narrow it to the automated gates' dependence on its signal. Whether the author intended a deliberate bluff is unknown; the current neutral factual line gives no indication of that intent.
+
+3. **P3. The rewritten Vellum two-kill line retains the rejected play-by-play structure.**
+
+   [VEL_MULTI_N1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2780) now says, "Two of them. The street's almost readable again."
+
+   Confirmed: removing "clerks" fixes the enemy-identity assumption. This is also Vellum's sole fresh neutral district two-kill line, so it is immediately reachable.
+
+   Writing judgment: the replacement still reports two defeats and a clearer street, with a paper-themed word substituted. It adds no history, motive or continuing story. That closely reproduces the construction explicitly rejected in [design/writing-review.md](/home/homebox/Documents/rookmate/undertow/design/writing-review.md:89), "Two at once. The street's clearer." Give the line something beneath the visible result.
+
+I checked every round 8 replacement:
+
+- **Dodge timing:** DODGE_C2, KES_DODGE_C1, MERCY_DODGE_C2, GREY_DODGE_C2, VEL_DODGE_B2 and VEL_DODGE_C2 remove the unsupported anticipation claims.
+- **Vellum identity and attacks:** VEL_KILL_N1, VEL_KILL_N3, VEL_KILL_C1 and VEL_MULTI_N1 resolve the named identity, flashing and screen-state assumptions. VEL_MULTI_N1 has the separate writing issue above.
+- **Machinery:** MERCY_BACK_N1 now describes the Steward's motive and preference; KES_BACK_B1 asks about the muted interval. Both are sound. GREY_KILL_N4 repairs pump state but retains the enemy-action defect; KES_BACK_N1 introduces the door claim above.
+- **Fight results:** VEL_MULTI_C1's pair distance is supported by the existing two-kill calculation. VEL_BOSSDOWN_B1 no longer invents paper exhaustion.
+- **Checkpoints:** GREY_CHECK_N1 and VEL_CHECK_N1 remove the incorrect landmark names.
+- **Safety history:** TIDE_HURT_C2 makes the five-year record explicitly historical.
+- **Checkpoint writing:** CHECK_C1 and TIDE_CHECK_C1 now add history and the Steward's perspective.
+- **Chronology clarification:** VEL_IDLE_N1 separates the press's eleven-year history from the final repeated page. I found no confirmed chronology conflict in that replacement.
+
+The other round 7 rewrites also retain their repairs. Earlier read-state, saved narration history, spent-beat, purpose-filtering, pair-distance and story-protection changes remain intact.
+
+Independent read-only checks confirmed **681 Steward lines**, current manifest text and voice-settings hashes, clips for every line, and no orphan manifest entries. All **465 pooled texts** are distinct. The current diff contains **36 distinct rewritten texts**, because two lines were rewritten in both rounds 7 and 8. Every corresponding Ogg changed and decoded cleanly. Both requested diffs pass `git diff --check`.
+
+Current primary logs confirm clean import, **539 passing tests**, gold and serif ownership checks, and the **30-second native smoke pass**. I found no weakened assertion or removed gate check. The campaign is still running, so a completed full gate on this tree remains unverified.
+
+Low-value nits remain separate: repeated openings and shared sentence templates are noticeable together, but do not warrant further findings. Historical detail, broad profiling judgments and the deliberately retained voice-back questions are not additional observation defects merely because the runtime does not measure them.
+
+I made no edits. The reachability checks were source-branch models, not engine reproductions. Real actor delivery and narration density in play remain unverified and belong to the later writing and voice polish identified in PROGRESS.md.
+
+## Round 9 fixes
+
+1. **It knows what it killed.** Like the distance, `StewardWatch` now passes the kind of machine that
+   died ("custodian", "salvager", "clerk", "sterilizer"...), and a line can carry `when: {"kind": ...}`;
+   two at once carry a kind only if both were the same. Every kill line about a machine's job now says
+   which machine (Tideworks and Greywater have Custodians and Salvagers, the Vellum Custodians and
+   Clerks, Mercy Custodians and Sterilizers): the mopping and sweeping lines are the Custodians', the
+   lost manifests and the metal the Salvagers', the filing the Clerks', the contamination and theatre
+   four the Sterilizers'. Three lines added so every kind in those districts has its own (GREY_KILL_N5
+   "A cargo drone, this far from the quay. It lost its manifest and followed the metal.", GREY_KILL_N6
+   "It was carrying off the pump fittings. I'd have stopped it, once.", VEL_KILL_N5 "It swept the same
+   doorstep every morning. The paper came back every night."), and the lines that called any of them
+   "drones" or said they grab now don't (TIDE_MULTI_N1, MERCY_MULTI_N1, TIDE_DODGE_B2, TIDE_DODGE_C2,
+   TIDE_IDLE_B1 "If any salvagers are left"). An unknown kind is a load error. Tests:
+   `test_line_selector::test_it_says_what_it_killed_only_when_it_was` (in each of those districts, for
+   each kind: always something to say, never another kind's line),
+   `test_adaptive_narration::test_it_knows_what_it_killed` (real kills: a Custodian, then a Clerk close
+   behind says no kind; two Clerks say Clerk).
+2. **The gates.** KES_BACK_N1 "There. Most of the gates up here only open on my signal."
+3. **The Vellum's two-kill line.** VEL_MULTI_N1 "Two of them. The Post would have had a word for that.
+   It had a word for everything."
+
+Ten lines voiced (three new, seven rewritten); 684 Steward lines in all.
+
+## Round 10 findings (verbatim from sol_analyst)
+
+Round 9's named fixes are sound, but milestone 6 is not ready to close. Three P2 observation defects and one P3 writing issue remain. No P0 or P1 findings.
+
+1. **P2. The Loop can call a Conductor-and-Custodian pair "two cleaners."**
+
+   Confirmed: bosses also enter ordinary kill bookkeeping. [Boss._die](/home/homebox/Documents/rookmate/undertow/game/bosses/boss.gd:225) calls `Enemy._die`, which [emits `died`](/home/homebox/Documents/rookmate/undertow/game/enemies/enemy.gd:184). [Level.add_enemy](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:821) forwards that signal to StewardWatch. The Conductor's separate [boss-down notification](/home/homebox/Documents/rookmate/undertow/game/bosses/conductor.gd:192) does not remove it from the previous-kill state.
+
+   Defeat the Conductor, then a Custodian within two seconds, with cooldowns clear. [StewardWatch](/home/homebox/Documents/rookmate/undertow/game/level/steward_watch.gd:157) correctly supplies no shared kind, but [LOOP_MULTI_N1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:1233) has no kind condition. Its "Two cleaners" remains the sole fresh neutral district option. The priority multi-kill event can replace the ordinary boss-down speech.
+
+   This is a remaining milestone defect. Keep bosses out of ordinary kill/pair bookkeeping, or require `custodian` for the Loop's cleaning lines. The new kind test covers four mixed districts but [omits the Loop and boss pairs](/home/homebox/Documents/rookmate/undertow/tests/unit/test_line_selector.gd:274).
+
+2. **P2. The new Greywater line assumes cargo that the kind condition does not establish.**
+
+   [GREY_KILL_N6](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2389) says, "It was carrying off the pump fittings."
+
+   Confirmed: a Salvager starts with [empty loot](/home/homebox/Documents/rookmate/undertow/game/enemies/salvager.gd:13). Its theft code takes [the player's weapon or scrap](/home/homebox/Documents/rookmate/undertow/game/enemies/salvager.gd:67), and it can die before stealing anything. StewardWatch supplies kind and distance, without cargo or theft history. After `GREY_KILL_N5` is heard, N6 is the sole fresh neutral Greywater option for any Salvager kill.
+
+   The writing interpretation matters here. The line reads as the defeated machine's recent activity; an earlier, off-screen history is possible but unstated. Make that history explicit, or describe its metal-collecting motive without claiming it was carrying fittings. This new line needs more than identity gating.
+
+3. **P2. A Tideworks kill line still announces the end of a safety record that may already have ended.**
+
+   [TIDE_KILL_N3](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:1557) says, "Five years without an injury on this quay. That ends the record."
+
+   Confirmed: it remains eligible after the player has already taken damage. [Operator.take_hit](/home/homebox/Documents/rookmate/undertow/game/player/operator.gd:311) applies injury and emits `hurt`; kill selection receives no first-injury state. The line is also an ordinary repeating line.
+
+   The historical record is supported by [Log 0412](/home/homebox/Documents/rookmate/undertow/data/logs/memory_logs.json:318). The claim that *this* kill ends it is unsupported after an earlier injury. Make the record explicitly historical, as round 8 correctly did for `TIDE_HURT_C2`. This is a remaining milestone defect, not a round 9 regression.
+
+4. **P3. The rewritten Tideworks two-kill line still supplies the rejected play-by-play.**
+
+   [TIDE_MULTI_N1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:1629) now says, "Two down. The quay's never been this tidy."
+
+   Confirmed: removing "drones" fixes its identity assumption, and it remains Tideworks' sole fresh neutral district two-kill line.
+
+   Writing judgment: it reports two defeats and a tidier location without adding history, motive or a continuing story. That follows the same construction as "Two at once. The street's clearer," explicitly rejected by [design/writing-review.md](/home/homebox/Documents/rookmate/undertow/design/writing-review.md:89). Give this line something beneath the visible result.
+
+The round 9 repairs themselves checked out. [`kind` validation and filtering](/home/homebox/Documents/rookmate/undertow/core/line_selector.gd:88) reject unknown line kinds and exclude mismatches. StewardWatch passes the dying machine's class name, and supplies a shared kind only when both consecutive deaths match. Existing pair-distance checks remain intact. The named Greywater, Vellum and Tideworks job lines now select for the intended families. `KES_BACK_N1` narrows its claim to most automated gates; `VEL_MULTI_N1` now adds the Post's perspective rather than merely reporting a clearer street.
+
+I checked every district's kill and two-kill pools against translated map markers, hold waves and revisit hardening:
+
+| District | Ordinary machines placed | Hold waves |
+|---|---|---|
+| Kestrel | Custodians, Lamplighters | None |
+| Loop | Custodians | Custodians |
+| Tideworks | Custodians, Salvagers | Custodians |
+| Mercy | Custodians, Sterilizers | Custodians |
+| Greywater | Custodians, Salvagers | Custodians |
+| Vellum | Custodians, Clerks | Custodians, Clerks |
+| Harbor | Wardens, including patrol reinforcements | Wardens |
+| Spire | None | None |
+
+The [spawn code](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:727) and [hold definitions](/home/homebox/Documents/rookmate/undertow/data/holds.json:21) support that matrix. Revisits add Custodians beside existing Custodian markers and adjust existing machines' stats; they introduce no new family. Lamplighters are hittable while muted, when narration is silent. Bosses also reach the ordinary death path, producing finding 1. Weak points retire without emitting a kill.
+
+Independent checks confirmed **684 Steward lines**, matching manifest text and voice-settings hashes, clips for every line, and no orphan manifest entries. All **468 pooled texts are distinct**. All **42 new or rewritten texts** against HEAD have new or changed Ogg files, and every corresponding recording decodes cleanly. I found no additional canon conflict or newly introduced exact duplicate.
+
+Earlier read-state, saved narration history, spent-beat, purpose-filtering and story-protection repairs remain intact. I found no weakened existing assertion or removed gate check. Replacing whole-dictionary distance assertions with assertions on `reach` preserves their intended checks while accommodating `kind`.
+
+Low-value nits remain separate: repeated openings and shared sentence templates are noticeable when reading pools together, but do not warrant further findings. Historical detail and broad profiling judgments are not defects merely because gameplay does not measure them.
+
+Current primary logs confirm clean import, **541 passing tests**, gold and serif ownership checks, and the **30-second native smoke pass**. Both requested diffs pass `git diff --check`. The current gate's campaign has reached Tideworks but has no final result; a completed full gate on this tree remains unverified.
+
+I made no edits. Eligibility checks were read-only source models, not engine reproductions of these counterexamples. Encounter frequency, real actor delivery and narration density in play remain unmeasured.
+
+## Round 10 fixes
+
+1. **A boss is no part of a pair.** A boss's death is its own line (`boss_down`); `StewardWatch` no longer
+   counts it as a kill, so a Custodian just after the Conductor is a kill, not "two cleaners". The Loop's
+   "Two cleaners" also needs two Custodians now. Tests: `test_adaptive_narration::test_a_boss_is_no_part_of_a_pair`
+   (the Editor goes down, then a Custodian: a Custodian on its own, nothing about two at once; it failed
+   before the fix), and the kind test now covers the Loop and Kestrel, and pairs of different kinds.
+2. **The Salvager's cargo.** GREY_KILL_N6 "Its kind took the pump fittings after the Quiet. I'd have
+   stopped them, once." (history, not what this one carried).
+3. **The quay's record.** TIDE_KILL_N3 "It worked this quay five years without hurting anyone. So did I."
+4. **Under the Tideworks two-kill.** TIDE_MULTI_N1 "Two down. This quay moved forty ships a week on units
+   like these."
+
+Three lines rewritten and voiced.
