@@ -333,3 +333,101 @@ I reviewed `git diff HEAD` at `d7d950d`, the milestone changes against `0d17e13`
    walked up to. You don't oblige them."
 
 Three lines rewritten and voiced.
+
+## Round 5 findings (verbatim from sol_analyst)
+
+Round 4’s fixes are correct, and the earlier state, selection and distance fixes hold. I found no new code regression in the latest story guard. Milestone 6 is still not ready to close: one P2 observation defect and one P3 writing issue remain. No P0 or P1 findings.
+
+1. **P2. A remaining reactive line invents tide history during a brief mute.**
+
+   Confirmed: [GREY_BACK_N1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2656) says, “There you are. The tide turned twice while you were gone.” Unmuting immediately requests `voice_restored` in [level.gd:171](/home/homebox/Documents/rookmate/undertow/game/level/level.gd:171). Neither that caller nor [Narrator.context_for](/home/homebox/Documents/rookmate/undertow/autoload/narrator.gd:143) supplies elapsed mute time or tide transitions, and the line has no condition.
+
+   This is reachable after switching the voice off and immediately back on, while covered and clear of protected speech. `voice_restored` is a priority event, so `MIN_GAP` does not prevent it. A source-branch selection model selects `GREY_BACK_N1` on a fresh neutral Greywater unmute. Under “Stop praising me,” this factual event requests that neutral tone directly. Greywater’s [tide phases](/home/homebox/Documents/rookmate/undertow/game/level/tide.gd:13) take several seconds each, so that brief mute can contain no turns at all.
+
+   [TIDE_RESPAWN_N2](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:1744) retains the same unsupported count during a respawn. The [death path](/home/homebox/Documents/rookmate/undertow/game/player/operator.gd:345) waits `DOWNED_SECONDS`, defined as 1.6 seconds, without measuring tide history.
+
+   These are remaining milestone defects, not regressions introduced by round 4. The inferred effect is another contradiction from the supposedly observant voice; encounter frequency is unmeasured. Rewrite the literal counts around what those events establish, or gate them on actual observations.
+
+2. **P3. An exact generic boss line rejected by the writing review remains reachable.**
+
+   Confirmed: [BOSS_DOWN_B1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:562) still says, “That’s it down. I knew you would.” [design/writing-review.md:98](/home/homebox/Documents/rookmate/undertow/design/writing-review.md:98) quotes that exact line as writing that could belong to any game.
+
+   It is live gameplay content. The [Warden-Prime’s death](/home/homebox/Documents/rookmate/undertow/game/bosses/warden_prime.gd:266) requests `boss_down`; Harbor has only a neutral district line for that event. Because `boss_down` does not use `own_only`, its bold selection reaches the generic line immediately. A source-branch model confirmed that selection.
+
+   This is a writing judgment against the pass’s explicit criterion, not a rhythm preference. Rewrite or retire the line so this boss’s defeat contributes history, motive or continuing story.
+
+The repairs checked out:
+
+- Hold lines now reject non-warning, non-urgent fixed replacements through [Narrator.speak_text](/home/homebox/Documents/rookmate/undertow/autoload/narrator.gd:177). Both hold call sites use `say_story`. Place lines pass `false`, preserving factual replies, while pooled remarks wait. Ordinary remarks, finds and boss calls retain their previous interruption behavior.
+- The three round 4 rewrites resolve their named defects. The pair-distance calculation requires both measurements to agree; mixed and intermediate distances supply neither. The earlier named dodge and halfway rewrites also hold.
+- Archive and Clinic display paths mark records read. Narration uses that read state. Read state and narration history serialize, older saves inherit Archive replays, and Continue attaches selection to the loaded history.
+- Exhausted ordinary knowledge beats leave silence, factual knowledge beats survive “Stop praising me,” and the intended revisit greeting remains available.
+- Loop continuity is repaired. All 681 Steward lines have clips and matching manifest text, with no orphan entries. All 109 pooled texts changed against HEAD have changed Ogg files. Gold and serif checks pass. I found no weakened assertion or removed gate check; the place helper’s added wait preserves its assertions.
+
+Low-value nits remain separate: repeated openings and shared district templates are noticeable when reading the pools together, but do not warrant additional findings.
+
+I reviewed both requested diffs and the relevant callers without editing anything. Current primary logs confirm clean import, **539 passing tests**, and the **30-second native smoke pass**; `git diff --check HEAD` is clean. The current campaign has reached the Tideworks but has no final result. The remaining scenario logs predate these fixes, so the full gate is still unverified on this tree. The selection models above were not engine reproductions. Real actor delivery and narration density in play remain unverified.
+
+## Round 5 fixes
+
+1. **No tide count it didn't keep.** GREY_BACK_N1 "There you are. The tide doesn't wait for me to be
+   listening. Mind it."; TIDE_RESPAWN_N2 "Again. Down here the tide keeps the time, not me. It can keep
+   it a while longer." The other voice-back, respawn, back-on-the-path and by-hand lines were read for
+   the same fault. The ones that presume something ask it ("Did the dark carriages tell you anything?")
+   and the respawn lines predict rather than report ("Up. You'll want the same carriage. I know."), so
+   they stay.
+2. **The last stock boss line.** BOSS_DOWN_B1 "Down. It was one of my best. I'd have bet on it, once.
+   Not now." (every boss is one of its machines).
+
+Three lines rewritten and voiced.
+
+## Round 6 findings (verbatim from sol_analyst)
+
+Round 5's fixes are correct, but milestone 6 is still not ready to close. One P2 observation defect and one P3 writing issue remain. No P0 or P1 findings. Neither remaining issue was introduced by the three round 5 rewrites.
+
+1. **P2. A Greywater low-health line announces a rising tide without checking its phase.**
+
+   Confirmed: [GREY_LOW_B1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:2495) says, "You're barely standing, and the tide's coming in. I've done that sum. Please." It has no condition.
+
+   [StewardWatch._on_hurt](/home/homebox/Documents/rookmate/undertow/game/level/steward_watch.gd:119) requests `low_integrity` from the player's health alone. Neither that request nor [Narrator.context_for](/home/homebox/Documents/rookmate/undertow/autoload/narrator.gd:143) supplies the tide's phase. Enemy damage can trigger it during the ebb, when [Tide.water_level](/home/homebox/Documents/rookmate/undertow/game/level/tide.gd:58) explicitly decreases the water level.
+
+   A read-only model of the selection branches selects `GREY_LOW_B1` for a fresh bold Greywater low-health request, including during the ebb. This was not an engine reproduction.
+
+   The inferred player-facing effect is a false statement about the current hazard from the voice meant to notice it closely. Encounter frequency remains unmeasured. Rewrite the phase claim or gate it on the actual tide phase.
+
+2. **P3. A reachable generic kill fallback still supplies the play-by-play this pass was meant to replace.**
+
+   Confirmed: [KILL_N1](/home/homebox/Documents/rookmate/undertow/data/narration/steward_lines.json:154) remains "That one's done scrubbing." It reports the visible result without adding history, motive or a continuing story. [The writing review](/home/homebox/Documents/rookmate/undertow/design/writing-review.md:87) rejects that kind of commentary and [uses this exact sentence as a rewrite example](/home/homebox/Documents/rookmate/undertow/design/writing-review.md:170).
+
+   It is live content. The milestone's [selection logic](/home/homebox/Documents/rookmate/undertow/core/line_selector.gd:180) exhausts fresh district lines and then selects fresh generic lines. With Kestrel's four neutral kill lines and `KILL_N2` heard, a read-only source-branch model selects `KILL_N1` next. At `0d17e13`, a district with its own kill pool excluded these generic fallbacks entirely.
+
+   This is a writing judgment against the pass's stated criterion, rather than a preference about rhythm. Rewrite or retire the line.
+
+The round 5 repairs checked out:
+
+- `GREY_BACK_N1` and `TIDE_RESPAWN_N2` no longer invent elapsed tide counts. Their new wording remains valid after a brief mute or respawn.
+- `BOSS_DOWN_B1` replaces the rejected stock congratulation with the Steward's attachment to its machine and its changed expectations.
+- All three Ogg files changed and decode cleanly. Independent checks found **681 Steward lines**, matching manifest text and clips for every line, and no orphan manifest entries.
+
+The earlier read-state, Continue, spent-beat, purpose-filtering, pair-distance and story-protection repairs still hold. Gold and serif ownership checks pass in the current test log. I found no weakened assertion or removed gate check; the updated narration assertion checks the event, and the campaign timeout increase retains the gameplay checks.
+
+Low-value nits remain separate: repeated openings and shared district sentence templates are noticeable when reading the pools together, but do not warrant findings.
+
+I reviewed both requested diffs, the writing criteria and relevant callers without editing anything. Current primary logs confirm clean import, **539 passing tests** and the **30-second native smoke pass**. Both requested diffs pass `git diff --check`. The current campaign has beaten the Conductor but has no final result; the remaining scenario logs predate round 5's fixes, so the full gate remains unverified on this tree. Real actor delivery and narration density in play remain unverified.
+
+## Round 6 fixes
+
+1. **No tide it didn't check.** GREY_LOW_B1 "You're barely standing, in a district that floods. I've done
+   that sum. Please." The pools were searched for every line naming the tide, water, fog, mist, the
+   dark or the light outside an entry or boss line, and each was checked for a claim about the present
+   state. Three more were wrong: GREY_IDLE_N1 said the tide ran "on a six-minute cycle" (it's 54 s:
+   now "The tide comes every minute now. It used to come when I said."), and two respawn lines said the
+   water was what downed you (GREY_RESPAWN_N1 "Back, and dry. Down here, I pull people out before the
+   sea can. Mostly."; TIDE_RESPAWN_N1 "Back on the quay. I bring people back. I used to be better at
+   it.").
+   The voice-back questions that suppose you went somewhere while it couldn't hear you ("Did the dark
+   carriages tell you anything?", "Did you find what you went into the fog for?") stay. They're its
+   suspicion of what you did out of its hearing, asked, not reported.
+2. **The last play-by-play kill.** KILL_N1 "I gave that one a name, once. I'll stop using it."
+
+Five lines rewritten and voiced.

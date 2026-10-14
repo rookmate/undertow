@@ -32,8 +32,8 @@
   "text": "The Ark. I'm not allowed to act here. I can still talk, if you'll let me."
  },
  "BOSS_DOWN_B1": {
-  "hash": "7242e85ae50cb55262ce69126972c9d20feaf69f",
-  "text": "That's it down. I knew you would."
+  "hash": "ace702776d24fdc77b4305100c61dd39e1b668cf",
+  "text": "Down. It was one of my best. I'd have bet on it, once. Not now."
  },
  "BOSS_DOWN_C1": {
   "hash": "01f9f756ae4b0537ebfeb84c7012b301adf09db5",
@@ -108,8 +108,8 @@
   "text": "Stay where I can warn you, this time."
  },
  "GREY_BACK_N1": {
-  "hash": "57f4e5933790fa2cbaeb42391a9c29e87eff7a82",
-  "text": "There you are. The tide turned twice while you were gone."
+  "hash": "848e219549e639b8329fa867465841384a497371",
+  "text": "There you are. The tide doesn't wait for me to be listening. Mind it."
  },
  "GREY_BOSSDOWN_B1": {
   "hash": "5ac81e2c43e3c10a702b07857cd0001e7f99a643",
@@ -200,8 +200,8 @@
   "text": "Rest on the high ground. I'll tell you when it turns."
  },
  "GREY_IDLE_N1": {
-  "hash": "f8a0d623c27f6571a7d2716ba1df204bd15c8ec8",
-  "text": "The tide's on a six-minute cycle now. It used to come when I said."
+  "hash": "32821bb884403ed1972c803ddc36343b2cfa7e94",
+  "text": "The tide comes every minute now. It used to come when I said."
  },
  "GREY_IDLE_N2": {
   "hash": "8d696e11095df9a01b2713e64dd14097b78144f9",
@@ -248,8 +248,8 @@
   "text": "It doesn't know the pumps are off. It keeps sweeping toward the drains."
  },
  "GREY_LOW_B1": {
-  "hash": "86a149e6f663a80fa90725d7652b6ad40225e563",
-  "text": "You're barely standing, and the tide's coming in. I've done that sum. Please."
+  "hash": "63aec1505620c14fe56da34a0936dc48d1137fe4",
+  "text": "You're barely standing, in a district that floods. I've done that sum. Please."
  },
  "GREY_LOW_C1": {
   "hash": "dbe758a3213dd06e8e17c4a193fbbbdfb629e494",
@@ -324,8 +324,8 @@
   "text": "Slowly. Watch the gauge before you go down."
  },
  "GREY_RESPAWN_N1": {
-  "hash": "4013fbd44c5d4c5caca16340eb24ede3c57a2d45",
-  "text": "Back, and dry. I pulled you out before the tide did."
+  "hash": "cb47f68e6a1a70beb21a19ab036d0bf6aa413a20",
+  "text": "Back, and dry. Down here, I pull people out before the sea can. Mostly."
  },
  "GREY_RESPAWN_N2": {
   "hash": "4443ee8fa26a2e360c42a670302b086375c033fc",
@@ -736,8 +736,8 @@
   "text": "Another one. I used to call them mine."
  },
  "KILL_N1": {
-  "hash": "2bf74055a9f997b5ec93352dd2d9fd77f10c15d9",
-  "text": "That one's done scrubbing."
+  "hash": "e825fdaa7c93695d85e366542fe48a590619b186",
+  "text": "I gave that one a name, once. I'll stop using it."
  },
  "KILL_N2": {
   "hash": "a6784ed9176ecfc630360c75b09d1858a41d42ad",
@@ -1584,12 +1584,12 @@
   "text": "One row of containers at a time, this time."
  },
  "TIDE_RESPAWN_N1": {
-  "hash": "62229de6751b1f5fd9fd6b9ac266709c4fc79457",
-  "text": "Back on the quay. I had you before the water did."
+  "hash": "798a1e783c953b67372b24fe91a8ff63d83b8d0f",
+  "text": "Back on the quay. I bring people back. I used to be better at it."
  },
  "TIDE_RESPAWN_N2": {
-  "hash": "fb2b25c3713a2611356d919b67b32e288ad48d55",
-  "text": "Again. The tide turned twice while you were down. It doesn't matter here."
+  "hash": "723d98089aed9a1ce3985f76dc23e113571e93be",
+  "text": "Again. Down here the tide keeps the time, not me. It can keep it a while longer."
  },
  "TIDE_REVISIT_N1": {
   "hash": "a9a649c2e5c0ee916abc37669e32c3263fd29961",
