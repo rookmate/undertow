@@ -76,9 +76,10 @@ func _draw() -> void:
 	draw_shadow(34.0, 15.0)
 	draw_windup_ring(REACH)
 	draw_polyline(Fx.ground_ellipse(0.42, 20), Color(Palette.FOG, 0.18), 2.0, true)
-	paint_body("custodian", 84.0)
+	var compression := absf(attack_pose()) * 3.0
+	paint_body("custodian", 84.0 - compression)
 	var lamp := Palette.DANGER if state == State.WINDUP or state == State.ATTACK else Palette.STEWARD_GOLD
-	draw_circle(body_anchor("custodian", "lamp", 84.0), 4.0, Color(lamp.r * 1.5, lamp.g * 1.5, lamp.b * 1.5), true, -1.0, true)
+	draw_circle(body_anchor("custodian", "lamp", 84.0 - compression), 4.0, Color(lamp.r * 1.5, lamp.g * 1.5, lamp.b * 1.5), true, -1.0, true)
 
 
 static func _ellipse(c: Vector2, rx: float, ry: float) -> PackedVector2Array:

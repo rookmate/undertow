@@ -50,6 +50,15 @@ var _intro: String = ""
 var _opening: float = 0.0
 
 
+## Render-only opening blend. Vulnerability and attack timing remain owned by fight phases.
+var visual_open: float = 0.0
+
+
+func _physics_process(delta: float) -> void:
+	super(delta)
+	visual_open = move_toward(visual_open, 1.0 if is_vulnerable() else 0.0, delta * 5.0)
+
+
 func _ready() -> void:
 	speed_tiles = 0.0
 	scrap_value = 20

@@ -16,6 +16,15 @@ var lit: bool = false
 var _line_left: float = 0.0
 var _line: String = ""
 var _t: float = 0.0
+var gait: StrideCycle = StrideCycle.new()
+var _last_position: Vector2
+var _facing: Vector2 = Vector2(1, 0)
+var _lamp: PointLight2D
+
+
+func _ready() -> void:
+	_last_position = position
+	gait.configure(1.4, 7.0)
 
 
 func setup(owner_level: Level, cell: Vector2i, kind: Who, id: String = "") -> void:
@@ -32,6 +41,7 @@ func setup(owner_level: Level, cell: Vector2i, kind: Who, id: String = "") -> vo
 		lantern.scale = Vector2(1.0, Iso.SQUASH)
 		lantern.position = Vector2(26, -20)
 		add_child(lantern)
+		_lamp = lantern
 	lit = who == Who.WARDFOLK or (who == Who.SURVIVOR and GameState.run.buildings_restored.has("commons"))
 	if lit:
 		var lamp := PointLight2D.new()
@@ -42,6 +52,7 @@ func setup(owner_level: Level, cell: Vector2i, kind: Who, id: String = "") -> vo
 		lamp.scale = Vector2(1.0, Iso.SQUASH)
 		lamp.position = Vector2(22, -24)
 		add_child(lamp)
+		_lamp = lamp
 
 
 func display_name() -> String:
@@ -125,6 +136,11 @@ func spoken_line() -> String:
 
 
 func _process(delta: float) -> void:
+	var travel := position - _last_position
+	_last_position = position
+	gait.advance(travel, true, delta)
+	if travel.length_squared() > 0.001:
+		_facing = Iso.world_to_grid(travel).normalized()
 	_t += delta
 	_line_left = maxf(0.0, _line_left - delta)
 	queue_redraw()
@@ -134,19 +150,30 @@ func _draw() -> void:
 	draw_colored_polygon(Fx.ground_ellipse(0.4, 18, false), Color(Palette.NEAR_BLACK, 0.4))
 	var key: String = ["noor", "teo", "survivor", "wardfolk"][who]
 	var h: float = [197.0, 158.0, 147.0, 163.0][who]
-	ArtCatalog.actor(self, key, h)
+	var joints: Dictionary[String, Vector2] = {}
+	if who == Who.WARDFOLK:
+		ArtCatalog.actor(self, key, h)
+		joints["lantern"] = ArtCatalog.actor_anchor(key, "lantern", h)
+	else:
+		joints = PaintedBiped.paint(self, key, gait, _facing, h)
 	match who:
 		Who.NOOR, Who.WARDFOLK:
-			var lamp := ArtCatalog.actor_anchor(key, "lantern", h)
+			var lamp := joints["lantern"]
+			if _lamp != null:
+				_lamp.position = lamp
 			var col := Palette.TRUTH_CYAN_HOT if who == Who.NOOR else Palette.WARD_CYAN_HOT
 			draw_circle(lamp, 14.0, Color(col, 0.12), true, -1.0, true)
 			draw_circle(lamp, 3.6, col, true, -1.0, true)
 		Who.TEO:
-			var tablet := ArtCatalog.actor_anchor(key, "tablet", h)
-			draw_circle(tablet, 18.0, Color(Palette.STEWARD_GOLD, 0.13), true, -1.0, true)
-			draw_line(tablet - Vector2(6, 0), tablet + Vector2(6, 0), Palette.STEWARD_GOLD, 2.0)
+			# His coat hides the tablet when he turns away.
+			if Iso.grid_to_world(_facing).y >= -0.25:
+				var tablet := joints["tablet"]
+				draw_circle(tablet, 18.0, Color(Palette.STEWARD_GOLD, 0.13), true, -1.0, true)
+				draw_line(tablet - Vector2(6, 0), tablet + Vector2(6, 0), Palette.STEWARD_GOLD, 2.0)
 		Who.SURVIVOR:
 			if lit:
-				var hand := ArtCatalog.actor_anchor(key, "hand", h)
+				var hand := joints["hand"]
+				if _lamp != null:
+					_lamp.position = hand + Vector2(0, 9)
 				ArtCatalog.paint(self, "lantern_housing", Rect2(hand - Vector2(6, 2), Vector2(12, 22)))
 				draw_circle(hand + Vector2(0, 9), 3.0, Palette.HUMAN_CREAM, true, -1.0, true)

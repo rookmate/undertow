@@ -55,3 +55,14 @@ func test_source_sprites_retain_real_transparency_and_mipmaps() -> void:
 		var source := (load(path) as Texture2D).get_image()
 		check(source.detect_alpha() != Image.ALPHA_NONE, path + " has an alpha channel")
 		check_near(source.get_pixel(0, 0).a, 0.0, 0.005, path + " has a clear corner")
+
+
+func test_runtime_joints_and_attachments_are_present() -> void:
+	var coverage: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(COVERAGE))
+	for key: String in coverage.required_anchors:
+		var frame := ArtCatalog.frame(key)
+		check(frame != null, key + " is required by an actor")
+		if frame == null:
+			continue
+		for anchor_id: String in coverage.required_anchors[key]:
+			check(frame.anchors.has(anchor_id), key + " requires " + anchor_id)

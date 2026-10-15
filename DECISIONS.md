@@ -1006,3 +1006,15 @@ Asked of the user on 2026-10-09 and answered the same day.
      Quiet remains an intact city; these are cutaway views of existing foundations. The design
      brief and world bible now make that presentation explicit. Source panoramas remain as art
      provenance. Collision, navigation and the Steward's three-cell gold path retain their rules.
+207. **Moving actors use their painted joints.** Clerk, Warden, Warden-Prime, Lamplighter and moving
+     companions now share the Operator's distance-driven StrideCycle. A tripod keeps two contacts
+     while the third foot passes. Stun and knockback cannot advance walking. Clerk throws and Warden
+     baton strikes follow existing attack deadlines; Salvager claws and Sterilizer nozzles extend
+     from their hulls. Custodian retains its wheeled body with attack suspension compression.
+     Lamps, weapons and carried items attach through the same transforms as the painted parts.
+208. **Boss pose changes are continuous.** The Crane prepares its actual swing start during the
+     warning and lowers its load into rest or stall. Conductor housing, Editor rollers and Surgeon
+     hub/arms travel into their openings. Lung breathing uses scene time so pause freezes it.
+     Warden-Prime steps during its charge and points its mast lamp along the beam. Damage windows,
+     navigation and encounter rules retain their timing. Native actor previews use real AI and
+     phase clocks, require engagement and a full boss cycle, and isolate saves/settings.

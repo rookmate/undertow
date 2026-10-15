@@ -16,7 +16,7 @@ var downed: bool = false:
 var carrying: bool = false
 var _facing_screen: Vector2 = Vector2(0.5, -0.5)
 var _flash: float = 0.0
-var gait: OperatorGait = OperatorGait.new()
+var gait: StrideCycle = StrideCycle.new()
 var _roll: float = -1.0
 
 

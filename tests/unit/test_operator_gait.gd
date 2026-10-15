@@ -2,7 +2,7 @@ extends TestCase
 
 
 func test_feet_exchange_contact_and_passing_poses() -> void:
-	var gait := OperatorGait.new()
+	var gait := StrideCycle.new()
 	gait.weight = 1.0
 	var near_contact := gait.foot(false)
 	var far_contact := gait.foot(true)
@@ -20,7 +20,7 @@ func test_feet_exchange_contact_and_passing_poses() -> void:
 
 func test_contact_stays_planted_and_distance_controls_cadence() -> void:
 	for dir: Vector2 in [Vector2.RIGHT, Vector2.DOWN, Vector2(1, -1).normalized(), Vector2(1, 1).normalized()]:
-		var gait := OperatorGait.new()
+		var gait := StrideCycle.new()
 		gait.direction = dir
 		gait.weight = 1.0
 		gait.phase = 0.1
@@ -28,15 +28,15 @@ func test_contact_stays_planted_and_distance_controls_cadence() -> void:
 		var travel := Iso.grid_to_world(dir * 0.1)
 		gait.advance(travel, true, 0.03)
 		check((gait.foot(false) + travel).distance_to(before) < 0.001, "stance foot stays on the ground in every direction")
-	var fast := OperatorGait.new()
-	var slow := OperatorGait.new()
+	var fast := StrideCycle.new()
+	var slow := StrideCycle.new()
 	fast.advance(Iso.grid_to_world(Vector2(0.4, 0)), true, 0.125)
 	slow.advance(Iso.grid_to_world(Vector2(0.4, 0)), true, 0.5)
 	check_near(fast.phase, slow.phase, 0.001, "equal travel means equal stride regardless of time")
 
 
 func test_idle_and_external_motion_do_not_advance_the_stride() -> void:
-	var gait := OperatorGait.new()
+	var gait := StrideCycle.new()
 	gait.phase = 0.23
 	gait.weight = 1.0
 	gait.advance(Vector2.ZERO, true, 0.2)
@@ -48,7 +48,7 @@ func test_idle_and_external_motion_do_not_advance_the_stride() -> void:
 
 func test_turns_preserve_the_planted_world_contact() -> void:
 	for turn: Vector2 in [Vector2.LEFT, Vector2.DOWN, Vector2(1, -1).normalized()]:
-		var gait := OperatorGait.new()
+		var gait := StrideCycle.new()
 		gait.weight = 1.0
 		gait.direction = Vector2.RIGHT
 		var contact := gait.foot(false)
@@ -57,7 +57,7 @@ func test_turns_preserve_the_planted_world_contact() -> void:
 		check((gait.foot(false) + travel).distance_to(contact) < 0.001, "turn keeps the planted contact rather than snapping it")
 		for i: int in 40:
 			gait.advance(travel, true, 1.0 / 60.0)
-		var reference := OperatorGait.new()
+		var reference := StrideCycle.new()
 		reference.phase = gait.phase
 		reference.direction = turn
 		reference.weight = 1.0
@@ -79,7 +79,7 @@ func test_roll_and_downed_take_priority_over_walking() -> void:
 
 
 func test_arms_counter_the_same_side_foot_in_each_painted_view() -> void:
-	var gait := OperatorGait.new()
+	var gait := StrideCycle.new()
 	gait.weight = 1.0
 	for direction: String in ["front", "back"]:
 		var anchors := ArtCatalog.frame("rig_%s_torso" % direction).anchors
@@ -99,7 +99,7 @@ func test_arms_counter_the_same_side_foot_in_each_painted_view() -> void:
 
 
 func test_late_turn_does_not_discard_the_offset_at_landing() -> void:
-	var gait := OperatorGait.new()
+	var gait := StrideCycle.new()
 	gait.weight = 1.0
 	gait.phase = 0.94
 	var travel := Iso.grid_to_world(Vector2.LEFT * 0.05)

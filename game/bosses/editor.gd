@@ -356,7 +356,7 @@ func _draw() -> void:
 	var ex := 1.0
 	var ey := 0.55
 	ArtCatalog.paint(self, "editor", Rect2(-100, -148, 200, 204), tint)
-	var lift := 16.0 if open else 0.0
+	var lift := 16.0 * visual_open
 	for y: float in [-0.22, 0.22]:
 		ArtCatalog.link(self, "press_roller", _g(-ex * 0.9, y, h + 12.0 + lift), _g(ex * 0.9, y, h + 12.0 + lift), 20.0)
 	ArtCatalog.mapped(self, "paper_web", PackedVector2Array([_g(-0.35, ey, h), _g(0.35, ey, h), _g(0.35, ey + 0.6), _g(-0.35, ey + 0.6)]))

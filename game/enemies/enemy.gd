@@ -37,6 +37,7 @@ var _stun_left: float = 0.0
 var _flash: float = 0.0
 var _nav_path: Array[Vector2i] = []
 var _repath_in: float = 0.0
+var gait: StrideCycle = StrideCycle.new()
 
 
 func setup(owner_level: Level, cell: Vector2i, max_integrity: float) -> void:
@@ -93,19 +94,19 @@ func player() -> Operator:
 
 
 func paint_body(model: String, height: float, offset: Vector2 = Vector2.ZERO) -> void:
-	var direction := Iso.grid_to_world(facing_ground)
+	var direction := Iso.grid_to_world(visual_facing())
 	draw_set_transform(offset, 0.0, Vector2(-1.0 if direction.x < 0.0 else 1.0, 1.0))
 	ArtCatalog.actor(self, body_key(model), height, Vector2.ZERO, hit_flash())
 	draw_set_transform(Vector2.ZERO)
 
 
 func body_key(model: String) -> String:
-	return model + ("_back" if Iso.grid_to_world(facing_ground).y < -0.25 else "_front")
+	return model + ("_back" if Iso.grid_to_world(visual_facing()).y < -0.25 else "_front")
 
 
 func body_anchor(model: String, anchor_id: String, height: float, offset: Vector2 = Vector2.ZERO) -> Vector2:
 	var point := ArtCatalog.actor_anchor(body_key(model), anchor_id, height)
-	point.x *= -1.0 if Iso.grid_to_world(facing_ground).x < 0.0 else 1.0
+	point.x *= -1.0 if Iso.grid_to_world(visual_facing()).x < 0.0 else 1.0
 	return point + offset
 
 
@@ -114,6 +115,22 @@ func distance_to_player() -> float:
 	if p == null:
 		return INF
 	return Iso.ground_distance(global_position, p.global_position)
+
+
+func visual_facing() -> Vector2:
+	return facing_ground
+
+
+## The stroke reaches its forward pose as the existing warning expires; damage timing owns release.
+func attack_pose() -> float:
+	if state == State.WINDUP:
+		var p := windup_progress()
+		return -smoothstep(0.0, 0.7, p) if p < 0.7 else lerpf(-1.0, 1.0, smoothstep(0.7, 1.0, p))
+	if state == State.ATTACK:
+		return 1.0
+	if state == State.RECOVER:
+		return 1.0 - smoothstep(0.0, 0.35, _state_time)
+	return 0.0
 
 
 func _physics_process(delta: float) -> void:
@@ -128,9 +145,12 @@ func _physics_process(delta: float) -> void:
 			_enter(State.CHASE)
 	else:
 		move = _think(delta)
+	var walking := move.length_squared() > 0.01 and _knock.length_squared() < 4.0 and state != State.STUNNED
 	velocity = move + _knock
 	_knock = _knock.move_toward(Vector2.ZERO, 1400.0 * delta)
+	var before := global_position
 	move_and_slide()
+	gait.advance(global_position - before, walking, delta)
 	queue_redraw()
 
 
