@@ -54,7 +54,7 @@ func _think(delta: float) -> Vector2:
 				_enter(State.WINDUP)
 				return Vector2.ZERO
 			if dist < NEAR:
-				return Iso.ground_velocity(-facing_ground, speed_tiles)
+				return retreat_from(p.global_position, speed_tiles, delta)
 			if dist > FAR:
 				return steer_to(p.global_position, delta)
 			return Vector2.ZERO
@@ -91,7 +91,15 @@ func _throw() -> void:
 	var bale := Projectile.new()
 	bale.team = Projectile.Team.ENEMY
 	bale.level = level
-	bale.direction = Iso.ground_dir_between(global_position, p.global_position)
+	# From its hand: over the ground point under it, at its height, if that has a clear line to you;
+	# otherwise from where it stands (where its warning line ran). Aimed from wherever it leaves.
+	var at := hand_at_release()
+	var start := global_position + Vector2(at.x, 0.0)
+	if not (level.grid.line_clear(global_position, start) and level.grid.line_clear(start, p.global_position)):
+		start = global_position
+	bale.position = start
+	bale.height = clampf(-at.y, 24.0, 140.0)
+	bale.direction = Iso.ground_dir_between(start, p.global_position)
 	bale.speed_tiles = BALE_SPEED
 	bale.damage = BALE_DAMAGE
 	bale.radius_tiles = 0.35
@@ -99,16 +107,42 @@ func _throw() -> void:
 	bale.color = Palette.PAPER
 	bale.size = 13.0
 	bale.tumbling = true
-	bale.position = global_position + Iso.ground_velocity(bale.direction, 0.5)
 	level.world.add_child(bale)
 
 
-func _draw() -> void:
-	draw_shadow(26.0, 11.0)
+func draw_ground(ci: CanvasItem) -> void:
+	shadow_on(ci, 26.0, 11.0)
 	if state == State.WINDUP and not flash_next and level != null and level.player != null:
 		var reach := Iso.world_to_grid(level.player.global_position) - Iso.world_to_grid(global_position)
 		var k := windup_progress()
-		draw_line(Vector2.ZERO, Iso.grid_to_world(reach), Color(Palette.DANGER, 0.2 + 0.5 * k), 2.0 + 3.0 * k, true)
+		ci.draw_line(Vector2.ZERO, Iso.grid_to_world(reach), Color(Palette.DANGER, 0.2 + 0.5 * k), 2.0 + 3.0 * k, true)
+
+
+## Its throwing hand at the moment of release (screen offset from its feet), from the rig itself rather
+## than from whatever was last drawn. Seen from behind (the original rear painting), its shoulder.
+func hand_at_release() -> Vector2:
+	if _seen_from_behind():
+		return Vector2(0, -138.0 * 0.62 + gait.bob())
+	return PaintedBiped.weapon_at("clerk", gait, visual_facing(), 138.0, 1.0)
+
+
+func _seen_from_behind() -> bool:
+	return Iso.grid_to_world(visual_facing()).y < -0.25
+
+
+func _draw() -> void:
+	if _seen_from_behind():
+		# Seen from behind: the rig's rear parts are painted with a face, so its back is the original
+		# rear painting, carried on its stride. Winding up the Feed, its screen faces you and away from
+		# us: the light spills round its head, behind it, whitening as it builds.
+		var bob := Vector2(0, gait.bob())
+		if state == State.WINDUP and flash_next:
+			var k := windup_progress()
+			var glow := body_anchor("clerk", "screen", 138.0, bob)
+			draw_circle(glow, 16.0 + 14.0 * k, Color(Palette.FEED_WHITE, 0.15 + 0.45 * k), true, -1.0, true)
+			draw_circle(glow, 8.0 + 8.0 * k, Color(Palette.FEED_WHITE, 0.3 + 0.5 * k), true, -1.0, true)
+		paint_body("clerk", 138.0, bob)
+		return
 	var throwing := (state == State.WINDUP and not flash_next) or (state == State.RECOVER and flash_next)
 	var joints := PaintedBiped.paint(self, "clerk", gait, visual_facing(), 138.0, hit_flash(), attack_pose() if throwing else 0.0)
 	if state == State.WINDUP and flash_next:

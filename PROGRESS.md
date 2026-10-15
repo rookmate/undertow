@@ -280,6 +280,19 @@ tablet-glow correction passes the 14 Ark tests and a fresh companion recording.
 `tools/actor_motion_stage.tscn` reproduces these actor checks. Existing
 death fades and Custodian brush rotation remain candidates for later polish.
 
+## The regular enemies, fixed (after the painted rigs)
+
+The user's review of main after PR #2: the machines didn't face you when they attacked, and there was
+no collision. Both were real (a windowed probe of all six families from four directions, and Sol's
+review of the enemy code: `reviews/enemies.md`).
+
+| Step | What | Status |
+|---|---|---|
+| 47 | Contact: machines stop against you as you stop against them, a roll passes through either way; bodies are their ground footprints; the Custodian's lunge ends at you; cornered machines back out round the wall | done |
+| 48 | Honest attacks: the Sterilizer's mist goes down where it shows you and walls cut it off; the Warden swings only at what it can reach and commits to its swing; the Salvager takes nothing beyond its ring or round a corner; a roll evades the Lamplighter's hook, and lamps keep their own pulls | done |
+| 49 | Readable machines: the windup gathers toward you, not away; the Clerk's back view is its back; bales leave the hand; hover claws reach toward their target; a lamp holding you faces you; the Salvager reads on dark streets; shadows and warnings lie under every body | done |
+| — | Sol analysis review, fixes, re-check | done (3 rounds; closed) |
+
 ## Later milestones (planned)
 
 - Animation and artistic polish, the voice actor, the writing,

@@ -59,6 +59,11 @@ func _physics_process(delta: float) -> void:
 	visual_open = move_toward(visual_open, 1.0 if is_vulnerable() else 0.0, delta * 5.0)
 
 
+## A boss keeps its own physics (its fight is built round it): not a regular machine's body.
+func _init() -> void:
+	meets_player = false
+
+
 func _ready() -> void:
 	speed_tiles = 0.0
 	scrap_value = 20

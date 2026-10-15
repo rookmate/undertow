@@ -10,9 +10,15 @@ const RECOVER := 0.6
 const REACH := 1.0
 const DAMAGE := 8.0
 const LUNGE_SPEED := 7.0
+## How far its brushes reach past its body: the blow lands on what they reach along the way it actually
+## went (stopped short by another machine, it doesn't hit you from where it meant to be).
+const BRUSH_TILES := 0.35
 
 var _scrub: float = 0.0
 var _struck: bool = false
+## Where its lunge set off from, and the way it committed to as the windup ran out.
+var _lunge_from: Vector2 = Vector2.ZERO
+var _lunge_dir: Vector2 = Vector2(0, 1)
 
 
 func _ready() -> void:
@@ -51,16 +57,26 @@ func _think(delta: float) -> Vector2:
 			face_player()
 			if _state_time >= windup_seconds():
 				_struck = false
+				_lunge_from = global_position
+				_lunge_dir = facing_ground
 				_enter(State.ATTACK)
 			return Vector2.ZERO
 		State.ATTACK:
-			if not _struck and _state_time >= LUNGE * 0.6 and player_ok:
+			# The blow lands where it was aimed: judged from where the lunge set off, along the way it
+			# committed to (not from wherever it ends up), once it meets you or is most of the way through,
+			# and for as long as the lunge lasts: you walking into it late still meets it.
+			var touching := player_ok and dist <= radius_tiles + Operator.RADIUS_TILES + 0.05
+			if not _struck and player_ok and (touching or _state_time >= LUNGE * 0.6) \
+					and _swept_distance(p.global_position) <= radius_tiles + BRUSH_TILES + Operator.RADIUS_TILES \
+					and CombatMath.in_arc(_lunge_from, _lunge_dir, p.global_position, REACH + 0.25, 130.0, Operator.RADIUS_TILES) \
+					and level.grid.line_clear(_lunge_from, p.global_position):
 				_struck = true
-				if CombatMath.in_arc(global_position, facing_ground, p.global_position, REACH + 0.2, 130.0, Operator.RADIUS_TILES) and level.grid.line_clear(global_position, p.global_position):
-					p.take_hit(DAMAGE, global_position)
+				p.take_hit(DAMAGE, global_position)
 			if _state_time >= LUNGE:
 				_enter(State.RECOVER)
-			return Iso.ground_velocity(facing_ground, LUNGE_SPEED)
+				return Vector2.ZERO
+			# It stops against what it meets (the Operator's body too), not through it.
+			return Iso.ground_velocity(_lunge_dir, LUNGE_SPEED)
 		State.RECOVER:
 			if _state_time >= RECOVER:
 				if player_ok and dist <= leash_tiles:
@@ -72,10 +88,23 @@ func _think(delta: float) -> Vector2:
 	return Vector2.ZERO
 
 
+func draw_ground(ci: CanvasItem) -> void:
+	shadow_on(ci, 34.0, 15.0)
+	windup_ring_on(ci, REACH)
+	ci.draw_polyline(Fx.ground_ellipse(0.42, 20), Color(Palette.FOG, 0.18), 2.0, true)
+
+
+## How near `at` comes to the ground it has actually covered in this lunge (from where it set off to
+## where it is now), in tiles.
+func _swept_distance(at: Vector2) -> float:
+	var a := Iso.world_to_grid(_lunge_from)
+	var ab := Iso.world_to_grid(global_position) - a
+	var c := Iso.world_to_grid(at)
+	var t := 0.0 if ab.length_squared() < 0.000001 else clampf((c - a).dot(ab) / ab.length_squared(), 0.0, 1.0)
+	return c.distance_to(a + ab * t)
+
+
 func _draw() -> void:
-	draw_shadow(34.0, 15.0)
-	draw_windup_ring(REACH)
-	draw_polyline(Fx.ground_ellipse(0.42, 20), Color(Palette.FOG, 0.18), 2.0, true)
 	var compression := absf(attack_pose()) * 3.0
 	paint_body("custodian", 84.0 - compression)
 	var lamp := Palette.DANGER if state == State.WINDUP or state == State.ATTACK else Palette.STEWARD_GOLD

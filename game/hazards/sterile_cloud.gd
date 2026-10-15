@@ -19,8 +19,10 @@ func setup(owner_level: Level, at: Vector2) -> void:
 	position = at
 
 
+## In it: within its reach, and nothing solid between (a wall cuts the mist off).
 func covers(at: Vector2) -> bool:
-	return _left > 0.0 and Iso.ground_distance(at, global_position) <= RADIUS_TILES
+	return _left > 0.0 and Iso.ground_distance(at, global_position) <= RADIUS_TILES \
+			and (level == null or level.grid.line_clear(global_position, at))
 
 
 func _physics_process(delta: float) -> void:

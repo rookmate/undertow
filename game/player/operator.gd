@@ -56,6 +56,7 @@ var _knock: Vector2 = Vector2.ZERO
 var _pull_to: Vector2 = Vector2.ZERO
 var _pull_speed: float = 0.0
 var _pull_left: float = 0.0
+var _pull_by: Object = null
 var _grace: float = 0.0
 ## The autopilot's runs (DECISIONS 178): damage lands, but at 1 Integrity you stay up.
 var cannot_go_down: bool = false
@@ -181,15 +182,21 @@ func _physics_process(delta: float) -> void:
 	_body.update_pose(facing_ground, global_position - before, dodge, delta, walking)
 
 
-## Dragged toward a point for a while (through the world's collision, like walking).
-func pull_toward(target: Vector2, tiles_per_second: float, seconds: float) -> void:
+## Dragged toward a point for a while (through the world's collision, like walking). `by`: what's doing
+## the pulling (a Lamplighter's beam); the latest pull holds, and only its own puller lets it go.
+func pull_toward(target: Vector2, tiles_per_second: float, seconds: float, by: Object = null) -> void:
 	_pull_to = target
 	_pull_speed = tiles_per_second
 	_pull_left = seconds
+	_pull_by = by
 
 
-func release_pull() -> void:
+## Lets go of the pull, if it's `by`'s (or whoever's, when `by` is null).
+func release_pull(by: Object = null) -> void:
+	if by != null and by != _pull_by:
+		return
 	_pull_left = 0.0
+	_pull_by = null
 
 
 func is_pulled() -> bool:

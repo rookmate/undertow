@@ -1,0 +1,12 @@
+; A dead end whose only way out bends back past where you stand: row 2 from x 2 to 6, down column 5 to
+; row 7, and back west along row 7.
+##########
+##########
+##....P.R#
+#####.####
+#####.####
+#####.####
+#####.####
+##....####
+##########
+##########

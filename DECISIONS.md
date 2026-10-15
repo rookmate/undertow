@@ -1018,3 +1018,38 @@ Asked of the user on 2026-10-09 and answered the same day.
      Warden-Prime steps during its charge and points its mast lamp along the beam. Damage windows,
      navigation and encounter rules retain their timing. Native actor previews use real AI and
      phase clocks, require engagement and a full boss cycle, and isolate saves/settings.
+209. **Machines meet the Operator's body** (step 47; reviews/enemies.md). A regular machine stops against
+     the Operator as the Operator stops against it: its collision mask includes the Operator's layer
+     except while the Operator rolls, and the Operator's own mask drops machines mid-roll, so a roll
+     passes through either way. Its body is its ground footprint (an ellipse of its radius_tiles, the
+     same radius combat uses), not one token capsule for every family; every footprint still goes
+     through a one-tile passage. Bosses and weak points keep their own physics (their fights are built
+     round it). The Custodian's lunge commits to a direction as its windup ends, stops at what it meets,
+     and lands on what its brushes (0.35 tiles past its body) reached along the ground it covered,
+     inside the reach and swing it set off with. Backing off and fleeing (Clerk, Sterilizer, a Salvager with
+     your weapon) take the open way of eight that ends farthest from you, so a wall or corner turns them
+     aside; paths go straight at a target only when nothing stands between. Retreat searches the
+     reachable cells within ten steps for the one that ends farthest from you and follows its route
+     (round a bend, past you if that's the way out), and a machine walking a route goes well into each
+     cell before turning for the next, so it turns into a one-tile passage instead of catching its corner.
+210. **What a machine warns you of is what it does** (step 48). The Sterilizer fixes where its mist
+     will fall as it begins to wind up (70% of the way to where you stood) and draws the mist there as
+     its warning; stepping out escapes it, and a wall cuts the mist off. The Warden swings only at what
+     it can reach in sight (it can still hear you through a wall), turns with you for the first 55% of
+     its windup, then commits and steps into the swing until it meets you (up to 0.9 tiles); the ring it
+     draws is its baton's reach (0.7 tiles) and the blow lands only if some of you is inside it, inside
+     that 120° swing. The
+     Salvager's reach is the ring it draws (its snatch reach plus your body), never round a corner. A
+     roll evades a Lamplighter's hook like any blow, and the Operator's pull belongs to the lamp that
+     cast it: one lamp letting go doesn't free you from another.
+211. **Readable machines** (step 49). A windup cocks the weapon a little (WINDUP_COCK, 0.35 of the full
+     backswing) and strokes forward through the last of the warning, so through a telegraph the weapon
+     is on your side of the machine rather than pointing away. The Clerk's rig has a face painted on
+     its rear torso, so seen from behind it's the original rear painting until the rig gets a real back.
+     A bale leaves the Clerk's hand (worked out from the rig at release, drawn at the hand's height) when
+     that line to you is clear, and is aimed from where it leaves. Seen from behind, a Clerk winding up
+     the Feed glows round its head. Hover claws and nozzles reach toward
+     what they're after. A Lamplighter faces you while it winds up or holds you, and the way it walks
+     otherwise. The Salvager is drawn larger (64 px) and lifted (1.45) so it reads on dark cobble.
+     Shadows, sight cones and warning rings are drawn in the level's ground layer under every body
+     (GroundMarks), and a dying machine redraws once without its warnings.

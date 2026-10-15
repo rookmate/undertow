@@ -5,6 +5,8 @@ extends Enemy
 ## carry one weapon it never takes that: it lifts a few parts of scrap instead.
 
 const MAX_INTEGRITY := 30.0
+## It closes to this, then winds up; at the snatch it takes what's within catch_reach() (the ring it
+## draws while winding up) and in its sight.
 const SNATCH_REACH := 1.1
 const WINDUP := 0.6
 const FLEE_SPEED := 3.4
@@ -35,9 +37,10 @@ func _think(delta: float) -> Vector2:
 	var p := player()
 	var player_ok := p != null and p.is_alive()
 	if not loot.is_empty():
-		# Away with it: back toward where it came from, past it if it can.
-		var away := Iso.ground_dir_between(p.global_position, global_position) if player_ok else Vector2(0, -1)
-		return Iso.ground_velocity(away, FLEE_SPEED) if distance_to_player() < leash_tiles else Vector2.ZERO
+		# Away with it, round whatever's in the way rather than into it.
+		if not player_ok or distance_to_player() >= leash_tiles:
+			return Vector2.ZERO
+		return retreat_from(p.global_position, FLEE_SPEED, delta)
 	match state:
 		State.IDLE:
 			if player_ok and distance_to_player() <= aggro_tiles:
@@ -48,7 +51,7 @@ func _think(delta: float) -> Vector2:
 				_enter(State.IDLE)
 				return Vector2.ZERO
 			face_player()
-			if distance_to_player() <= SNATCH_REACH:
+			if distance_to_player() <= SNATCH_REACH and level.grid.line_clear(global_position, p.global_position):
 				_enter(State.WINDUP)
 				return Vector2.ZERO
 			return steer_to(p.global_position, delta)
@@ -65,9 +68,16 @@ func _think(delta: float) -> Vector2:
 	return Vector2.ZERO
 
 
+## How far its claw catches you at the snatch: your body inside its ring.
+static func catch_reach() -> float:
+	return SNATCH_REACH + Operator.RADIUS_TILES
+
+
 ## Takes the second weapon if there is one (never the only one), else some scrap.
 func _snatch(p: Operator) -> void:
-	if p == null or not p.is_alive() or distance_to_player() > SNATCH_REACH + 0.4 or p.is_invulnerable():
+	if p == null or not p.is_alive() or distance_to_player() > catch_reach() or p.is_invulnerable():
+		return
+	if level != null and not level.grid.line_clear(global_position, p.global_position):
 		return
 	if p.weapons.size() >= 2:
 		loot = p.take_weapon(1)
@@ -101,11 +111,23 @@ func _physics_process(delta: float) -> void:
 	_claw_extension = move_toward(_claw_extension, reach, delta * 8.0)
 
 
+## Its painting is dark teal on dark streets: drawn a little larger and lifted, so it reads.
+const DRAW_HEIGHT := 64.0
+const BRIGHTNESS := 1.45
+
+
+func draw_ground(ci: CanvasItem) -> void:
+	shadow_on(ci, 15.0, 7.0)
+	windup_ring_on(ci, catch_reach())
+
+
 func _draw() -> void:
 	var lift := -46.0 + sin(_hover) * 4.0
-	draw_shadow(14.0, 7.0)
-	var tips := PaintedHover.paint(self, "salvager", visual_facing(), 56.0, Vector2(0, lift + 26.0), hit_flash(), _claw_extension, not loot.is_empty())
+	# The claw reaches for you; carrying, it hangs with what it took.
+	var aim := Vector2(0, 1)
+	var p := player()
+	if loot.is_empty() and p != null:
+		aim = (p.global_position - Vector2(0, Projectile.CHEST_HEIGHT * 0.5) - (global_position + Vector2(0, lift))).normalized()
+	var tips := PaintedHover.paint(self, "salvager", visual_facing(), DRAW_HEIGHT, Vector2(0, lift + 26.0), hit_flash(), _claw_extension, not loot.is_empty(), aim, BRIGHTNESS)
 	if not loot.is_empty():
 		ArtCatalog.paint(self, "crate", Rect2(tips[0] - Vector2(10, 5), Vector2(20, 12)))
-	if state == State.WINDUP:
-		draw_windup_ring(SNATCH_REACH)

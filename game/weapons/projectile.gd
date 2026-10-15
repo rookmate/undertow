@@ -20,6 +20,8 @@ var color: Color = Color.WHITE
 var size: float = 5.0
 ## Paper bales tumble; pellets streak.
 var tumbling: bool = false
+## How high above its ground point it's drawn (chest height, or the hand that threw it).
+var height: float = CHEST_HEIGHT
 
 var _travelled: float = 0.0
 var _hit: Array[Node] = []
@@ -87,7 +89,7 @@ func _strike(target: Node) -> bool:
 
 
 func _draw() -> void:
-	var lift := Vector2(0, -CHEST_HEIGHT)
+	var lift := Vector2(0, -height)
 	draw_colored_polygon(_shadow(), Color(Palette.NEAR_BLACK, 0.3))
 	if tumbling:
 		draw_set_transform(lift, _travelled * 6.0)

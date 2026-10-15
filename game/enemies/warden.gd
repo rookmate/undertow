@@ -16,8 +16,16 @@ const SEARCH_SECONDS := 2.5
 const BEAT_CELLS := 5
 const PATROL_SPEED := 1.3
 const HUNT_SPEED := 2.5
+## This close (and in sight), it comes at you: it winds up.
 const REACH := 1.25
 const WINDUP := 0.55
+## It turns to follow you for this share of its windup, then commits to the swing and steps into it
+## until it meets you (up to STEP_TILES). Its baton reaches STRIKE_REACH from it, and that's the ring it
+## draws: the blow lands if any of you is inside that ring, inside the swing (STRIKE_DEG), in sight.
+const COMMIT := 0.55
+const STEP_TILES := 0.9
+const STRIKE_REACH := 0.7
+const STRIKE_DEG := 120.0
 const RECOVER := 0.6
 const DAMAGE := 14.0
 
@@ -30,6 +38,8 @@ var _beat: Array[Vector2] = []
 var _beat_at: int = 1
 var _unseen_for: float = 0.0
 var _searching: float = -1.0
+## The way its committed swing goes.
+var _strike_dir: Vector2 = Vector2(0, 1)
 
 
 func _ready() -> void:
@@ -99,12 +109,20 @@ func _think(delta: float) -> Vector2:
 				return _hunt(p, delta)
 			return _walk_beat(delta)
 		State.WINDUP:
-			face_player()
 			if _state_time >= windup_seconds():
-				if player_ok and distance_to_player() <= REACH + 0.25:
+				if player_ok and _strike_lands(p):
 					p.take_hit(DAMAGE, global_position)
 				Sound.play(&"warden_strike", global_position)
 				_enter(State.RECOVER)
+				return Vector2.ZERO
+			if _state_time < windup_seconds() * COMMIT:
+				face_player()
+				_strike_dir = facing_ground
+				return Vector2.ZERO
+			# Committed: it steps into the swing until it meets you (its body stops it there).
+			var committed := windup_seconds() * (1.0 - COMMIT)
+			if player_ok and distance_to_player() > radius_tiles + Operator.RADIUS_TILES + 0.1:
+				return Iso.ground_velocity(_strike_dir, STEP_TILES / maxf(committed, 0.05))
 			return Vector2.ZERO
 		State.RECOVER:
 			if _state_time >= RECOVER:
@@ -113,9 +131,19 @@ func _think(delta: float) -> Vector2:
 	return Vector2.ZERO
 
 
+## The baton lands: some of you is inside the ring it drew (STRIKE_REACH), inside the swing it committed
+## to, with nothing solid between.
+func _strike_lands(p: Operator) -> bool:
+	return CombatMath.in_arc(global_position, _strike_dir, p.global_position, STRIKE_REACH, STRIKE_DEG, Operator.RADIUS_TILES) \
+			and level.grid.line_clear(global_position, p.global_position)
+
+
 func _hunt(p: Operator, delta: float) -> Vector2:
 	speed_tiles = HUNT_SPEED * speed_scale
-	if _unseen_for <= 0.0 and distance_to_player() <= REACH:
+	# It can hear you through a wall, but it only swings at what it can reach.
+	if _unseen_for <= 0.0 and distance_to_player() <= REACH and level.grid.line_clear(global_position, p.global_position):
+		face_player()
+		_strike_dir = facing_ground
 		_enter(State.WINDUP)
 		return Vector2.ZERO
 	if _unseen_for < LOSE_SECONDS:
@@ -151,16 +179,19 @@ func _walk_beat(delta: float) -> Vector2:
 	return steer_to(target, delta)
 
 
-func _draw() -> void:
-	draw_shadow(22.0, 10.0)
-	if not hunting and state != State.STUNNED:
+func draw_ground(ci: CanvasItem) -> void:
+	shadow_on(ci, 22.0, 10.0)
+	if not hunting and state != State.STUNNED and state != State.DEAD:
 		var pts := PackedVector2Array([Vector2.ZERO])
 		var half := deg_to_rad(SIGHT_DEG * 0.5)
 		for k: int in 9:
 			var a := facing_ground.angle() - half + half * 2.0 * k / 8.0
 			pts.append(Iso.grid_to_world(Vector2.from_angle(a) * SIGHT_TILES * 0.55))
-		draw_colored_polygon(pts, Color(Palette.DANGER, 0.06))
-	draw_windup_ring(REACH)
+		ci.draw_colored_polygon(pts, Color(Palette.DANGER, 0.06))
+	windup_ring_on(ci, STRIKE_REACH)
+
+
+func _draw() -> void:
 	var joints := PaintedBiped.paint(self, "warden", gait, visual_facing(), 90.0, hit_flash(), attack_pose())
 	if state == State.WINDUP:
 		draw_circle(joints["weapon"], 4.0 + 3.0 * windup_progress(), Palette.DANGER, true, -1.0, true)

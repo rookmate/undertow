@@ -7,6 +7,10 @@ extends Enemy
 var boss: Boss
 
 
+func _init() -> void:
+	meets_player = false
+
+
 func _ready() -> void:
 	speed_tiles = 0.0
 	scrap_value = 0

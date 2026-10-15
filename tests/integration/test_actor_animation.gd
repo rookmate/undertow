@@ -39,11 +39,16 @@ func test_tripod_has_two_planted_contacts_and_one_passing_foot() -> void:
 		check_eq(planted, 2, "tripod keeps two supports while the third leg passes")
 
 
+## Through its warning the weapon stays on your side: it cocks only a little (never past WINDUP_COCK),
+## holds, and strokes forward to reach impact exactly when the damage lands.
 func test_attack_pose_reaches_release_at_the_gameplay_deadline() -> void:
 	var enemy := Warden.new()
 	enemy.state = Enemy.State.WINDUP
-	enemy.set("_state_time", enemy.windup_seconds() * 0.7)
-	check_near(enemy.attack_pose(), -1.0, 0.001, "baton is drawn back")
+	for k: int in 21:
+		enemy.set("_state_time", enemy.windup_seconds() * k / 20.0)
+		check(enemy.attack_pose() >= -Enemy.WINDUP_COCK - 0.001, "never drawn back past the cock (%.2f at %d%%)" % [enemy.attack_pose(), k * 5])
+	enemy.set("_state_time", enemy.windup_seconds() * 0.5)
+	check_near(enemy.attack_pose(), -Enemy.WINDUP_COCK, 0.001, "cocked as the warning gathers")
 	enemy.set("_state_time", enemy.windup_seconds())
 	check_near(enemy.attack_pose(), 1.0, 0.001, "stroke reaches impact at damage time")
 	enemy.state = Enemy.State.RECOVER

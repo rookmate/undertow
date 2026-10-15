@@ -108,7 +108,8 @@ func _think(delta: float) -> Vector2:
 				_hook(p)
 			return Vector2.ZERO
 		State.ATTACK:
-			# Holding: the beam drags them while it can see them.
+			# Holding: the beam drags them while it can see them, and it turns to keep them in it.
+			face_player()
 			if not hooking:
 				_enter(State.RECOVER)
 			elif not sees or _state_time >= HOOK_SECONDS:
@@ -140,6 +141,11 @@ func _light_the_way(delta: float) -> Vector2:
 ## The beam takes hold: the Operator is dragged toward the nearest lit cell of the Lattice (or into the
 ## lamp's own light, if they're already on it).
 func _hook(p: Operator) -> void:
+	if p.is_invulnerable():
+		# Mid-roll: the beam finds nothing to take hold of (an evasion, like any blow).
+		p.take_hit(HOOK_DAMAGE, global_position)
+		_enter(State.RECOVER)
+		return
 	_enter(State.ATTACK)
 	hooking = true
 	var cell := p.cell()
@@ -149,7 +155,7 @@ func _hook(p: Operator) -> void:
 		if nearest.x >= 0:
 			_hook_target = Iso.cell_center(nearest)
 	p.take_hit(HOOK_DAMAGE, global_position)
-	p.pull_toward(_hook_target, PULL_SPEED, HOOK_SECONDS)
+	p.pull_toward(_hook_target, PULL_SPEED, HOOK_SECONDS, self)
 	Sound.play(&"lamp_hook", global_position)
 
 
@@ -159,7 +165,7 @@ func _release() -> void:
 	hooking = false
 	var p := player()
 	if p != null:
-		p.release_pull()
+		p.release_pull(self)
 
 
 func _nearest_indexed(from: Vector2i) -> Vector2i:
@@ -183,17 +189,26 @@ func _physics_process(delta: float) -> void:
 		_light.energy = (2.4 if state == State.ATTACK else 1.6) if state != State.DEAD else 0.0
 
 
+## Walking with you, or moving after you: the way it's going. Winding up or holding the beam: at you.
 func visual_facing() -> Vector2:
-	return gait.direction if not hunting else facing_ground
+	if not hunting:
+		return gait.direction
+	if state == State.WINDUP or hooking:
+		return facing_ground
+	return gait.direction if gait.weight > 0.3 else facing_ground
+
+
+func draw_ground(ci: CanvasItem) -> void:
+	shadow_on(ci, 16.0, 8.0)
+	if hunting and state == State.WINDUP:
+		windup_ring_on(ci, HOOK_RANGE * 0.25)
 
 
 func _draw() -> void:
-	draw_shadow(16.0, 8.0)
 	var head := PaintedTripod.paint(self, gait, visual_facing(), hit_flash())
 	var lens := Palette.STEWARD_GOLD_HOT if state != State.DEAD else Palette.GREY_DEEP
 	draw_circle(head, 5.0, lens, true, -1.0, true)
 	if hunting and state == State.WINDUP:
-		draw_windup_ring(HOOK_RANGE * 0.25)
 		draw_arc(head, 22.0 + windup_progress() * 10.0, 0.0, TAU, 24, Palette.DANGER, 2.0, true)
 	if hooking and player() != null:
 		var to := player().global_position - global_position + Vector2(0, -Projectile.CHEST_HEIGHT)

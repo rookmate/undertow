@@ -34,6 +34,27 @@ static func paint(ci: CanvasItem, model: String, gait: StrideCycle, facing: Vect
 	return anchors
 
 
+## Where a machine's weapon hand is (screen offset from its feet) for this facing, stride and attack
+## pose: the same point paint() returns as "weapon", worked out without drawing (for what leaves the
+## hand at release, whether or not a frame has been drawn since).
+static func weapon_at(model: String, gait: StrideCycle, facing: Vector2, height: float, attack: float) -> Vector2:
+	var screen := Iso.grid_to_world(facing)
+	var side := -1.0 if screen.x < 0.0 else 1.0
+	var view := "back" if screen.y < -0.25 else "front"
+	var prefix := "rig_%s_%s_" % [model, view]
+	var body := ArtCatalog.frame(prefix + "torso")
+	var size := height / 138.0
+	var hip := Vector2(0, -height * 0.52 + gait.bob() * size)
+	var scale := (height + hip.y) / (body.anchors["hip"].y - body.region.position.y)
+	var rect := Rect2(hip - (body.anchors["hip"] - body.region.position) * scale, body.region.size * scale)
+	var shoulder := ArtCatalog.anchor(prefix + "torso", "near_shoulder", rect)
+	var source := ArtCatalog.frame(prefix + "arm")
+	var end := arm_end(prefix, shoulder, hip, gait, height, attack)
+	var hand := PaintedParts.attachment(prefix + "arm", source.anchors.get("weapon", source.anchors["tip"]), shoulder, end, height * 0.36)
+	hand.x *= side
+	return hand
+
+
 static func _arm(ci: CanvasItem, prefix: String, shoulder: Vector2, hip: Vector2, gait: StrideCycle, height: float, attack: float, tint: Color) -> Vector2:
 	var source := ArtCatalog.frame(prefix + "arm")
 	var arm_length := height * 0.36
