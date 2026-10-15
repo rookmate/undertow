@@ -182,18 +182,10 @@
   },
   "owners": {
     "OperatorBody": [
-      "operator_front_idle",
-      "operator_front_step1",
-      "operator_front_step2",
-      "operator_back_idle",
-      "operator_back_step1",
-      "operator_back_step2",
       "operator_dodge",
       "operator_downed",
       "carry_front_idle",
-      "carry_front_step",
-      "carry_back_idle",
-      "carry_back_step"
+      "carry_back_idle"
     ],
     "ArkFigure": [
       "noor",
@@ -367,17 +359,6 @@
     "TitleBackdrop": [
       "title_painting"
     ],
-    "SkyBackdrop": [
-      "sky_kestrel",
-      "sky_loop",
-      "sky_tideworks",
-      "sky_mercy",
-      "sky_vellum",
-      "sky_greywater",
-      "sky_harbor",
-      "sky_spire",
-      "sky_ark"
-    ],
     "Custodian": [
       "custodian_front",
       "custodian_back"
@@ -401,6 +382,29 @@
     "Warden": [
       "warden_front",
       "warden_back"
+    ],
+    "OperatorRig": [
+      "rig_front_torso",
+      "rig_front_thigh",
+      "rig_front_shin",
+      "rig_front_boot",
+      "rig_front_arm",
+      "rig_back_torso",
+      "rig_back_thigh",
+      "rig_back_shin",
+      "rig_back_boot",
+      "rig_back_arm",
+      "rig_carry_front",
+      "rig_carry_back"
+    ],
+    "TerrainEdges": [
+      "edge_stone",
+      "edge_steel",
+      "edge_timber",
+      "edge_roots",
+      "mat_foundation",
+      "mat_concrete",
+      "piling"
     ]
   },
   "districts": [
@@ -424,5 +428,9 @@
     "particles and pellet trails",
     "UI text, markers and controls",
     "confession text"
-  ]
+  ],
+  "live_effects": {
+    "SkyBackdrop": "Two continuous world-relative mist layers, no gameplay panorama",
+    "Water": "Painted water with a bounded ripple shader below quay walls"
+  }
 }

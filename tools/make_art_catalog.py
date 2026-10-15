@@ -144,8 +144,9 @@ def build():
             box = (round(col * width / sheet['cols']), round(row * height / sheet['rows']),
                    round((col + 1) * width / sheet['cols']), round((row + 1) * height / sheet['rows']))
             if sheet['transparent']:
-                if key in SEARCH_BOXES and len(sheet["keys"]) > 1:
-                    x, y, w, h = SEARCH_BOXES[key]
+                search_box = sheet.get('search_boxes', {}).get(key, SEARCH_BOXES.get(key))
+                if search_box and len(sheet["keys"]) > 1:
+                    x, y, w, h = search_box
                     box = (x, y, min(width, x + w), min(height, y + h))
                 alpha = im.getchannel('A').crop(box)
                 tight = alpha.point(lambda a: 255 if a > 32 else 0).getbbox()
@@ -160,8 +161,12 @@ def build():
                 inset = 6 if sheet["name"].startswith("materials_") or sheet["name"] == "ground_details" else 1
                 region = [box[0] + inset, box[1] + inset, box[2] - box[0] - inset * 2, box[3] - box[1] - inset * 2]
             entries[key] = {'path': 'res://' + path.relative_to(ROOT).as_posix(), 'region': region}
-            if key in ANCHORS:
-                entries[key]['anchors'] = ANCHORS[key]
+            anchors = sheet.get('anchors', {}).get(key, ANCHORS.get(key))
+            if anchors:
+                entries[key]['anchors'] = anchors
+        # Articulated parts can reuse reviewed subregions of a sheet without rewriting its pixels.
+        for key, entry in sheet.get('subframes', {}).items():
+            entries[key] = {'path': 'res://' + path.relative_to(ROOT).as_posix(), **entry}
     for key, filename in {'kestrel_lawn': 'lawn', 'kestrel_cobble': 'wet_stone', 'kestrel_paving': 'paving', 'kestrel_wall': 'limestone_wall', 'kestrel_roof': 'slate_roof'}.items():
         im = Image.open(ROOT / 'assets/art/kestrel' / (filename + '.png'))
         entries[key] = {'path': 'res://assets/art/kestrel/' + filename + '.png', 'region': [0, 0, *im.size]}

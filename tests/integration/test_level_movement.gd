@@ -34,17 +34,36 @@ func test_up_right_walks_up_the_street() -> void:
 	var moved := Iso.world_to_grid(level.player.global_position) - start
 	check(moved.y < -2.5, "about 3 tiles up the street in a second, moved %s" % moved)
 	check(absf(moved.x) < 0.2, "without drifting across it, moved %s" % moved)
+	var body := level.player.get("_body") as OperatorBody
+	check_near(body.gait.phase, fposmod(moved.length() / OperatorGait.STRIDE_TILES, 1.0), 0.001, "gait follows measured travel")
 
 
 func test_buildings_block_the_operator() -> void:
 	Input.action_press(&"move_left", 0.7071)
 	Input.action_press(&"move_up", 0.7071)
 	await wait_physics_frames(150)
+	var body := level.player.get("_body") as OperatorBody
+	var blocked_phase := body.gait.phase
+	await wait_physics_frames(30)
+	check_near(body.gait.phase, blocked_phase, 0.001, "holding input into a wall does not run the walk cycle")
+	check_near(body.gait.weight, 0.0, 0.001, "blocked feet settle to idle")
 	Input.action_release(&"move_left")
 	Input.action_release(&"move_up")
 	var cell := level.player.cell()
 	check(level.grid.is_walkable(cell), "stayed on walkable ground, at %s" % cell)
 	check(cell.x >= 9, "stopped at the pavement edge, at %s" % cell)
+
+
+func test_carrying_slows_both_travel_and_the_stride() -> void:
+	level.player.set_carrying(true)
+	var start := level.player.global_position
+	Input.action_press(&"move_up", 0.7071)
+	Input.action_press(&"move_right", 0.7071)
+	await wait_physics_frames(60)
+	var distance := Iso.world_to_grid(level.player.global_position - start).length()
+	var body := level.player.get("_body") as OperatorBody
+	check(distance > 2.0 and distance < 2.4, "carrying travels about 2.24 tiles/s")
+	check_near(body.gait.phase, fposmod(distance / OperatorGait.STRIDE_TILES, 1.0), 0.001, "carrying uses the same planted stride")
 
 
 func test_dodge_rolls_further_than_walking() -> void:

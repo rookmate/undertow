@@ -47,6 +47,12 @@ The Steward isn't a box. It's the city's nervous system, and every piece of it i
 - **The Loop.** The transit ring. Its stalled trains now serve as bridges between districts. This is the game's connective tissue: the equivalent of Bastion's floating paths.
 - **The Day.** The scheduling system. The Waiting are still inside their last one.
 
+The playable city is presented as a cutaway through those structures. Quays have masonry below their
+coping; timber decks stand on pilings; rail bridges expose their trusses. Their lower edges recede into
+moving mist and water. This depth belongs to the existing city. The Quiet did not shatter it into
+floating islands, and the Steward does not create the ground as the Operator approaches.
+
+
 ---
 
 ## The people
