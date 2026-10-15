@@ -1104,6 +1104,71 @@
       ]
     }
   },
+  "salvager_front_hull": {
+    "path": "res://assets/art/complete/enemies_front.png",
+    "region": [
+      84,
+      546,
+      403,
+      260
+    ],
+    "anchors": {}
+  },
+  "salvager_front_claw": {
+    "path": "res://assets/art/complete/enemies_front.png",
+    "region": [
+      235,
+      789,
+      126,
+      136
+    ],
+    "anchors": {
+      "joint": [
+        278,
+        800
+      ]
+    }
+  },
+  "sterilizer_front_hull": {
+    "path": "res://assets/art/complete/enemies_front.png",
+    "region": [
+      604,
+      553,
+      328,
+      245
+    ],
+    "anchors": {}
+  },
+  "sterilizer_front_nozzle_left": {
+    "path": "res://assets/art/complete/enemies_front.png",
+    "region": [
+      642,
+      775,
+      100,
+      144
+    ],
+    "anchors": {
+      "joint": [
+        691,
+        795
+      ]
+    }
+  },
+  "sterilizer_front_nozzle_right": {
+    "path": "res://assets/art/complete/enemies_front.png",
+    "region": [
+      795,
+      774,
+      95,
+      122
+    ],
+    "anchors": {
+      "joint": [
+        836,
+        791
+      ]
+    }
+  },
   "custodian_back": {
     "path": "res://assets/art/complete/enemies_back.png",
     "region": [
@@ -1183,6 +1248,71 @@
       "baton": [
         1408,
         548
+      ]
+    }
+  },
+  "salvager_back_hull": {
+    "path": "res://assets/art/complete/enemies_back.png",
+    "region": [
+      60,
+      565,
+      390,
+      255
+    ],
+    "anchors": {}
+  },
+  "salvager_back_claw": {
+    "path": "res://assets/art/complete/enemies_back.png",
+    "region": [
+      198,
+      813,
+      143,
+      125
+    ],
+    "anchors": {
+      "joint": [
+        268,
+        819
+      ]
+    }
+  },
+  "sterilizer_back_hull": {
+    "path": "res://assets/art/complete/enemies_back.png",
+    "region": [
+      592,
+      576,
+      366,
+      241
+    ],
+    "anchors": {}
+  },
+  "sterilizer_back_nozzle_left": {
+    "path": "res://assets/art/complete/enemies_back.png",
+    "region": [
+      647,
+      804,
+      91,
+      125
+    ],
+    "anchors": {
+      "joint": [
+        689,
+        813
+      ]
+    }
+  },
+  "sterilizer_back_nozzle_right": {
+    "path": "res://assets/art/complete/enemies_back.png",
+    "region": [
+      785,
+      789,
+      88,
+      135
+    ],
+    "anchors": {
+      "joint": [
+        830,
+        809
       ]
     }
   },
@@ -1366,6 +1496,25 @@
     ],
     "anchors": {
       "lens": [
+        1179,
+        808
+      ]
+    }
+  },
+  "warden_mast_head": {
+    "path": "res://assets/art/complete/boss_parts.png",
+    "region": [
+      1088,
+      746,
+      144,
+      111
+    ],
+    "anchors": {
+      "joint": [
+        1130,
+        841
+      ],
+      "tip": [
         1179,
         808
       ]
@@ -1920,6 +2069,1268 @@
       1497,
       211
     ]
+  },
+  "rig_clerk_front_torso": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      130,
+      10,
+      159,
+      325
+    ],
+    "anchors": {
+      "hip": [
+        210,
+        304
+      ],
+      "near_shoulder": [
+        163,
+        160
+      ],
+      "far_shoulder": [
+        256,
+        140
+      ],
+      "screen": [
+        239,
+        201
+      ]
+    }
+  },
+  "rig_clerk_front_arm": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      492,
+      41,
+      94,
+      287
+    ],
+    "anchors": {
+      "joint": [
+        537,
+        80
+      ],
+      "tip": [
+        557,
+        295
+      ]
+    }
+  },
+  "rig_clerk_front_thigh": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      762,
+      30,
+      89,
+      277
+    ],
+    "anchors": {
+      "joint": [
+        806,
+        65
+      ],
+      "tip": [
+        806,
+        280
+      ]
+    }
+  },
+  "rig_clerk_front_shin": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      1042,
+      30,
+      115,
+      294
+    ],
+    "anchors": {
+      "joint": [
+        1083,
+        61
+      ],
+      "tip": [
+        1088,
+        252
+      ]
+    }
+  },
+  "rig_clerk_back_torso": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      136,
+      343,
+      153,
+      307
+    ],
+    "anchors": {
+      "hip": [
+        212,
+        623
+      ],
+      "near_shoulder": [
+        168,
+        485
+      ],
+      "far_shoulder": [
+        257,
+        467
+      ],
+      "screen": [
+        241,
+        525
+      ]
+    }
+  },
+  "rig_clerk_back_arm": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      493,
+      375,
+      96,
+      265
+    ],
+    "anchors": {
+      "joint": [
+        539,
+        411
+      ],
+      "tip": [
+        559,
+        609
+      ]
+    }
+  },
+  "rig_clerk_back_thigh": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      760,
+      342,
+      91,
+      299
+    ],
+    "anchors": {
+      "joint": [
+        806,
+        379
+      ],
+      "tip": [
+        806,
+        612
+      ]
+    }
+  },
+  "rig_clerk_back_shin": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      1051,
+      358,
+      119,
+      277
+    ],
+    "anchors": {
+      "joint": [
+        1093,
+        387
+      ],
+      "tip": [
+        1099,
+        567
+      ]
+    }
+  },
+  "rig_lamplighter_front_torso": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      103,
+      655,
+      208,
+      283
+    ],
+    "anchors": {
+      "hip": [
+        207,
+        911
+      ],
+      "lens": [
+        238,
+        763
+      ]
+    }
+  },
+  "rig_lamplighter_front_thigh": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      448,
+      667,
+      143,
+      246
+    ],
+    "anchors": {
+      "joint": [
+        540,
+        705
+      ],
+      "tip": [
+        485,
+        875
+      ]
+    }
+  },
+  "rig_lamplighter_front_shin": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      786,
+      678,
+      84,
+      242
+    ],
+    "anchors": {
+      "joint": [
+        820,
+        711
+      ],
+      "tip": [
+        832,
+        887
+      ]
+    }
+  },
+  "rig_lamplighter_front_boot": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      1060,
+      827,
+      85,
+      99
+    ],
+    "anchors": {
+      "sole": [
+        1102,
+        914
+      ]
+    }
+  },
+  "rig_lamplighter_back_torso": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      110,
+      942,
+      190,
+      288
+    ],
+    "anchors": {
+      "hip": [
+        205,
+        1202
+      ],
+      "lens": [
+        233,
+        1052
+      ]
+    }
+  },
+  "rig_lamplighter_back_thigh": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      474,
+      949,
+      140,
+      247
+    ],
+    "anchors": {
+      "joint": [
+        510,
+        987
+      ],
+      "tip": [
+        578,
+        1158
+      ]
+    }
+  },
+  "rig_lamplighter_back_shin": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      791,
+      956,
+      72,
+      252
+    ],
+    "anchors": {
+      "joint": [
+        820,
+        990
+      ],
+      "tip": [
+        830,
+        1174
+      ]
+    }
+  },
+  "rig_lamplighter_back_boot": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      1061,
+      1119,
+      84,
+      97
+    ],
+    "anchors": {
+      "sole": [
+        1103,
+        1205
+      ]
+    }
+  },
+  "rig_clerk_front_calf": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      1044,
+      32,
+      111,
+      223
+    ],
+    "anchors": {
+      "joint": [
+        1083,
+        61
+      ],
+      "tip": [
+        1088,
+        252
+      ]
+    }
+  },
+  "rig_clerk_front_boot": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      1044,
+      249,
+      111,
+      73
+    ],
+    "anchors": {
+      "sole": [
+        1112,
+        320
+      ]
+    }
+  },
+  "rig_clerk_back_calf": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      1053,
+      360,
+      115,
+      210
+    ],
+    "anchors": {
+      "joint": [
+        1093,
+        387
+      ],
+      "tip": [
+        1099,
+        567
+      ]
+    }
+  },
+  "rig_clerk_back_boot": {
+    "path": "res://assets/art/complete/enemy_light_rig.png",
+    "region": [
+      1053,
+      564,
+      115,
+      69
+    ],
+    "anchors": {
+      "sole": [
+        1123,
+        631
+      ]
+    }
+  },
+  "rig_warden_front_torso": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      67,
+      24,
+      222,
+      286
+    ],
+    "anchors": {
+      "hip": [
+        198,
+        271
+      ],
+      "near_shoulder": [
+        259,
+        125
+      ],
+      "far_shoulder": [
+        115,
+        130
+      ],
+      "eye": [
+        211,
+        80
+      ]
+    }
+  },
+  "rig_warden_front_arm": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      423,
+      17,
+      169,
+      269
+    ],
+    "anchors": {
+      "joint": [
+        458,
+        104
+      ],
+      "tip": [
+        550,
+        247
+      ],
+      "weapon": [
+        577,
+        24
+      ]
+    }
+  },
+  "rig_warden_front_thigh": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      726,
+      28,
+      131,
+      259
+    ],
+    "anchors": {
+      "joint": [
+        785,
+        73
+      ],
+      "tip": [
+        789,
+        254
+      ]
+    }
+  },
+  "rig_warden_front_shin": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      1028,
+      28,
+      130,
+      275
+    ],
+    "anchors": {
+      "joint": [
+        1087,
+        71
+      ],
+      "tip": [
+        1079,
+        225
+      ]
+    }
+  },
+  "rig_warden_back_torso": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      65,
+      342,
+      235,
+      268
+    ],
+    "anchors": {
+      "hip": [
+        203,
+        574
+      ],
+      "near_shoulder": [
+        268,
+        436
+      ],
+      "far_shoulder": [
+        116,
+        442
+      ],
+      "eye": [
+        217,
+        394
+      ]
+    }
+  },
+  "rig_warden_back_arm": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      442,
+      332,
+      155,
+      240
+    ],
+    "anchors": {
+      "joint": [
+        557,
+        400
+      ],
+      "tip": [
+        480,
+        537
+      ],
+      "weapon": [
+        460,
+        339
+      ]
+    }
+  },
+  "rig_warden_back_thigh": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      727,
+      350,
+      139,
+      253
+    ],
+    "anchors": {
+      "joint": [
+        790,
+        394
+      ],
+      "tip": [
+        794,
+        571
+      ]
+    }
+  },
+  "rig_warden_back_shin": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      1018,
+      345,
+      133,
+      259
+    ],
+    "anchors": {
+      "joint": [
+        1078,
+        385
+      ],
+      "tip": [
+        1070,
+        531
+      ]
+    }
+  },
+  "rig_warden_prime_front_torso": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      54,
+      639,
+      269,
+      267
+    ],
+    "anchors": {
+      "hip": [
+        212,
+        870
+      ],
+      "near_shoulder": [
+        287,
+        733
+      ],
+      "far_shoulder": [
+        112,
+        738
+      ],
+      "eye": [
+        228,
+        691
+      ]
+    }
+  },
+  "rig_warden_prime_front_arm": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      439,
+      637,
+      148,
+      283
+    ],
+    "anchors": {
+      "joint": [
+        510,
+        684
+      ],
+      "tip": [
+        533,
+        879
+      ]
+    }
+  },
+  "rig_warden_prime_front_thigh": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      720,
+      647,
+      148,
+      268
+    ],
+    "anchors": {
+      "joint": [
+        787,
+        694
+      ],
+      "tip": [
+        791,
+        881
+      ]
+    }
+  },
+  "rig_warden_prime_front_shin": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      1004,
+      656,
+      181,
+      267
+    ],
+    "anchors": {
+      "joint": [
+        1086,
+        697
+      ],
+      "tip": [
+        1075,
+        847
+      ]
+    }
+  },
+  "rig_warden_prime_back_torso": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      69,
+      947,
+      251,
+      262
+    ],
+    "anchors": {
+      "hip": [
+        217,
+        1173
+      ],
+      "near_shoulder": [
+        286,
+        1039
+      ],
+      "far_shoulder": [
+        123,
+        1044
+      ],
+      "eye": [
+        232,
+        998
+      ]
+    }
+  },
+  "rig_warden_prime_back_arm": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      432,
+      948,
+      161,
+      276
+    ],
+    "anchors": {
+      "joint": [
+        509,
+        994
+      ],
+      "tip": [
+        534,
+        1184
+      ]
+    }
+  },
+  "rig_warden_prime_back_thigh": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      732,
+      959,
+      145,
+      265
+    ],
+    "anchors": {
+      "joint": [
+        797,
+        1005
+      ],
+      "tip": [
+        802,
+        1191
+      ]
+    }
+  },
+  "rig_warden_prime_back_shin": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      995,
+      962,
+      171,
+      274
+    ],
+    "anchors": {
+      "joint": [
+        1072,
+        1004
+      ],
+      "tip": [
+        1062,
+        1158
+      ]
+    }
+  },
+  "rig_warden_front_calf": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      1030,
+      30,
+      126,
+      198
+    ],
+    "anchors": {
+      "joint": [
+        1087,
+        71
+      ],
+      "tip": [
+        1079,
+        225
+      ]
+    }
+  },
+  "rig_warden_front_boot": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      1030,
+      222,
+      126,
+      79
+    ],
+    "anchors": {
+      "sole": [
+        1107,
+        299
+      ]
+    }
+  },
+  "rig_warden_back_calf": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      1020,
+      347,
+      129,
+      187
+    ],
+    "anchors": {
+      "joint": [
+        1078,
+        385
+      ],
+      "tip": [
+        1070,
+        531
+      ]
+    }
+  },
+  "rig_warden_back_boot": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      1020,
+      528,
+      129,
+      74
+    ],
+    "anchors": {
+      "sole": [
+        1099,
+        600
+      ]
+    }
+  },
+  "rig_warden_prime_front_calf": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      1006,
+      658,
+      177,
+      192
+    ],
+    "anchors": {
+      "joint": [
+        1086,
+        697
+      ],
+      "tip": [
+        1075,
+        847
+      ]
+    }
+  },
+  "rig_warden_prime_front_boot": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      1006,
+      844,
+      177,
+      77
+    ],
+    "anchors": {
+      "sole": [
+        1114,
+        919
+      ]
+    }
+  },
+  "rig_warden_prime_back_calf": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      997,
+      964,
+      167,
+      197
+    ],
+    "anchors": {
+      "joint": [
+        1072,
+        1004
+      ],
+      "tip": [
+        1062,
+        1158
+      ]
+    }
+  },
+  "rig_warden_prime_back_boot": {
+    "path": "res://assets/art/complete/enemy_heavy_rig.png",
+    "region": [
+      997,
+      1155,
+      167,
+      79
+    ],
+    "anchors": {
+      "sole": [
+        1099,
+        1232
+      ]
+    }
+  },
+  "rig_noor_front_torso": {
+    "path": "res://assets/art/complete/civilian_rig.png",
+    "region": [
+      105,
+      13,
+      233,
+      336
+    ],
+    "anchors": {
+      "hip": [
+        228,
+        211
+      ],
+      "lantern": [
+        132,
+        307
+      ],
+      "tablet": [
+        263,
+        181
+      ],
+      "hand": [
+        153,
+        204
+      ],
+      "ear": [
+        249,
+        91
+      ]
+    }
+  },
+  "rig_noor_back_torso": {
+    "path": "res://assets/art/complete/civilian_rig.png",
+    "region": [
+      465,
+      14,
+      242,
+      336
+    ],
+    "anchors": {
+      "hip": [
+        593,
+        212
+      ],
+      "lantern": [
+        681,
+        308
+      ],
+      "tablet": [
+        674,
+        122
+      ],
+      "hand": [
+        515,
+        205
+      ],
+      "ear": [
+        615,
+        92
+      ]
+    }
+  },
+  "rig_noor_thigh": {
+    "path": "res://assets/art/complete/civilian_rig.png",
+    "region": [
+      903,
+      69,
+      107,
+      234
+    ],
+    "anchors": {
+      "joint": [
+        956,
+        94
+      ],
+      "tip": [
+        955,
+        273
+      ]
+    }
+  },
+  "rig_noor_shin": {
+    "path": "res://assets/art/complete/civilian_rig.png",
+    "region": [
+      1255,
+      62,
+      116,
+      262
+    ],
+    "anchors": {
+      "joint": [
+        1300,
+        90
+      ],
+      "tip": [
+        1301,
+        260
+      ]
+    }
+  },
+  "rig_teo_front_torso": {
+    "path": "res://assets/art/complete/civilian_rig.png",
+    "region": [
+      128,
+      352,
+      199,
+      298
+    ],
+    "anchors": {
+      "hip": [
+        233,
+        529
+      ],
+      "lantern": [
+        151,
+        614
+      ],
+      "tablet": [
+        263,
+        502
+      ],
+      "hand": [
+        169,
+        523
+      ],
+      "ear": [
+        251,
+        422
+      ]
+    }
+  },
+  "rig_teo_back_torso": {
+    "path": "res://assets/art/complete/civilian_rig.png",
+    "region": [
+      473,
+      352,
+      191,
+      298
+    ],
+    "anchors": {
+      "hip": [
+        574,
+        529
+      ],
+      "lantern": [
+        643,
+        614
+      ],
+      "tablet": [
+        638,
+        449
+      ],
+      "hand": [
+        512,
+        523
+      ],
+      "ear": [
+        591,
+        422
+      ]
+    }
+  },
+  "rig_teo_thigh": {
+    "path": "res://assets/art/complete/civilian_rig.png",
+    "region": [
+      903,
+      379,
+      99,
+      230
+    ],
+    "anchors": {
+      "joint": [
+        952,
+        404
+      ],
+      "tip": [
+        952,
+        580
+      ]
+    }
+  },
+  "rig_teo_shin": {
+    "path": "res://assets/art/complete/civilian_rig.png",
+    "region": [
+      1264,
+      380,
+      111,
+      239
+    ],
+    "anchors": {
+      "joint": [
+        1307,
+        406
+      ],
+      "tip": [
+        1308,
+        561
+      ]
+    }
+  },
+  "rig_survivor_front_torso": {
+    "path": "res://assets/art/complete/civilian_rig.png",
+    "region": [
+      134,
+      651,
+      191,
+      351
+    ],
+    "anchors": {
+      "hip": [
+        235,
+        857
+      ],
+      "lantern": [
+        157,
+        958
+      ],
+      "tablet": [
+        263,
+        826
+      ],
+      "hand": [
+        173,
+        850
+      ],
+      "ear": [
+        252,
+        731
+      ]
+    }
+  },
+  "rig_survivor_back_torso": {
+    "path": "res://assets/art/complete/civilian_rig.png",
+    "region": [
+      471,
+      651,
+      191,
+      344
+    ],
+    "anchors": {
+      "hip": [
+        572,
+        853
+      ],
+      "lantern": [
+        641,
+        952
+      ],
+      "tablet": [
+        636,
+        760
+      ],
+      "hand": [
+        510,
+        846
+      ],
+      "ear": [
+        589,
+        730
+      ]
+    }
+  },
+  "rig_survivor_thigh": {
+    "path": "res://assets/art/complete/civilian_rig.png",
+    "region": [
+      903,
+      695,
+      96,
+      247
+    ],
+    "anchors": {
+      "joint": [
+        951,
+        721
+      ],
+      "tip": [
+        950,
+        911
+      ]
+    }
+  },
+  "rig_survivor_shin": {
+    "path": "res://assets/art/complete/civilian_rig.png",
+    "region": [
+      1258,
+      691,
+      123,
+      263
+    ],
+    "anchors": {
+      "joint": [
+        1305,
+        719
+      ],
+      "tip": [
+        1306,
+        890
+      ]
+    }
+  },
+  "rig_noor_calf": {
+    "path": "res://assets/art/complete/civilian_rig.png",
+    "region": [
+      1257,
+      64,
+      112,
+      199
+    ],
+    "anchors": {
+      "joint": [
+        1300,
+        90
+      ],
+      "tip": [
+        1301,
+        260
+      ]
+    }
+  },
+  "rig_noor_boot": {
+    "path": "res://assets/art/complete/civilian_rig.png",
+    "region": [
+      1257,
+      257,
+      112,
+      65
+    ],
+    "anchors": {
+      "sole": [
+        1325,
+        320
+      ]
+    }
+  },
+  "rig_teo_calf": {
+    "path": "res://assets/art/complete/civilian_rig.png",
+    "region": [
+      1266,
+      382,
+      107,
+      182
+    ],
+    "anchors": {
+      "joint": [
+        1307,
+        406
+      ],
+      "tip": [
+        1308,
+        561
+      ]
+    }
+  },
+  "rig_teo_boot": {
+    "path": "res://assets/art/complete/civilian_rig.png",
+    "region": [
+      1266,
+      558,
+      107,
+      59
+    ],
+    "anchors": {
+      "sole": [
+        1331,
+        615
+      ]
+    }
+  },
+  "rig_survivor_calf": {
+    "path": "res://assets/art/complete/civilian_rig.png",
+    "region": [
+      1260,
+      693,
+      119,
+      200
+    ],
+    "anchors": {
+      "joint": [
+        1305,
+        719
+      ],
+      "tip": [
+        1306,
+        890
+      ]
+    }
+  },
+  "rig_survivor_boot": {
+    "path": "res://assets/art/complete/civilian_rig.png",
+    "region": [
+      1260,
+      887,
+      119,
+      65
+    ],
+    "anchors": {
+      "sole": [
+        1333,
+        950
+      ]
+    }
   },
   "kestrel_lawn": {
     "path": "res://assets/art/kestrel/lawn.png",

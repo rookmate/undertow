@@ -26,6 +26,7 @@ var _hook_target: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
+	gait.configure(1.1, 9.0, 3)
 	radius_tiles = 0.34
 	speed_tiles = 2.0
 	aggro_tiles = HOOK_RANGE
@@ -182,10 +183,13 @@ func _physics_process(delta: float) -> void:
 		_light.energy = (2.4 if state == State.ATTACK else 1.6) if state != State.DEAD else 0.0
 
 
+func visual_facing() -> Vector2:
+	return gait.direction if not hunting else facing_ground
+
+
 func _draw() -> void:
 	draw_shadow(16.0, 8.0)
-	paint_body("lamplighter", 127.0)
-	var head := body_anchor("lamplighter", "lens", 127.0)
+	var head := PaintedTripod.paint(self, gait, visual_facing(), hit_flash())
 	var lens := Palette.STEWARD_GOLD_HOT if state != State.DEAD else Palette.GREY_DEEP
 	draw_circle(head, 5.0, lens, true, -1.0, true)
 	if hunting and state == State.WINDUP:

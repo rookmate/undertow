@@ -254,7 +254,7 @@ counter-swing the correct arm. Rolls, downed poses, pulls and knockback keep the
 Painted masonry foundations, coping, grass verges, timber pilings and open rail trusses give exposed
 ground its construction. Water ripples beneath the quay walls. Moving mist at two depths replaces
 the stretched district panoramas. The design brief and world bible describe these cutaway views
-of the intact city. The catalog now contains 178 frames from 27 complete sheets plus the original
+of the intact city. The catalog now contains 251 frames from 30 complete sheets plus the original
 Kestrel materials. Generated pixels, prompts and joint metadata are preserved.
 
 Sol reviewed the implementation and closed its animation findings after focused follow-ups.
@@ -266,6 +266,19 @@ Review details and the distinction between headless checks and rendered evidence
 `reviews/movement-and-terrain.md`. Videos, captures and logs are in the ignored
 `reports/movement-terrain/` directory. `tools/motion_stage.tscn` reproduces the movement preview
 using real player physics and isolated save/settings paths.
+
+The follow-up covers all six enemy families, all six bosses and moving companions. Painted joints
+now animate Clerk/Warden pursuit, Lamplighter tripod steps and Warden-Prime charges. Throws,
+baton strikes, claws and nozzles follow their existing attack phases. Boss load/housing/roller/arm
+transitions are continuous, Lung breathing pauses with the scene, and NPC arrival/departure routes
+advance actual steps. Three further sheets preserve the existing character designs. Sol closed
+the reversed Warden stroke and stale runtime-art coverage findings. The expanded complete gate
+passed 555 tests and every scenario; the final stroke/anchor checks bring the suite to 557 passing
+tests. Native recordings pass for all enemy attacks, complete boss cycles/manual openings and
+companion arrival/departure. The final Linux pack passes a native Harbor tour. A final Teo rear-view
+tablet-glow correction passes the 14 Ark tests and a fresh companion recording.
+`tools/actor_motion_stage.tscn` reproduces these actor checks. Existing
+death fades and Custodian brush rotation remain candidates for later polish.
 
 ## Later milestones (planned)
 

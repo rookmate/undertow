@@ -1,5 +1,6 @@
 class_name Surgeon
 extends Boss
+var _arm_angle: float = 0.0
 ## Mercy General's boss: a surgical unit at the operating table, still completing its last procedure
 ## (world bible). Its guide light marks an incision across the theatre floor, laid through where you
 ## stand, and the beam cuts along it (three times); then it floods the theatre with sterilizing mist,
@@ -225,6 +226,7 @@ func _die() -> void:
 
 func _physics_process(delta: float) -> void:
 	super(delta)
+	_arm_angle = _arm_angle + delta * 4.0 if phase == Phase.CUT else lerp_angle(_arm_angle, 0.0, 1.0 - exp(-delta * 8.0))
 	queue_redraw()
 
 
@@ -232,14 +234,13 @@ func _draw() -> void:
 	draw_shadow(52.0, 24.0)
 	var tint := Color.WHITE * (1.0 + hit_flash())
 	ArtCatalog.paint(self, "surgeon_table", Rect2(-56, -64, 112, 92), tint)
-	var low := is_vulnerable()
-	var hub := Vector2(0, -ARM_HEIGHT - (40.0 if not low else 0.0))
+	var hub := Vector2(0, -ARM_HEIGHT - 40.0 * (1.0 - visual_open))
 	ArtCatalog.link(self, "arm_link", Vector2(0, -ARM_HEIGHT - 120.0), hub, 10.0, tint)
 	ArtCatalog.paint(self, "surgeon_hub", Rect2(hub - Vector2(18, 18), Vector2(36, 36)), tint)
 	for k: int in 4:
-		var a := TAU * k / 4.0 + 0.4 + (0.0 if phase != Phase.CUT else _phase_time * 4.0)
+		var a := TAU * k / 4.0 + 0.4 + _arm_angle
 		var elbow := hub + Vector2(cos(a) * 46.0, sin(a) * 20.0 + 26.0)
-		var tip := elbow + Vector2(cos(a) * 20.0, (70.0 if low else 44.0))
+		var tip := elbow + Vector2(cos(a) * 20.0, lerpf(44.0, 70.0, visual_open))
 		ArtCatalog.link(self, "arm_link", hub, elbow, 8.0, tint)
 		ArtCatalog.link(self, "arm_link", elbow, tip, 6.0, tint)
 		draw_circle(tip, 4.0, Palette.DANGER if phase == Phase.CUT else Palette.GREY_DEEP, true, -1.0, true)

@@ -1,6 +1,6 @@
 # Painted art
 
-The game uses 178 named painted frames across all eight districts and the Ark. The 27 sheets
+The game uses 251 named painted frames across all eight districts and the Ark. The 30 sheets
 in `complete/` supply terrain, architecture, scenery, characters, enemies, bosses, machinery,
 tools, cores, backgrounds and the city map. Kestrel's original carved details and materials are shared
 where appropriate. Every physical render owner is covered; the complete inventory is
@@ -23,8 +23,10 @@ The old Operator still sheet and first map are retained for provenance and exclu
 | `operator_rig`, `carry_rig` | Articulated front/rear walking and idle bodies, fixed-size boots, counter-swinging arms and Noor carried over the shoulder |
 | `operator_motion`, `operator_carry` | Dodge/downed poses and the carrying dodge; earlier walk poses retained for provenance |
 | `terrain_edges` | Chipped stone coping, grass verges, tarred timber beams and open steel trusses around physical ground |
-| `civilians` | Noor, Teo, the Waiting, survivors, Wardfolk and Noor seated/downed |
-| `enemies_front`, `enemies_back` | Custodian, Clerk, Lamplighter, Salvager, Sterilizer and Warden |
+| `civilian_rig` | Articulated Noor, Teo, survivors and departing Waiting, with attached lantern/tablet |
+| `civilians` | Settled Wardfolk and Noor seated/downed; earlier standing poses retained |
+| `enemy_light_rig`, `enemy_heavy_rig` | Clerk, Warden and Warden-Prime joints, plus Lamplighter tripod parts |
+| `enemies_front`, `enemies_back` | Custodian and separate hover hulls, claws and spray nozzles; earlier walking bodies retained |
 | `boss_bodies`, `boss_parts` | Conductor, Crane, Surgeon, Lung, Editor and Warden-Prime, with separate moving housings, arms, bellows, masts, rollers and loads |
 | `tools_cores` | Equipped tools, found weapons, loadout illustrations, power cores and truth cores |
 | `panoramas_a`, `panoramas_b`, `title_painting` | Earlier district panorama art retained for provenance; title painting remains in use. Gameplay uses continuous atmosphere around the actual terrain |
@@ -58,13 +60,25 @@ Physical paintings sit under live windows, lenses, weapon glows and switchable g
 openings preserve visible cages and mullions. The canonical Steward ring, predicted path, shadows,
 weather, fog, water level, reflections, attack warnings, particles, text and interface controls
 remain code drawn because they respond to play. Boss parts still move with their phases. The Operator uses painted cutout limbs with reviewed joint
-anchors. `OperatorGait` advances from actual movement after collision resolution, alternates support
+anchors. `StrideCycle` advances from actual movement after collision resolution, alternates support
 and passing feet, and yields to rolls, knockback, pulls and downed poses. Boots keep their shape while
 calves foreshorten. The normal and carrying bodies share the same legs and world-space root.
 The first attempted eight-frame replacement sheets repeated the same leading leg and were rejected.
 
+Enemies and walking companions share the distance-driven stride. Lamplighters use three contacts
+with two planted while the third passes. The Clerk throws and the Warden swings its baton on their
+existing attack deadlines. Hover machines extend their painted claws or nozzles. Warden-Prime
+steps through its charge and turns its lamp toward the beam. Boss housings, loads, rollers and arms
+interpolate between phases; Lung breathing pauses with the scene. `PaintedParts` owns limb mapping
+and attachment transforms, so lights and weapons follow their paintings. `coverage.json` lists
+each owner's current parts and required anchors, including dynamic front/rear selections.
+
 Record complete cycles with `godot --write-movie /tmp/motion.avi --fixed-fps 30 --disable-vsync
 res://tools/motion_stage.tscn`. This preview drives real player input and isolates saves/settings.
+Review enemies, bosses or moving companions with `res://tools/actor_motion_stage.tscn --
+--animation-group=enemies`, replacing `enemies` with `bosses` or `people`. It uses real AI and phase
+clocks with neutral inspection light. It checks attack engagement and complete boss cycles before
+reporting success. Always set a scratch `XDG_DATA_HOME` for previews and validation.
 Current motion and terrain evidence is under `reports/movement-terrain/`.
 
 `catalog.json` is included explicitly in every export preset because the renderer reads it at

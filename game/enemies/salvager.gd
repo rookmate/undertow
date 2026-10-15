@@ -14,6 +14,7 @@ const SCRAP_TAKEN := 3
 var loot: Dictionary = {}
 
 var _hover: float = 0.0
+var _claw_extension: float = 0.0
 
 
 func _ready() -> void:
@@ -90,11 +91,21 @@ func _die() -> void:
 	super()
 
 
+func visual_facing() -> Vector2:
+	return gait.direction if not loot.is_empty() else facing_ground
+
+
+func _physics_process(delta: float) -> void:
+	super(delta)
+	var reach := windup_progress() if state == State.WINDUP else (0.35 if not loot.is_empty() else 0.0)
+	_claw_extension = move_toward(_claw_extension, reach, delta * 8.0)
+
+
 func _draw() -> void:
 	var lift := -46.0 + sin(_hover) * 4.0
 	draw_shadow(14.0, 7.0)
-	paint_body("salvager", 56.0, Vector2(0, lift + 26.0))
+	var tips := PaintedHover.paint(self, "salvager", visual_facing(), 56.0, Vector2(0, lift + 26.0), hit_flash(), _claw_extension, not loot.is_empty())
 	if not loot.is_empty():
-		ArtCatalog.paint(self, "crate", Rect2(-10, lift + 20, 20, 12))
+		ArtCatalog.paint(self, "crate", Rect2(tips[0] - Vector2(10, 5), Vector2(20, 12)))
 	if state == State.WINDUP:
 		draw_windup_ring(SNATCH_REACH)
