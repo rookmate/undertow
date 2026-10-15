@@ -381,6 +381,284 @@
       ],
       "prompt": "Create ONE isolated transparent runtime game sprite for Undertow: a SUNKEN circular council chamber foundation on the Ark. Match the worn grey stone and carved verdigris Art Nouveau concrete palette of the reference prop sheet. Only use the reference for materials: do NOT reproduce its raised dais. The camera is fixed isometric, looking down at 30 degrees, circular ground projects as a wide ellipse approximately 1.8:1. A low circular stone curb lies flat at ground level; three concentric steps DESCEND INWARD into a recessed dark circular floor, like an empty small amphitheatre or circular drain inspection chamber. The middle floor is visibly BELOW the outer rim, never a raised platform or ascending stairs. A single small access notch at front. Fully open, low enough to see across. No doors or standing frames (runtime adds the three doors), no wall over knee height, no raised central plinth, no buildings, no people, no furniture, no ring glyph, no light, no shadows outside silhouette, no gold, no moon, no text or border. Hand-painted old civic stone, subdued teal-grey shadows, worn stair edges, cracks and damp patina. Entire prop uncropped and centered with generous transparent margins. True RGBA transparency outside the entire silhouette.",
       "source": "/home/homebox/.codex/generated_images/01a13663-a36c-7482-b037-f43da0199dc3/exec-b5540423-0f05-41d9-b261-595a80070538.png"
+    },
+    {
+      "name": "operator_rig",
+      "cols": 4,
+      "rows": 2,
+      "keys": [
+        "rig_front_torso",
+        "rig_front_thigh",
+        "rig_front_shin",
+        "rig_front_arm",
+        "rig_back_torso",
+        "rig_back_thigh",
+        "rig_back_shin",
+        "rig_back_arm"
+      ],
+      "transparent": true,
+      "prompt": "Use case: identity-preserve. Production painted 2D CUTOUT PUPPET PARTS for a game, matching the reference older municipal worker exactly: navy cap, grey beard, navy worn coveralls with ivory reflective chevron, tool belt, leather gloves and work boots. Do NOT draw whole characters or an animation sequence. Draw exactly EIGHT DETACHED BODY PARTS in a 4-column by 2-row grid on real transparent background. Large clear gaps between all parts. Row1 THREE-QUARTER FRONT view facing screen-right/down: cell1 head+neck+torso+toolbelt+short pelvis ending just below belt, WITHOUT ARMS OR LEGS, shoulder stubs rounded; cell2 a single upper leg in navy trousers from rounded hip joint to rounded knee, straight down, no calf or foot; cell3 a single lower leg from rounded knee through shin reflective cuff to complete boot (toe toward screen-right/down), leg mostly vertical; cell4 one full arm from rounded sleeve shoulder to gloved hand, relaxed slight bent elbow, hanging straight down. Row2 same FOUR separate parts in THREE-QUARTER REAR view facing screen-right/up: back head/torso/pelvis WITHOUT arms/legs; rear thigh; rear shin and boot; rear arm. Straight neutral limbs suitable for rotation at joints. No duplicate complete people. Each part fills its own cell comfortably, no frame lines, no labels, no text, no shadows or haze. Painterly detailed brushwork matching reference, soft directional daylight, clean opaque edges and genuine alpha everywhere outside painted cutouts. All cut parts have overlapping rounded ends for skeletal assembly.",
+      "reference": "assets/art/complete/operator_motion.png",
+      "anchors": {
+        "rig_front_torso": {
+          "hip": [
+            296,
+            455
+          ],
+          "ear": [
+            274,
+            135
+          ],
+          "near_shoulder": [
+            174,
+            259
+          ],
+          "far_shoulder": [
+            427,
+            224
+          ]
+        },
+        "rig_front_thigh": {
+          "joint": [
+            619,
+            89
+          ],
+          "tip": [
+            667,
+            425
+          ]
+        },
+        "rig_front_shin": {
+          "joint": [
+            942,
+            117
+          ],
+          "tip": [
+            950,
+            382
+          ]
+        },
+        "rig_front_arm": {
+          "joint": [
+            1206,
+            126
+          ],
+          "tip": [
+            1337,
+            456
+          ]
+        },
+        "rig_back_torso": {
+          "hip": [
+            292,
+            943
+          ],
+          "ear": [
+            351,
+            620
+          ],
+          "near_shoulder": [
+            420,
+            763
+          ],
+          "far_shoulder": [
+            159,
+            719
+          ]
+        },
+        "rig_back_thigh": {
+          "joint": [
+            658,
+            566
+          ],
+          "tip": [
+            621,
+            897
+          ]
+        },
+        "rig_back_shin": {
+          "joint": [
+            974,
+            588
+          ],
+          "tip": [
+            958,
+            873
+          ]
+        },
+        "rig_back_arm": {
+          "joint": [
+            1331,
+            597
+          ],
+          "tip": [
+            1248,
+            951
+          ]
+        }
+      },
+      "refinement": "Precise-object-edit of this exact 4x2 separated painted puppet parts sheet. Keep every part exactly where it is, same dimensions, pose, clothes, detail and layout. Remove ALL smoky background and diffuse halos between or outside parts, replacing them with genuine zero-alpha transparency. No glows, shadows, fog, gradient of any kind outside silhouettes. Replace the light grey mannequin joint endcaps with matching dark navy painted CLOTH so overlapping parts never show a pale joint. Preserve rounded joint contours but paint the grey surfaces as navy fabric. Keep the rest pixel-faithful. Clean game sprite cutouts, real alpha.",
+      "search_boxes": {
+        "rig_front_torso": [
+          120,
+          0,
+          350,
+          500
+        ],
+        "rig_front_thigh": [
+          540,
+          40,
+          215,
+          450
+        ],
+        "rig_front_shin": [
+          870,
+          70,
+          250,
+          320
+        ],
+        "rig_front_arm": [
+          1160,
+          60,
+          250,
+          440
+        ],
+        "rig_back_torso": [
+          110,
+          505,
+          360,
+          490
+        ],
+        "rig_back_thigh": [
+          560,
+          525,
+          195,
+          460
+        ],
+        "rig_back_shin": [
+          860,
+          540,
+          220,
+          349
+        ],
+        "rig_back_arm": [
+          1165,
+          530,
+          230,
+          480
+        ]
+      },
+      "subframes": {
+        "rig_front_boot": {
+          "region": [
+            895,
+            364,
+            209,
+            121
+          ],
+          "anchors": {
+            "sole": [
+              958,
+              452
+            ]
+          }
+        },
+        "rig_back_boot": {
+          "region": [
+            875,
+            849,
+            180,
+            108
+          ],
+          "anchors": {
+            "sole": [
+              946,
+              936
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "carry_rig",
+      "cols": 2,
+      "rows": 1,
+      "keys": [
+        "rig_carry_front",
+        "rig_carry_back"
+      ],
+      "transparent": true,
+      "prompt": "Use case: identity-preserve. Create TWO painted cutout puppet UPPER-BODY sprites of the exact older Operator carrying unconscious Noor over his shoulder from the reference. Transparent background, one row two equally sized cells. Left: three-quarter FRONT facing screen-right/down; right: three-quarter REAR facing screen-right/up. Preserve all clothes, ages, colors, faces, proportions, Operator navy cap and toolbelt, Noor's teal/gold coat and purple headwrap, her dangling boots and hand lantern. CRITICAL: omit ONLY THE OPERATOR'S OWN LEGS below his belt/short pelvis: they will be separately animated by game engine. His upper body, both arms, and ALL of carried Noor including her hanging legs/boots and lantern must remain. His torso ends just beneath toolbelt with a rounded short pelvis ready to overlap animated thighs. Do not add his trousers legs or his own feet. Arrange the two upper-body assemblies isolated and clearly separated with generous transparent margin. Not a fullbody character sheet. Matching painterly style, no glow haze/drop shadow, no floor, no background, no grid, no labels, no text. Genuine alpha cutouts.",
+      "reference": "assets/art/complete/operator_carry.png",
+      "anchors": {
+        "rig_carry_front": {
+          "hip": [
+            498,
+            595
+          ],
+          "ear": [
+            465,
+            235
+          ],
+          "lantern": [
+            662,
+            739
+          ]
+        },
+        "rig_carry_back": {
+          "hip": [
+            1337,
+            616
+          ],
+          "ear": [
+            1503,
+            167
+          ],
+          "lantern": [
+            1145,
+            752
+          ]
+        }
+      }
+    },
+    {
+      "name": "terrain_edges",
+      "cols": 1,
+      "rows": 4,
+      "keys": [
+        "edge_stone",
+        "edge_steel",
+        "edge_timber",
+        "edge_roots"
+      ],
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. Four hand-painted modular TERRAIN EDGE STRIPS for an isometric port-city game. Transparent sprite atlas, ONE COLUMN FOUR ROWS, each row one long straight horizontal architectural strip with generous empty margins, all strips separate. Orthographic front elevation, no perspective, do not draw complete buildings or landscape. Worn old municipal materials, painterly brush texture, subdued neutral cool teal grey light, no glow. Row1: pale chipped limestone coping, irregular worn upper lip and a few broken corners, dark moss in cracks, small roots hanging below. Row2: rusted dark teal steel bridge girder, two horizontal I-beam flanges linked by diagonal truss braces, genuinely transparent triangular spaces between braces, bolts and peeling paint. Row3: tarred timber quay beam with three irregular joined horizontal planks, chipped ends, rope knots and a few barnacles, dark brown weathered wood. Row4: untidy grass and moss verge along old stone edging, short hanging roots and ivy tufts, irregular silhouette, restrained dark muted green. Each strip is roughly eight times wider than tall and fills the width of its row, no other objects, no grey backplate, no text, no labels, no outlines of a grid, no floor shadows, no backdrop. Actual zero-alpha transparency through holes and outside each silhouette. Target canvas landscape 1536x1024.",
+      "search_boxes": {
+        "edge_stone": [
+          0,
+          40,
+          1536,
+          240
+        ],
+        "edge_steel": [
+          0,
+          300,
+          1536,
+          195
+        ],
+        "edge_timber": [
+          0,
+          540,
+          1536,
+          230
+        ],
+        "edge_roots": [
+          0,
+          775,
+          1536,
+          249
+        ]
+      }
     }
   ]
 }

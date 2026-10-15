@@ -990,3 +990,19 @@ Asked of the user on 2026-10-09 and answered the same day.
      Warden-Prime tactic). The old check only caught standing perfectly still, and the bot sliding along
      a wall stalled two windowed campaigns. The gate's runs are line-buffered so a run cut off by its
      timeout keeps its last lines. Bot and tooling only: no game behaviour or check changed.
+205. **Walking uses painted joints and actual travel.** The old two poses kept the same leg forward.
+     The Operator now has painted torso, arm, thigh, calf and boot parts with fixed anchors. Opposite
+     feet alternate contact and passing phases over 1.6 tiles of movement. Stance feet stay planted
+     through turns, lifted feet settle into the new heading, and arm swing follows the matching leg
+     across front, rear and mirrored views. Collision stops the gait; carrying slows its cadence.
+     Knockback, pulls, rolls and downed poses do not count as walking. Noor has separate carrying
+     torsos at the same Operator scale. Native recordings, including continuous reversals, are part
+     of the visual check; a collection of still poses did not catch the original fault.
+206. **The floor has depth; the surrounding atmosphere moves.** Exposed street edges have painted
+     masonry, coping and grass verges; timber decks have pilings and rail bridges have open trusses.
+     Global terrain neighbors decide the perimeter, including buildings and lawns, so render chunks
+     never create seams. Water sits below quay walls and ripples in world space. Two depths of
+     world-relative mist replace the stretched district panoramas. Ground stays stable and the
+     Quiet remains an intact city; these are cutaway views of existing foundations. The design
+     brief and world bible now make that presentation explicit. Source panoramas remain as art
+     provenance. Collision, navigation and the Steward's three-cell gold path retain their rules.

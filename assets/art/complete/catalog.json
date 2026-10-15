@@ -1641,6 +1641,286 @@
       615
     ]
   },
+  "rig_front_torso": {
+    "path": "res://assets/art/complete/operator_rig.png",
+    "region": [
+      136,
+      20,
+      315,
+      473
+    ],
+    "anchors": {
+      "hip": [
+        296,
+        455
+      ],
+      "ear": [
+        274,
+        135
+      ],
+      "near_shoulder": [
+        174,
+        259
+      ],
+      "far_shoulder": [
+        427,
+        224
+      ]
+    }
+  },
+  "rig_front_thigh": {
+    "path": "res://assets/art/complete/operator_rig.png",
+    "region": [
+      554,
+      58,
+      187,
+      401
+    ],
+    "anchors": {
+      "joint": [
+        619,
+        89
+      ],
+      "tip": [
+        667,
+        425
+      ]
+    }
+  },
+  "rig_front_shin": {
+    "path": "res://assets/art/complete/operator_rig.png",
+    "region": [
+      881,
+      90,
+      170,
+      300
+    ],
+    "anchors": {
+      "joint": [
+        942,
+        117
+      ],
+      "tip": [
+        950,
+        382
+      ]
+    }
+  },
+  "rig_front_arm": {
+    "path": "res://assets/art/complete/operator_rig.png",
+    "region": [
+      1175,
+      80,
+      223,
+      412
+    ],
+    "anchors": {
+      "joint": [
+        1206,
+        126
+      ],
+      "tip": [
+        1337,
+        456
+      ]
+    }
+  },
+  "rig_back_torso": {
+    "path": "res://assets/art/complete/operator_rig.png",
+    "region": [
+      123,
+      510,
+      326,
+      475
+    ],
+    "anchors": {
+      "hip": [
+        292,
+        943
+      ],
+      "ear": [
+        351,
+        620
+      ],
+      "near_shoulder": [
+        420,
+        763
+      ],
+      "far_shoulder": [
+        159,
+        719
+      ]
+    }
+  },
+  "rig_back_thigh": {
+    "path": "res://assets/art/complete/operator_rig.png",
+    "region": [
+      571,
+      537,
+      171,
+      396
+    ],
+    "anchors": {
+      "joint": [
+        658,
+        566
+      ],
+      "tip": [
+        621,
+        897
+      ]
+    }
+  },
+  "rig_back_shin": {
+    "path": "res://assets/art/complete/operator_rig.png",
+    "region": [
+      875,
+      558,
+      181,
+      331
+    ],
+    "anchors": {
+      "joint": [
+        974,
+        588
+      ],
+      "tip": [
+        958,
+        873
+      ]
+    }
+  },
+  "rig_back_arm": {
+    "path": "res://assets/art/complete/operator_rig.png",
+    "region": [
+      1181,
+      554,
+      197,
+      436
+    ],
+    "anchors": {
+      "joint": [
+        1331,
+        597
+      ],
+      "tip": [
+        1248,
+        951
+      ]
+    }
+  },
+  "rig_front_boot": {
+    "path": "res://assets/art/complete/operator_rig.png",
+    "region": [
+      895,
+      364,
+      209,
+      121
+    ],
+    "anchors": {
+      "sole": [
+        958,
+        452
+      ]
+    }
+  },
+  "rig_back_boot": {
+    "path": "res://assets/art/complete/operator_rig.png",
+    "region": [
+      875,
+      849,
+      180,
+      108
+    ],
+    "anchors": {
+      "sole": [
+        946,
+        936
+      ]
+    }
+  },
+  "rig_carry_front": {
+    "path": "res://assets/art/complete/carry_rig.png",
+    "region": [
+      87,
+      35,
+      739,
+      819
+    ],
+    "anchors": {
+      "hip": [
+        498,
+        595
+      ],
+      "ear": [
+        465,
+        235
+      ],
+      "lantern": [
+        662,
+        739
+      ]
+    }
+  },
+  "rig_carry_back": {
+    "path": "res://assets/art/complete/carry_rig.png",
+    "region": [
+      1014,
+      48,
+      684,
+      808
+    ],
+    "anchors": {
+      "hip": [
+        1337,
+        616
+      ],
+      "ear": [
+        1503,
+        167
+      ],
+      "lantern": [
+        1145,
+        752
+      ]
+    }
+  },
+  "edge_stone": {
+    "path": "res://assets/art/complete/terrain_edges.png",
+    "region": [
+      16,
+      74,
+      1502,
+      198
+    ]
+  },
+  "edge_steel": {
+    "path": "res://assets/art/complete/terrain_edges.png",
+    "region": [
+      17,
+      320,
+      1502,
+      162
+    ]
+  },
+  "edge_timber": {
+    "path": "res://assets/art/complete/terrain_edges.png",
+    "region": [
+      20,
+      544,
+      1497,
+      224
+    ]
+  },
+  "edge_roots": {
+    "path": "res://assets/art/complete/terrain_edges.png",
+    "region": [
+      21,
+      776,
+      1497,
+      211
+    ]
+  },
   "kestrel_lawn": {
     "path": "res://assets/art/kestrel/lawn.png",
     "region": [

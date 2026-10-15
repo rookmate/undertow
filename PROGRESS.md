@@ -228,7 +228,7 @@ weak points stop colliding (the relay no longer blocks the Harbor route), and he
 requests return without waiting for a render frame. An exported pack was launched and toured Mercy
 General, confirming that the runtime catalog ships.
 
-Validation is complete: the final gate passes all 523 tests, the 310-check campaign, smoke gameplay,
+That art pass's gate passed all 523 tests, the 310-check campaign, smoke gameplay,
 all three endings, revisit, the tool door and all eight district tours. All eight native tours passed;
 the native atlas and assembled boss/Ark/carrying captures were inspected. The updated export pack
 passes a 40-second Mercy tour, and `reports/art-complete/final/painted-gameplay.mp4` records native
@@ -243,6 +243,29 @@ capacity; `reviews/painted-art-complete.md` distinguishes Sol's findings from th
 verification. The initial preview had overwritten the normal local save and rotating backup with
 synthetic data. No earlier copy was found; the affected files are archived in the ignored reports.
 The preview now uses its own save/settings paths, and a full native run leaves normal files unchanged.
+
+## Walking and terrain depth
+
+The Operator now walks on articulated painted legs with alternating planted contacts and passing
+feet. The gait measures actual travel, stops against walls and slows while carrying Noor. Joint
+anchors and boot scale stay fixed. Turns preserve the planted foot; front, rear and mirrored views
+counter-swing the correct arm. Rolls, downed poses, pulls and knockback keep their own behavior.
+
+Painted masonry foundations, coping, grass verges, timber pilings and open rail trusses give exposed
+ground its construction. Water ripples beneath the quay walls. Moving mist at two depths replaces
+the stretched district panoramas. The design brief and world bible describe these cutaway views
+of the intact city. The catalog now contains 178 frames from 27 complete sheets plus the original
+Kestrel materials. Generated pixels, prompts and joint metadata are preserved.
+
+Sol reviewed the implementation and closed its animation findings after focused follow-ups.
+The complete gate passed import, 549 tests, smoke gameplay, the 310-check campaign, all endings,
+revisit, the tool door and all eight tours. The last arm correction and its added regression then
+passed the full 550-test suite and a fresh native motion recording. The native Loop tour held
+60 fps average with a 57 fps 1% low on this machine. The Linux pack also passed a native Harbor tour.
+Review details and the distinction between headless checks and rendered evidence are in
+`reviews/movement-and-terrain.md`. Videos, captures and logs are in the ignored
+`reports/movement-terrain/` directory. `tools/motion_stage.tscn` reproduces the movement preview
+using real player physics and isolated save/settings paths.
 
 ## Later milestones (planned)
 

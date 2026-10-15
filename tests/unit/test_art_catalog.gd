@@ -3,13 +3,6 @@ extends TestCase
 
 const COVERAGE := "res://assets/art/complete/coverage.json"
 
-func test_panorama_stays_continuous_at_previous_wrap_boundaries() -> void:
-	for boundary: Vector2 in [Vector2(60, 35), Vector2(-60, -35), Vector2(120, 70)]:
-		var before := SkyBackdrop.bounded_drift(boundary - Vector2(0.1, 0.1))
-		var after := SkyBackdrop.bounded_drift(boundary + Vector2(0.1, 0.1))
-		check(before.distance_to(after) < 0.3, "camera movement never wraps the painting")
-		check(absf(after.x) <= 60.0 and absf(after.y) <= 35.0, "painting stays inside the overscan")
-
 func test_every_frame_loads_and_stays_inside_its_source() -> void:
 	var entries: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(ArtCatalog.MANIFEST))
 	check(entries.size() > 100, "the complete painted collection")
@@ -45,7 +38,6 @@ func test_every_kind_and_owner_has_painted_art() -> void:
 			check(ArtCatalog.frame(ArtBindings.ground_key(kind, "vellum")) != null, "floor draw binding")
 	for id: String in LevelCatalog.LEVELS.keys() + ["ark"]:
 		var look := DistrictLook.for_district(id)
-		check(ArtCatalog.frame("sky_" + look.district_id) != null, id + " has a panorama")
 		check(look.wall_texture != null and look.roof_texture != null, id + " has building materials")
 	check_eq(DistrictLook.for_district("hold_arena").district_id, "vellum", "test arenas share the documented default look")
 
