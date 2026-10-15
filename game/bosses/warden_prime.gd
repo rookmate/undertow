@@ -293,11 +293,15 @@ func _draw() -> void:
 	draw_shadow(46.0, 20.0)
 	var tint := Color.WHITE * (1.0 + hit_flash())
 	var reel := 0.0 if phase != Phase.DAZED else sin(_phase_time * 9.0) * 6.0
-	ArtCatalog.paint(self, "warden_prime", Rect2(-40, -112, 80, 112), tint)
-	var mast_bounds := Rect2(-15 + reel, -168, 30, 58)
-	var lens := ArtCatalog.anchor("warden_mast", "lens", mast_bounds)
+	var body_facing := charge_dir if phase in [Phase.CHARGE_WARN, Phase.CHARGE] else beam_dir
+	var joints := PaintedBiped.paint(self, "warden_prime", gait, body_facing, 112.0, hit_flash())
+	var mast_bounds := Rect2(-15 + reel, -168 + gait.bob(), 30, 58)
+	ArtCatalog.slice(self, "warden_mast", Rect2(mast_bounds.position + Vector2(0, 15), Vector2(30, 43)), Rect2(0, 0.26, 1, 0.74))
+	var pivot := Vector2(reel, -153 + gait.bob())
+	var lamp_dir := Iso.grid_to_world(beam_dir if phase == Phase.SWEEP else body_facing).normalized()
+	var lens := pivot + lamp_dir * 12.0
+	PaintedParts.segment(self, "warden_mast_head", pivot, lens, 12.0, tint)
 	var lamp := Palette.STEWARD_GOLD_HOT if phase == Phase.SWEEP else Palette.GREY_DEEP
 	draw_circle(lens, 4.0, lamp, true, -1.0, true)
-	ArtCatalog.paint(self, "warden_mast", mast_bounds, tint)
 	var eye := Palette.GREY_DEEP if is_vulnerable() else Palette.DANGER_HOT
-	draw_circle(Vector2(0, -96), 3.0, eye, true, -1.0, true)
+	draw_circle(joints["eye"], 3.0, eye, true, -1.0, true)

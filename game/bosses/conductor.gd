@@ -210,7 +210,7 @@ func _draw() -> void:
 		var lamp_pos := ArtCatalog.anchor("conductor", anchor_id, gantry)
 		var lit := phase == Phase.WARN and i < lanes.size() and _running.has(lanes[i])
 		draw_circle(lamp_pos, 5.0, Palette.DANGER if lit else Palette.GREY_DEEP, true, -1.0, true)
-	var drop := 60.0 if is_vulnerable() else 0.0
+	var drop := 60.0 * visual_open
 	var body := Rect2(-30, -130 + drop, 60, 54)
 	var core := ArtCatalog.anchor("conductor_housing", "lens", body)
 	if is_vulnerable():

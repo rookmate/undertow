@@ -20,6 +20,7 @@ var woken: bool = false
 var _leave: float = -1.0
 var _line: String = ""
 var _body: StaticBody2D
+var gait: StrideCycle = StrideCycle.new()
 
 
 ## What they say when woken: their own line, or one of the general ones if the file has none for them.
@@ -111,17 +112,19 @@ func spoken_line() -> String:
 
 
 func _process(delta: float) -> void:
+	var before := position
 	if _leave >= 0.0 and _leave < 99.0:
 		_leave += delta
 		if _leave > 1.2:
 			position += Iso.ground_velocity(Vector2(0, 1), 1.6) * delta
 			modulate.a = clampf(1.0 - (_leave - 1.6) / 1.4, 0.0, 1.0)
+	gait.advance(position - before, true, delta)
 	visible = is_present()
 	queue_redraw()
 
 
 func _draw() -> void:
 	draw_colored_polygon(Fx.ground_ellipse(0.36, 18, false), Color(Palette.NEAR_BLACK, 0.4))
-	ArtCatalog.actor(self, "survivor", 147.0, Vector2.ZERO, 0.0, Color.WHITE if woken else Color(0.67, 0.73, 0.79))
-	var ear := ArtCatalog.actor_anchor("survivor", "ear", 147.0)
+	var joints := PaintedBiped.paint(self, "survivor", gait, Vector2(0, 1), 147.0, 0.0, 0.0, Color.WHITE if woken else Color(0.67, 0.73, 0.79))
+	var ear := joints["ear"]
 	draw_circle(ear, 2.5, Palette.GREY_DEEP if woken else Palette.STEWARD_GOLD, true, -1.0, true)

@@ -34,6 +34,30 @@ func setup(level_grid: LevelGrid, district_look: DistrictLook, cells: Rect2i = R
 	z_index = -20
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
+	var edges := TerrainEdges.new()
+	edges.name = "Foundations"
+	edges.grid = grid
+	edges.look = look
+	edges.cells = _cells()
+	edges.z_index = -1
+	add_child(edges)
+	var water_cells: Array[Vector2i] = []
+	for cell: Vector2i in edges.cells:
+		if grid.floor_at(cell) == LevelGrid.Floor.WATER:
+			water_cells.append(cell)
+	if not water_cells.is_empty():
+		var water := Node2D.new()
+		water.name = "Water"
+		water.z_index = -2
+		var shimmer := ShaderMaterial.new()
+		shimmer.shader = preload("res://game/level/shaders/painted_water.gdshader")
+		var frame := ArtCatalog.frame("mat_water")
+		shimmer.set_shader_parameter("source_region", Vector4(frame.region.position.x / frame.atlas.get_width(), frame.region.position.y / frame.atlas.get_height(), frame.region.size.x / frame.atlas.get_width(), frame.region.size.y / frame.atlas.get_height()))
+		water.material = shimmer
+		water.draw.connect(func() -> void:
+			for cell: Vector2i in water_cells:
+				ArtCatalog.surface(water, "mat_water", cell))
+		add_child(water)
 	queue_redraw()
 
 
@@ -52,10 +76,7 @@ func _draw() -> void:
 		return
 	for cell: Vector2i in _cells():
 		var kind := grid.floor_at(cell)
-		if kind == LevelGrid.Floor.VOID:
-			_drop(cell)
-			continue
-		if kind == LevelGrid.Floor.BUILDING:
+		if kind in [LevelGrid.Floor.VOID, LevelGrid.Floor.WATER, LevelGrid.Floor.BUILDING]:
 			continue
 		var key := ArtBindings.ground_key(kind, look.district_id)
 		var tint := Color.WHITE
@@ -72,14 +93,3 @@ func _draw() -> void:
 			draw_set_transform(Iso.cell_center(cell), 0.0, Vector2(1.0, Iso.SQUASH))
 			RingPainter.paint(self, Vector2.ZERO, Iso.HALF_W * 0.45, ring)
 			draw_set_transform(Vector2.ZERO)
-
-
-func _drop(cell: Vector2i) -> void:
-	if look.void_fog.a <= 0.0:
-		return
-	var near := false
-	for dy: int in range(-2, 3):
-		for dx: int in range(-2, 3):
-			near = near or grid.is_walkable(cell + Vector2i(dx, dy))
-	if near:
-		draw_colored_polygon(Iso.cell_diamond(cell), look.void_fog)

@@ -33,6 +33,7 @@ var _searching: float = -1.0
 
 
 func _ready() -> void:
+	gait.configure(0.85, 5.0)
 	scrap_value = 3
 	radius_tiles = 0.36
 	speed_tiles = PATROL_SPEED
@@ -160,11 +161,10 @@ func _draw() -> void:
 			pts.append(Iso.grid_to_world(Vector2.from_angle(a) * SIGHT_TILES * 0.55))
 		draw_colored_polygon(pts, Color(Palette.DANGER, 0.06))
 	draw_windup_ring(REACH)
-	var bob := sin(Time.get_ticks_msec() / 300.0 + float(get_instance_id() % 7)) * 3.0
-	paint_body("warden", 90.0, Vector2(0, bob))
+	var joints := PaintedBiped.paint(self, "warden", gait, visual_facing(), 90.0, hit_flash(), attack_pose())
 	if state == State.WINDUP:
-		draw_circle(body_anchor("warden", "baton", 90.0, Vector2(0, bob)), 4.0 + 3.0 * windup_progress(), Palette.DANGER, true, -1.0, true)
+		draw_circle(joints["weapon"], 4.0 + 3.0 * windup_progress(), Palette.DANGER, true, -1.0, true)
 	var eye := Palette.DANGER_HOT if hunting else Palette.DANGER
 	if state == State.STUNNED:
 		eye = Palette.GREY_DEEP
-	draw_circle(body_anchor("warden", "eye", 90.0, Vector2(0, bob)), 2.5, eye, true, -1.0, true)
+	draw_circle(joints["eye"], 2.5, eye, true, -1.0, true)

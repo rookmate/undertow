@@ -1,5 +1,6 @@
 class_name Lung
 extends Boss
+var _breath_phase: float = 0.0
 ## Greywater's boss: the master pump controller, still running a schedule for a city that isn't there
 ## (world bible). It floods the basin around it a quarter at a time (the quarter you're in first; three
 ## a cycle), each one called by the Steward; then it sends a pressure surge out across the basin, a ring
@@ -304,13 +305,15 @@ func _die() -> void:
 
 func _physics_process(delta: float) -> void:
 	super(delta)
+	if state != State.DEAD:
+		_breath_phase = fposmod(_breath_phase + delta * (6.0 if is_vulnerable() else 1.6), TAU)
 	queue_redraw()
 
 
 func _draw() -> void:
 	draw_shadow(58.0, 26.0)
 	var tint := Color.WHITE * (1.0 + hit_flash())
-	var breath := sin(Time.get_ticks_msec() / 1000.0 * (6.0 if is_vulnerable() else 1.6)) * 8.0
+	var breath := sin(_breath_phase) * 8.0
 	ArtCatalog.paint(self, "lung", Rect2(-50, -96, 100, 114), tint)
 	ArtCatalog.paint(self, "lung_bellows", Rect2(-30, -128 - breath, 60, 44 + breath), tint)
 	# Its gauge: the Steward's (gold); open, the needle drops and it glows.

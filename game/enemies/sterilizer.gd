@@ -77,9 +77,10 @@ func _release() -> void:
 func _draw() -> void:
 	var lift := -HOVER + sin(_bob) * 4.0
 	draw_shadow(16.0, 7.0)
-	paint_body("sterilizer", 45.0, Vector2(0, lift + 18.0))
+	var deployment := windup_progress() if state == State.WINDUP else (1.0 - smoothstep(0.0, 0.45, _state_time) if state == State.RECOVER else 0.0)
+	var tips := PaintedHover.paint(self, "sterilizer", visual_facing(), 45.0, Vector2(0, lift + 18.0), hit_flash(), deployment, false)
 	if state == State.WINDUP:
-		for k: int in 4:
-			draw_circle(Vector2(-12.0 + k * 8.0, lift + 15), 3.0, Palette.DANGER, true, -1.0, true)
+		for tip: Vector2 in tips:
+			draw_circle(tip, 3.0, Palette.DANGER, true, -1.0, true)
 		draw_windup_ring(RELEASE_TILES)
 		draw_circle(Vector2(0, lift + 22), 8.0 + windup_progress() * 10.0, Color(Palette.STERILE_MIST, 0.3), true, -1.0, true)

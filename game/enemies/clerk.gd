@@ -23,6 +23,7 @@ var flash_next: bool = false
 
 
 func _ready() -> void:
+	gait.configure(1.3, 7.0)
 	scrap_value = 2
 	radius_tiles = 0.32
 	speed_tiles = 1.8
@@ -108,7 +109,8 @@ func _draw() -> void:
 		var reach := Iso.world_to_grid(level.player.global_position) - Iso.world_to_grid(global_position)
 		var k := windup_progress()
 		draw_line(Vector2.ZERO, Iso.grid_to_world(reach), Color(Palette.DANGER, 0.2 + 0.5 * k), 2.0 + 3.0 * k, true)
-	paint_body("clerk", 138.0)
+	var throwing := (state == State.WINDUP and not flash_next) or (state == State.RECOVER and flash_next)
+	var joints := PaintedBiped.paint(self, "clerk", gait, visual_facing(), 138.0, hit_flash(), attack_pose() if throwing else 0.0)
 	if state == State.WINDUP and flash_next:
-		var screen := body_anchor("clerk", "screen", 138.0)
+		var screen := joints["screen"]
 		draw_rect(Rect2(screen - Vector2(9, 13), Vector2(18, 26)), Color(Palette.FEED_WHITE, windup_progress()))

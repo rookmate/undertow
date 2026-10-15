@@ -78,6 +78,8 @@ var _stalled_this_cycle: bool = false
 var _mark2: Vector2 = Vector2.ZERO
 var fall_dir: Vector2 = Vector2(1, 0)
 var fallen: bool = false
+var _motion_from: Vector2 = Vector2.ZERO
+var _height_from: float = 0.0
 
 
 func _ready() -> void:
@@ -102,7 +104,6 @@ func stage_line(next_stage: int) -> String:
 func _on_stage_begins(next_stage: int) -> void:
 	phase = Phase.IDLE
 	_phase_time = 0.0
-	load_height = 0.0
 	if next_stage == 3:
 		# A leg buckles: it'll go over toward you, along a line it shows you first.
 		var p := player()
@@ -148,6 +149,8 @@ func _start_cycle() -> void:
 
 
 func _enter_phase(next: Phase) -> void:
+	_motion_from = load_at
+	_height_from = load_height
 	phase = next
 	_phase_time = 0.0
 	_struck = false
@@ -187,7 +190,7 @@ func _fight(delta: float) -> void:
 	var p := player()
 	match phase:
 		Phase.LIFT:
-			load_height = lerpf(0.0, HOOK_HEIGHT, clampf(_phase_time / LIFT_SECONDS, 0.0, 1.0))
+			load_height = lerpf(_height_from, HOOK_HEIGHT, clampf(_phase_time / LIFT_SECONDS, 0.0, 1.0))
 			if _phase_time >= LIFT_SECONDS:
 				_drops_left -= 1
 				_enter_phase(Phase.AIM)
@@ -211,7 +214,10 @@ func _fight(delta: float) -> void:
 			if _phase_time >= DROP_SECONDS + DROP_SETTLE:
 				_enter_phase(Phase.LIFT if _drops_left > 0 else Phase.SWING_WARN)
 		Phase.SWING_WARN:
-			load_height = 60.0
+			var prepare := smoothstep(0.0, SWING_WARN_SECONDS, _phase_time)
+			var start := global_position + Iso.ground_velocity(Vector2.RIGHT, (SWING_INNER + SWING_OUTER) * 0.5)
+			load_at = _motion_from.lerp(start, prepare)
+			load_height = lerpf(_height_from, 60.0, prepare)
 			if _phase_time >= SWING_WARN_SECONDS:
 				_enter_phase(Phase.SWING)
 				Sound.play(&"carriage_run", global_position)
@@ -226,12 +232,13 @@ func _fight(delta: float) -> void:
 			if _phase_time >= SWING_SECONDS:
 				_enter_phase(Phase.REST)
 		Phase.REST:
-			load_height = 0.0
+			load_height = lerpf(_height_from, 0.0, smoothstep(0.0, 0.35, _phase_time))
 			if _phase_time >= (FALLEN_REST if fallen else REST_SECONDS):
 				_start_cycle()
 		Phase.STALLED:
-			load_height = 0.0
-			load_at = global_position + Iso.ground_velocity(Vector2(1, 1).normalized(), 1.0)
+			var settle := smoothstep(0.0, 0.3, _phase_time)
+			load_height = lerpf(_height_from, 0.0, settle)
+			load_at = _motion_from.lerp(global_position + Iso.ground_velocity(Vector2(1, 1).normalized(), 1.0), settle)
 			if _phase_time >= STALL_SECONDS:
 				_start_cycle()
 
@@ -273,7 +280,7 @@ func _draw() -> void:
 	var tint := Color.WHITE * (1.0 + hit_flash())
 	var h := 280.0
 	ArtCatalog.paint(self, "crane_tower", Rect2(-48, -h, 96, h + 24), tint)
-	var cab_y := -h * 0.35 if is_vulnerable() else -h + 30.0
+	var cab_y := lerpf(-h + 30.0, -h * 0.35, visual_open)
 	ArtCatalog.paint(self, "crane_cab", Rect2(-30, cab_y, 60, 46), tint)
 	if is_vulnerable():
 		draw_circle(Vector2(0, cab_y + 30), 12.0, Palette.STEWARD_GOLD_HOT, true, -1.0, true)

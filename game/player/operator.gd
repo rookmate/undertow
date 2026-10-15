@@ -169,14 +169,16 @@ func _physics_process(delta: float) -> void:
 		velocity = Iso.ground_velocity(ground, WALK_TILES_PER_SECOND * (level.footing(cell()) if level != null else 1.0) * (CARRY_SPEED if carrying else 1.0))
 		if ground.length_squared() > 0.01 and not _attacking():
 			facing_ground = ground.normalized()
+	var walking := ground.length_squared() > 0.001 and _knock.length_squared() < 4.0 and _pull_left <= 0.0
 	velocity += _knock
 	_knock = _knock.move_toward(Vector2.ZERO, 1500.0 * delta)
 	if _pull_left > 0.0:
 		_pull_left -= delta
 		if Iso.ground_distance(global_position, _pull_to) > 0.25:
 			velocity += Iso.ground_velocity(Iso.ground_dir_between(global_position, _pull_to), _pull_speed)
+	var before := global_position
 	move_and_slide()
-	_body.update_pose(facing_ground, velocity, dodge, delta)
+	_body.update_pose(facing_ground, global_position - before, dodge, delta, walking)
 
 
 ## Dragged toward a point for a while (through the world's collision, like walking).

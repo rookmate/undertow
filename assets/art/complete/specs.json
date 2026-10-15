@@ -206,7 +206,69 @@
         "warden_front"
       ],
       "transparent": true,
-      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 3 columns and 2 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: Custodian, squat rounded municipal floor-scrubber robot with grey shell, dark green side panel, broad rotating brush base, small unlit lamp dome at top, FRONT three-quarter view facing down-right; Cell 2: Clerk, tall thin bipedal municipal terminal robot with pale grey worn casing and large dark chest screen, thin iron legs, NO writing, FRONT three-quarter view facing down-right; Cell 3: Lamplighter, Art Nouveau streetlamp head on three thin articulated iron legs, round UNLIT circular lens, about twice as tall as Custodian, FRONT three-quarter view facing down-right; Cell 4: Salvager, hovering battered industrial salvage drone with claw underneath, worn dark teal/rust metal shell, unlit fittings, FRONT three-quarter view facing down-right; Cell 5: Sterilizer, hovering grey-white clinical disinfection drone with two narrow downward spray nozzles, unlit cap, no mist, FRONT three-quarter view facing down-right; Cell 6: Warden, stocky upright municipal riot robot, heavy dark grey/verdigris plated body, dark head eye aperture and raised iron baton, FRONT three-quarter view facing down-right. Fixed isometric 34 degrees above horizontal. No baked red danger, gold lenses, beams, mist or shadows. Lens/screen apertures dark/transparent so game light overlays remain live."
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 3 columns and 2 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: Custodian, squat rounded municipal floor-scrubber robot with grey shell, dark green side panel, broad rotating brush base, small unlit lamp dome at top, FRONT three-quarter view facing down-right; Cell 2: Clerk, tall thin bipedal municipal terminal robot with pale grey worn casing and large dark chest screen, thin iron legs, NO writing, FRONT three-quarter view facing down-right; Cell 3: Lamplighter, Art Nouveau streetlamp head on three thin articulated iron legs, round UNLIT circular lens, about twice as tall as Custodian, FRONT three-quarter view facing down-right; Cell 4: Salvager, hovering battered industrial salvage drone with claw underneath, worn dark teal/rust metal shell, unlit fittings, FRONT three-quarter view facing down-right; Cell 5: Sterilizer, hovering grey-white clinical disinfection drone with two narrow downward spray nozzles, unlit cap, no mist, FRONT three-quarter view facing down-right; Cell 6: Warden, stocky upright municipal riot robot, heavy dark grey/verdigris plated body, dark head eye aperture and raised iron baton, FRONT three-quarter view facing down-right. Fixed isometric 34 degrees above horizontal. No baked red danger, gold lenses, beams, mist or shadows. Lens/screen apertures dark/transparent so game light overlays remain live.",
+      "subframes": {
+        "salvager_front_hull": {
+          "region": [
+            84,
+            546,
+            403,
+            260
+          ],
+          "anchors": {}
+        },
+        "salvager_front_claw": {
+          "region": [
+            235,
+            789,
+            126,
+            136
+          ],
+          "anchors": {
+            "joint": [
+              278,
+              800
+            ]
+          }
+        },
+        "sterilizer_front_hull": {
+          "region": [
+            604,
+            553,
+            328,
+            245
+          ],
+          "anchors": {}
+        },
+        "sterilizer_front_nozzle_left": {
+          "region": [
+            642,
+            775,
+            100,
+            144
+          ],
+          "anchors": {
+            "joint": [
+              691,
+              795
+            ]
+          }
+        },
+        "sterilizer_front_nozzle_right": {
+          "region": [
+            795,
+            774,
+            95,
+            122
+          ],
+          "anchors": {
+            "joint": [
+              836,
+              791
+            ]
+          }
+        }
+      }
     },
     {
       "name": "enemies_back",
@@ -221,7 +283,69 @@
         "warden_back"
       ],
       "transparent": true,
-      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 3 columns and 2 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: Custodian, squat rounded municipal floor-scrubber robot with grey shell, dark green side panel, broad rotating brush base, small unlit lamp dome at top, REAR three-quarter view facing up-right; Cell 2: Clerk, tall thin bipedal municipal terminal robot with pale grey worn casing and large dark chest screen, thin iron legs, NO writing, REAR three-quarter view facing up-right; Cell 3: Lamplighter, Art Nouveau streetlamp head on three thin articulated iron legs, round UNLIT circular lens, about twice as tall as Custodian, REAR three-quarter view facing up-right; Cell 4: Salvager, hovering battered industrial salvage drone with claw underneath, worn dark teal/rust metal shell, unlit fittings, REAR three-quarter view facing up-right; Cell 5: Sterilizer, hovering grey-white clinical disinfection drone with two narrow downward spray nozzles, unlit cap, no mist, REAR three-quarter view facing up-right; Cell 6: Warden, stocky upright municipal riot robot, heavy dark grey/verdigris plated body, dark head eye aperture and raised iron baton, REAR three-quarter view facing up-right. EXACT same designs as enemies_front atlas. Fixed isometric 34 degrees above horizontal. No gold/red/cyan lights, beams, mist or shadows."
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 3 columns and 2 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: Custodian, squat rounded municipal floor-scrubber robot with grey shell, dark green side panel, broad rotating brush base, small unlit lamp dome at top, REAR three-quarter view facing up-right; Cell 2: Clerk, tall thin bipedal municipal terminal robot with pale grey worn casing and large dark chest screen, thin iron legs, NO writing, REAR three-quarter view facing up-right; Cell 3: Lamplighter, Art Nouveau streetlamp head on three thin articulated iron legs, round UNLIT circular lens, about twice as tall as Custodian, REAR three-quarter view facing up-right; Cell 4: Salvager, hovering battered industrial salvage drone with claw underneath, worn dark teal/rust metal shell, unlit fittings, REAR three-quarter view facing up-right; Cell 5: Sterilizer, hovering grey-white clinical disinfection drone with two narrow downward spray nozzles, unlit cap, no mist, REAR three-quarter view facing up-right; Cell 6: Warden, stocky upright municipal riot robot, heavy dark grey/verdigris plated body, dark head eye aperture and raised iron baton, REAR three-quarter view facing up-right. EXACT same designs as enemies_front atlas. Fixed isometric 34 degrees above horizontal. No gold/red/cyan lights, beams, mist or shadows.",
+      "subframes": {
+        "salvager_back_hull": {
+          "region": [
+            60,
+            565,
+            390,
+            255
+          ],
+          "anchors": {}
+        },
+        "salvager_back_claw": {
+          "region": [
+            198,
+            813,
+            143,
+            125
+          ],
+          "anchors": {
+            "joint": [
+              268,
+              819
+            ]
+          }
+        },
+        "sterilizer_back_hull": {
+          "region": [
+            592,
+            576,
+            366,
+            241
+          ],
+          "anchors": {}
+        },
+        "sterilizer_back_nozzle_left": {
+          "region": [
+            647,
+            804,
+            91,
+            125
+          ],
+          "anchors": {
+            "joint": [
+              689,
+              813
+            ]
+          }
+        },
+        "sterilizer_back_nozzle_right": {
+          "region": [
+            785,
+            789,
+            88,
+            135
+          ],
+          "anchors": {
+            "joint": [
+              830,
+              809
+            ]
+          }
+        }
+      }
     },
     {
       "name": "boss_bodies",
@@ -254,7 +378,27 @@
         "warden_mast"
       ],
       "transparent": true,
-      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 3 columns and 3 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: compact hanging railway controller carriage with unlit circular core aperture; Cell 2: industrial crane operator cab, dark windows, metal railing; Cell 3: small articulated surgical robot hub with three link mounting sockets; Cell 4: one thin horizontal articulated surgical iron arm link with pivots at both ends; Cell 5: overhead surgical lamp housing with empty transparent circular opening; Cell 6: one flexible ribbed pump bellows viewed front three-quarter; Cell 7: one long horizontal cylindrical printing-press roller, dark steel; Cell 8: short strip of blank pale paper web with tiny ragged torn edges; Cell 9: tall narrow Warden-Prime searchlight mast with unlit round lens at top. Designed as separate articulated pieces for live rotation and movement. Arms/roller/web use flat side view; other components fixed isometric 34 degree view. No baked glow or shadows."
+      "prompt": "Undertow runtime game art, matching the approved local port-city concept images just shown: dense hand-painted Art Nouveau port city, wet aged surfaces, cool teal/violet shadows, carved 1900s civic details, verdigris iron, worn municipal paint. This is ACTUAL game asset art. Restrained brushwork, readable silhouette, soft neutral diffuse light. No text, labels, letters, numbers, borders, grid lines, banners, heraldry, Gothic spires, domes, moon, magical ring or predicted path. No baked lighting, glare, bloom, ground shadows, or gold/amber glowing details. Gold is rendered by the game; leave lenses and screens unlit. Create ONE transparent RGBA sprite atlas with EXACTLY 3 columns and 3 rows of equal cells. Objects are centered within their own cells with generous transparent margins, fully visible, NEVER crossing cell boundaries. Transparent surroundings and actual transparent apertures. No grid markings. Layout in row-major order: Cell 1: compact hanging railway controller carriage with unlit circular core aperture; Cell 2: industrial crane operator cab, dark windows, metal railing; Cell 3: small articulated surgical robot hub with three link mounting sockets; Cell 4: one thin horizontal articulated surgical iron arm link with pivots at both ends; Cell 5: overhead surgical lamp housing with empty transparent circular opening; Cell 6: one flexible ribbed pump bellows viewed front three-quarter; Cell 7: one long horizontal cylindrical printing-press roller, dark steel; Cell 8: short strip of blank pale paper web with tiny ragged torn edges; Cell 9: tall narrow Warden-Prime searchlight mast with unlit round lens at top. Designed as separate articulated pieces for live rotation and movement. Arms/roller/web use flat side view; other components fixed isometric 34 degree view. No baked glow or shadows.",
+      "subframes": {
+        "warden_mast_head": {
+          "region": [
+            1088,
+            746,
+            144,
+            111
+          ],
+          "anchors": {
+            "joint": [
+              1130,
+              841
+            ],
+            "tip": [
+              1179,
+              808
+            ]
+          }
+        }
+      }
     },
     {
       "name": "tools_cores",
@@ -381,6 +525,1497 @@
       ],
       "prompt": "Create ONE isolated transparent runtime game sprite for Undertow: a SUNKEN circular council chamber foundation on the Ark. Match the worn grey stone and carved verdigris Art Nouveau concrete palette of the reference prop sheet. Only use the reference for materials: do NOT reproduce its raised dais. The camera is fixed isometric, looking down at 30 degrees, circular ground projects as a wide ellipse approximately 1.8:1. A low circular stone curb lies flat at ground level; three concentric steps DESCEND INWARD into a recessed dark circular floor, like an empty small amphitheatre or circular drain inspection chamber. The middle floor is visibly BELOW the outer rim, never a raised platform or ascending stairs. A single small access notch at front. Fully open, low enough to see across. No doors or standing frames (runtime adds the three doors), no wall over knee height, no raised central plinth, no buildings, no people, no furniture, no ring glyph, no light, no shadows outside silhouette, no gold, no moon, no text or border. Hand-painted old civic stone, subdued teal-grey shadows, worn stair edges, cracks and damp patina. Entire prop uncropped and centered with generous transparent margins. True RGBA transparency outside the entire silhouette.",
       "source": "/home/homebox/.codex/generated_images/01a13663-a36c-7482-b037-f43da0199dc3/exec-b5540423-0f05-41d9-b261-595a80070538.png"
+    },
+    {
+      "name": "operator_rig",
+      "cols": 4,
+      "rows": 2,
+      "keys": [
+        "rig_front_torso",
+        "rig_front_thigh",
+        "rig_front_shin",
+        "rig_front_arm",
+        "rig_back_torso",
+        "rig_back_thigh",
+        "rig_back_shin",
+        "rig_back_arm"
+      ],
+      "transparent": true,
+      "prompt": "Use case: identity-preserve. Production painted 2D CUTOUT PUPPET PARTS for a game, matching the reference older municipal worker exactly: navy cap, grey beard, navy worn coveralls with ivory reflective chevron, tool belt, leather gloves and work boots. Do NOT draw whole characters or an animation sequence. Draw exactly EIGHT DETACHED BODY PARTS in a 4-column by 2-row grid on real transparent background. Large clear gaps between all parts. Row1 THREE-QUARTER FRONT view facing screen-right/down: cell1 head+neck+torso+toolbelt+short pelvis ending just below belt, WITHOUT ARMS OR LEGS, shoulder stubs rounded; cell2 a single upper leg in navy trousers from rounded hip joint to rounded knee, straight down, no calf or foot; cell3 a single lower leg from rounded knee through shin reflective cuff to complete boot (toe toward screen-right/down), leg mostly vertical; cell4 one full arm from rounded sleeve shoulder to gloved hand, relaxed slight bent elbow, hanging straight down. Row2 same FOUR separate parts in THREE-QUARTER REAR view facing screen-right/up: back head/torso/pelvis WITHOUT arms/legs; rear thigh; rear shin and boot; rear arm. Straight neutral limbs suitable for rotation at joints. No duplicate complete people. Each part fills its own cell comfortably, no frame lines, no labels, no text, no shadows or haze. Painterly detailed brushwork matching reference, soft directional daylight, clean opaque edges and genuine alpha everywhere outside painted cutouts. All cut parts have overlapping rounded ends for skeletal assembly.",
+      "reference": "assets/art/complete/operator_motion.png",
+      "anchors": {
+        "rig_front_torso": {
+          "hip": [
+            296,
+            455
+          ],
+          "ear": [
+            274,
+            135
+          ],
+          "near_shoulder": [
+            174,
+            259
+          ],
+          "far_shoulder": [
+            427,
+            224
+          ]
+        },
+        "rig_front_thigh": {
+          "joint": [
+            619,
+            89
+          ],
+          "tip": [
+            667,
+            425
+          ]
+        },
+        "rig_front_shin": {
+          "joint": [
+            942,
+            117
+          ],
+          "tip": [
+            950,
+            382
+          ]
+        },
+        "rig_front_arm": {
+          "joint": [
+            1206,
+            126
+          ],
+          "tip": [
+            1337,
+            456
+          ]
+        },
+        "rig_back_torso": {
+          "hip": [
+            292,
+            943
+          ],
+          "ear": [
+            351,
+            620
+          ],
+          "near_shoulder": [
+            420,
+            763
+          ],
+          "far_shoulder": [
+            159,
+            719
+          ]
+        },
+        "rig_back_thigh": {
+          "joint": [
+            658,
+            566
+          ],
+          "tip": [
+            621,
+            897
+          ]
+        },
+        "rig_back_shin": {
+          "joint": [
+            974,
+            588
+          ],
+          "tip": [
+            958,
+            873
+          ]
+        },
+        "rig_back_arm": {
+          "joint": [
+            1331,
+            597
+          ],
+          "tip": [
+            1248,
+            951
+          ]
+        }
+      },
+      "refinement": "Precise-object-edit of this exact 4x2 separated painted puppet parts sheet. Keep every part exactly where it is, same dimensions, pose, clothes, detail and layout. Remove ALL smoky background and diffuse halos between or outside parts, replacing them with genuine zero-alpha transparency. No glows, shadows, fog, gradient of any kind outside silhouettes. Replace the light grey mannequin joint endcaps with matching dark navy painted CLOTH so overlapping parts never show a pale joint. Preserve rounded joint contours but paint the grey surfaces as navy fabric. Keep the rest pixel-faithful. Clean game sprite cutouts, real alpha.",
+      "search_boxes": {
+        "rig_front_torso": [
+          120,
+          0,
+          350,
+          500
+        ],
+        "rig_front_thigh": [
+          540,
+          40,
+          215,
+          450
+        ],
+        "rig_front_shin": [
+          870,
+          70,
+          250,
+          320
+        ],
+        "rig_front_arm": [
+          1160,
+          60,
+          250,
+          440
+        ],
+        "rig_back_torso": [
+          110,
+          505,
+          360,
+          490
+        ],
+        "rig_back_thigh": [
+          560,
+          525,
+          195,
+          460
+        ],
+        "rig_back_shin": [
+          860,
+          540,
+          220,
+          349
+        ],
+        "rig_back_arm": [
+          1165,
+          530,
+          230,
+          480
+        ]
+      },
+      "subframes": {
+        "rig_front_boot": {
+          "region": [
+            895,
+            364,
+            209,
+            121
+          ],
+          "anchors": {
+            "sole": [
+              958,
+              452
+            ]
+          }
+        },
+        "rig_back_boot": {
+          "region": [
+            875,
+            849,
+            180,
+            108
+          ],
+          "anchors": {
+            "sole": [
+              946,
+              936
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "carry_rig",
+      "cols": 2,
+      "rows": 1,
+      "keys": [
+        "rig_carry_front",
+        "rig_carry_back"
+      ],
+      "transparent": true,
+      "prompt": "Use case: identity-preserve. Create TWO painted cutout puppet UPPER-BODY sprites of the exact older Operator carrying unconscious Noor over his shoulder from the reference. Transparent background, one row two equally sized cells. Left: three-quarter FRONT facing screen-right/down; right: three-quarter REAR facing screen-right/up. Preserve all clothes, ages, colors, faces, proportions, Operator navy cap and toolbelt, Noor's teal/gold coat and purple headwrap, her dangling boots and hand lantern. CRITICAL: omit ONLY THE OPERATOR'S OWN LEGS below his belt/short pelvis: they will be separately animated by game engine. His upper body, both arms, and ALL of carried Noor including her hanging legs/boots and lantern must remain. His torso ends just beneath toolbelt with a rounded short pelvis ready to overlap animated thighs. Do not add his trousers legs or his own feet. Arrange the two upper-body assemblies isolated and clearly separated with generous transparent margin. Not a fullbody character sheet. Matching painterly style, no glow haze/drop shadow, no floor, no background, no grid, no labels, no text. Genuine alpha cutouts.",
+      "reference": "assets/art/complete/operator_carry.png",
+      "anchors": {
+        "rig_carry_front": {
+          "hip": [
+            498,
+            595
+          ],
+          "ear": [
+            465,
+            235
+          ],
+          "lantern": [
+            662,
+            739
+          ]
+        },
+        "rig_carry_back": {
+          "hip": [
+            1337,
+            616
+          ],
+          "ear": [
+            1503,
+            167
+          ],
+          "lantern": [
+            1145,
+            752
+          ]
+        }
+      }
+    },
+    {
+      "name": "terrain_edges",
+      "cols": 1,
+      "rows": 4,
+      "keys": [
+        "edge_stone",
+        "edge_steel",
+        "edge_timber",
+        "edge_roots"
+      ],
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. Four hand-painted modular TERRAIN EDGE STRIPS for an isometric port-city game. Transparent sprite atlas, ONE COLUMN FOUR ROWS, each row one long straight horizontal architectural strip with generous empty margins, all strips separate. Orthographic front elevation, no perspective, do not draw complete buildings or landscape. Worn old municipal materials, painterly brush texture, subdued neutral cool teal grey light, no glow. Row1: pale chipped limestone coping, irregular worn upper lip and a few broken corners, dark moss in cracks, small roots hanging below. Row2: rusted dark teal steel bridge girder, two horizontal I-beam flanges linked by diagonal truss braces, genuinely transparent triangular spaces between braces, bolts and peeling paint. Row3: tarred timber quay beam with three irregular joined horizontal planks, chipped ends, rope knots and a few barnacles, dark brown weathered wood. Row4: untidy grass and moss verge along old stone edging, short hanging roots and ivy tufts, irregular silhouette, restrained dark muted green. Each strip is roughly eight times wider than tall and fills the width of its row, no other objects, no grey backplate, no text, no labels, no outlines of a grid, no floor shadows, no backdrop. Actual zero-alpha transparency through holes and outside each silhouette. Target canvas landscape 1536x1024.",
+      "search_boxes": {
+        "edge_stone": [
+          0,
+          40,
+          1536,
+          240
+        ],
+        "edge_steel": [
+          0,
+          300,
+          1536,
+          195
+        ],
+        "edge_timber": [
+          0,
+          540,
+          1536,
+          230
+        ],
+        "edge_roots": [
+          0,
+          775,
+          1536,
+          249
+        ]
+      }
+    },
+    {
+      "name": "enemy_light_rig",
+      "cols": 4,
+      "rows": 4,
+      "keys": [
+        "rig_clerk_front_torso",
+        "rig_clerk_front_arm",
+        "rig_clerk_front_thigh",
+        "rig_clerk_front_shin",
+        "rig_clerk_back_torso",
+        "rig_clerk_back_arm",
+        "rig_clerk_back_thigh",
+        "rig_clerk_back_shin",
+        "rig_lamplighter_front_torso",
+        "rig_lamplighter_front_thigh",
+        "rig_lamplighter_front_shin",
+        "rig_lamplighter_front_boot",
+        "rig_lamplighter_back_torso",
+        "rig_lamplighter_back_thigh",
+        "rig_lamplighter_back_shin",
+        "rig_lamplighter_back_boot"
+      ],
+      "transparent": true,
+      "prompt": "Create production animation CUTOUT PARTS for the existing Undertow robots in the two reference images, preserving their painted Art Nouveau industrial style, worn ivory enamel, verdigris metal, and proportions. Reference 1 contains front views and reference 2 rear views. Only the thin screen-chested CLERK (top middle) and tripod LAMPLIGHTER (top right) are used. Actual transparent background with clean alpha, no checkerboard, no shadows, no text, no labels, no glow. A square atlas, exactly FOUR COLUMNS by FOUR ROWS, sixteen equal cells, generous transparent margins, each part completely separate within its cell. Fixed isometric camera 34 degrees above horizontal. The parts will be assembled by game code, so do NOT draw complete robots or duplicated attached legs/arms. All joints end in solid painted metal rounded overlap caps. Each part upright, no pose changes. Row 1 CLERK FRONT three-quarter facing screen-right: col1 head plus screen-chest and pelvis ONLY, no arms or legs; col2 one complete thin jointed arm shoulder-to-hand pointing down; col3 one thin upper leg hip-to-knee pointing down; col4 one lower leg knee-to-ankle WITH its small rectangular metal foot. Row 2 CLERK REAR three-quarter facing screen-right: same four separated parts in same column order, matching rear reference. Row 3 LAMPLIGHTER FRONT three-quarter facing right: col1 complete large circular unlit lamp head, neck and small central hip hub ONLY, absolutely NO legs; col2 one tripod upper leg with pivot at each end pointing downward; col3 one lower leg with pivot at each end pointing downward; col4 one small round tripod foot with ankle cap. Row 4 LAMPLIGHTER REAR: same four separate parts as row3, rear view matching reference. The Clerk's narrow body and the Lamplighter's round head must remain unmistakably the original characters. No new ornament, faces, clothes, yellow lights, medical symbols, or background. Clearly visible leg segment boundaries, solid dark metal joint caps; transparent gaps around every part.\n",
+      "search_boxes": {
+        "rig_clerk_front_torso": [
+          90,
+          0,
+          235,
+          337
+        ],
+        "rig_clerk_front_arm": [
+          440,
+          0,
+          180,
+          337
+        ],
+        "rig_clerk_front_thigh": [
+          740,
+          0,
+          145,
+          337
+        ],
+        "rig_clerk_front_shin": [
+          1020,
+          0,
+          170,
+          337
+        ],
+        "rig_clerk_back_torso": [
+          90,
+          338,
+          235,
+          312
+        ],
+        "rig_clerk_back_arm": [
+          440,
+          338,
+          180,
+          312
+        ],
+        "rig_clerk_back_thigh": [
+          740,
+          338,
+          145,
+          312
+        ],
+        "rig_clerk_back_shin": [
+          1020,
+          338,
+          170,
+          312
+        ],
+        "rig_lamplighter_front_torso": [
+          90,
+          651,
+          235,
+          288
+        ],
+        "rig_lamplighter_front_thigh": [
+          440,
+          651,
+          180,
+          288
+        ],
+        "rig_lamplighter_front_shin": [
+          740,
+          651,
+          145,
+          288
+        ],
+        "rig_lamplighter_front_boot": [
+          1020,
+          651,
+          170,
+          288
+        ],
+        "rig_lamplighter_back_torso": [
+          90,
+          940,
+          235,
+          314
+        ],
+        "rig_lamplighter_back_thigh": [
+          440,
+          940,
+          180,
+          314
+        ],
+        "rig_lamplighter_back_shin": [
+          740,
+          940,
+          145,
+          314
+        ],
+        "rig_lamplighter_back_boot": [
+          1020,
+          940,
+          170,
+          314
+        ]
+      },
+      "anchors": {
+        "rig_clerk_front_torso": {
+          "hip": [
+            210,
+            304
+          ],
+          "near_shoulder": [
+            163,
+            160
+          ],
+          "far_shoulder": [
+            256,
+            140
+          ],
+          "screen": [
+            239,
+            201
+          ]
+        },
+        "rig_clerk_front_arm": {
+          "joint": [
+            537,
+            80
+          ],
+          "tip": [
+            557,
+            295
+          ]
+        },
+        "rig_clerk_front_thigh": {
+          "joint": [
+            806,
+            65
+          ],
+          "tip": [
+            806,
+            280
+          ]
+        },
+        "rig_clerk_front_shin": {
+          "joint": [
+            1083,
+            61
+          ],
+          "tip": [
+            1088,
+            252
+          ]
+        },
+        "rig_lamplighter_front_torso": {
+          "hip": [
+            207,
+            911
+          ],
+          "lens": [
+            238,
+            763
+          ]
+        },
+        "rig_lamplighter_front_thigh": {
+          "joint": [
+            540,
+            705
+          ],
+          "tip": [
+            485,
+            875
+          ]
+        },
+        "rig_lamplighter_front_shin": {
+          "joint": [
+            820,
+            711
+          ],
+          "tip": [
+            832,
+            887
+          ]
+        },
+        "rig_lamplighter_front_boot": {
+          "sole": [
+            1102,
+            914
+          ]
+        },
+        "rig_clerk_back_torso": {
+          "hip": [
+            212,
+            623
+          ],
+          "near_shoulder": [
+            168,
+            485
+          ],
+          "far_shoulder": [
+            257,
+            467
+          ],
+          "screen": [
+            241,
+            525
+          ]
+        },
+        "rig_clerk_back_arm": {
+          "joint": [
+            539,
+            411
+          ],
+          "tip": [
+            559,
+            609
+          ]
+        },
+        "rig_clerk_back_thigh": {
+          "joint": [
+            806,
+            379
+          ],
+          "tip": [
+            806,
+            612
+          ]
+        },
+        "rig_clerk_back_shin": {
+          "joint": [
+            1093,
+            387
+          ],
+          "tip": [
+            1099,
+            567
+          ]
+        },
+        "rig_lamplighter_back_torso": {
+          "hip": [
+            205,
+            1202
+          ],
+          "lens": [
+            233,
+            1052
+          ]
+        },
+        "rig_lamplighter_back_thigh": {
+          "joint": [
+            510,
+            987
+          ],
+          "tip": [
+            578,
+            1158
+          ]
+        },
+        "rig_lamplighter_back_shin": {
+          "joint": [
+            820,
+            990
+          ],
+          "tip": [
+            830,
+            1174
+          ]
+        },
+        "rig_lamplighter_back_boot": {
+          "sole": [
+            1103,
+            1205
+          ]
+        }
+      },
+      "subframes": {
+        "rig_clerk_front_calf": {
+          "region": [
+            1044,
+            32,
+            111,
+            223
+          ],
+          "anchors": {
+            "joint": [
+              1083,
+              61
+            ],
+            "tip": [
+              1088,
+              252
+            ]
+          }
+        },
+        "rig_clerk_front_boot": {
+          "region": [
+            1044,
+            249,
+            111,
+            73
+          ],
+          "anchors": {
+            "sole": [
+              1112,
+              320
+            ]
+          }
+        },
+        "rig_clerk_back_calf": {
+          "region": [
+            1053,
+            360,
+            115,
+            210
+          ],
+          "anchors": {
+            "joint": [
+              1093,
+              387
+            ],
+            "tip": [
+              1099,
+              567
+            ]
+          }
+        },
+        "rig_clerk_back_boot": {
+          "region": [
+            1053,
+            564,
+            115,
+            69
+          ],
+          "anchors": {
+            "sole": [
+              1123,
+              631
+            ]
+          }
+        }
+      },
+      "references": [
+        "enemies_front.png",
+        "enemies_back.png"
+      ]
+    },
+    {
+      "name": "enemy_heavy_rig",
+      "cols": 4,
+      "rows": 4,
+      "keys": [
+        "rig_warden_front_torso",
+        "rig_warden_front_arm",
+        "rig_warden_front_thigh",
+        "rig_warden_front_shin",
+        "rig_warden_back_torso",
+        "rig_warden_back_arm",
+        "rig_warden_back_thigh",
+        "rig_warden_back_shin",
+        "rig_warden_prime_front_torso",
+        "rig_warden_prime_front_arm",
+        "rig_warden_prime_front_thigh",
+        "rig_warden_prime_front_shin",
+        "rig_warden_prime_back_torso",
+        "rig_warden_prime_back_arm",
+        "rig_warden_prime_back_thigh",
+        "rig_warden_prime_back_shin"
+      ],
+      "transparent": true,
+      "prompt": "Production painted animation cutout atlas for Undertow. Reference 1 bottom right is the ordinary WARDEN, reference 2 bottom right its rear view. Reference 3 bottom right is WARDEN-PRIME, a separate heavier industrial riot machine. Preserve those exact character designs and worn teal iron / oxidized grey metal palette, Art Nouveau engraving and hand-painted shading. True transparent background, no shadows, glow, labels or grid. Exactly FOUR COLUMNS by FOUR ROWS, sixteen equal cells with generous transparent margins. Isometric 34 degree camera. These are SEPARATE RIG PARTS to articulate in code, NOT full bodies. Rounded solid metal joint overlap caps. Each cell contains one isolated part upright. Row1 ordinary WARDEN front three-quarter facing down-right: col1 head/chest/pelvis with its left shield and shield-holding arm attached BUT NO LEGS AND NO BATON ARM; col2 its complete right arm holding the long baton, shoulder at top and hand low with baton projecting upward; col3 one upper armored leg hip-to-knee; col4 lower armored leg knee-to-ankle WITH its heavy boot. Row2 ordinary WARDEN rear three-quarter facing up-right: same four parts in same columns, rear of head and back armor visible, matching reference2. Row3 WARDEN-PRIME front three-quarter facing down-right: col1 massive head, broad heavy torso and hip assembly ONLY, no legs and no arms; col2 one complete heavy mechanical arm shoulder-to-hand, resting down, matching the original plain armored hands; col3 one heavy upper leg hip-to-knee; col4 one heavy lower leg knee-to-ankle WITH original broad metal boot. Row4 WARDEN-PRIME rear three-quarter facing up-right: same four parts from behind, solid back of helmet and back armor rather than lens/front breastplate. Prime uses its own heavier simpler industrial construction, visibly different from the ornamented ordinary Warden. No skin, faces, fabric, added weapons, lights or emblems. Every part fully contained in its cell, no connecting lines between parts, nothing touching a neighboring cell.\n",
+      "search_boxes": {
+        "rig_warden_front_torso": [
+          40,
+          0,
+          295,
+          320
+        ],
+        "rig_warden_front_arm": [
+          410,
+          0,
+          205,
+          320
+        ],
+        "rig_warden_front_thigh": [
+          700,
+          0,
+          190,
+          320
+        ],
+        "rig_warden_front_shin": [
+          980,
+          0,
+          225,
+          320
+        ],
+        "rig_warden_back_torso": [
+          40,
+          325,
+          295,
+          295
+        ],
+        "rig_warden_back_arm": [
+          410,
+          325,
+          205,
+          295
+        ],
+        "rig_warden_back_thigh": [
+          700,
+          325,
+          190,
+          295
+        ],
+        "rig_warden_back_shin": [
+          980,
+          325,
+          225,
+          295
+        ],
+        "rig_warden_prime_front_torso": [
+          40,
+          630,
+          295,
+          305
+        ],
+        "rig_warden_prime_front_arm": [
+          410,
+          630,
+          205,
+          305
+        ],
+        "rig_warden_prime_front_thigh": [
+          700,
+          630,
+          190,
+          305
+        ],
+        "rig_warden_prime_front_shin": [
+          980,
+          630,
+          225,
+          305
+        ],
+        "rig_warden_prime_back_torso": [
+          40,
+          940,
+          295,
+          338
+        ],
+        "rig_warden_prime_back_arm": [
+          410,
+          940,
+          205,
+          338
+        ],
+        "rig_warden_prime_back_thigh": [
+          700,
+          940,
+          190,
+          338
+        ],
+        "rig_warden_prime_back_shin": [
+          980,
+          940,
+          225,
+          338
+        ]
+      },
+      "anchors": {
+        "rig_warden_front_torso": {
+          "hip": [
+            198,
+            271
+          ],
+          "near_shoulder": [
+            259,
+            125
+          ],
+          "far_shoulder": [
+            115,
+            130
+          ],
+          "eye": [
+            211,
+            80
+          ]
+        },
+        "rig_warden_front_arm": {
+          "joint": [
+            458,
+            104
+          ],
+          "tip": [
+            550,
+            247
+          ],
+          "weapon": [
+            577,
+            24
+          ]
+        },
+        "rig_warden_front_thigh": {
+          "joint": [
+            785,
+            73
+          ],
+          "tip": [
+            789,
+            254
+          ]
+        },
+        "rig_warden_front_shin": {
+          "joint": [
+            1087,
+            71
+          ],
+          "tip": [
+            1079,
+            225
+          ]
+        },
+        "rig_warden_back_torso": {
+          "hip": [
+            203,
+            574
+          ],
+          "near_shoulder": [
+            268,
+            436
+          ],
+          "far_shoulder": [
+            116,
+            442
+          ],
+          "eye": [
+            217,
+            394
+          ]
+        },
+        "rig_warden_back_arm": {
+          "joint": [
+            557,
+            400
+          ],
+          "tip": [
+            480,
+            537
+          ],
+          "weapon": [
+            460,
+            339
+          ]
+        },
+        "rig_warden_back_thigh": {
+          "joint": [
+            790,
+            394
+          ],
+          "tip": [
+            794,
+            571
+          ]
+        },
+        "rig_warden_back_shin": {
+          "joint": [
+            1078,
+            385
+          ],
+          "tip": [
+            1070,
+            531
+          ]
+        },
+        "rig_warden_prime_front_torso": {
+          "hip": [
+            212,
+            870
+          ],
+          "near_shoulder": [
+            287,
+            733
+          ],
+          "far_shoulder": [
+            112,
+            738
+          ],
+          "eye": [
+            228,
+            691
+          ]
+        },
+        "rig_warden_prime_front_arm": {
+          "joint": [
+            510,
+            684
+          ],
+          "tip": [
+            533,
+            879
+          ]
+        },
+        "rig_warden_prime_front_thigh": {
+          "joint": [
+            787,
+            694
+          ],
+          "tip": [
+            791,
+            881
+          ]
+        },
+        "rig_warden_prime_front_shin": {
+          "joint": [
+            1086,
+            697
+          ],
+          "tip": [
+            1075,
+            847
+          ]
+        },
+        "rig_warden_prime_back_torso": {
+          "hip": [
+            217,
+            1173
+          ],
+          "near_shoulder": [
+            286,
+            1039
+          ],
+          "far_shoulder": [
+            123,
+            1044
+          ],
+          "eye": [
+            232,
+            998
+          ]
+        },
+        "rig_warden_prime_back_arm": {
+          "joint": [
+            509,
+            994
+          ],
+          "tip": [
+            534,
+            1184
+          ]
+        },
+        "rig_warden_prime_back_thigh": {
+          "joint": [
+            797,
+            1005
+          ],
+          "tip": [
+            802,
+            1191
+          ]
+        },
+        "rig_warden_prime_back_shin": {
+          "joint": [
+            1072,
+            1004
+          ],
+          "tip": [
+            1062,
+            1158
+          ]
+        }
+      },
+      "subframes": {
+        "rig_warden_front_calf": {
+          "region": [
+            1030,
+            30,
+            126,
+            198
+          ],
+          "anchors": {
+            "joint": [
+              1087,
+              71
+            ],
+            "tip": [
+              1079,
+              225
+            ]
+          }
+        },
+        "rig_warden_front_boot": {
+          "region": [
+            1030,
+            222,
+            126,
+            79
+          ],
+          "anchors": {
+            "sole": [
+              1107,
+              299
+            ]
+          }
+        },
+        "rig_warden_back_calf": {
+          "region": [
+            1020,
+            347,
+            129,
+            187
+          ],
+          "anchors": {
+            "joint": [
+              1078,
+              385
+            ],
+            "tip": [
+              1070,
+              531
+            ]
+          }
+        },
+        "rig_warden_back_boot": {
+          "region": [
+            1020,
+            528,
+            129,
+            74
+          ],
+          "anchors": {
+            "sole": [
+              1099,
+              600
+            ]
+          }
+        },
+        "rig_warden_prime_front_calf": {
+          "region": [
+            1006,
+            658,
+            177,
+            192
+          ],
+          "anchors": {
+            "joint": [
+              1086,
+              697
+            ],
+            "tip": [
+              1075,
+              847
+            ]
+          }
+        },
+        "rig_warden_prime_front_boot": {
+          "region": [
+            1006,
+            844,
+            177,
+            77
+          ],
+          "anchors": {
+            "sole": [
+              1114,
+              919
+            ]
+          }
+        },
+        "rig_warden_prime_back_calf": {
+          "region": [
+            997,
+            964,
+            167,
+            197
+          ],
+          "anchors": {
+            "joint": [
+              1072,
+              1004
+            ],
+            "tip": [
+              1062,
+              1158
+            ]
+          }
+        },
+        "rig_warden_prime_back_boot": {
+          "region": [
+            997,
+            1155,
+            167,
+            79
+          ],
+          "anchors": {
+            "sole": [
+              1099,
+              1232
+            ]
+          }
+        }
+      },
+      "references": [
+        "enemies_front.png",
+        "enemies_back.png",
+        "boss_bodies.png"
+      ]
+    },
+    {
+      "name": "civilian_rig",
+      "cols": 4,
+      "rows": 3,
+      "keys": [
+        "rig_noor_front_torso",
+        "rig_noor_back_torso",
+        "rig_noor_thigh",
+        "rig_noor_shin",
+        "rig_teo_front_torso",
+        "rig_teo_back_torso",
+        "rig_teo_thigh",
+        "rig_teo_shin",
+        "rig_survivor_front_torso",
+        "rig_survivor_back_torso",
+        "rig_survivor_thigh",
+        "rig_survivor_shin"
+      ],
+      "transparent": true,
+      "prompt": "Create separate painted walking-rig parts for the three standing Undertow civilians in the top row of the reference: Noor at left, Teo in middle, the older survivor at right. Preserve EXACT character identities, faces in shadow, proportions, worn clothing, colors and hand-painted rendering. Genuine transparent background, no scene or shadows, no glow, no labels, no grid. Landscape atlas exactly FOUR COLUMNS by THREE ROWS, twelve equal cells, generous transparent gaps. Camera fixed isometric 34 degrees down. Row1 NOOR: col1 her FRONT three-quarter head/body/long patched coat with both arms and the existing unlit lantern attached, but REMOVE legs and boots underneath the coat; col2 the matching REAR three-quarter head/body/coat with arms and lantern visible at the same hand, no legs or boots, clearly back of head and coat; col3 ONE separate upper trouser leg from hip to knee in dark fabric with rounded cloth overlap caps; col4 ONE separate lower trouser leg from knee to ankle WITH her worn boot, upright. Row2 TEO: same four parts front torso-with-long-coat-and-arms, rear torso-with-long-coat-and-arms, separate thigh, separate lower leg with boot. Keep tablet held at chest by both hands, glasses and hunched posture. Tablet unlit, rear view shows the actual back, not another frontal face. Row3 OLDER SURVIVOR: same four parts front torso-with-coat-and-arms, rear torso-with-coat-and-arms, separate thigh, separate lower leg with boot. Keep his untidy grey hair, scarf, coat, tired posture and hands tucked in coat. Coat hems extend below the hips and will overlap the animated legs; do not shorten coats to jackets. No torso may contain a leg or boot. Legs in columns3/4 are separated animation components, not standing full characters. Each part is fully visible within its own cell. No design changes, no additional accessories, no floor, no ghost mannequin or pale joint markers.\n",
+      "search_boxes": {
+        "rig_noor_front_torso": [
+          95,
+          0,
+          255,
+          350
+        ],
+        "rig_noor_back_torso": [
+          455,
+          0,
+          265,
+          350
+        ],
+        "rig_noor_thigh": [
+          890,
+          0,
+          130,
+          350
+        ],
+        "rig_noor_shin": [
+          1240,
+          0,
+          150,
+          350
+        ],
+        "rig_teo_front_torso": [
+          95,
+          351,
+          255,
+          299
+        ],
+        "rig_teo_back_torso": [
+          455,
+          351,
+          265,
+          299
+        ],
+        "rig_teo_thigh": [
+          890,
+          351,
+          130,
+          299
+        ],
+        "rig_teo_shin": [
+          1240,
+          351,
+          150,
+          299
+        ],
+        "rig_survivor_front_torso": [
+          95,
+          651,
+          255,
+          373
+        ],
+        "rig_survivor_back_torso": [
+          455,
+          651,
+          265,
+          373
+        ],
+        "rig_survivor_thigh": [
+          890,
+          651,
+          130,
+          373
+        ],
+        "rig_survivor_shin": [
+          1240,
+          651,
+          150,
+          373
+        ]
+      },
+      "anchors": {
+        "rig_noor_front_torso": {
+          "hip": [
+            228,
+            211
+          ],
+          "lantern": [
+            132,
+            307
+          ],
+          "tablet": [
+            263,
+            181
+          ],
+          "hand": [
+            153,
+            204
+          ],
+          "ear": [
+            249,
+            91
+          ]
+        },
+        "rig_noor_back_torso": {
+          "hip": [
+            593,
+            212
+          ],
+          "lantern": [
+            681,
+            308
+          ],
+          "tablet": [
+            674,
+            122
+          ],
+          "hand": [
+            515,
+            205
+          ],
+          "ear": [
+            615,
+            92
+          ]
+        },
+        "rig_noor_thigh": {
+          "joint": [
+            956,
+            94
+          ],
+          "tip": [
+            955,
+            273
+          ]
+        },
+        "rig_noor_shin": {
+          "joint": [
+            1300,
+            90
+          ],
+          "tip": [
+            1301,
+            260
+          ]
+        },
+        "rig_teo_front_torso": {
+          "hip": [
+            233,
+            529
+          ],
+          "lantern": [
+            151,
+            614
+          ],
+          "tablet": [
+            263,
+            502
+          ],
+          "hand": [
+            169,
+            523
+          ],
+          "ear": [
+            251,
+            422
+          ]
+        },
+        "rig_teo_back_torso": {
+          "hip": [
+            574,
+            529
+          ],
+          "lantern": [
+            643,
+            614
+          ],
+          "tablet": [
+            638,
+            449
+          ],
+          "hand": [
+            512,
+            523
+          ],
+          "ear": [
+            591,
+            422
+          ]
+        },
+        "rig_teo_thigh": {
+          "joint": [
+            952,
+            404
+          ],
+          "tip": [
+            952,
+            580
+          ]
+        },
+        "rig_teo_shin": {
+          "joint": [
+            1307,
+            406
+          ],
+          "tip": [
+            1308,
+            561
+          ]
+        },
+        "rig_survivor_front_torso": {
+          "hip": [
+            235,
+            857
+          ],
+          "lantern": [
+            157,
+            958
+          ],
+          "tablet": [
+            263,
+            826
+          ],
+          "hand": [
+            173,
+            850
+          ],
+          "ear": [
+            252,
+            731
+          ]
+        },
+        "rig_survivor_back_torso": {
+          "hip": [
+            572,
+            853
+          ],
+          "lantern": [
+            641,
+            952
+          ],
+          "tablet": [
+            636,
+            760
+          ],
+          "hand": [
+            510,
+            846
+          ],
+          "ear": [
+            589,
+            730
+          ]
+        },
+        "rig_survivor_thigh": {
+          "joint": [
+            951,
+            721
+          ],
+          "tip": [
+            950,
+            911
+          ]
+        },
+        "rig_survivor_shin": {
+          "joint": [
+            1305,
+            719
+          ],
+          "tip": [
+            1306,
+            890
+          ]
+        }
+      },
+      "subframes": {
+        "rig_noor_calf": {
+          "region": [
+            1257,
+            64,
+            112,
+            199
+          ],
+          "anchors": {
+            "joint": [
+              1300,
+              90
+            ],
+            "tip": [
+              1301,
+              260
+            ]
+          }
+        },
+        "rig_noor_boot": {
+          "region": [
+            1257,
+            257,
+            112,
+            65
+          ],
+          "anchors": {
+            "sole": [
+              1325,
+              320
+            ]
+          }
+        },
+        "rig_teo_calf": {
+          "region": [
+            1266,
+            382,
+            107,
+            182
+          ],
+          "anchors": {
+            "joint": [
+              1307,
+              406
+            ],
+            "tip": [
+              1308,
+              561
+            ]
+          }
+        },
+        "rig_teo_boot": {
+          "region": [
+            1266,
+            558,
+            107,
+            59
+          ],
+          "anchors": {
+            "sole": [
+              1331,
+              615
+            ]
+          }
+        },
+        "rig_survivor_calf": {
+          "region": [
+            1260,
+            693,
+            119,
+            200
+          ],
+          "anchors": {
+            "joint": [
+              1305,
+              719
+            ],
+            "tip": [
+              1306,
+              890
+            ]
+          }
+        },
+        "rig_survivor_boot": {
+          "region": [
+            1260,
+            887,
+            119,
+            65
+          ],
+          "anchors": {
+            "sole": [
+              1333,
+              950
+            ]
+          }
+        }
+      },
+      "references": [
+        "civilians.png"
+      ]
     }
   ]
 }

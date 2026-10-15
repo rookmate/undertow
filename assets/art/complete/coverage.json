@@ -182,28 +182,36 @@
   },
   "owners": {
     "OperatorBody": [
-      "operator_front_idle",
-      "operator_front_step1",
-      "operator_front_step2",
-      "operator_back_idle",
-      "operator_back_step1",
-      "operator_back_step2",
       "operator_dodge",
       "operator_downed",
       "carry_front_idle",
-      "carry_front_step",
-      "carry_back_idle",
-      "carry_back_step"
+      "carry_back_idle"
     ],
     "ArkFigure": [
-      "noor",
-      "teo",
-      "survivor",
+      "rig_noor_front_torso",
+      "rig_noor_back_torso",
+      "rig_noor_thigh",
+      "rig_noor_calf",
+      "rig_noor_boot",
+      "rig_teo_front_torso",
+      "rig_teo_back_torso",
+      "rig_teo_thigh",
+      "rig_teo_calf",
+      "rig_teo_boot",
+      "rig_survivor_front_torso",
+      "rig_survivor_back_torso",
+      "rig_survivor_thigh",
+      "rig_survivor_calf",
+      "rig_survivor_boot",
       "wardfolk",
       "lantern_housing"
     ],
     "TheWaiting": [
-      "survivor"
+      "rig_survivor_front_torso",
+      "rig_survivor_back_torso",
+      "rig_survivor_thigh",
+      "rig_survivor_calf",
+      "rig_survivor_boot"
     ],
     "NoorDown": [
       "noor_seated",
@@ -305,8 +313,18 @@
       "paper_slip"
     ],
     "WardenPrime": [
-      "warden_prime",
-      "warden_mast"
+      "rig_warden_prime_front_torso",
+      "rig_warden_prime_front_arm",
+      "rig_warden_prime_front_thigh",
+      "rig_warden_prime_front_calf",
+      "rig_warden_prime_front_boot",
+      "rig_warden_prime_back_torso",
+      "rig_warden_prime_back_arm",
+      "rig_warden_prime_back_thigh",
+      "rig_warden_prime_back_calf",
+      "rig_warden_prime_back_boot",
+      "warden_mast",
+      "warden_mast_head"
     ],
     "SignalBox": [
       "signal_box"
@@ -367,40 +385,86 @@
     "TitleBackdrop": [
       "title_painting"
     ],
-    "SkyBackdrop": [
-      "sky_kestrel",
-      "sky_loop",
-      "sky_tideworks",
-      "sky_mercy",
-      "sky_vellum",
-      "sky_greywater",
-      "sky_harbor",
-      "sky_spire",
-      "sky_ark"
-    ],
     "Custodian": [
       "custodian_front",
       "custodian_back"
     ],
     "Clerk": [
-      "clerk_front",
-      "clerk_back"
+      "rig_clerk_front_torso",
+      "rig_clerk_front_arm",
+      "rig_clerk_front_thigh",
+      "rig_clerk_front_calf",
+      "rig_clerk_front_boot",
+      "rig_clerk_back_torso",
+      "rig_clerk_back_arm",
+      "rig_clerk_back_thigh",
+      "rig_clerk_back_calf",
+      "rig_clerk_back_boot"
     ],
     "Lamplighter": [
-      "lamplighter_front",
-      "lamplighter_back"
+      "rig_lamplighter_front_torso",
+      "rig_lamplighter_front_thigh",
+      "rig_lamplighter_front_shin",
+      "rig_lamplighter_front_boot",
+      "rig_lamplighter_back_torso",
+      "rig_lamplighter_back_thigh",
+      "rig_lamplighter_back_shin",
+      "rig_lamplighter_back_boot"
     ],
     "Salvager": [
       "salvager_front",
-      "salvager_back"
+      "salvager_front_hull",
+      "salvager_front_claw",
+      "salvager_back",
+      "salvager_back_hull",
+      "salvager_back_claw",
+      "arm_link"
     ],
     "Sterilizer": [
       "sterilizer_front",
-      "sterilizer_back"
+      "sterilizer_front_hull",
+      "sterilizer_front_nozzle_left",
+      "sterilizer_front_nozzle_right",
+      "sterilizer_back",
+      "sterilizer_back_hull",
+      "sterilizer_back_nozzle_left",
+      "sterilizer_back_nozzle_right",
+      "arm_link"
     ],
     "Warden": [
-      "warden_front",
-      "warden_back"
+      "rig_warden_front_torso",
+      "rig_warden_front_arm",
+      "rig_warden_front_thigh",
+      "rig_warden_front_calf",
+      "rig_warden_front_boot",
+      "rig_warden_back_torso",
+      "rig_warden_back_arm",
+      "rig_warden_back_thigh",
+      "rig_warden_back_calf",
+      "rig_warden_back_boot"
+    ],
+    "OperatorRig": [
+      "rig_front_torso",
+      "rig_front_thigh",
+      "rig_front_shin",
+      "rig_front_boot",
+      "rig_front_arm",
+      "rig_back_torso",
+      "rig_back_thigh",
+      "rig_back_shin",
+      "rig_back_boot",
+      "rig_back_arm",
+      "rig_carry_front",
+      "rig_carry_back"
+    ],
+    "TerrainEdges": [
+      "edge_stone",
+      "edge_steel",
+      "edge_timber",
+      "edge_roots",
+      "mat_foundation",
+      "mat_concrete",
+      "piling"
     ]
   },
   "districts": [
@@ -424,5 +488,373 @@
     "particles and pellet trails",
     "UI text, markers and controls",
     "confession text"
-  ]
+  ],
+  "live_effects": {
+    "SkyBackdrop": "Two continuous world-relative mist layers, no gameplay panorama",
+    "Water": "Painted water with a bounded ripple shader below quay walls"
+  },
+  "required_anchors": {
+    "route_light": [
+      "lens"
+    ],
+    "lantern_housing": [
+      "lens"
+    ],
+    "wardfolk": [
+      "lantern"
+    ],
+    "noor_seated": [
+      "lantern"
+    ],
+    "noor_downed": [
+      "lantern"
+    ],
+    "operator_dodge": [
+      "ear"
+    ],
+    "operator_downed": [
+      "ear"
+    ],
+    "carry_front_idle": [
+      "ear",
+      "lantern"
+    ],
+    "carry_back_idle": [
+      "ear",
+      "lantern"
+    ],
+    "custodian_front": [
+      "lamp"
+    ],
+    "salvager_front_claw": [
+      "joint"
+    ],
+    "sterilizer_front_nozzle_left": [
+      "joint"
+    ],
+    "sterilizer_front_nozzle_right": [
+      "joint"
+    ],
+    "custodian_back": [
+      "lamp"
+    ],
+    "salvager_back_claw": [
+      "joint"
+    ],
+    "sterilizer_back_nozzle_left": [
+      "joint"
+    ],
+    "sterilizer_back_nozzle_right": [
+      "joint"
+    ],
+    "conductor": [
+      "signal_left",
+      "signal_middle",
+      "signal_right"
+    ],
+    "editor": [
+      "screen_tl",
+      "screen_tr",
+      "screen_br",
+      "screen_bl"
+    ],
+    "conductor_housing": [
+      "lens"
+    ],
+    "surgeon_lamp": [
+      "lens"
+    ],
+    "warden_mast": [
+      "lens"
+    ],
+    "warden_mast_head": [
+      "joint",
+      "tip"
+    ],
+    "rig_front_torso": [
+      "hip",
+      "ear",
+      "near_shoulder",
+      "far_shoulder"
+    ],
+    "rig_front_thigh": [
+      "joint",
+      "tip"
+    ],
+    "rig_front_shin": [
+      "joint",
+      "tip"
+    ],
+    "rig_front_arm": [
+      "joint",
+      "tip"
+    ],
+    "rig_back_torso": [
+      "hip",
+      "ear",
+      "near_shoulder",
+      "far_shoulder"
+    ],
+    "rig_back_thigh": [
+      "joint",
+      "tip"
+    ],
+    "rig_back_shin": [
+      "joint",
+      "tip"
+    ],
+    "rig_back_arm": [
+      "joint",
+      "tip"
+    ],
+    "rig_front_boot": [
+      "sole"
+    ],
+    "rig_back_boot": [
+      "sole"
+    ],
+    "rig_carry_front": [
+      "hip",
+      "ear",
+      "lantern"
+    ],
+    "rig_carry_back": [
+      "hip",
+      "ear",
+      "lantern"
+    ],
+    "rig_clerk_front_torso": [
+      "hip",
+      "near_shoulder",
+      "far_shoulder",
+      "screen"
+    ],
+    "rig_clerk_front_arm": [
+      "joint",
+      "tip"
+    ],
+    "rig_clerk_front_thigh": [
+      "joint",
+      "tip"
+    ],
+    "rig_clerk_back_torso": [
+      "hip",
+      "near_shoulder",
+      "far_shoulder",
+      "screen"
+    ],
+    "rig_clerk_back_arm": [
+      "joint",
+      "tip"
+    ],
+    "rig_clerk_back_thigh": [
+      "joint",
+      "tip"
+    ],
+    "rig_lamplighter_front_torso": [
+      "hip",
+      "lens"
+    ],
+    "rig_lamplighter_front_thigh": [
+      "joint",
+      "tip"
+    ],
+    "rig_lamplighter_front_shin": [
+      "joint",
+      "tip"
+    ],
+    "rig_lamplighter_front_boot": [
+      "sole"
+    ],
+    "rig_lamplighter_back_torso": [
+      "hip",
+      "lens"
+    ],
+    "rig_lamplighter_back_thigh": [
+      "joint",
+      "tip"
+    ],
+    "rig_lamplighter_back_shin": [
+      "joint",
+      "tip"
+    ],
+    "rig_lamplighter_back_boot": [
+      "sole"
+    ],
+    "rig_clerk_front_calf": [
+      "joint",
+      "tip"
+    ],
+    "rig_clerk_front_boot": [
+      "sole"
+    ],
+    "rig_clerk_back_calf": [
+      "joint",
+      "tip"
+    ],
+    "rig_clerk_back_boot": [
+      "sole"
+    ],
+    "rig_warden_front_torso": [
+      "hip",
+      "near_shoulder",
+      "far_shoulder",
+      "eye"
+    ],
+    "rig_warden_front_arm": [
+      "joint",
+      "tip",
+      "weapon"
+    ],
+    "rig_warden_front_thigh": [
+      "joint",
+      "tip"
+    ],
+    "rig_warden_back_torso": [
+      "hip",
+      "near_shoulder",
+      "far_shoulder",
+      "eye"
+    ],
+    "rig_warden_back_arm": [
+      "joint",
+      "tip",
+      "weapon"
+    ],
+    "rig_warden_back_thigh": [
+      "joint",
+      "tip"
+    ],
+    "rig_warden_prime_front_torso": [
+      "hip",
+      "near_shoulder",
+      "far_shoulder",
+      "eye"
+    ],
+    "rig_warden_prime_front_arm": [
+      "joint",
+      "tip"
+    ],
+    "rig_warden_prime_front_thigh": [
+      "joint",
+      "tip"
+    ],
+    "rig_warden_prime_back_torso": [
+      "hip",
+      "near_shoulder",
+      "far_shoulder",
+      "eye"
+    ],
+    "rig_warden_prime_back_arm": [
+      "joint",
+      "tip"
+    ],
+    "rig_warden_prime_back_thigh": [
+      "joint",
+      "tip"
+    ],
+    "rig_warden_front_calf": [
+      "joint",
+      "tip"
+    ],
+    "rig_warden_front_boot": [
+      "sole"
+    ],
+    "rig_warden_back_calf": [
+      "joint",
+      "tip"
+    ],
+    "rig_warden_back_boot": [
+      "sole"
+    ],
+    "rig_warden_prime_front_calf": [
+      "joint",
+      "tip"
+    ],
+    "rig_warden_prime_front_boot": [
+      "sole"
+    ],
+    "rig_warden_prime_back_calf": [
+      "joint",
+      "tip"
+    ],
+    "rig_warden_prime_back_boot": [
+      "sole"
+    ],
+    "rig_noor_front_torso": [
+      "hip",
+      "lantern",
+      "tablet",
+      "hand",
+      "ear"
+    ],
+    "rig_noor_back_torso": [
+      "hip",
+      "lantern",
+      "tablet",
+      "hand",
+      "ear"
+    ],
+    "rig_noor_thigh": [
+      "joint",
+      "tip"
+    ],
+    "rig_teo_front_torso": [
+      "hip",
+      "lantern",
+      "tablet",
+      "hand",
+      "ear"
+    ],
+    "rig_teo_back_torso": [
+      "hip",
+      "lantern",
+      "tablet",
+      "hand",
+      "ear"
+    ],
+    "rig_teo_thigh": [
+      "joint",
+      "tip"
+    ],
+    "rig_survivor_front_torso": [
+      "hip",
+      "lantern",
+      "tablet",
+      "hand",
+      "ear"
+    ],
+    "rig_survivor_back_torso": [
+      "hip",
+      "lantern",
+      "tablet",
+      "hand",
+      "ear"
+    ],
+    "rig_survivor_thigh": [
+      "joint",
+      "tip"
+    ],
+    "rig_noor_calf": [
+      "joint",
+      "tip"
+    ],
+    "rig_noor_boot": [
+      "sole"
+    ],
+    "rig_teo_calf": [
+      "joint",
+      "tip"
+    ],
+    "rig_teo_boot": [
+      "sole"
+    ],
+    "rig_survivor_calf": [
+      "joint",
+      "tip"
+    ],
+    "rig_survivor_boot": [
+      "sole"
+    ]
+  }
 }
